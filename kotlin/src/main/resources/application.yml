@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: yuri
+
+
+  thymeleaf:
+    cache: false
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/zyl?useUnicode=true&useJDBCCompliantTimezoneShift=true&serverTimezone=UTC&utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: yuri
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis-plus:
+  global-config:
+    db-config:
+      table-underline: true
+      logic-not-delete-value: false
+      logic-delete-value: true
+  configuration:
+    map-underscore-to-camel-case: true
