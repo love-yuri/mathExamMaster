@@ -20,5 +20,8 @@ abstract class BaseController<Entity: BaseEntity, Mapper: BaseMapper<Entity>> {
     fun update(@RequestBody value: Entity) = baseService.update(value)
 
     @PostMapping("delete/{id}")
-    fun update(@PathVariable id: Long) = baseService.delete(id)
+    fun delete(@PathVariable id: Long) = baseService.delete(id)
+
+    @PostMapping("get/{id}")
+    fun get(@PathVariable id: Long): Entity = baseService.getById(id)
 }
