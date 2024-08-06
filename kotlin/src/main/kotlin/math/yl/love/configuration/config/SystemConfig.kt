@@ -1,4 +1,4 @@
-package math.yl.love.configuration
+package math.yl.love.configuration.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
