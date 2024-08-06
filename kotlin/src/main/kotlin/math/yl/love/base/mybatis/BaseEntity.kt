@@ -15,7 +15,6 @@ import java.time.LocalDateTime
  */
 open class BaseEntity {
     @TableId(type = IdType.ASSIGN_ID)
-    @TableField(value = "id", fill = FieldFill.INSERT)
     val id: Long? = null
 
     @TableLogic
