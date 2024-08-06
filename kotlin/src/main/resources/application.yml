@@ -19,3 +19,6 @@ mybatis-plus:
       logic-delete-value: true
   configuration:
     map-underscore-to-camel-case: true
+
+# springdoc-openapi项目配置
+
