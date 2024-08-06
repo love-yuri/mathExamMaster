@@ -1,4 +1,4 @@
-package math.yl.love.configuration
+package math.yl.love.configuration.config
 
 class CookieConfig {
     companion object {
