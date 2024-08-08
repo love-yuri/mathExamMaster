@@ -1,11 +1,7 @@
 package math.yl.love.base.mybatis
 
-import com.baomidou.mybatisplus.annotation.FieldFill
-import com.baomidou.mybatisplus.annotation.IdType
-import com.baomidou.mybatisplus.annotation.SqlCondition.EQUAL
-import com.baomidou.mybatisplus.annotation.TableField
-import com.baomidou.mybatisplus.annotation.TableId
-import com.baomidou.mybatisplus.annotation.TableLogic
+import com.baomidou.mybatisplus.annotation.*
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDateTime
 
 /**
@@ -21,12 +17,14 @@ open class BaseEntity {
     @TableField("deleted")
     val deleted: Boolean = false
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "created_time", fill = FieldFill.INSERT)
     val createdTime: LocalDateTime? = null
 
     @TableField("created_by")
     val createdBy: Long? = null
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "updated_time", fill = FieldFill.INSERT_UPDATE)
     val updatedTime: LocalDateTime? = null
 }
