@@ -2,9 +2,12 @@ package math.yl.love
 
 import math.yl.love.configuration.config.SystemConfig
 import org.mybatis.spring.annotation.MapperScan
+import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
+import java.net.InetAddress
+
 
 @SpringBootApplication
 @EnableConfigurationProperties(SystemConfig::class)
@@ -12,5 +15,16 @@ import org.springframework.boot.runApplication
 class Application
 
 fun main(args: Array<String>) {
-    runApplication<Application>(*args)
+    val log = LoggerFactory.getLogger(Application::class.java)
+
+    val application = runApplication<Application>(*args)
+    val env = application.environment
+
+    val host = InetAddress.getLocalHost().hostAddress
+    val port = env.getProperty("server.port", "8080")
+
+    log.info("""
+        程序启动成功，访问api文档: http://$host:$port/doc.html
+    """.trimIndent())
+
 }
