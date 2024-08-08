@@ -2,14 +2,12 @@ spring:
   application:
     name: yuri
 
-
-  thymeleaf:
-    cache: false
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/zyl?useUnicode=true&useJDBCCompliantTimezoneShift=true&serverTimezone=UTC&utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: yuri
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
 
 mybatis-plus:
   global-config:
@@ -19,6 +17,3 @@ mybatis-plus:
       logic-delete-value: true
   configuration:
     map-underscore-to-camel-case: true
-
-# springdoc-openapi项目配置
-
