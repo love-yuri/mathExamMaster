@@ -1,6 +1,10 @@
 package math.yl.love.configuration.mvc
 
+import kotlinx.serialization.json.Json
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.converter.HttpMessageConverter
+import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter
 import org.springframework.web.servlet.config.annotation.*
 
 @Configuration
@@ -12,6 +16,10 @@ class WebMvcConfiguration: WebMvcConfigurationSupport() {
         registry.addRedirectViewController("/admin", "/admin/index.html")
     }
 
+    /**
+     * 静态文件访问设置
+     *
+     */
     public override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry.addResourceHandler("/**")
             .addResourceLocations("classpath:/static/")
@@ -27,6 +35,10 @@ class WebMvcConfiguration: WebMvcConfigurationSupport() {
 
     }
 
+    /**
+     * 跨域设置
+     * 允许所有请求
+     */
     public override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
             .allowCredentials(true)
