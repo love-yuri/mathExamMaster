@@ -1,14 +1,24 @@
-import './assets/main.css'
+/*
+ * @Author: love-yuri yuri2078170658@gmail.com
+ * @Date: 2024-08-10 15:47:59
+ * @LastEditTime: 2024-08-10 17:04:18
+ * @Description: main 入口文件
+ */
+import './assets/main.css';
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from 'vue';
 
-import App from './App.vue'
-import router from './router'
+import App from './App.vue';
 
-const app = createApp(App)
+import PiniaRegister from './config/pinia';
+import RouterRegister from './config/route';
+import PrimeVueRegister from './config/primevue';
 
-app.use(createPinia())
-app.use(router)
+const app = createApp(App);
 
-app.mount('#app')
+/* 注册 */
+RouterRegister(app);
+PrimeVueRegister(app);
+PiniaRegister(app);
+
+app.mount('#app');
