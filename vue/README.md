@@ -1,39 +1,49 @@
-# vue
+# 前端服务
 
-This template should help get you started developing with Vue 3 in Vite.
+## 使用说明
 
-## Recommended IDE Setup
+### 运行项目
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+1. `npm run install` 安装依赖
+2. `npm run dev` 开启访问
 
-## Type Support for `.vue` Imports in TS
+### 运行检查
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+1. `npm run fromat` 格式化代码
+2. `npm run lint` 检查代码
 
-## Customize configuration
+## 项目依赖说明
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- `vue3` 使用vue3作为项目基础
 
-## Project Setup
+- `pinia` 轻量级状态管理器
 
-```sh
-npm install
-```
+- `primevue` 前端组件库
 
-### Compile and Hot-Reload for Development
+- `axios` 网络请求库
 
-```sh
-npm run dev
-```
+- `vue-router` 路由管理
 
-### Type-Check, Compile and Minify for Production
+- `eslint` 语法检查器
 
-```sh
-npm run build
-```
+- `prettier` 代码风格检查
 
-### Lint with [ESLint](https://eslint.org/)
+- `tailwindcss` tailwindcss
 
-```sh
-npm run lint
-```
+- `scas` css预处理语言
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
