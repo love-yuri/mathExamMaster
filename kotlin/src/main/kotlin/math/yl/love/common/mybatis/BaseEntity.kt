@@ -1,4 +1,4 @@
-package math.yl.love.base.mybatis
+package math.yl.love.common.mybatis
 
 import com.baomidou.mybatisplus.annotation.*
 import com.fasterxml.jackson.annotation.JsonFormat

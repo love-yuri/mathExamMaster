@@ -1,4 +1,4 @@
-package math.yl.love.base.utils
+package math.yl.love.common.utils
 
 
 import kotlinx.serialization.ExperimentalSerializationApi

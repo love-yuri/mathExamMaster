@@ -1,4 +1,4 @@
-package math.yl.love.base
+package math.yl.love.common.base
 
 enum class SystemCode(
     val code: Int,

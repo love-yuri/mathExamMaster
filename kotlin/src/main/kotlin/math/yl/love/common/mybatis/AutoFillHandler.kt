@@ -1,4 +1,4 @@
-package math.yl.love.base.mybatis
+package math.yl.love.common.mybatis
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler
 import org.apache.ibatis.reflection.MetaObject

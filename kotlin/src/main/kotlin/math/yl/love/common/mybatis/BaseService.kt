@@ -1,12 +1,9 @@
-package math.yl.love.base.mybatis
+package math.yl.love.common.mybatis
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.service.IService
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
-import math.yl.love.database.entity.User
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

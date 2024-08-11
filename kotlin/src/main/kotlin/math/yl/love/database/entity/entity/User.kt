@@ -1,8 +1,8 @@
-package math.yl.love.database.entity
+package math.yl.love.database.entity.entity
 
 import com.baomidou.mybatisplus.annotation.TableField
 import com.baomidou.mybatisplus.annotation.TableName
-import math.yl.love.base.mybatis.BaseEntity
+import math.yl.love.common.mybatis.BaseEntity
 
 @TableName("user")
 class User: BaseEntity() {
