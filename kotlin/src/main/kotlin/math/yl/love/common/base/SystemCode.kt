@@ -13,4 +13,5 @@ enum class SystemCode(
     ParameterValidError(501, "参数验证错误"),
     AccessDenied(502, "用户没有权限访问"),
     BizError(503, "业务逻辑错误"),
+    MissQuery(504, "缺少必要参数"),
 }
