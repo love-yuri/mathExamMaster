@@ -1,9 +1,9 @@
 package math.yl.love.database.service
 
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
-import math.yl.love.base.mybatis.BaseEntity
-import math.yl.love.base.mybatis.BaseService
-import math.yl.love.database.entity.User
+import math.yl.love.common.mybatis.BaseEntity
+import math.yl.love.common.mybatis.BaseService
+import math.yl.love.database.entity.entity.User
 import math.yl.love.database.mapper.UserMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
