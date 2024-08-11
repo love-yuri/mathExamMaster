@@ -7,6 +7,7 @@ import math.yl.love.common.mybatis.BaseEntity
 @TableName("user")
 class User: BaseEntity() {
 
+    
     @TableField("role")
     val role: Int? = null
 
