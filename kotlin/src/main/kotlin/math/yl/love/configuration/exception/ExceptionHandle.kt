@@ -1,8 +1,9 @@
 package math.yl.love.configuration.exception
 
-import math.yl.love.base.R
-import math.yl.love.base.SystemCode
+import math.yl.love.common.base.R
+import math.yl.love.common.base.SystemCode
 import org.slf4j.LoggerFactory
+import org.springframework.http.HttpStatus
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.validation.BindException
 import org.springframework.validation.FieldError
@@ -10,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.ResponseStatus
 
 @ControllerAdvice
 class ExceptionHandle {
@@ -22,7 +24,27 @@ class ExceptionHandle {
     @ResponseBody
     fun handler(e: Exception): R<*> {
         log.error("yuri: 未知异常 -> ${e.message}", e)
-        return R.fail(SystemCode.InnerError.code, SystemCode.InnerError.message)
+        return R.fail(SystemCode.InnerError)
+    }
+
+    /**
+     * 通用Runtime异常
+     */
+    @ExceptionHandler(RuntimeException::class)
+    @ResponseBody
+    fun handler(e: RuntimeException): R<*> {
+        log.error("yuri: RuntimeException异常 -> ${e.message}", e)
+        return R.fail(SystemCode.InnerError.code,  e.message ?: SystemCode.InnerError.message)
+    }
+
+    /**
+     * 业务逻辑运行时异常
+     */
+    @ExceptionHandler(BizException::class)
+    @ResponseBody
+    fun handler(e: BizException): R<*> {
+        log.error("yuri: 业务逻辑异常 -> ${e.message}", e)
+        return R.fail(SystemCode.BizError.code,  e.message ?: SystemCode.BizError.message)
     }
 
     /**
@@ -66,6 +88,6 @@ class ExceptionHandle {
     @ResponseBody
     fun handler(e: HttpMessageNotReadableException): R<*> {
         log.error("yuri: 缺少必要参数!!! ${e.message}", e)
-        return R.fail(555, "缺少必要参数!!!")
+        return R.fail(SystemCode.MissQuery)
     }
 }
