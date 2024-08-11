@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-04-11 21:46:04
- * @LastEditTime: 2024-08-11 15:50:26
+ * @LastEditTime: 2024-08-12 00:12:17
  * @Description: eslint config
  */
 module.exports = {
@@ -47,18 +47,10 @@ module.exports = {
     '@typescript-eslint/ban-ts-ignore': 'off',
 
     // 对显式函数返回类型的要求
-    '@typescript-eslint/explicit-function-return-type': [
-      'error',
-      {
-        allowExpressions: true, // 允许表达式形式的函数（如箭头函数）省略返回类型
-        allowTypedFunctionExpressions: true, // 已经推断出类型的函数允许省略返回类型
-        allowHigherOrderFunctions: true, // 高阶函数允许省略返回类型
-        allowConciseArrowFunctionExpressionsStartingWithVoid: true, // 简短的箭头函数如果没有返回值可以省略返回类型
-      },
-    ],
+    '@typescript-eslint/explicit-function-return-type': 'off',
 
     // 对 any 类型的使用限制
-    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/no-explicit-any': 'off',
 
     // 对 require 语法的禁止
     '@typescript-eslint/no-var-requires': 'error',
