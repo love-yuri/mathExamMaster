@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-08-10 17:03:06
- * @LastEditTime: 2024-08-11 00:47:17
+ * @LastEditTime: 2024-08-11 21:48:00
  * @Description: pinia配置
  */
 import { createPinia } from 'pinia';
