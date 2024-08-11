@@ -2,10 +2,10 @@ package math.yl.love.configuration.handler
 
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import math.yl.love.base.Log.log
-import math.yl.love.base.R
-import math.yl.love.base.SystemCode
-import math.yl.love.base.utils.JsonUtils.toJson
+import math.yl.love.common.base.Log.log
+import math.yl.love.common.base.R
+import math.yl.love.common.base.SystemCode
+import math.yl.love.common.utils.JsonUtils.toJson
 import org.springframework.security.web.access.AccessDeniedHandler
 
 class AccessDeniedHandler : AccessDeniedHandler {
