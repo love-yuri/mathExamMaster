@@ -1,4 +1,4 @@
-package math.yl.love.configuration.security
+package math.yl.love.configuration.auth
 
 import kotlinx.serialization.Serializable
 import math.yl.love.database.entity.entity.User
