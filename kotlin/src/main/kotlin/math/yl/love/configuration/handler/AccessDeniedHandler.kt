@@ -7,6 +7,7 @@ import math.yl.love.common.base.R
 import math.yl.love.common.base.SystemCode
 import math.yl.love.common.utils.JsonUtils.toJson
 import org.springframework.security.web.access.AccessDeniedHandler
+import org.springframework.stereotype.Component
 
 class AccessDeniedHandler : AccessDeniedHandler {
 
