@@ -2,6 +2,9 @@ package math.yl.love.common.utils
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.auth0.jwt.interfaces.DecodedJWT
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.util.*
 
 
@@ -10,6 +13,9 @@ import java.util.*
  * 因为用配置文件配置太过分散，所以配置就放到了这里
  */
 object JwtUtils {
+
+    private val log: Logger = LoggerFactory.getLogger(javaClass)
+
     /**
      * header 配置，使用加密算法
      */
@@ -60,5 +66,16 @@ object JwtUtils {
             })
 
         }.sign(Algorithm.HMAC256(SECRET))
+    }
+
+    fun verifyTokenTest(token: String): DecodedJWT? {
+        val jwtVerifier = JWT.require(Algorithm.HMAC256(SECRET)).build();
+        val verify = jwtVerifier.verify(token);
+        log.info("""
+            userId: ${verify.getClaim("userId").asString()}
+            userName: ${verify.getClaim("userName").asString()}
+            过期时间: ${verify.expiresAt} 
+        """.trimIndent())
+        return verify
     }
 }
