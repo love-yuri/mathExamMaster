@@ -10,14 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 
-abstract class BaseController<Entity: BaseEntity, Mapper: BaseMapper<Entity>> {
+@RequestMapping("/user")
+abstract class BaseController<Entity: BaseEntity, Mapper: BaseMapper<Entity>, Service: BaseService<Entity, Mapper>> {
 
-    protected val log: Logger = LoggerFactory.getLogger(javaClass)
+    protected val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     @Autowired
     @Suppress("SpringJavaInjectionPointsAutowiringInspection")
-    private lateinit var baseService: BaseService<Entity, Mapper>
+    protected lateinit var baseService: Service
 
     @PostMapping("create")
     @Operation(summary = "创建")
