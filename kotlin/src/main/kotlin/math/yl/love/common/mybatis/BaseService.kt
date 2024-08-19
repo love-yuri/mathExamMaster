@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory
 
 abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>> : ServiceImpl<Mapper, Entity>(), IService<Entity> {
 
+    protected val log: Logger = LoggerFactory.getLogger(this::class.java)
+
     /**
      * 快捷lambda Query查询类
      */
@@ -35,8 +37,5 @@ abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>> : Se
      * 删除
      */
     fun delete(id: Long) = baseMapper.deleteById(id)
-
-
-
 }
 
