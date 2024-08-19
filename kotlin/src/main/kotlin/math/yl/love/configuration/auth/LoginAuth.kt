@@ -1,14 +1,14 @@
 package math.yl.love.configuration.security
 
-import math.yl.love.database.entity.entity.DetailUserInfo
 import math.yl.love.database.service.UserService
+import org.springframework.context.annotation.Lazy
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 
 @Service
 class LoginAuth(
-    private val userService: UserService
+     @Lazy private val userService: UserService
 ): UserDetailsService {
     override fun loadUserByUsername(username: String?): UserDetails {
         val user = userService.getById(username?.toLong()) ?: run {
