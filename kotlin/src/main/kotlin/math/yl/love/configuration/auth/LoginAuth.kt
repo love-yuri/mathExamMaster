@@ -1,4 +1,4 @@
-package math.yl.love.configuration.security
+package math.yl.love.configuration.auth
 
 import math.yl.love.database.service.UserService
 import org.springframework.context.annotation.Lazy
