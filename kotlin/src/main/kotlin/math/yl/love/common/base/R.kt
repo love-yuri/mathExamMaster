@@ -1,6 +1,8 @@
 package math.yl.love.common.base
 
+import jakarta.servlet.http.HttpServletResponse
 import kotlinx.serialization.Serializable
+import math.yl.love.common.utils.JsonUtils.toJson
 
 
 @Serializable
@@ -32,6 +34,18 @@ data class R <T>  @JvmOverloads constructor (
         @JvmStatic
         fun fail(msg: String): R<String> {
             return R(SystemCode.BizError.code, msg, null, false)
+        }
+
+        /**
+         * 写入response
+         */
+        @JvmStatic
+        fun fail(response: HttpServletResponse, code: SystemCode) {
+            response.apply {
+                status = code.code
+                contentType = "application/json;charset=UTF-8"
+                writer.write(fail(code).toJson())
+            }
         }
 
 
