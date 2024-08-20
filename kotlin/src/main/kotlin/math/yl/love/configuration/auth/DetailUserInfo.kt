@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails
 
 @Serializable
 class DetailUserInfo (
-    private val user: User
+    val user: User
 ): UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return mutableListOf()
