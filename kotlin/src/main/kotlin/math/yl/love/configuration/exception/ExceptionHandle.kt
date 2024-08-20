@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.servlet.resource.NoResourceFoundException
 
 @ControllerAdvice
 class ExceptionHandle {
@@ -89,5 +90,15 @@ class ExceptionHandle {
     fun handler(e: HttpMessageNotReadableException): R<*> {
         log.error("yuri: 缺少必要参数!!! ${e.message}", e)
         return R.fail(SystemCode.MissQuery)
+    }
+
+    /**
+     * 缺少必要参数错误
+     */
+    @ExceptionHandler(NoResourceFoundException::class)
+    @ResponseBody
+    fun handler(e: NoResourceFoundException): R<*> {
+        log.error("yuri: 没有找到该url ${e.message}", e)
+        return R.fail(SystemCode.NoResource)
     }
 }
