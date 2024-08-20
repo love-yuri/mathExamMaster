@@ -7,7 +7,7 @@ import { BaseApi, RequestType } from '@/common/base/baseApi';
 class UserApi extends BaseApi {
   readonly baseUrl: string = '/user';
 
-  login = (params: any) => {
+  login = (params: { id: number; password: string }) => {
     return this.add(RequestType.POST, 'login', params);
   };
 }
