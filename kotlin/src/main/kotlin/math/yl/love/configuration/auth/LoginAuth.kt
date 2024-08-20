@@ -6,6 +6,10 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 
+
+/**
+ * 登陆认证
+ */
 @Service
 class LoginAuth(
      @Lazy private val userService: UserService
