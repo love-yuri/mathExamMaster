@@ -4,7 +4,6 @@ package math.yl.love.configuration.security
 import math.yl.love.configuration.auth.JwtAuthenticationFilter
 import math.yl.love.configuration.config.SystemConfig
 import math.yl.love.configuration.handler.AccessDeniedHandler
-import math.yl.love.configuration.handler.AuthenticationEntryPointHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
@@ -25,8 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 class SecurityConfigurer(
     val systemConfig: SystemConfig,
-    val jwtAuthenticationFilter: JwtAuthenticationFilter,
-    private val authenticationEntryPointHandler: AuthenticationEntryPointHandler
+    val jwtAuthenticationFilter: JwtAuthenticationFilter
 ) {
 
     @Bean
@@ -63,7 +61,6 @@ class SecurityConfigurer(
             .exceptionHandling {
                 it.accessDeniedHandler(AccessDeniedHandler()) // 自定义处理权限不足
 //                it.authenticationEntryPoint(LoginUrlAuthenticationEntryPoint("/user/login"))
-                it.authenticationEntryPoint(authenticationEntryPointHandler)
 
             }
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
