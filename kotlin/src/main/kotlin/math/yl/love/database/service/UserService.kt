@@ -4,9 +4,12 @@ import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import math.yl.love.common.mybatis.BaseEntity
 import math.yl.love.common.mybatis.BaseService
 import math.yl.love.common.utils.JsonUtils.toJson
+import math.yl.love.common.utils.JwtUtils
 import math.yl.love.configuration.auth.DetailUserInfo
 import math.yl.love.database.entity.entity.User
-import math.yl.love.database.entity.query.LoginQuery
+import math.yl.love.database.entity.query.user.LoginQuery
+import math.yl.love.database.entity.result.user.LoginJwtResult
+import math.yl.love.database.entity.result.user.LoginResult
 import math.yl.love.database.mapper.UserMapper
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -30,11 +33,16 @@ class UserService(
         logger.info("yuri: 结果 -> ${list(queryWrapper.eq(BaseEntity::id, 1))}")
     }
 
-    fun login(loginQuery: LoginQuery): User? {
-        logger.info("yuri: 参数$loginQuery")
+    fun login(loginQuery: LoginQuery): LoginResult {
         val usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(loginQuery.id, loginQuery.password)
-        val res = authenticationManager.authenticate(usernamePasswordAuthenticationToken)
-        logger.info("yuri: res: -> ${(res.principal as DetailUserInfo).toJson()} ")
-        return null
+        val user = authenticationManager.authenticate(usernamePasswordAuthenticationToken).let {
+            (it.principal as DetailUserInfo).user
+        }
+
+        val token = JwtUtils.createToken(LoginJwtResult(
+            user.id!!,
+            user.role
+        ))
+        return LoginResult(user, token)
     }
 }
