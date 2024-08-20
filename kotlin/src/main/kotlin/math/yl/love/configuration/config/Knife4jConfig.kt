@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.media.StringSchema
 import io.swagger.v3.oas.models.parameters.Parameter
 import io.swagger.v3.oas.models.servers.Server
+import math.yl.love.common.constant.HeadersConstant
 import org.springdoc.core.customizers.GlobalOperationCustomizer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -25,7 +26,7 @@ class Knife4jConfig {
     fun globalOperationCustomizer(): GlobalOperationCustomizer {
         return GlobalOperationCustomizer { operation: Operation, _: HandlerMethod? ->
             val authorizationHeader =
-                Parameter().`in`("header").schema(StringSchema()).name("Authorization").description("JWT Token")
+                Parameter().`in`("header").schema(StringSchema()).name(HeadersConstant.AUTHORIZATION).description("JWT Token")
                     .required(false)
             operation.addParametersItem(authorizationHeader)
             operation
