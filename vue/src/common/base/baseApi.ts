@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-08-11 16:05:57
- * @LastEditTime: 2024-08-12 00:32:07
+ * @LastEditTime: 2024-08-21 00:55:59
  * @Description: 基础api
  */
 
@@ -49,6 +49,8 @@ const baseAxios = axios.create({
  */
 baseAxios.interceptors.request.use(
   function (config) {
+    config.headers['Authorization'] =
+      `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6MSwiZXhwIjoxNzI0MTk3OTA0fQ.I0W8SnZRuUJ4qKwktmpuwN4tTEMn7s7b29AvaNgTwa8`;
     return config;
   },
   function (error) {
@@ -74,11 +76,12 @@ baseAxios.interceptors.response.use(
     // 处理 HTTP 错误
     if (error.response) {
       // 请求已发出，服务器响应状态码不在 2xx 范围
-      message.error(`请求失败: ${error.response.status} -> ${error.response.statusText}`);
+      const data = error.response.data as R;
+      message.error(`请求失败: ${data.code} -> ${data.message}`);
       return Promise.reject(error);
     } else if (error.request) {
       // 请求已发出，但没有收到响应
-      message.error(`请求失败: 没有收到响应`);
+      message.error(`请求失败: 未知URL`);
       return Promise.reject(error);
     } else {
       // 其他错误，例如设置请求时发生了错误
@@ -109,6 +112,10 @@ export abstract class BaseApi {
 
   // 基础添加函数
   protected add = (method: RequestType, url: string, params?: any): Promise<any> => {
+    if (url.endsWith('/')) {
+      url = url.slice(0, -1);
+    }
+
     return baseApi({
       url: `${this.baseUrl}/${url}`,
       method: method,
