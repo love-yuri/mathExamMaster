@@ -1,0 +1,34 @@
+package math.yl.love.configuration.config
+
+import io.swagger.v3.oas.models.OpenAPI
+import io.swagger.v3.oas.models.Operation
+import io.swagger.v3.oas.models.info.Info
+import io.swagger.v3.oas.models.media.StringSchema
+import io.swagger.v3.oas.models.parameters.Parameter
+import io.swagger.v3.oas.models.servers.Server
+import org.springdoc.core.customizers.GlobalOperationCustomizer
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.web.method.HandlerMethod
+
+
+@Configuration
+class Knife4jConfig {
+    @Bean
+    fun customOpenAPI(): OpenAPI {
+        return OpenAPI().info(
+            Info().title("API Documentation").version("1.0").description("API Documentation with global header")
+        ).addServersItem(Server().url("/"))
+    }
+
+    @Bean
+    fun globalOperationCustomizer(): GlobalOperationCustomizer {
+        return GlobalOperationCustomizer { operation: Operation, _: HandlerMethod? ->
+            val authorizationHeader =
+                Parameter().`in`("header").schema(StringSchema()).name("Authorization").description("JWT Token")
+                    .required(false)
+            operation.addParametersItem(authorizationHeader)
+            operation
+        }
+    }
+}
