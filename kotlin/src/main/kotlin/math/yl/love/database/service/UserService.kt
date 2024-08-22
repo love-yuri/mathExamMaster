@@ -11,6 +11,8 @@ import math.yl.love.database.entity.query.user.LoginQuery
 import math.yl.love.database.entity.result.user.LoginJwtResult
 import math.yl.love.database.entity.result.user.LoginResult
 import math.yl.love.database.mapper.UserMapper
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.stereotype.Service
@@ -22,15 +24,10 @@ class UserService(
     private val authenticationManager: AuthenticationManager
 ) : BaseService<User, UserMapper>() {
 
-    override val queryWrapper: KtQueryWrapper<User> get() = KtQueryWrapper(User())
-
-    fun test() {
-        val all = list().joinToString {
-            "id: ${it.id} info: $it"
+    fun test(): String {
+        return list().joinToString {
+            "id: ${it.id} info: ${it.toJson()}"
         }
-
-        logger.info("yuri: 获取结果: $all")
-        logger.info("yuri: 结果 -> ${list(queryWrapper.eq(BaseEntity::id, 1))}")
     }
 
     fun login(loginQuery: LoginQuery): LoginResult {
