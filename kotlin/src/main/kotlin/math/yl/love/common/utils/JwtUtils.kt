@@ -56,8 +56,6 @@ object JwtUtils {
 
             // 第二部分Payload
             dataClassInstance::class.declaredMemberProperties.forEach { property ->
-
-
                 @Suppress("UNCHECKED_CAST")
                 val value = (property as KProperty1<T, Any?>).get(dataClassInstance)
 
