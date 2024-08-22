@@ -1,12 +1,16 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-08-11 16:05:57
- * @LastEditTime: 2024-08-21 00:55:59
+ * @LastEditTime: 2024-08-22 23:48:47
  * @Description: 基础api
  */
 
 import axios, { type AxiosResponse } from 'axios';
 import message from '@/common/utils/message';
+import { SystemCode } from '@/common/constants/systemCode';
+import { useUserStore } from '@/stores/user';
+
+const userStore = useUserStore();
 
 // 获取环境变量中的基础URL
 const baseURL = import.meta.env.VITE_BASE_URL;
@@ -49,8 +53,7 @@ const baseAxios = axios.create({
  */
 baseAxios.interceptors.request.use(
   function (config) {
-    config.headers['Authorization'] =
-      `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6MSwiZXhwIjoxNzI0MTk3OTA0fQ.I0W8SnZRuUJ4qKwktmpuwN4tTEMn7s7b29AvaNgTwa8`;
+    config.headers['Authorization'] = userStore.getToken();
     return config;
   },
   function (error) {
@@ -73,15 +76,19 @@ baseAxios.interceptors.response.use(
     }
   },
   function (error) {
-    // 处理 HTTP 错误
     if (error.response) {
       // 请求已发出，服务器响应状态码不在 2xx 范围
       const data = error.response.data as R;
       message.error(`请求失败: ${data.code} -> ${data.message}`);
+
+      // 如果是未登陆或token过期，跳转到登录页面
+      if ([SystemCode.UNAUTHORIZED, SystemCode.AccessTokenError].includes(data.code)) {
+        window.location.href = '/login';
+      }
       return Promise.reject(error);
     } else if (error.request) {
       // 请求已发出，但没有收到响应
-      message.error(`请求失败: 未知URL`);
+      message.error(`请求失败: 404网络未连接`);
       return Promise.reject(error);
     } else {
       // 其他错误，例如设置请求时发生了错误
