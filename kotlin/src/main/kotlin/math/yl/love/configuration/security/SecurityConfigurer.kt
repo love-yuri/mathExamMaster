@@ -48,7 +48,6 @@ class SecurityConfigurer(
                 it.anyRequest().authenticated()
             }
 
-
             .logout {
                 it.permitAll()
             }
@@ -60,8 +59,6 @@ class SecurityConfigurer(
             /* 异常处理 */
             .exceptionHandling {
                 it.accessDeniedHandler(AccessDeniedHandler()) // 自定义处理权限不足
-//                it.authenticationEntryPoint(LoginUrlAuthenticationEntryPoint("/user/login"))
-
             }
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
 
