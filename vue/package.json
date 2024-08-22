@@ -13,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@icon-park/vue-next": "^1.4.2",
     "@primevue/themes": "^4.0.4",
     "axios": "^1.7.3",
     "pinia": "^2.1.7",
