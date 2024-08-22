@@ -1,6 +1,7 @@
 package math.yl.love.controller
 
 import io.swagger.v3.oas.annotations.tags.Tag
+import math.yl.love.common.base.R
 import math.yl.love.database.service.UserService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -15,8 +16,7 @@ class TestController(
 ) {
 
     @GetMapping("hello")
-    fun hello(): String {
-        userService.test()
-        return "hell world"
+    fun hello(): R<String> {
+        return R.success(userService.test())
     }
 }
