@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-04-11 21:46:04
- * @LastEditTime: 2024-08-12 00:12:17
+ * @LastEditTime: 2024-08-22 20:10:18
  * @Description: eslint config
  */
 module.exports = {
@@ -45,6 +45,8 @@ module.exports = {
 
     // 对 @ts-ignore 注释的禁止
     '@typescript-eslint/ban-ts-ignore': 'off',
+
+    "vue/multi-word-component-names": "off",
 
     // 对显式函数返回类型的要求
     '@typescript-eslint/explicit-function-return-type': 'off',
