@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-08-10 15:47:59
- * @LastEditTime: 2024-08-11 00:50:13
+ * @LastEditTime: 2024-08-22 20:11:49
  * @Description: 路由配置
  */
 
@@ -15,6 +15,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: () => import('@/views/HomeView.vue'),
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/auth/Login.vue'),
     },
   ],
 });
