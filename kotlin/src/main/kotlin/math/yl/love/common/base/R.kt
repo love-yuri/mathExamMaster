@@ -10,7 +10,7 @@ data class R <T> (
     val code: Int,
     val message: String,
     val data: T? = null,
-    val isSuccess: Boolean = false,
+    val isSuccess: Boolean = true,
 ) {
     companion object {
 
