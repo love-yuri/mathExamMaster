@@ -19,4 +19,9 @@ class TestController(
     fun hello(): R<String> {
         return R.success(userService.test())
     }
+
+    @GetMapping("hello2")
+    fun hello2(): R<String> {
+        return R.success(userService.test2())
+    }
 }
