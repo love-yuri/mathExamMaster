@@ -3,13 +3,14 @@ package math.yl.love
 import math.yl.love.configuration.config.SystemConfig
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import java.net.InetAddress
 
 
-@SpringBootApplication
 @EnableConfigurationProperties(SystemConfig::class)
+@SpringBootApplication(exclude = [JacksonAutoConfiguration::class])
 class Application
 
 fun main(args: Array<String>) {

@@ -15,6 +15,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import math.yl.love.common.base.Log.log
 import org.apache.ibatis.type.LocalDateTimeTypeHandler
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
 import org.springframework.context.annotation.Bean
@@ -46,6 +47,9 @@ class JsonConfig : ConfigurationCustomizer {
         configuration?.typeHandlerRegistry?.register(LocalDateTimeTypeHandler::class.java)
     }
 
+    /**
+     * java LocalDateTime 序列化器
+     */
     object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
         private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
 
@@ -57,14 +61,6 @@ class JsonConfig : ConfigurationCustomizer {
 
         override fun deserialize(decoder: Decoder): LocalDateTime {
             return LocalDateTime.parse(decoder.decodeString(), formatter)
-        }
-    }
-
-    @Bean
-    fun objectMapper(): ObjectMapper {
-        return ObjectMapper().apply {
-            registerModule(JavaTimeModule())
-            disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
         }
     }
 
