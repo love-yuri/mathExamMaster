@@ -1,6 +1,7 @@
 package math.yl.love.database.service
 
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
+import math.yl.love.common.base.R
 import math.yl.love.common.mybatis.BaseEntity
 import math.yl.love.common.mybatis.BaseService
 import math.yl.love.common.utils.JsonUtils.toJson
@@ -28,6 +29,10 @@ class UserService(
         return list().joinToString {
             "id: ${it.id} info: ${it.toJson()}"
         }
+    }
+
+    fun test2(): String {
+        return R.success().toJson();
     }
 
     fun login(loginQuery: LoginQuery): LoginResult {
