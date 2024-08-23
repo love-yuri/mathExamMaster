@@ -23,7 +23,6 @@ open class BaseEntity {
     @Schema(description = "是否被删除")
     val deleted: Boolean = false
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "created_time", fill = FieldFill.INSERT)
     @Schema(description = "创建时间")
     @Serializable(with = JsonConfig.LocalDateTimeSerializer::class)
@@ -33,7 +32,6 @@ open class BaseEntity {
     @Schema(description = "创建用户")
     val createdBy: Long? = null
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "updated_time", fill = FieldFill.INSERT_UPDATE)
     @Schema(description = "更新时间")
     @Serializable(with = JsonConfig.LocalDateTimeSerializer::class)
