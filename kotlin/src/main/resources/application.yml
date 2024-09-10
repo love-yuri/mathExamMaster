@@ -12,6 +12,13 @@ spring:
     password: yuri
     type: com.alibaba.druid.pool.DruidDataSource
 
+  # 打印sql内容 需要pol 开启依赖
+  p6spy:
+    # 日志格式
+    log-format: "\ntime:%(executionTime) || sql:%(sql)\n"
+    # 自定义日志类
+    logging: custom
+    custom-appender-class: com.example.testinit.config.StdoutLogger
 
 logging:
   level:
@@ -34,3 +41,4 @@ mybatis-plus:
 
 server:
   port: 2078
+
