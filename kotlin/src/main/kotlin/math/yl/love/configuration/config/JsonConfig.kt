@@ -2,10 +2,8 @@ package math.yl.love.configuration.config
 
 import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer
 import com.baomidou.mybatisplus.core.MybatisConfiguration
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -21,8 +19,11 @@ import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
+import org.springframework.http.MediaType
+import org.springframework.http.converter.json.KotlinSerializationJsonHttpMessageConverter
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.reflect.full.isSubclassOf
 
 
 @Configuration
@@ -37,6 +38,8 @@ class JsonConfig : ConfigurationCustomizer {
         val json = Json {
             encodeDefaults = true  // 启用序列化默认值
             explicitNulls = true // 反序列化null值
+            allowStructuredMapKeys = true
+            ignoreUnknownKeys = true // 忽略未知字段
             serializersModule = SerializersModule {
                 contextual(LocalDateTime::class, LocalDateTimeSerializer)
             }
@@ -64,4 +67,10 @@ class JsonConfig : ConfigurationCustomizer {
         }
     }
 
+    @Bean
+    fun objectMapper(): ObjectMapper {
+        val mapper = ObjectMapper()
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        return mapper
+    }
 }
