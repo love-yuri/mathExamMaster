@@ -1,19 +1,34 @@
 package math.yl.love.configuration.mvc
 
 import com.alibaba.druid.support.json.JSONWriter
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
+import kotlinx.serialization.json.encodeToStream
 import math.yl.love.common.base.Log.log
+import math.yl.love.common.utils.JsonUtils.toJson
 import math.yl.love.configuration.config.JsonConfig
+import math.yl.love.configuration.config.JsonConfig.Companion.json
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpInputMessage
 import org.springframework.http.HttpOutputMessage
 import org.springframework.http.MediaType
+import org.springframework.http.converter.AbstractHttpMessageConverter
 import org.springframework.http.converter.HttpMessageConverter
+import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.http.converter.HttpMessageNotWritableException
 import org.springframework.http.converter.json.KotlinSerializationJsonHttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.web.servlet.config.annotation.*
+import java.io.IOException
+import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
+import kotlinx.serialization.serializer
+import kotlin.reflect.KClass
+import kotlin.reflect.full.createType
 
 
 @Configuration
@@ -56,37 +71,22 @@ class WebMvcConfiguration: WebMvcConfigurationSupport() {
             .allowedHeaders("*")
         super.addCorsMappings(registry)
     }
+//
+    override fun extendMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
+        /**
+         * 替换原来的配置，添加自定义配置
+         */
+        converters.indexOfFirst { it is KotlinSerializationJsonHttpMessageConverter }
+            .takeIf { it != -1 }
+            ?.let { index ->
+                converters[index] = kotlinSerializationJsonHttpMessageConverter()
+            }
 
-    override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
-        // 1. 配置 kotlinx.serialization
-        val json = JsonConfig.json
+//        converters.removeIf { it is MappingJackson2HttpMessageConverter }
+    }
 
-        // 2. 添加 KotlinSerializationJsonHttpMessageConverter
-        val converter = object : KotlinSerializationJsonHttpMessageConverter(json) {}
-
-        // 3. 添加支持的媒体类型
-        val supportedMediaTypes = mutableListOf(
-            MediaType.APPLICATION_JSON,
-            MediaType.APPLICATION_ATOM_XML,
-            MediaType.APPLICATION_FORM_URLENCODED,
-            MediaType.APPLICATION_OCTET_STREAM,
-            MediaType.APPLICATION_PDF,
-            MediaType.APPLICATION_RSS_XML,
-            MediaType.APPLICATION_XHTML_XML,
-            MediaType.APPLICATION_XML,
-            MediaType.IMAGE_GIF,
-            MediaType.IMAGE_JPEG,
-            MediaType.IMAGE_PNG,
-            MediaType.TEXT_EVENT_STREAM,
-            MediaType.TEXT_HTML,
-            MediaType.TEXT_MARKDOWN,
-            MediaType.TEXT_PLAIN,
-            MediaType.TEXT_XML
-        )
-
-        converter.supportedMediaTypes = supportedMediaTypes
-
-        // 4. 将 converter 添加到 converters 列表中
-        converters.add(0, converter)
+    @Bean
+    fun kotlinSerializationJsonHttpMessageConverter(): KotlinSerializationJsonHttpMessageConverter {
+        return KotlinSerializationJsonHttpMessageConverter(json)
     }
 }
