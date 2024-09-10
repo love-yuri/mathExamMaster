@@ -14,7 +14,7 @@ class DetailUserInfo (
     }
 
     override fun getPassword(): String {
-        return user.passWord!!
+        return user.password!!
     }
 
     override fun getUsername(): String {
