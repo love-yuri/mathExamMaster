@@ -2,14 +2,19 @@ package math.yl.love.common.mybatis
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
+import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
+import math.yl.love.database.entity.entity.BaseEntity
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import kotlin.reflect.KClass
 
 @Component
 abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>> {
     protected val log: Logger = LoggerFactory.getLogger(javaClass)
+    protected abstract val entityClass: KClass<Entity>
+    protected val queryWrapper get() = KtQueryWrapper(entityClass.java)
 
     /**
      * 基础Mapper类
@@ -43,5 +48,15 @@ abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>> {
      * 如果id为null则直接返回null
      */
     fun getById(id: Long?): Entity? = id?.let { baseMapper.selectById(it) }
+
+    /**
+     * 将queryWrapper 的内容返回为list
+     */
+    fun list(queryWrapper: KtQueryWrapper<Entity>): List<Entity> = baseMapper.selectList(queryWrapper)
+
+    /**
+     * 将queryWrapper 的内容返回为单个结果
+     */
+    fun one(queryWrapper: KtQueryWrapper<Entity>): Entity? = baseMapper.selectOne(queryWrapper)
 }
 
