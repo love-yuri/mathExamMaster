@@ -2,6 +2,7 @@ package math.yl.love.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import kotlinx.serialization.Serializable
 import math.yl.love.common.base.R
 import math.yl.love.common.mybatis.BaseController
 import math.yl.love.database.entity.entity.User
@@ -19,9 +20,15 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "用户管理")
 class UserController: BaseController<User, UserMapper, UserService>() {
 
-    @PostMapping("/login")
+    @PostMapping("login")
     @Operation(summary = "登陆")
-    fun login(@RequestBody query: LoginQuery): R<LoginResult> {
-        return R.success(baseService.login(query))
-    }
+    fun login(@RequestBody query: LoginQuery) = R.success(baseService.login(query))
+
+    @PostMapping("list")
+    @Operation(summary = "获取所有数据")
+    fun list() = R.success(baseService.list())
+
+    @PostMapping("info")
+    @Operation(summary = "获取用户信息")
+    fun getUserInfo() = R.success(baseService.getUserInfo())
 }
