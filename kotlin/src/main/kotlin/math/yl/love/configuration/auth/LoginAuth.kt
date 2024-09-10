@@ -15,7 +15,7 @@ class LoginAuth(
      @Lazy private val userService: UserService
 ): UserDetailsService {
     override fun loadUserByUsername(username: String?): UserDetails {
-        val user = userService.getById(username?.toLong()) ?: run {
+        val user = userService.getByUsername(username) ?: run {
             throw RuntimeException("不存在该用户: $username")
         }
         return DetailUserInfo(user)
