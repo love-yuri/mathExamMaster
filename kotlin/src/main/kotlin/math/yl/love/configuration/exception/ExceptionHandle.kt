@@ -4,9 +4,11 @@ import math.yl.love.common.base.R
 import math.yl.love.common.base.SystemCode
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.validation.BindException
 import org.springframework.validation.FieldError
+import org.springframework.web.HttpMediaTypeNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -100,5 +102,12 @@ class ExceptionHandle {
     fun handler(e: NoResourceFoundException): R<*> {
         log.error("yuri: 没有找到该url ${e.message}", e)
         return R.fail(SystemCode.NoResource)
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException::class)
+    fun handleUnsupportedMediaType(ex: HttpMediaTypeNotSupportedException): ResponseEntity<String> {
+        log.error("yuri: 无法转换类型: ${ex.message}", ex)
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+            .body("Unsupported Content-Type: ${ex.contentType}. Supported: ${ex.supportedMediaTypes}")
     }
 }
