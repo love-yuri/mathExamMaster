@@ -10,7 +10,7 @@ import java.net.InetAddress
 
 
 @EnableConfigurationProperties(SystemConfig::class)
-@SpringBootApplication(exclude = [JacksonAutoConfiguration::class])
+@SpringBootApplication
 class Application
 
 fun main(args: Array<String>) {
