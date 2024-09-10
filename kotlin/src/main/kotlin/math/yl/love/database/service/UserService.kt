@@ -1,8 +1,8 @@
 package math.yl.love.database.service
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import math.yl.love.common.base.R
-import math.yl.love.common.mybatis.BaseEntity
 import math.yl.love.common.mybatis.BaseService
 import math.yl.love.common.utils.JsonUtils.toJson
 import math.yl.love.common.utils.JwtUtils
@@ -12,12 +12,13 @@ import math.yl.love.database.entity.query.user.LoginQuery
 import math.yl.love.database.entity.result.user.LoginJwtResult
 import math.yl.love.database.entity.result.user.LoginResult
 import math.yl.love.database.mapper.UserMapper
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import kotlin.reflect.KClass
 
 @Service
 @Transactional(readOnly = true)
@@ -25,10 +26,14 @@ class UserService(
     private val authenticationManager: AuthenticationManager
 ) : BaseService<User, UserMapper>() {
 
-    fun test(): String {
-        return list().joinToString {
-            "id: ${it.id} info: ${it.toJson()}"
+    override val entityClass: KClass<User> get() = User::class
+
+    override fun list(): List<User> {
+        super.list().forEach {
+            log.info("yuri: list -> ${it.toJson()}")
         }
+
+        return super.list()
     }
 
     fun test2(): String {
@@ -36,15 +41,29 @@ class UserService(
     }
 
     fun login(loginQuery: LoginQuery): LoginResult {
-        val usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(loginQuery.id, loginQuery.password)
+        val usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(loginQuery.username, loginQuery.password)
         val user = authenticationManager.authenticate(usernamePasswordAuthenticationToken).let {
             (it.principal as DetailUserInfo).user
         }
 
         val token = JwtUtils.createToken(LoginJwtResult(
-            user.id!!,
+            user.username!!,
             user.role
         ))
         return LoginResult(user, token)
+    }
+
+    /**
+     * 根据用户名查询
+     */
+    fun getByUsername(username: String?): User? = one(queryWrapper.eq(!username.isNullOrEmpty(), User::username, username))
+
+    /**
+     * 查找用户信息
+     */
+    fun getUserInfo(): User {
+        val authentication = SecurityContextHolder.getContext().authentication
+        val userDetails = authentication.principal as LoginJwtResult
+        return getByUsername(userDetails.username)!!
     }
 }
