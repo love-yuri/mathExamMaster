@@ -33,7 +33,8 @@ class JwtAuthenticationFilter : OncePerRequestFilter() {
         "/v3/api-docs",
         "/swagger-ui",
         "/swagger-resources",
-        "/user/login"
+        "/user/login",
+        "favicon.ico"
     )
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
@@ -46,7 +47,7 @@ class JwtAuthenticationFilter : OncePerRequestFilter() {
         request.getHeader(HeadersConstant.AUTHORIZATION)?.also {
             try {
                 val res = JwtUtils.verifyTokenAndParse(it, LoginJwtResult::class)
-                val authentication = UsernamePasswordAuthenticationToken(res!!.id, null, emptyList())
+                val authentication = UsernamePasswordAuthenticationToken(res, null, emptyList())
                 authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
                 SecurityContextHolder.getContext().authentication = authentication
                 filterChain.doFilter(request, response)
