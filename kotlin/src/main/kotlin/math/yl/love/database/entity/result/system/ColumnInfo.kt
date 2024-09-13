@@ -7,4 +7,5 @@ data class ColumnInfo(
     val field: String,
     val type: String,
     val comment: String? = null,
+    val tableComment: String? = null,
 )
