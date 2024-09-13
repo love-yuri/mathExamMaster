@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 data class User (
     @TableId(type = IdType.ASSIGN_ID)
     @Schema(description = "主键id")
-    override val id: Long? = null,
+    override var id: Long? = null,
 
     @Transient
     @TableLogic
@@ -20,31 +20,34 @@ data class User (
     @Schema(description = "是否被删除")
     override val deleted: Boolean = false,
 
-    @TableField(value = "create_time", fill = FieldFill.INSERT)
+    @Contextual
     @Schema(description = "创建时间")
-    @Contextual
-    override val createTime: LocalDateTime = LocalDateTime.now(),
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
+    override val createTime: LocalDateTime? = null,
 
-    @TableField("create_by")
     @Schema(description = "创建用户")
-    override val createBy: Long = 0,
+    @TableField(value = "create_by", fill = FieldFill.INSERT)
+    override val createBy: String? = null,
 
-    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
-    @Schema(description = "更新时间")
     @Contextual
-    override val updateTime: LocalDateTime = LocalDateTime.now(),
+    @Schema(description = "更新时间")
+    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
+    override val updateTime: LocalDateTime? = null,
 
-    @Schema(description = "用户角色")
+    @Schema(description = "更新")
+    @TableField(value = "update_by", fill = FieldFill.INSERT_UPDATE)
+    override val updateBy: String? = null,
+
     @TableField("role")
+    @Schema(description = "用户角色")
     val role: Int? = null,
 
     @TableField("user_name")
     @Schema(description = "用户名")
     val username: String? = null,
 
-    @TableField("pass_word")
     @Transient
+    @TableField("pass_word")
     @Schema(description = "密码")
     val password: String? = null,
-
 ) : BaseEntity
