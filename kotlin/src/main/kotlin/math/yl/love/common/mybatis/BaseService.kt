@@ -8,9 +8,11 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import kotlin.reflect.KClass
 
 @Component
+@Transactional(readOnly = true)
 abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>> {
     protected val log: Logger = LoggerFactory.getLogger(javaClass)
     protected abstract val entityClass: KClass<Entity>
@@ -26,16 +28,19 @@ abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>> {
     /**
      * 创建
      */
+    @Transactional(rollbackFor = [Exception::class])
     fun create(entity: Entity) = baseMapper.insert(entity) == 1
 
     /**
      * 更新
      */
+    @Transactional(rollbackFor = [Exception::class])
     fun update(entity: Entity) = baseMapper.updateById(entity) == 1
 
     /**
      * 删除
      */
+    @Transactional(rollbackFor = [Exception::class])
     fun delete(id: Long) = baseMapper.deleteById(id) == 1
 
     /**
