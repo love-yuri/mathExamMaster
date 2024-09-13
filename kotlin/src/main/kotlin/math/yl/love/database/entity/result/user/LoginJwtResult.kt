@@ -5,6 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class LoginJwtResult (
+    @Schema(description = "用户id")
+    val id: Long,
+
     @Schema(description = "用户名")
     val username: String,
 
