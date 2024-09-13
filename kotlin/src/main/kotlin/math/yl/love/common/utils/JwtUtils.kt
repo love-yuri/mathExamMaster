@@ -39,7 +39,7 @@ object JwtUtils {
      * 默认过期时间配置
      * 默认是8h
      */
-    private const val DEFAULT_EXPIRES = 60 * 2
+    private const val DEFAULT_EXPIRES = 60 * 60 * 8 * 24
 
     /**
      * 创建jwtToken
