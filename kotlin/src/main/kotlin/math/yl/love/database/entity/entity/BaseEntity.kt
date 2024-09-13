@@ -1,9 +1,5 @@
 package math.yl.love.database.entity.entity
 
-import com.baomidou.mybatisplus.annotation.*
-import io.swagger.v3.oas.annotations.media.Schema
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 
 /**
@@ -12,9 +8,10 @@ import java.time.LocalDateTime
  * 创建时间-更新时间会自动注入
  */
 sealed interface BaseEntity {
-    val id: Long?
+    var id: Long?
     val deleted: Boolean
-    val createTime: LocalDateTime
-    val createBy: Long
-    val updateTime: LocalDateTime
+    val createTime: LocalDateTime?
+    val createBy: String?
+    val updateTime: LocalDateTime?
+    val updateBy: String?
 }
