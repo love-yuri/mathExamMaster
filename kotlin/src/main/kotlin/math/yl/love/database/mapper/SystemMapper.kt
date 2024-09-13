@@ -7,27 +7,17 @@ import org.apache.ibatis.annotations.Select
 
 interface SystemMapper: BaseMapper<User> {
     @Select("""
-        SELECT 
-            COLUMN_NAME AS `field`, 
-            COLUMN_TYPE AS `type`, 
-            COLUMN_COMMENT AS `comment` 
-        FROM 
-            INFORMATION_SCHEMA.COLUMNS 
-        WHERE 
-            TABLE_SCHEMA = #{schema} 
-            AND TABLE_NAME = #{tableName};
+        SELECT
+            COLUMN_NAME AS `field`,
+            COLUMN_TYPE AS `type`,
+            COLUMN_COMMENT AS `comment`,
+            TABLE_COMMENT AS `table_comment`
+        FROM
+            INFORMATION_SCHEMA.COLUMNS as col
+            left join INFORMATION_SCHEMA.TABLES as tab on col.TABLE_NAME = tab.TABLE_NAME
+        WHERE
+            col.TABLE_SCHEMA = #{schema} AND col.TABLE_NAME = #{tableName} AND
+            tab.TABLE_SCHEMA = #{schema} AND tab.TABLE_NAME = #{tableName};
     """)
     fun getColumnInfo(schema: String, tableName: String): List<ColumnInfo>
-
-    @Select("""
-        SELECT
-            TABLE_COMMENT
-        FROM
-            INFORMATION_SCHEMA.TABLES
-        WHERE
-            TABLE_SCHEMA = #{schema} 
-            AND TABLE_NAME = #{tableName};
-    """)
-    fun getTableComment(schema: String, tableName: String): String
-
 }
