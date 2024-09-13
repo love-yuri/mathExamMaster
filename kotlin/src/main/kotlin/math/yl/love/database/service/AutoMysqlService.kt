@@ -1,5 +1,6 @@
 package math.yl.love.database.service
 
+import math.yl.love.database.entity.query.system.params.GenerateParam
 import math.yl.love.database.mapper.SystemMapper
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -55,12 +56,12 @@ class AutoMysqlService(
     /**
      * 生成代码测试
      */
-    fun generate(): String {
-        val res = systemMapper.getColumnInfo("zyl", "user")
+    fun generate(param: GenerateParam): String {
+        val res = systemMapper.getColumnInfo(param.dataBaseName, param.tableName)
         res.forEach {
             log.info(" 表名: ${it.field} 类型: ${it.type} 注释: ${it.comment} 命名: ${it.field.snakeToCamel()}")
         }
-        return ""
+        return res.joinToString("\n")
     }
 
 }
