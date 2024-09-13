@@ -47,6 +47,7 @@ class UserService(
         }
 
         val token = JwtUtils.createToken(LoginJwtResult(
+            user.id!!,
             user.username!!,
             user.role
         ))
@@ -65,5 +66,10 @@ class UserService(
         val authentication = SecurityContextHolder.getContext().authentication
         val userDetails = authentication.principal as LoginJwtResult
         return getByUsername(userDetails.username)!!
+    }
+
+    override fun create(entity: User): Boolean {
+        log.info("yuri: create -> ${entity.toJson()}")
+        return super.create(entity)
     }
 }
