@@ -9,7 +9,6 @@ import java.time.LocalDateTime
  */
 sealed interface BaseEntity {
     var id: Long?
-    val deleted: Boolean
     val createTime: LocalDateTime?
     val createBy: String?
     val updateTime: LocalDateTime?
