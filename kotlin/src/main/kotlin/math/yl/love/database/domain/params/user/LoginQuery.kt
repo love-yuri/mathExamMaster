@@ -1,10 +1,10 @@
-package math.yl.love.database.domain.query.user
+package math.yl.love.database.domain.params.user
 
 import io.swagger.v3.oas.annotations.media.Schema
 import kotlinx.serialization.Serializable
 
 /**
- * 登陆接口请求 query
+ * 登陆接口请求 params
  */
 @Serializable
 data class LoginQuery(
