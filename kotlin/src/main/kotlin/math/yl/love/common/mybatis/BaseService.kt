@@ -3,7 +3,7 @@ package math.yl.love.common.mybatis
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
-import math.yl.love.database.entity.entity.BaseEntity
+import math.yl.love.database.domain.entity.BaseEntity
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

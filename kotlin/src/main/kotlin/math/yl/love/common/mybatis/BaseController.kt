@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import math.yl.love.common.base.R
-import math.yl.love.database.entity.entity.BaseEntity
+import math.yl.love.database.domain.entity.BaseEntity
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
