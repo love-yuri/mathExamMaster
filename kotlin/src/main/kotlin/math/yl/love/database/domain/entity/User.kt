@@ -19,7 +19,7 @@ data class User (
     @TableLogic
     @TableField(DataBaseConstant.DELETED)
     @Schema(description = "是否被删除")
-    override val deleted: Boolean = false,
+    val deleted: Boolean = false,
 
     @Contextual
     @Schema(description = "创建时间")
@@ -35,7 +35,7 @@ data class User (
     @TableField(value = DataBaseConstant.UPDATE_TIME, fill = FieldFill.INSERT_UPDATE)
     override val updateTime: LocalDateTime? = null,
 
-    @Schema(description = "更新")
+    @Schema(description = "更新用户")
     @TableField(value = DataBaseConstant.UPDATE_BY, fill = FieldFill.INSERT_UPDATE)
     override val updateBy: String? = null,
 
@@ -47,7 +47,6 @@ data class User (
     @Schema(description = "用户名")
     val username: String? = null,
 
-    @Transient
     @TableField("pass_word")
     @Schema(description = "密码")
     val password: String? = null,
