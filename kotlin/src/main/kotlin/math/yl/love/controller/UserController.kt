@@ -2,12 +2,10 @@ package math.yl.love.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import kotlinx.serialization.Serializable
 import math.yl.love.common.base.R
 import math.yl.love.common.mybatis.BaseController
-import math.yl.love.database.entity.entity.User
-import math.yl.love.database.entity.query.user.LoginQuery
-import math.yl.love.database.entity.result.user.LoginResult
+import math.yl.love.database.domain.entity.User
+import math.yl.love.database.domain.params.user.LoginQuery
 import math.yl.love.database.mapper.UserMapper
 import math.yl.love.database.service.UserService
 import org.springframework.web.bind.annotation.PostMapping
