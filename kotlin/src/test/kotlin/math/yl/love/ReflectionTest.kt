@@ -3,17 +3,14 @@ package math.yl.love
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import math.yl.love.common.base.Log.log
-import math.yl.love.database.entity.entity.BaseEntity
 import math.yl.love.common.utils.JsonUtils.toJson
-import math.yl.love.database.entity.entity.User
+import math.yl.love.database.domain.entity.User
 import java.time.LocalDateTime
 import kotlin.reflect.KClass
-import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.createInstance
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
-import kotlin.reflect.jvm.isAccessible
 import kotlin.test.Test
 import kotlin.test.fail
 
@@ -33,7 +30,7 @@ class ReflectionTest {
 
     @Test
     fun member() {
-        val user = User(1, false, LocalDateTime.now(), 1, LocalDateTime.now())
+        val user = User(1, false, LocalDateTime.now(), "", LocalDateTime.now())
 
         val p = user.toBean(Uu::class)
         log.info("yuri: user -> ${user.toJson()}")
