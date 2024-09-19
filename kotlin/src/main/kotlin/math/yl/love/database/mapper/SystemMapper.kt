@@ -1,8 +1,8 @@
 package math.yl.love.database.mapper
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
-import math.yl.love.database.entity.entity.User
-import math.yl.love.database.entity.result.system.ColumnInfo
+import math.yl.love.database.domain.entity.User
+import math.yl.love.database.domain.result.system.ColumnInfoResult
 import org.apache.ibatis.annotations.Select
 
 interface SystemMapper: BaseMapper<User> {
@@ -19,5 +19,5 @@ interface SystemMapper: BaseMapper<User> {
             col.TABLE_SCHEMA = #{schema} AND col.TABLE_NAME = #{tableName} AND
             tab.TABLE_SCHEMA = #{schema} AND tab.TABLE_NAME = #{tableName};
     """)
-    fun getColumnInfo(schema: String, tableName: String): List<ColumnInfo>
+    fun getColumnInfo(schema: String, tableName: String): List<ColumnInfoResult>
 }
