@@ -1,12 +1,13 @@
 package math.yl.love.common.mybatis
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler
-import math.yl.love.common.base.Log.log
-import math.yl.love.database.entity.result.user.LoginJwtResult
+import math.yl.love.database.domain.result.user.LoginJwtResult
 import org.apache.ibatis.reflection.MetaObject
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
+import java.util.*
+import java.util.function.Supplier
 
 /**
  * 配置创建时间和更新时间自动填充
@@ -14,9 +15,6 @@ import java.time.LocalDateTime
 @Component
 class AutoFillHandler : MetaObjectHandler {
     override fun insertFill(metaObject: MetaObject) {
-        metaObject.setterNames.forEach { fieldName ->
-            log.info("$fieldName = ${metaObject.getValue(fieldName)}")
-        }
         this.strictInsertFill(metaObject, "createTime", LocalDateTime::class.java, LocalDateTime.now())
         this.strictInsertFill(metaObject, "updateTime", LocalDateTime::class.java, LocalDateTime.now())
         val authentication = SecurityContextHolder.getContext().authentication
@@ -30,5 +28,21 @@ class AutoFillHandler : MetaObjectHandler {
         val authentication = SecurityContextHolder.getContext().authentication
         val userDetails = authentication.principal as LoginJwtResult
         this.strictInsertFill(metaObject, "updateBy", String::class.java, userDetails.username)
+    }
+
+    /**
+     * 重写填充逻辑
+     * 去除不为null不更新的逻辑
+     */
+    override fun strictFillStrategy(
+        metaObject: MetaObject?,
+        fieldName: String?,
+        fieldVal: Supplier<*>?
+    ): MetaObjectHandler {
+        val obj = fieldVal!!.get()
+        if (Objects.nonNull(obj)) {
+            metaObject?.setValue(fieldName, obj)
+        }
+        return this
     }
 }
