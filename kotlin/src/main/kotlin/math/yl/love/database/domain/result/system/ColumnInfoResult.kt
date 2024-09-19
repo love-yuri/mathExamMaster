@@ -1,9 +1,9 @@
-package math.yl.love.database.entity.result.system
+package math.yl.love.database.domain.result.system
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ColumnInfo(
+data class ColumnInfoResult(
     val field: String,
     val type: String,
     val comment: String? = null,

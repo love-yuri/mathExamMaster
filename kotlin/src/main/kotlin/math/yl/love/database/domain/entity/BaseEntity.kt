@@ -1,4 +1,4 @@
-package math.yl.love.database.entity.entity
+package math.yl.love.database.domain.entity
 
 import java.time.LocalDateTime
 

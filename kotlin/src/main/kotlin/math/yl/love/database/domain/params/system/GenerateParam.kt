@@ -1,4 +1,4 @@
-package math.yl.love.database.entity.query.system.params
+package math.yl.love.database.domain.params.system
 
 import kotlinx.serialization.Serializable
 

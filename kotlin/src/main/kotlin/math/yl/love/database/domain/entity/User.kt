@@ -1,10 +1,11 @@
-package math.yl.love.database.entity.entity
+package math.yl.love.database.domain.entity
 
 import com.baomidou.mybatisplus.annotation.*
 import io.swagger.v3.oas.annotations.media.Schema
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import math.yl.love.common.constant.DataBaseConstant
 import java.time.LocalDateTime
 
 @TableName("user")
@@ -16,26 +17,26 @@ data class User (
 
     @Transient
     @TableLogic
-    @TableField("deleted")
+    @TableField(DataBaseConstant.DELETED)
     @Schema(description = "是否被删除")
     override val deleted: Boolean = false,
 
     @Contextual
     @Schema(description = "创建时间")
-    @TableField(value = "create_time", fill = FieldFill.INSERT)
+    @TableField(value = DataBaseConstant.CREATE_TIME, fill = FieldFill.INSERT)
     override val createTime: LocalDateTime? = null,
 
     @Schema(description = "创建用户")
-    @TableField(value = "create_by", fill = FieldFill.INSERT)
+    @TableField(value = DataBaseConstant.CREATE_BY, fill = FieldFill.INSERT)
     override val createBy: String? = null,
 
     @Contextual
     @Schema(description = "更新时间")
-    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = DataBaseConstant.UPDATE_TIME, fill = FieldFill.INSERT_UPDATE)
     override val updateTime: LocalDateTime? = null,
 
     @Schema(description = "更新")
-    @TableField(value = "update_by", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = DataBaseConstant.UPDATE_BY, fill = FieldFill.INSERT_UPDATE)
     override val updateBy: String? = null,
 
     @TableField("role")

@@ -1,4 +1,4 @@
-package math.yl.love.database.entity.query.user
+package math.yl.love.database.domain.query.user
 
 import io.swagger.v3.oas.annotations.media.Schema
 import kotlinx.serialization.Serializable
