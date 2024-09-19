@@ -7,11 +7,8 @@ import jakarta.servlet.http.HttpServletResponse
 import math.yl.love.common.base.R
 import math.yl.love.common.base.SystemCode
 import math.yl.love.common.constant.HeadersConstant
-import math.yl.love.common.utils.JsonUtils.toJson
 import math.yl.love.common.utils.JwtUtils
-import math.yl.love.database.entity.entity.User
-import math.yl.love.database.entity.query.user.LoginQuery
-import math.yl.love.database.entity.result.user.LoginJwtResult
+import math.yl.love.database.domain.result.user.LoginJwtResult
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder

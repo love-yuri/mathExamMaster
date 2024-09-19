@@ -1,7 +1,7 @@
 package math.yl.love.configuration.auth
 
 import kotlinx.serialization.Serializable
-import math.yl.love.database.entity.entity.User
+import math.yl.love.database.domain.entity.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
