@@ -1,13 +1,13 @@
 package math.yl.love.controller
 
+import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import math.yl.love.common.base.Log.log
 import math.yl.love.common.base.R
 import math.yl.love.database.domain.params.system.GenerateParam
 import math.yl.love.database.service.SystemService
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/system")
@@ -16,5 +16,10 @@ class SystemController(
     private val systemService: SystemService
 ) {
     @PostMapping("generate")
+    @Operation(summary = "生成代码")
     fun generate(@RequestBody param: GenerateParam) = R.success(systemService.generate(param))
+
+    @PostMapping("/upload")
+    @Operation(summary = "上传文件")
+    fun uploadFile(@RequestParam("file") file: MultipartFile) = R.success(systemService.uploadFile(file))
 }
