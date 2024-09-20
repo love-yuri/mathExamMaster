@@ -38,7 +38,7 @@ class AutoMysqlService(
         return when {
             startsWith("bigint") -> "Long"
             startsWith("int") -> "Int"
-            startsWith("tinyint") -> "Byte"
+            startsWith("tinyint") -> "Int"
             startsWith("varchar") || startsWith("text") -> "String"
             startsWith("datetime") || startsWith("timestamp") -> "LocalDateTime"
             startsWith("float") -> "Float"
@@ -164,10 +164,26 @@ class AutoMysqlService(
         """.trimIndent()
 
         val stringBuilder = StringBuilder(content)
+
         column.forEach {
+            val defaultValue = when(it.defaultValue) {
+                String -> "\"${it.defaultValue}\""
+                null -> "null"
+                else -> it.defaultValue
+            }
+            val isNull = when(it.isNullable) {
+                "YES" -> "?"
+                else -> ""
+            }
+
             stringBuilder.appendLine("    @Schema(description = \"${it.comment}\")")
             stringBuilder.appendLine("    @TableField(value = \"${it.field}\")")
-            stringBuilder.appendLine("    var ${it.field.snakeToCamel()}: ${it.type.toKotlinType()}? = null,")
+            if (it.isNullable == "YES" || defaultValue != "null") {
+                stringBuilder.appendLine("    val ${it.field.snakeToCamel()}: ${it.type.toKotlinType()}${isNull} = ${defaultValue},")
+            } else {
+                stringBuilder.appendLine("    val ${it.field.snakeToCamel()}: ${it.type.toKotlinType()},")
+            }
+
             stringBuilder.appendLine()
         }
 
