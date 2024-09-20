@@ -1,9 +1,12 @@
 spring:
   application:
     name: yuri
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss
-    time-zone: GMT+8
+
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
 
   # 数据源设置
   datasource:
@@ -11,24 +14,6 @@ spring:
     username: root
     password: yuri
     type: com.alibaba.druid.pool.DruidDataSource
-
-  # 打印sql内容 需要pol 开启依赖
-  p6spy:
-    # 日志格式
-    log-format: "\ntime:%(executionTime) || sql:%(sql)\n"
-    # 自定义日志类
-    logging: custom
-    custom-appender-class: com.example.testinit.config.StdoutLogger
-
-logging:
-  level:
-    org:
-      springframework:
-        web=DEBUG:
-
-
-knife4j:
-  enable: true # 开启文档接口增强功能
 
 mybatis-plus:
   global-config:
@@ -39,8 +24,21 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
 
+  # 打印sql内容 需要pol 开启依赖
+  p6spy:
+    # 日志格式
+    log-format: "\ntime:%(executionTime) || sql:%(sql)\n"
+    # 自定义日志类
+    logging: custom
+    custom-appender-class: com.example.testinit.config.StdoutLogger
+
+knife4j:
+  enable: true # 开启文档接口增强功能
+
 server:
   port: 2078
 
 system:
   project-path: "/home/yuri/love-yuri/mathExamMaster/kotlin/src/main/kotlin"
+  upload-path: "/home/yuri/love-yuri/mathExamMaster/files/upload"
+
