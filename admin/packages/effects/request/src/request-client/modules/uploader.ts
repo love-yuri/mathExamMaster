@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 16:04:07
- * @LastEditTime: 2024-09-20 22:39:25
+ * @LastEditTime: 2024-09-21 15:03:19
  * @Description: 文件上传器材
  */
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
@@ -24,7 +24,7 @@ class FileUploader {
     url: string,
     file: UploadFileParam,
     config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse> {
+  ): Promise<any> {
     const formData = new FormData();
 
     for (const key in file) {
