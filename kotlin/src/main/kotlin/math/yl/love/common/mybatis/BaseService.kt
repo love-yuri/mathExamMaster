@@ -63,5 +63,7 @@ abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>> {
      * 将queryWrapper 的内容返回为单个结果
      */
     fun one(queryWrapper: KtQueryWrapper<Entity>): Entity? = baseMapper.selectOne(queryWrapper)
+
+    
 }
 
