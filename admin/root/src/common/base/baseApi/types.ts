@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-09 14:18:19
- * @LastEditTime: 2024-09-09 14:19:44
+ * @LastEditTime: 2024-09-21 13:45:24
  * @Description: baseApi types
  */
 
@@ -24,5 +24,7 @@ export type RequestConfig = {
 };
 
 export interface BaseEntity {
+  createTime?: string;
   id: string;
+  updateTime?: string;
 }
