@@ -1,34 +1,14 @@
 package math.yl.love.configuration.mvc
 
-import com.alibaba.druid.support.json.JSONWriter
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.KSerializer
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.decodeFromStream
-import kotlinx.serialization.json.encodeToStream
-import math.yl.love.common.base.Log.log
-import math.yl.love.common.utils.JsonUtils.toJson
-import math.yl.love.configuration.config.JsonConfig
 import math.yl.love.configuration.config.JsonConfig.Companion.json
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpInputMessage
-import org.springframework.http.HttpOutputMessage
-import org.springframework.http.MediaType
-import org.springframework.http.converter.AbstractHttpMessageConverter
 import org.springframework.http.converter.HttpMessageConverter
-import org.springframework.http.converter.HttpMessageNotReadableException
-import org.springframework.http.converter.HttpMessageNotWritableException
 import org.springframework.http.converter.json.KotlinSerializationJsonHttpMessageConverter
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
-import org.springframework.web.servlet.config.annotation.*
-import java.io.IOException
-import java.nio.charset.Charset
-import java.nio.charset.StandardCharsets
-import kotlinx.serialization.serializer
-import kotlin.reflect.KClass
-import kotlin.reflect.full.createType
+import org.springframework.web.servlet.config.annotation.CorsRegistry
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
 
 
 @Configuration
@@ -81,8 +61,6 @@ class WebMvcConfiguration: WebMvcConfigurationSupport() {
             ?.let { index ->
                 converters[index] = kotlinSerializationJsonHttpMessageConverter()
             }
-
-//        converters.removeIf { it is MappingJackson2HttpMessageConverter }
     }
 
     @Bean
