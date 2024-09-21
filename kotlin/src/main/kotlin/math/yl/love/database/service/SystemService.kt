@@ -42,7 +42,7 @@ class SystemService(
      * @param file 文件
      */
     @Transactional(rollbackFor = [Exception::class])
-    fun uploadFile(file: MultipartFile): Long {
+    fun uploadFile(file: MultipartFile): SystemFile {
         return try {
             val byteArray = file.inputStream.use { inputStream ->
                 BufferedInputStream(inputStream).use { bufferedInputStream ->
@@ -70,28 +70,11 @@ class SystemService(
             )
             systemFileService.create(systemFile)
 
-            systemFile.id!!
+            systemFile
         } catch (e: Exception) {
             throw BizException("文件上传失败! ${e.message}")
         }
     }
 
-//    fun getFile(filename: String): ResponseEntity<UrlResource> {
-//        return try {
-//            val filePath = uploadDirectory.resolve(filename).normalize()
-//            val resource = UrlResource(filePath.toUri())
-//
-//            if (resource.exists() || resource.isReadable) {
-//                ResponseEntity.ok()
-//                    .contentType(MediaType.parseMediaType(Files.probeContentType(filePath)))
-//                    .body(resource)
-//
-//            } else {
-//                ResponseEntity.notFound().build()
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            ResponseEntity.internalServerError().build()
-//        }
-//    }
+
 }
