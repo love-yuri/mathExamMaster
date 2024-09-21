@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlinx.serialization.builtins.LongAsStringSerializer
 import math.yl.love.common.constant.DataBaseConstant
 import math.yl.love.common.mybatis.FileTypeEnum
 import java.time.LocalDateTime
@@ -14,6 +15,7 @@ import java.time.LocalDateTime
 data class SystemFile (
     @TableId(type = IdType.ASSIGN_ID)
     @Schema(description = "主键id")
+    @Serializable(with = LongAsStringSerializer::class)
     override var id: Long? = null,
 
     @Transient
