@@ -43,8 +43,7 @@ class SecurityConfigurer(
             /* 授权认证 */
             .authorizeHttpRequests {
                 it.requestMatchers(*ignores).permitAll() // 安全连接直接放行
-                it.requestMatchers("/doc.html", "/webjars/**", "v3/api-docs/**").permitAll() // 允许Knife4j相关路径
-                it.requestMatchers("/user/login").permitAll()
+                it.requestMatchers(*safeUrl).permitAll()
                 it.anyRequest().authenticated()
             }
 
@@ -63,5 +62,22 @@ class SecurityConfigurer(
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         return http.build()
+    }
+
+
+    companion object {
+        val safeUrl = arrayOf(
+            // knife4jc 文档
+            "/doc.html",
+            "/webjars/**",
+            "/v3/api-docs/**",
+            "/favicon.ico",
+
+            // 登陆
+            "/user/login",
+
+            // 文件访问
+            "/system/file/get/**"
+        )
     }
 }
