@@ -1,5 +1,8 @@
 package math.yl.love.common.mybatis
 
+import com.aspose.imaging.ImageOptionsBase
+import com.aspose.imaging.imageoptions.JpegOptions
+import com.aspose.imaging.imageoptions.PngOptions
 import com.baomidou.mybatisplus.annotation.IEnum
 import org.springframework.http.MediaType
 
@@ -64,6 +67,19 @@ enum class FileTypeEnum (
                 "pdf" -> MediaType.APPLICATION_PDF
                 "txt" -> MediaType.TEXT_PLAIN
                 else -> MediaType.APPLICATION_OCTET_STREAM // 默认二进制流类型
+            }
+        }
+
+        /**
+         * 根据文件名获取对应的 Option
+         * @param fileName 文件名
+         */
+        fun getImgOption(fileName: String): ImageOptionsBase {
+            val fileExtension = fileName.substringAfterLast('.', "").lowercase()
+            return when (fileExtension) {
+                "jpg", "jpeg" -> JpegOptions()
+                "png" -> PngOptions()
+                else -> JpegOptions()
             }
         }
     }
