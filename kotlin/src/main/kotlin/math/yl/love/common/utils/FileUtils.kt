@@ -10,7 +10,7 @@ import java.security.MessageDigest
 object FileUtils {
 
     /**
-     * 计算文件md5, 输入流需要自行关闭
+     * 计算文件md5
      */
     fun getMd5(inputStream: InputStream): String {
         val digest = MessageDigest.getInstance("MD5")
@@ -25,6 +25,16 @@ object FileUtils {
         // 将 MD5 摘要转换为十六进制字符串
         return digest.digest().joinToString("") { byte -> "%02x".format(byte) }
     }
+
+    /**
+     * 计算文件md5
+     */
+    fun getMd5(byteArray: ByteArray): String {
+        val digest = MessageDigest.getInstance("MD5")
+        digest.update(byteArray)
+        return digest.digest().joinToString("") { byte -> "%02x".format(byte) }
+    }
+
 
     /**
      * @return 文件md5
