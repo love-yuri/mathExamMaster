@@ -2,13 +2,13 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2024-09-11 23:41:43
+ * @LastEditTime: 2024-09-23 18:34:37
  * @Description:
  */
 import { BaseApi } from '#/common/base/baseApi/baseApi';
 import { type BaseEntity, RequestType } from '#/common/base/baseApi/types';
 import { requestClient } from '#/common/base/baseApi/request';
-import type { UploadFileParam } from 'node_modules/@vben/request/src/request-client/modules/uploader';
+import type { UploadFileParam } from '@vben/request';
 
 export interface GenerateParams {
   dataBaseName: string;
