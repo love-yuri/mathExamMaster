@@ -1,8 +1,5 @@
 package math.yl.love.database.service
 
-import math.yl.love.common.mybatis.FileTypeEnum
-import math.yl.love.common.utils.FileUtils.getMd5
-import math.yl.love.configuration.config.SystemConfig
 import math.yl.love.configuration.exception.BizException
 import math.yl.love.database.domain.entity.SystemFile
 import math.yl.love.database.domain.params.system.GenerateParam
@@ -11,24 +8,15 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import java.io.BufferedInputStream
-import java.nio.file.Files
-import java.nio.file.Paths
-import kotlin.io.path.pathString
 
 @Service
 @Transactional(readOnly = true)
-class SystemService(
+class SystemService (
     private val autoMysqlService: AutoMysqlService,
-    private val systemConfig: SystemConfig,
     private val systemFileService: SystemFileService
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)
-    private val uploadPath = Paths.get(systemConfig.uploadPath!!).apply {
-        if (!Files.exists(this)) {
-            Files.createDirectories(this)
-        }
-    }
 
     /**
      * 生成代码
@@ -49,32 +37,10 @@ class SystemService(
                     bufferedInputStream.readBytes()
                 }
             }
-            // 计算 MD5
-            val md5 = getMd5(byteArray.inputStream())
 
-            val res = systemFileService.findByMd5(md5)
-            val target = uploadPath.resolve(md5)
-
-            /**
-             * 同文件只写入一次
-             */
-            if (res.isEmpty()) {
-                Files.write(target, byteArray)
-            }
-
-            val systemFile = SystemFile(
-                md5 = md5,
-                filename = file.originalFilename!!,
-                path = target.pathString,
-                type = FileTypeEnum.getFileTypeByName(file.originalFilename!!)
-            )
-            systemFileService.create(systemFile)
-
-            systemFile
+            systemFileService.uploadFile(byteArray, file.originalFilename ?: "temp")
         } catch (e: Exception) {
             throw BizException("文件上传失败! ${e.message}")
         }
     }
-
-
 }
