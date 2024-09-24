@@ -11,7 +11,7 @@ import axios from 'axios';
 
 import { FileDownloader } from './modules/downloader';
 import { InterceptorManager } from './modules/interceptor';
-import { FileUploader } from './modules/uploader';
+import { FileUploader, type UploadFileParam } from './modules/uploader';
 import { type RequestClientOptions } from './types';
 
 class RequestClient {
@@ -136,4 +136,4 @@ class RequestClient {
   }
 }
 
-export { RequestClient };
+export { RequestClient, type UploadFileParam };
