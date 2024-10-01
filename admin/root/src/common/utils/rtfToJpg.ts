@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-23 18:14:15
- * @LastEditTime: 2024-09-24 18:33:44
+ * @LastEditTime: 2024-10-01 21:24:51
  * @Description: RTF 转 JPG
  */
 
@@ -21,6 +21,21 @@ type LoadImgResult = {
   imgList: ImageFile[];
   newHtml: string;
 };
+
+enum UserOsType {
+  Windows,
+  Mac,
+  Linux,
+  Other,
+}
+
+function getUserOsInfo(): UserOsType {
+  const userAgent = navigator.userAgent;
+  if (userAgent.includes('Mac')) return UserOsType.Mac;
+  if (userAgent.includes('Windows')) return UserOsType.Windows;
+  if (userAgent.includes('Linux')) return UserOsType.Linux;
+  return UserOsType.Other;
+}
 
 /**
  * 十六进制转文件
@@ -61,9 +76,15 @@ function findAllImgSrcsFromHtml(htmlData: string): LoadImgResult {
   const srcArr: ImageFile[] = [];
   for (const element of arr) {
     const src = element.match(srcReg) ?? [];
+    const os = getUserOsInfo();
+    let url = src[1] ?? '';
+    if (os === UserOsType.Windows) {
+      url = url!.replaceAll('\\', '/');
+    }
+
     const img: ImageFile = {
-      name: src[1]?.split('/').pop() || 'temp',
-      url: src[1] ?? '',
+      name: url.split('/').pop() || 'temp',
+      url: src[1]!,
     };
 
     if (element.includes('width') && element.includes('height')) {
@@ -76,6 +97,7 @@ function findAllImgSrcsFromHtml(htmlData: string): LoadImgResult {
       newElement = `${newElement.slice(0, Math.max(0, newElement.length - 1))} style="width: ${img.width}px; height: ${img.height}px;" >`;
       htmlData = htmlData.replace(element, newElement);
     }
+
     if (src && src.length > 1) {
       srcArr.push(img);
     }
@@ -105,8 +127,6 @@ async function replaceImagesFile(
   const regexPicture = new RegExp('(?:(' + regexPictureHeader.source + '))([\\da-fA-F\\s]+)\\}','g',);
   const images = rtf.match(regexPicture);
   const imageSize = imageFiles.length ?? 0;
-  console.log('yuri: ', imageSize);
-  console.log('yuri: ', images?.length);
   if (!images || images.length % imageSize !== 0) {
     throw new Error('图片数量不匹配');
   }
@@ -138,7 +158,6 @@ export function loadHtmlImg(html: string, rtf: string): Promise<string> {
 
   // 从html内容中查找粘贴内容中是否有图片元素，并返回img标签的属性src值的集合
   const { imgList, newHtml } = findAllImgSrcsFromHtml(html);
-  console.log('yuri: ', imgList);
   html = newHtml;
   if (imgList.length > 0) {
     return replaceImagesFile(html, imgList, rtf);
