@@ -2,7 +2,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 23:36:21
- * @LastEditTime: 2024-09-24 21:47:55
+ * @LastEditTime: 2024-10-01 22:30:35
  * @Description: 
 -->
 <template>
@@ -15,7 +15,7 @@
     <Editor
       v-model="valueHtml"
       :default-config="editorConfig"
-      style="height: 500px; overflow-y: hidden"
+      style="min-height: 300px; height: 300px"
       @custom-paste="customPaste"
       @on-created="handleCreated"
     />
