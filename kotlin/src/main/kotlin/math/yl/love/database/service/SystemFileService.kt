@@ -1,10 +1,7 @@
 package math.yl.love.database.service
 
-import com.alibaba.druid.sql.dialect.odps.ast.OdpsAddFileStatement.FileType
 import com.aspose.imaging.Image
 import com.aspose.imaging.License
-import com.aspose.imaging.imageoptions.JpegOptions
-import com.aspose.imaging.imageoptions.PngOptions
 import math.yl.love.common.mybatis.BaseService
 import math.yl.love.common.mybatis.FileTypeEnum
 import math.yl.love.common.utils.FileUtils.getMd5
@@ -13,7 +10,6 @@ import math.yl.love.configuration.exception.BizException
 import math.yl.love.database.domain.entity.SystemFile
 import math.yl.love.database.mapper.SystemFileMapper
 import org.springframework.core.io.UrlResource
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
