@@ -7,5 +7,4 @@ data class SystemConfig(
     val securityIgnoreUrls: List<String>? = null,
     val projectPath: String? = null,
     val uploadPath: String? = null,
-
 )
