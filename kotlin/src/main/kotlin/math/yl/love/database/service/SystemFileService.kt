@@ -3,7 +3,7 @@ package math.yl.love.database.service
 import com.aspose.imaging.Image
 import com.aspose.imaging.License
 import math.yl.love.common.mybatis.BaseService
-import math.yl.love.common.mybatis.FileTypeEnum
+import math.yl.love.database.domain.typeEnum.FileTypeEnum
 import math.yl.love.common.utils.FileUtils.getMd5
 import math.yl.love.configuration.config.SystemConfig
 import math.yl.love.configuration.exception.BizException
