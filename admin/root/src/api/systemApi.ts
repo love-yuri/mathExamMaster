@@ -1,8 +1,7 @@
-/* eslint-disable prettier/prettier */
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2024-09-23 18:34:37
+ * @LastEditTime: 2024-10-02 19:04:15
  * @Description:
  */
 import { BaseApi } from '#/common/base/baseApi/baseApi';
@@ -19,16 +18,30 @@ class Api extends BaseApi<BaseEntity> {
   override baseUrl: string = '/system';
 
   /**
+   * 数据库列表
+   */
+  databases = () => this.add<string[]>(RequestType.GET, '/databases');
+
+  /**
    * 生成代码
    */
-  generate = (params: GenerateParams) => this.add(RequestType.POST, '/generate', params);
+  generate = (params: GenerateParams) => {
+    return this.add(RequestType.POST, '/generate', params);
+  };
+
+  /**
+   * 根据数据库获取表
+   * @param dbName 数据库名
+   */
+  tables = (dbName: string) => this.add(RequestType.GET, '/tables', dbName);
 
   /**
    * 上传文件
+   * @params params 上传文件参数
    */
   upload = (params: UploadFileParam) => {
-    return requestClient.upload(`${this.baseUrl  }/upload`, params);
-  }
+    return requestClient.upload(`${this.baseUrl}/upload`, params);
+  };
 }
 
 export const systemApi = new Api();
