@@ -26,6 +26,16 @@ const routes: RouteRecordRaw[] = [
         meta: {
           affixTab: false,
           icon: 'lucide:area-chart',
+          title: '代码生成',
+        },
+      },
+      {
+        name: 'inputTest',
+        path: '/input/test',
+        component: () => import('#/views/system/inputTest/index.vue'),
+        meta: {
+          affixTab: false,
+          icon: 'lucide:area-chart',
           title: '输入测试',
         },
       },
