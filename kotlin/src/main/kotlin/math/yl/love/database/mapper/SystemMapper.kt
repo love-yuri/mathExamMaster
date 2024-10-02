@@ -22,4 +22,10 @@ interface SystemMapper: BaseMapper<User> {
             tab.TABLE_SCHEMA = #{schema} AND tab.TABLE_NAME = #{tableName};
     """)
     fun getColumnInfo(schema: String, tableName: String): List<ColumnInfoResult>
+
+    @Select("SHOW DATABASES")
+    fun getDataBases(): List<String>
+
+    @Select("SHOW TABLES FROM \${dbName}")
+    fun getTables(dbName: String): List<String>
 }
