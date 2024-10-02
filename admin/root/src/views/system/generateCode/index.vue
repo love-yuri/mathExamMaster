@@ -1,78 +1,61 @@
-<!-- eslint-disable no-console -->
-<!--
- * @Author: love-yuri yuri2078170658@gmail.com
- * @Date: 2024-09-10 23:36:21
- * @LastEditTime: 2024-10-01 22:30:35
- * @Description: 
--->
 <template>
-  <div class="p-2">
-    <Toolbar
-      :default-config="toolbarConfig"
-      :editor="editorRef"
-      style="border-bottom: 1px solid #ccc"
+  <div class="card flex flex-col items-center justify-center p-3">
+    <Select
+      v-model="selectedDb"
+      :options="databases"
+      class="w-full md:w-56"
+      option-label="name"
+      placeholder="请选择一个数据库"
     />
-    <Editor
-      v-model="valueHtml"
-      :default-config="editorConfig"
-      style="min-height: 300px; height: 300px"
-      @custom-paste="customPaste"
-      @on-created="handleCreated"
+    <Select
+      v-model="selectedTable"
+      :options="tables"
+      class="mt-7 w-full md:w-56"
+      option-label="name"
+      placeholder="请选择待生成的表"
     />
-    {{ valueHtml }}
+    <Button class="mt-7" @click="handleGenerate">生成</Button>
   </div>
 </template>
-<script setup lang="ts">
-import '@wangeditor/editor/dist/css/style.css'; // 引入 css
-import { type IDomEditor, type IEditorConfig } from '@wangeditor/editor';
-import { onBeforeUnmount, ref, shallowRef } from 'vue';
-import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
+
+<script setup>
+import message from '#/common/utils/message';
 import { systemApi } from '#/api/systemApi';
-import { systemFileApi } from '#/api/systemFileApi';
-import { loadHtmlImg } from '#/common/utils/rtfToJpg';
+import { Button, Select } from '#/components';
+import { onMounted, ref, watch } from 'vue';
 
-type InsertFnType = (url: string, alt: string, href: string) => void;
-const editorRef = shallowRef();
-const editorConfig: Partial<IEditorConfig> = {
-  MENU_CONF: {
-    uploadImage: {
-      async customUpload(file: File, insertFn: InsertFnType) {
-        const res = await systemApi.upload({
-          file,
-        });
-        // const res = await systemFileApi.getFile('1837387808326205441');
-        const url = systemFileApi.getFile(res.id);
-        insertFn(url, '', '');
-      },
-    },
-  },
+const selectedDb = ref();
+const selectedTable = ref();
+const databases = ref([]);
+const tables = ref([]);
+
+const loadDatabases = async () => {
+  const res = await systemApi.databases();
+  databases.value = res.map((name) => ({
+    name,
+  }));
 };
 
-// 内容 HTML
-const valueHtml = ref('<p>hello</p>');
-
-const toolbarConfig = {};
-
-// 组件销毁时，也及时销毁编辑器
-onBeforeUnmount(() => {
-  const editor = editorRef.value;
-  if (editor === null) return;
-  editor.destroy();
-});
-
-const handleCreated = (editor: IDomEditor) => {
-  // 记录 editor 实例，重要！
-  editorRef.value = editor;
+const loadTables = async (database) => {
+  const res = await systemApi.tables(database);
+  tables.value = res.map((name) => ({
+    name,
+  }));
 };
 
-function customPaste(editor: IDomEditor, event: ClipboardEvent) {
-  const html: string | undefined = event.clipboardData?.getData('text/html');
-  const rtf = event.clipboardData?.getData('text/rtf');
-  if (html && rtf) {
-    loadHtmlImg(html, rtf).then((html) => editor.dangerouslyInsertHtml(html));
-    event.preventDefault();
-    return false;
-  }
-  return true;
+function handleGenerate() {
+  systemApi
+    .generate({
+      dataBaseName: selectedDb.value.name,
+      tableName: selectedTable.value.name,
+    })
+    .then(() => {
+      message.success('生成成功');
+    });
 }
+
+onMounted(async () => {
+  loadDatabases();
+});
+watch(selectedDb, loadTables);
 </script>
