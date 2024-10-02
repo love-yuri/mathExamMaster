@@ -1,4 +1,4 @@
-package math.yl.love.common.mybatis
+package math.yl.love.database.domain.typeEnum
 
 import com.aspose.imaging.ImageOptionsBase
 import com.aspose.imaging.imageoptions.JpegOptions
