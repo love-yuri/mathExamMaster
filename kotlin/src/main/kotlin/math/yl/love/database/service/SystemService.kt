@@ -3,6 +3,7 @@ package math.yl.love.database.service
 import math.yl.love.configuration.exception.BizException
 import math.yl.love.database.domain.entity.SystemFile
 import math.yl.love.database.domain.params.system.GenerateParam
+import math.yl.love.database.mapper.SystemMapper
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -13,7 +14,8 @@ import java.io.BufferedInputStream
 @Transactional(readOnly = true)
 class SystemService (
     private val autoMysqlService: AutoMysqlService,
-    private val systemFileService: SystemFileService
+    private val systemFileService: SystemFileService,
+    private val systemMapper: SystemMapper
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -42,5 +44,18 @@ class SystemService (
         } catch (e: Exception) {
             throw BizException("文件上传失败! ${e.message}")
         }
+    }
+
+    /**
+     * 获取数据库列表
+     */
+    fun getDataBaseList() = systemMapper.getDataBases()
+
+    /**
+     * 获取指定数据库下表格
+     */
+    fun getTables(dbName: String): Any {
+        log.info("获取数据库 $dbName 表格")
+        return systemMapper.getTables(dbName)
     }
 }
