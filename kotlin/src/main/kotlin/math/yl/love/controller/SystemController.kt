@@ -22,4 +22,12 @@ class SystemController(
     @PostMapping("/upload")
     @Operation(summary = "上传文件")
     fun uploadFile(@RequestParam("file") file: MultipartFile) = R.success(systemService.uploadFile(file))
+
+    @GetMapping("/databases")
+    @Operation(summary = "获取所有数据库")
+    fun databases() = R.success(systemService.getDataBaseList())
+
+    @GetMapping("/tables")
+    @Operation(summary = "获取数据库下所有表")
+    fun tables(name: String) = R.success(systemService.getTables(name))
 }
