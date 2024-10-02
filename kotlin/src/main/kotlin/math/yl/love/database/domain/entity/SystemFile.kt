@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.builtins.LongAsStringSerializer
 import math.yl.love.common.constant.DataBaseConstant
-import math.yl.love.common.mybatis.FileTypeEnum
+import math.yl.love.database.domain.typeEnum.FileTypeEnum
 import java.time.LocalDateTime
 
 @TableName("system_file")
