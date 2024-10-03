@@ -1,3 +1,9 @@
+<!--
+ * @Author: love-yuri yuri2078170658@gmail.com
+ * @Date: 2024-09-29 11:34:19
+ * @LastEditTime: 2024-10-03 19:02:59
+ * @Description: 
+-->
 <template>
   <div class="card flex flex-col items-center justify-center p-3">
     <Select
@@ -18,16 +24,20 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import message from '#/common/utils/message';
 import { systemApi } from '#/api/systemApi';
 import { Button, Select } from '#/components';
 import { onMounted, ref, watch } from 'vue';
 
+type Option = {
+  name: string;
+};
+
 const selectedDb = ref();
 const selectedTable = ref();
-const databases = ref([]);
-const tables = ref([]);
+const databases = ref<Option[]>([]);
+const tables = ref<Option[]>([]);
 
 const loadDatabases = async () => {
   const res = await systemApi.databases();
@@ -36,7 +46,7 @@ const loadDatabases = async () => {
   }));
 };
 
-const loadTables = async (database) => {
+const loadTables = async (database: string) => {
   const res = await systemApi.tables(database);
   tables.value = res.map((name) => ({
     name,
