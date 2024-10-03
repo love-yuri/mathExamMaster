@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2024-10-02 19:04:15
+ * @LastEditTime: 2024-10-03 19:03:31
  * @Description:
  */
 import { BaseApi } from '#/common/base/baseApi/baseApi';
@@ -33,7 +33,9 @@ class Api extends BaseApi<BaseEntity> {
    * 根据数据库获取表
    * @param dbName 数据库名
    */
-  tables = (dbName: string) => this.add(RequestType.GET, '/tables', dbName);
+  tables = (dbName: string) => {
+    return this.add<string[]>(RequestType.GET, '/tables', dbName);
+  };
 
   /**
    * 上传文件
