@@ -77,7 +77,10 @@ class SecurityConfigurer(
             "/user/login",
 
             // 文件访问
-            "/system/file/get/**"
+            "/system/file/get/**",
+
+            // 测试
+            "/test/**"
         )
     }
 }
