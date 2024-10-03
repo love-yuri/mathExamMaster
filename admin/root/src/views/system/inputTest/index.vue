@@ -2,23 +2,26 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 23:36:21
- * @LastEditTime: 2024-10-01 22:30:35
+ * @LastEditTime: 2024-10-03 19:16:39
  * @Description: 
 -->
 <template>
   <div class="p-2">
-    <Toolbar
-      :default-config="toolbarConfig"
-      :editor="editorRef"
-      style="border-bottom: 1px solid #ccc"
-    />
-    <Editor
-      v-model="valueHtml"
-      :default-config="editorConfig"
-      style="min-height: 300px; height: 300px"
-      @custom-paste="customPaste"
-      @on-created="handleCreated"
-    />
+    <div class="rounded-sm bg-white p-2">
+      <Toolbar
+        :default-config="toolbarConfig"
+        :editor="editorRef"
+        style="border-bottom: 1px solid #ccc"
+      />
+      <Editor
+        v-model="valueHtml"
+        :default-config="editorConfig"
+        style="min-height: 300px; height: 300px"
+        @custom-paste="customPaste"
+        @on-created="handleCreated"
+      />
+    </div>
+
     {{ valueHtml }}
   </div>
 </template>
