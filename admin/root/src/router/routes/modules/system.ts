@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 23:35:05
- * @LastEditTime: 2024-10-01 21:44:58
+ * @LastEditTime: 2024-10-03 19:05:23
  * @Description: 系统路由
  */
 import type { RouteRecordRaw } from 'vue-router';
@@ -37,6 +37,16 @@ const routes: RouteRecordRaw[] = [
           affixTab: false,
           icon: 'lucide:area-chart',
           title: '输入测试',
+        },
+      },
+      {
+        name: 'knowledgePoint',
+        path: '/knowledge/point',
+        component: () => import('#/views/system/knowledgePoint/index.vue'),
+        meta: {
+          affixTab: false,
+          icon: 'lucide:area-chart',
+          title: '知识点管理',
         },
       },
       {
