@@ -2,22 +2,34 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2024-09-23 23:05:34
+ * @LastEditTime: 2024-10-03 21:48:28
  * @Description:
  */
 import { BaseApi } from '#/common/base/baseApi/baseApi';
 import { requestClient } from '#/common/base/baseApi/request';
-import { type BaseEntity } from '#/common/base/baseApi/types';
+import { BaseEntity } from '#/common/base/baseApi/types';
 import { useAppConfig } from '@vben/hooks';
 import type { UploadFileParam } from '@vben/request';
 
 const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
 
-export interface SystemFile extends BaseEntity {
-  filename: string;
-  md5: string;
-  path: string;
-  type: string;
+export class SystemFile extends BaseEntity {
+  filename!: string;
+  md5!: string;
+  path!: string;
+  type!: string;
+
+  constructor() {
+    super();
+    this.reset();
+  }
+
+  override reset() {
+    this.filename = '';
+    this.md5 = '';
+    this.path = '';
+    this.type = '';
+  }
 }
 
 class Api extends BaseApi<SystemFile> {
