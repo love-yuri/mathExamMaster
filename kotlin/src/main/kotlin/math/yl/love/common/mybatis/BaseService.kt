@@ -3,6 +3,7 @@ package math.yl.love.common.mybatis
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import math.yl.love.database.domain.entity.BaseEntity
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -27,18 +28,21 @@ abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>> {
 
     /**
      * 创建
+     * @param entity 待创建的类
      */
     @Transactional(rollbackFor = [Exception::class])
     fun create(entity: Entity) = baseMapper.insert(entity) == 1
 
     /**
      * 更新
+     * @param entity 待更新的类
      */
     @Transactional(rollbackFor = [Exception::class])
     fun update(entity: Entity) = baseMapper.updateById(entity) == 1
 
     /**
      * 删除
+     * @param id 主键
      */
     @Transactional(rollbackFor = [Exception::class])
     fun delete(id: Long) = baseMapper.deleteById(id) == 1
@@ -51,19 +55,37 @@ abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>> {
     /**
      * 通过id查询结果
      * 如果id为null则直接返回null
+     * @param id 主键
      */
     fun getById(id: Long?): Entity? = id?.let { baseMapper.selectById(it) }
 
     /**
      * 将queryWrapper 的内容返回为list
+     * @param queryWrapper 查询条件
      */
     fun list(queryWrapper: KtQueryWrapper<Entity>): List<Entity> = baseMapper.selectList(queryWrapper)
 
     /**
      * 将queryWrapper 的内容返回为单个结果
+     * @param queryWrapper 查询条件
      */
     fun one(queryWrapper: KtQueryWrapper<Entity>): Entity? = baseMapper.selectOne(queryWrapper)
 
-    
+    /**
+     * 返回page，默认对所有数据分页
+     * @param p 分页参数
+     * @param q 查询条件
+     */
+    fun page(p: Page<Entity>, q: KtQueryWrapper<Entity> = queryWrapper) = baseMapper.selectPage(p, q)
+
+    /**
+     * 分页数据
+     * @param current 当前页码
+     * @param size 每页大小
+     */
+    fun page(current: Long, size: Long): Page<Entity> {
+        val p = Page<Entity>(current, size)
+        return page(p)
+    }
 }
 
