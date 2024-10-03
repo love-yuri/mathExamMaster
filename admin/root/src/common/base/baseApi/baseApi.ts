@@ -1,13 +1,37 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-08-11 16:05:57
- * @LastEditTime: 2024-09-21 17:53:07
+ * @LastEditTime: 2024-10-03 22:31:39
  * @Description: 基础api
  */
 
 import { requestClient } from '#/common/base/baseApi/request';
 
 import { type BaseEntity, type RequestConfig, RequestType } from './types';
+
+/**
+ * page 请求参数
+ * @param current 当前页
+ * @param size 每页大小
+ */
+export interface PageParam {
+  current: number;
+  size: number;
+}
+
+/**
+ * page 请求结果
+ * @param current 当前页
+ * @param records 数据列表
+ * @param size 每页大小
+ * @param total 总数
+ */
+export interface PageResult<T> extends BaseEntity {
+  current: number;
+  records: T[];
+  size: number;
+  total: number;
+}
 
 // 定义基础API函数
 async function baseApi(config: RequestConfig): Promise<unknown> {
@@ -72,17 +96,20 @@ export abstract class BaseApi<T extends BaseEntity> {
     }) as Promise<T[]>;
   };
 
-  // 列表
-  page = (params: any): Promise<T[]> => {
+  /**
+   * 分页
+   * @param params 分页参数
+   */
+  page = (params: PageParam): Promise<PageResult<T>> => {
     return baseApi({
       method: RequestType.POST,
       params,
       url: `${this.baseUrl}/page`,
-    }) as Promise<T[]>;
+    }) as Promise<PageResult<T>>;
   };
 
   // 更新
-  update = (params: any): Promise<boolean> => {
+  update = (params: T): Promise<boolean> => {
     return baseApi({
       method: RequestType.POST,
       params,
