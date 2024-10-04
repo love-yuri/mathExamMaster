@@ -40,8 +40,4 @@ abstract class BaseController<Entity: BaseEntity, Mapper: BaseMapper<Entity>, Se
     @PostMapping("get/{id}")
     @Operation(summary = "根据id获取")
     fun get(@PathVariable id: Long) = R.success(baseService.getById(id))
-
-    @PostMapping("page")
-    @Operation(summary = "分页")
-    fun page(@RequestBody param: PageParam) = R.success(baseService.page(param.current, param.size))
 }
