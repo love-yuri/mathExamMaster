@@ -1,14 +1,19 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-03 19:00:46
- * @LastEditTime: 2024-10-03 22:54:30
+ * @LastEditTime: 2024-10-04 21:57:09
  * @Description: 知识点管理
 -->
 <template>
-  <div>
+  <div class="p-2">
     <CreateKnowledgePoint />
-    <Select :options="options" option-label="name" />
-    {{ kp }}
+    <Select
+      v-model="knowledgePoint"
+      :options="options"
+      class="w-full"
+      option-label="name"
+      placeholder="请选择知识点"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -18,7 +23,7 @@ import { Select } from '#/components';
 import { KnowledgePoint, knowledgePointApi } from '#/api/knowledgePointApi';
 
 const options = ref<KnowledgePoint[]>([]);
-const kp = ref<KnowledgePoint>(new KnowledgePoint());
+const knowledgePoint = ref<KnowledgePoint>();
 
 onMounted(() => {
   knowledgePointApi
@@ -28,8 +33,6 @@ onMounted(() => {
     })
     .then((res) => {
       options.value = res.records;
-      const op = options.value[0];
-      kp.value.copy(op!);
     });
 });
 </script>
