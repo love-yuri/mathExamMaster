@@ -1,18 +1,22 @@
 package math.yl.love.configuration.mvc
 
 import math.yl.love.configuration.config.JsonConfig.Companion.json
+import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.KotlinSerializationJsonHttpMessageConverter
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
 
-
+import org.springframework.http.MediaType;
 @Configuration
 class WebMvcConfiguration: WebMvcConfigurationSupport() {
+
+    private val log = LoggerFactory.getLogger(WebMvcConfiguration::class.java)
 
     public override fun addViewControllers(registry: ViewControllerRegistry) {
         registry.addRedirectViewController("/", "/student/index.html")
@@ -51,7 +55,6 @@ class WebMvcConfiguration: WebMvcConfigurationSupport() {
             .allowedHeaders("*")
         super.addCorsMappings(registry)
     }
-//
     override fun extendMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
         /**
          * 替换原来的配置，添加自定义配置
@@ -61,6 +64,7 @@ class WebMvcConfiguration: WebMvcConfigurationSupport() {
             ?.let { index ->
                 converters[index] = kotlinSerializationJsonHttpMessageConverter()
             }
+//        converters.removeIf{it is MappingJackson2HttpMessageConverter}
     }
 
     @Bean
