@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
+import math.yl.love.common.utils.JsonUtils.toJson
 import math.yl.love.database.domain.entity.BaseEntity
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -70,22 +71,5 @@ abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>> {
      * @param queryWrapper 查询条件
      */
     fun one(queryWrapper: KtQueryWrapper<Entity>): Entity? = baseMapper.selectOne(queryWrapper)
-
-    /**
-     * 返回page，默认对所有数据分页
-     * @param p 分页参数
-     * @param q 查询条件
-     */
-    fun page(p: Page<Entity>, q: KtQueryWrapper<Entity> = queryWrapper) = baseMapper.selectPage(p, q)
-
-    /**
-     * 分页数据
-     * @param current 当前页码
-     * @param size 每页大小
-     */
-    fun page(current: Long, size: Long): Page<Entity> {
-        val p = Page<Entity>(current, size)
-        return page(p)
-    }
 }
 
