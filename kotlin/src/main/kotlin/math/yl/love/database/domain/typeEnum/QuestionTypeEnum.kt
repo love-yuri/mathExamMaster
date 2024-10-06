@@ -2,24 +2,26 @@ package math.yl.love.database.domain.typeEnum
 
 import com.baomidou.mybatisplus.annotation.IEnum
 
-enum class QuestionTypeEnum: IEnum<Int> {
+enum class QuestionTypeEnum(
+    val type: Int
+): IEnum<Int> {
     // 单选题
-    SINGLE_CHOICE,
+    SINGLE_CHOICE(0),
 
     // 多选题
-    MULTIPLE_CHOICE,
+    MULTIPLE_CHOICE(1),
 
     // 判断题
-    JUDGE,
+    JUDGE(2),
 
     // 简答题
-    SHORT_ANSWER,
+    SHORT_ANSWER(3),
 
     // 主观题
-    SUBJECTIVE;
+    SUBJECTIVE(4);
 
     override fun getValue(): Int {
-        return value
+        return type
     }
 }
 

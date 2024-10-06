@@ -40,7 +40,7 @@ DROP TABLE IF EXISTS `question_bank`;
 CREATE TABLE `question_bank` (
    `id` bigint NOT NULL COMMENT '主键id',
    `type` tinyint(1) NOT NULL comment '题目类型',
-   `content` json NOT NULL comment '题目内容',
+   `content` text NOT NULL comment '题目内容',
    `answer` json NOT NULL comment '答案',
    `difficulty` tinyint(1) NOT NULL DEFAULT 1 comment '难度: 默认1',
    `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
