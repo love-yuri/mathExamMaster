@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-03 19:25:03
- * @LastEditTime: 2024-10-03 22:14:22
+ * @LastEditTime: 2024-10-06 19:56:00
  * @Description: 创建知识点的页面
 -->
 <template>
@@ -35,8 +35,8 @@ import { checkEmpty, checkSuccess } from '#/common/utils/valueCheck';
 const knowledgePoint = ref<KnowledgePoint>(new KnowledgePoint());
 
 async function createKnowledgePoint() {
-  checkEmpty(knowledgePoint.value.name, '知识点名称不能为空');
-  checkEmpty(knowledgePoint.value.description, '知识点描述不能为空');
+  checkEmpty(knowledgePoint.value.name, '知识点名称不能为空!');
+  checkEmpty(knowledgePoint.value.description, '知识点描述不能为空!');
   await checkSuccess(
     knowledgePointApi.create(knowledgePoint.value),
     true,
