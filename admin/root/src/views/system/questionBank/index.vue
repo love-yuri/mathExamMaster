@@ -1,6 +1,8 @@
 <template>
-  <div>题库管理</div>
+  <div class="p-2">
+    <CreateQuestionBank />
+  </div>
 </template>
 <script setup lang="ts">
-//
+import CreateQuestionBank from './create/index.vue';
 </script>
