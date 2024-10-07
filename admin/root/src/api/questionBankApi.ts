@@ -1,3 +1,9 @@
+/*
+ * @Author: love-yuri yuri2078170658@gmail.com
+ * @Date: 2024-10-06 22:37:57
+ * @LastEditTime: 2024-10-07 14:52:05
+ * @Description: 题目
+ */
 import { BaseApi } from '#/common/base/baseApi/baseApi';
 import { BaseEntity } from '#/common/base/baseApi/types';
 
@@ -33,9 +39,12 @@ export class QuestionBank extends BaseEntity {
   /**
    * 手动调用reset
    */
-  constructor() {
+  constructor(type?: QuestionTypeEnum) {
     super();
     this.reset();
+    if (type) {
+      this.type = type;
+    }
   }
 
   override reset(): void {
