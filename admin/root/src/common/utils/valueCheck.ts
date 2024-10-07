@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-03 20:09:48
- * @LastEditTime: 2024-10-03 20:28:55
+ * @LastEditTime: 2024-10-07 15:23:15
  * @Description: 数据检查
  */
 
@@ -25,6 +25,26 @@ export function checkEmpty(value: any, msg: string = EmptyMsg) {
   } else if (typeof value === 'string' && value.trim() === '') {
     message.error(msg);
   }
+}
+
+/**
+ * 检查传入数组参数是否为空
+ * @param {any} value - 要检查的数组
+ * @param {string} msg - 错误信息
+ */
+export function checkListEmpty(value: any[], msg: string = EmptyMsg) {
+  if (!value) {
+    message.error(msg);
+    throw new Error(msg);
+  }
+
+  if (value.length === 0) {
+    return;
+  }
+
+  value.forEach((item) => {
+    checkEmpty(item, msg);
+  });
 }
 
 /**
