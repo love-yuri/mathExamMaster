@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-03 20:09:48
- * @LastEditTime: 2024-10-07 15:23:15
+ * @LastEditTime: 2024-10-08 21:11:43
  * @Description: 数据检查
  */
 
@@ -15,15 +15,17 @@ const EmptyMsg = '数据不能为空!!!';
  * @param {string} msg - 错误信息
  */
 export function checkEmpty(value: any, msg: string = EmptyMsg) {
-  if (!value) {
+  if (value === null || value === undefined) {
     message.error(msg);
     throw new Error(msg);
   }
 
   if (Array.isArray(value) && value.length === 0) {
     message.error(msg);
+    throw new Error(msg);
   } else if (typeof value === 'string' && value.trim() === '') {
     message.error(msg);
+    throw new Error(msg);
   }
 }
 
