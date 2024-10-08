@@ -11,3 +11,7 @@ FROM
 WHERE
     col.TABLE_SCHEMA = 'zyl' AND col.TABLE_NAME = 'user' AND
     tab.TABLE_SCHEMA = 'zyl' AND tab.TABLE_NAME = 'user';
+
+
+
+select * from question_bank;
