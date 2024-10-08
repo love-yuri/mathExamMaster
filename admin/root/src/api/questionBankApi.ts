@@ -1,16 +1,16 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2024-10-07 14:52:05
+ * @LastEditTime: 2024-10-08 21:02:03
  * @Description: 题目
  */
 import { BaseApi } from '#/common/base/baseApi/baseApi';
 import { BaseEntity } from '#/common/base/baseApi/types';
 
 export enum QuestionTypeEnum {
+  GAP_FILLING = 'GAP_FILLING', // 填空题
   JUDGE = 'JUDGE', // 判断题
   MULTIPLE_CHOICE = 'MULTIPLE_CHOICE', // 多选题
-  SHORT_ANSWER = 'SHORT_ANSWER', // 简答题
   SINGLE_CHOICE = 'SINGLE_CHOICE', // 单选题
   SUBJECTIVE = 'SUBJECTIVE', // 主观题
 }
