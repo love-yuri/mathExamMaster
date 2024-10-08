@@ -14,8 +14,8 @@ enum class QuestionTypeEnum(
     // 判断题
     JUDGE(2),
 
-    // 简答题
-    SHORT_ANSWER(3),
+    // 填空
+    GAP_FILLING(3),
 
     // 主观题
     SUBJECTIVE(4);
