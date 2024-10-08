@@ -1,13 +1,13 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 19:57:12
- * @LastEditTime: 2024-10-07 14:44:55
+ * @LastEditTime: 2024-10-08 21:29:47
  * @Description: 创建题目
 -->
 <template>
   <div class="p-2">
     <div class="mb-2 flex items-center">
-      <Button
+      <!-- <Button
         v-for="(item, index) in questionComponents"
         :key="index"
         :label="item.title"
@@ -15,16 +15,27 @@
         class="mr-2"
         icon="pi pi-check"
         @click="qaType = index"
+      /> -->
+      <SelectButton
+        v-model="qaType"
+        :options="questionComponents"
+        data-key="type"
+        option-label="title"
       />
     </div>
-    <component :is="questionComponents[qaType]!.component" />
+    <component :is="qaType!.component" />
   </div>
 </template>
 <script setup lang="ts">
+import { SelectButton } from '#/components';
 import { QuestionTypeEnum } from '#/api/questionBankApi';
 import SingleChoise from './components/singleChoice.vue';
-import { Button } from '#/components';
-import { type Component, ref } from 'vue';
+import MultipleChoice from './components/multipleChoice.vue';
+import Judge from './components/judge.vue';
+import GapFilling from './components/gapFilling.vue';
+import Subjective from './components/subjective.vue';
+
+import { type Component, markRaw, ref } from 'vue';
 
 type QuestionComponent = {
   component: Component;
@@ -32,12 +43,32 @@ type QuestionComponent = {
   type: string;
 };
 
-const qaType = ref(0);
 const questionComponents: QuestionComponent[] = [
   {
-    component: SingleChoise,
+    component: markRaw(SingleChoise),
     title: '单选题',
     type: QuestionTypeEnum.SINGLE_CHOICE,
   },
+  {
+    component: markRaw(MultipleChoice),
+    title: '多选题',
+    type: QuestionTypeEnum.MULTIPLE_CHOICE,
+  },
+  {
+    component: markRaw(Judge),
+    title: '判断题',
+    type: QuestionTypeEnum.JUDGE,
+  },
+  {
+    component: markRaw(GapFilling),
+    title: '填空题',
+    type: QuestionTypeEnum.GAP_FILLING,
+  },
+  {
+    component: markRaw(Subjective),
+    title: '主观题',
+    type: QuestionTypeEnum.SUBJECTIVE,
+  },
 ];
+const qaType = ref(questionComponents[0]);
 </script>
