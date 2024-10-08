@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-02 19:23:36
- * @LastEditTime: 2024-10-06 22:35:14
+ * @LastEditTime: 2024-10-08 21:18:25
  * @Description: 通用组件导出
  */
 
@@ -25,6 +25,7 @@ export { default as Message } from 'primevue/message';
 export { default as ProgressSpinner } from 'primevue/progressspinner';
 export { default as RadioButton } from 'primevue/radiobutton';
 export { default as Select } from 'primevue/select';
+export { default as SelectButton } from 'primevue/selectbutton';
 export { default as Tab } from 'primevue/tab';
 export { default as TabList } from 'primevue/tablist';
 export { default as TabPanel } from 'primevue/tabpanel';
