@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2024-10-06 22:36:59
+ * @LastEditTime: 2024-10-08 21:33:30
  * @Description: 封装富文本编辑器
 -->
 <template>
@@ -30,13 +30,9 @@ import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 import { systemApi } from '#/api/systemApi';
 import { systemFileApi } from '#/api/systemFileApi';
 import { loadHtmlImg } from '#/common/utils/rtfToJpg';
+import type { WangEditorProps } from './types';
 
-const props = defineProps({
-  content: {
-    default: '',
-    type: String,
-  },
-});
+const props = defineProps<WangEditorProps>();
 
 const emit = defineEmits(['update:content']);
 
@@ -55,6 +51,7 @@ const editorConfig: Partial<IEditorConfig> = {
       },
     },
   },
+  placeholder: props.placeholder,
 };
 
 // 内容 HTML
