@@ -21,4 +21,8 @@ class KnowledgePointController: BaseController<KnowledgePoint, KnowledgePointMap
     @Operation(summary = "分页")
     fun page(@RequestBody param: PageParam) = R.success(baseService.page(param.current, param.size))
 
+    @PostMapping("list")
+    @Operation(summary = "获取所有知识点")
+    fun list() = R.success(baseService.list())
+
 }
