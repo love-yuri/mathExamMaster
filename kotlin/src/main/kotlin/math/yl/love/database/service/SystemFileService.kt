@@ -62,7 +62,7 @@ class SystemFileService(
             filename = filename,
             path = target.pathString,
             type = FileTypeEnum.getFileTypeByName(filename)
-        ).apply { create(this) }
+        ).apply { save(this) }
     }
 
     /**
