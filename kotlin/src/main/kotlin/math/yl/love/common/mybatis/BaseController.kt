@@ -27,17 +27,17 @@ abstract class BaseController<Entity: BaseEntity, Mapper: BaseMapper<Entity>, Se
 
     @PostMapping("create")
     @Operation(summary = "创建")
-    fun create(@RequestBody value: Entity) = R.success(baseService.create(value))
+    open fun create(@RequestBody value: Entity) = R.success(baseService.save(value))
 
     @PostMapping("update")
     @Operation(summary = "更新")
-    fun update(@RequestBody value: Entity) = R.success(baseService.update(value))
+    open fun update(@RequestBody value: Entity) = R.success(baseService.updateById(value))
 
     @PostMapping("delete/{id}")
     @Operation(summary = "根据id删除")
-    fun delete(@PathVariable @Schema(description = "主键id") id: Long) = R.success(baseService.delete(id))
+    open fun delete(@PathVariable @Schema(description = "主键id") id: Long) = R.success(baseService.removeById(id))
 
     @PostMapping("get/{id}")
     @Operation(summary = "根据id获取")
-    fun get(@PathVariable id: Long) = R.success(baseService.getById(id))
+    open fun get(@PathVariable id: Long) = R.success(baseService.getById(id))
 }
