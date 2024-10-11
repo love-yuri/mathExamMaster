@@ -1,3 +1,9 @@
+<!--
+ * @Author: love-yuri yuri2078170658@gmail.com
+ * @Date: 2024-10-08 21:02:28
+ * @LastEditTime: 2024-10-11 21:04:32
+ * @Description: 填空题
+-->
 <template>
   <div>
     <div class="flex flex-col">
@@ -6,34 +12,22 @@
         placeholder="请输入题目..."
       />
     </div>
-    <div
-      v-for="(item, index) in answer.keys"
-      :key="index"
-      class="my-2 flex items-center"
-    >
-      <div class="mb-2 flex-shrink-0 text-2xl">
-        选项{{ String.fromCharCode(65 + index) }}: &nbsp;
-      </div>
-      <InputText
-        v-model="item.value"
-        class="w-full"
-        placeholder="请输入选项内容，可为空..."
-      />
-      <Button
-        class="ml-2"
-        icon="pi pi-delete-left"
-        severity="danger"
-        @click="removeKey(index)"
-      />
-    </div>
+    <MultiSelect
+      v-model="selectedKnowledgePoints"
+      :options="knowledgePoints"
+      class="my-2 w-full"
+      filter
+      option-label="name"
+      placeholder="请选择关联知识点..."
+    />
     <div class="my-3 flex">
       <Button
         class=""
         icon="pi pi-plus"
-        label="添加选项"
+        label="添加答案"
         severity="info"
         @click="
-          answer.keys.push({
+          answer.answer.push({
             value: '',
           })
         "
@@ -45,49 +39,66 @@
         severity="success"
         @click="create"
       />
+      <Button
+        class="mr-2"
+        icon="pi pi-sync"
+        label="重置答案"
+        severity="danger"
+        @click="cleanQuestion"
+      />
     </div>
     <div class="flex flex-col">
-      <div class="mb-2 text-center text-xl font-semibold">
-        请选择正确答案...
-      </div>
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col">
         <div
-          v-for="(item, index) in answer.keys"
+          v-for="(item, index) in answer.answer"
           :key="index"
-          class="flex items-center"
+          class="mb-2 flex h-12 flex-row items-center"
         >
-          <span class="mr-2 text-xl">{{
-            String.fromCharCode(65 + index)
-          }}</span>
-          <RadioButton
-            v-model="answer.answer"
-            :input-id="index.toString()"
-            :value="index"
-            name="dynamic"
+          <div class="flex-shrink-0">第 {{ index + 1 }} 问答案:</div>
+          <InputText
+            v-model="item.value"
+            class="ml-2 w-full"
+            placeholder="请输入答案..."
           />
-          <label :for="item.value" class="ml-2">{{ item.value }}</label>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { type SingleChoiceAnswer } from '#/views/system/questionBank/types';
+import { type GapFillingAnswer } from '#/views/system/questionBank/types';
 import {
   QuestionBank,
   questionBankApi,
   QuestionTypeEnum,
 } from '#/api/questionBankApi';
-import { Button, InputText, RadioButton, WangEditor } from '#/components';
-import { ref } from 'vue';
-import { checkEmpty, checkSuccess } from '#/common/utils/valueCheck';
+import { Button, InputText, MultiSelect, WangEditor } from '#/components';
+import { onMounted, ref } from 'vue';
+import {
+  checkEmpty,
+  checkListEmpty,
+  checkSuccess,
+} from '#/common/utils/valueCheck';
 import message from '#/common/utils/message';
+import {
+  type KnowledgePoint,
+  knowledgePointApi,
+} from '#/api/knowledgePointApi';
 
-const question = ref(new QuestionBank(QuestionTypeEnum.SINGLE_CHOICE));
-const answer = ref<SingleChoiceAnswer>({
-  answer: undefined,
-  keys: [],
+const question = ref(new QuestionBank(QuestionTypeEnum.GAP_FILLING));
+const answer = ref<GapFillingAnswer>({
+  answer: [],
 });
+
+/**
+ * 处理知识点选择
+ */
+const knowledgePoints = ref<KnowledgePoint[]>([]);
+const selectedKnowledgePoints = ref<KnowledgePoint[]>([]);
+const loadKnowledgePoints = async () => {
+  const res = await knowledgePointApi.list();
+  knowledgePoints.value = res;
+};
 
 /**
  * 创建题目
@@ -95,33 +106,35 @@ const answer = ref<SingleChoiceAnswer>({
  */
 function create() {
   checkEmpty(question.value.content, '请输入题目!');
-  checkEmpty(answer.value.answer, '请选择正确答案!');
   if (question.value.content === '<p><br></p>') {
     message.error('请输入题目!');
     return;
   }
-  if (answer.value.keys.length < 2) {
-    message.error('请至少添加两个选项!');
-    return;
-  }
+  checkListEmpty(answer.value.answer, '请输入正确答案!', (v) => v.value);
   question.value.answer = JSON.stringify(answer.value);
-  checkSuccess(questionBankApi.create(question.value), true, '题目');
+  checkSuccess(
+    questionBankApi.save({
+      knowledgePointIds: selectedKnowledgePoints.value.map((it) => it.id!),
+      questionBank: question.value,
+    }),
+    true,
+    '题目',
+  );
 }
 
 /**
- * 删除选项 还需要清除被删除的选项的答案
- * @param index 选项索引
+ * 清空题目
  */
-function removeKey(index: number) {
-  answer.value.keys.splice(index, 1);
-  const answerIndex = answer.value.answer!;
-  if (answerIndex === undefined) {
-    return;
-  }
-  if (answerIndex === index) {
-    answer.value.answer = undefined;
-  } else if (answerIndex > index) {
-    answer.value.answer = answerIndex - 1;
-  }
+function cleanQuestion() {
+  question.value.reset();
+  selectedKnowledgePoints.value.length = 0;
+  answer.value.answer.length = 0;
 }
+
+/**
+ * 挂载时加载
+ */
+onMounted(() => {
+  loadKnowledgePoints();
+});
 </script>
