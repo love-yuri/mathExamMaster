@@ -1,11 +1,11 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2024-10-08 21:02:03
+ * @LastEditTime: 2024-10-11 20:36:57
  * @Description: 题目
  */
 import { BaseApi } from '#/common/base/baseApi/baseApi';
-import { BaseEntity } from '#/common/base/baseApi/types';
+import { BaseEntity, RequestType } from '#/common/base/baseApi/types';
 
 export enum QuestionTypeEnum {
   GAP_FILLING = 'GAP_FILLING', // 填空题
@@ -54,8 +54,17 @@ export class QuestionBank extends BaseEntity {
   }
 }
 
+export interface SaveQuestionBankParam {
+  knowledgePointIds: string[];
+  questionBank: QuestionBank;
+}
+
 class Api extends BaseApi<QuestionBank> {
   override baseUrl: string = '/question/bank';
+
+  save = (param: SaveQuestionBankParam) => {
+    return this.add<boolean>(RequestType.POST, '/save', param);
+  };
 }
 
 export const questionBankApi = new Api();
