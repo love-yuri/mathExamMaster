@@ -65,3 +65,15 @@ CREATE TABLE `knowledge_point` (
  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='知识点';
 
+DROP TABLE IF EXISTS `bank_and_point`;
+CREATE TABLE `bank_and_point` (
+   `id` bigint NOT NULL COMMENT '主键id',
+   `question_bank_id` bigint NOT NULL COMMENT '题目id',
+   `knowledge_point_id` bigint NOT NULL COMMENT '知识点id',
+   `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
+   `create_time` datetime NOT NULL COMMENT '创建时间',
+   `create_by` varchar(16) NOT NULL comment '创建用户',
+   `update_time` datetime NOT NULL COMMENT '最后修改时间',
+   `update_by` varchar(16) NOT NULL comment '更新用户',
+   PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='知识点-题目关联表';
