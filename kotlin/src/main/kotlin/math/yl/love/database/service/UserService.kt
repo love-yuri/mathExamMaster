@@ -27,7 +27,7 @@ class UserService(
 
     override fun list(): List<User> {
         super.list().forEach {
-            log.info("yuri: list -> ${it.toJson()}")
+            logger.info("yuri: list -> ${it.toJson()}")
         }
 
         return super.list()
@@ -54,7 +54,7 @@ class UserService(
     /**
      * 根据用户名查询
      */
-    fun getByUsername(username: String?): User? = one(queryWrapper.eq(!username.isNullOrEmpty(), User::username, username))
+    fun getByUsername(username: String?): User? = getOne(queryWrapper.eq(!username.isNullOrEmpty(), User::username, username))
 
     /**
      * 查找用户信息
@@ -63,10 +63,5 @@ class UserService(
         val authentication = SecurityContextHolder.getContext().authentication
         val userDetails = authentication.principal as LoginJwtResult
         return getByUsername(userDetails.username)!!
-    }
-
-    override fun create(entity: User): Boolean {
-        log.info("yuri: create -> ${entity.toJson()}")
-        return super.create(entity)
     }
 }
