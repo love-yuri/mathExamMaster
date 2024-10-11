@@ -6,26 +6,14 @@
         placeholder="请输入题目..."
       />
     </div>
-    <div
-      v-for="(item, index) in answer.keys"
-      :key="index"
-      class="my-2 flex items-center"
-    >
-      <div class="mb-2 flex-shrink-0 text-2xl">
-        选项{{ String.fromCharCode(65 + index) }}: &nbsp;
-      </div>
-      <InputText
-        v-model="item.value"
-        class="w-full"
-        placeholder="请输入选项内容，可为空..."
-      />
-      <Button
-        class="ml-2"
-        icon="pi pi-delete-left"
-        severity="danger"
-        @click="removeKey(index)"
-      />
-    </div>
+    <MultiSelect
+      v-model="selectedKnowledgePoints"
+      :options="knowledgePoints"
+      class="my-2 w-full"
+      filter
+      option-label="name"
+      placeholder="请选择关联知识点..."
+    />
     <div class="my-3 flex">
       <Button
         class=""
@@ -44,6 +32,33 @@
         label="创建题目"
         severity="success"
         @click="create"
+      />
+      <Button
+        class="mr-2"
+        icon="pi pi-sync"
+        label="重置答案"
+        severity="danger"
+        @click="cleanQuestion"
+      />
+    </div>
+    <div
+      v-for="(item, index) in answer.keys"
+      :key="index"
+      class="my-2 flex items-center"
+    >
+      <div class="mb-2 flex-shrink-0 text-2xl">
+        选项{{ String.fromCharCode(65 + index) }}: &nbsp;
+      </div>
+      <InputText
+        v-model="item.value"
+        class="w-full"
+        placeholder="请输入选项内容，可为空..."
+      />
+      <Button
+        class="ml-2"
+        icon="pi pi-delete-left"
+        severity="danger"
+        @click="removeKey(index)"
       />
     </div>
     <div class="flex flex-col">
@@ -69,7 +84,6 @@
         </div>
       </div>
     </div>
-    {{ answer.answer }}
   </div>
 </template>
 <script setup lang="ts">
@@ -79,16 +93,36 @@ import {
   questionBankApi,
   QuestionTypeEnum,
 } from '#/api/questionBankApi';
-import { Button, Checkbox, InputText, WangEditor } from '#/components';
-import { ref } from 'vue';
+import {
+  Button,
+  Checkbox,
+  InputText,
+  MultiSelect,
+  WangEditor,
+} from '#/components';
+import { onMounted, ref } from 'vue';
 import { checkEmpty, checkSuccess } from '#/common/utils/valueCheck';
 import message from '#/common/utils/message';
+import {
+  type KnowledgePoint,
+  knowledgePointApi,
+} from '#/api/knowledgePointApi';
 
 const question = ref(new QuestionBank(QuestionTypeEnum.MULTIPLE_CHOICE));
 const answer = ref<MultipleChoiceAnswer>({
   answer: [],
   keys: [],
 });
+
+/**
+ * 处理知识点选择
+ */
+const knowledgePoints = ref<KnowledgePoint[]>([]);
+const selectedKnowledgePoints = ref<KnowledgePoint[]>([]);
+const loadKnowledgePoints = async () => {
+  const res = await knowledgePointApi.list();
+  knowledgePoints.value = res;
+};
 
 /**
  * 创建题目
@@ -106,7 +140,14 @@ function create() {
     return;
   }
   question.value.answer = JSON.stringify(answer.value);
-  checkSuccess(questionBankApi.create(question.value), true, '题目');
+  checkSuccess(
+    questionBankApi.save({
+      knowledgePointIds: selectedKnowledgePoints.value.map((it) => it.id!),
+      questionBank: question.value,
+    }),
+    true,
+    '题目',
+  );
 }
 
 /**
@@ -126,4 +167,21 @@ function removeKey(index: number) {
     }
   });
 }
+
+/**
+ * 清空题目
+ */
+function cleanQuestion() {
+  question.value.reset();
+  selectedKnowledgePoints.value.length = 0;
+  answer.value.answer.length = 0;
+  answer.value.keys.length = 0;
+}
+
+/**
+ * 挂载时加载
+ */
+onMounted(() => {
+  loadKnowledgePoints();
+});
 </script>
