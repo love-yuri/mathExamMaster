@@ -1,12 +1,9 @@
 package math.yl.love.database.service
 
 import math.yl.love.common.mybatis.BaseService
-import math.yl.love.common.utils.JsonUtils
-import math.yl.love.common.utils.JsonUtils.parseJson
-import math.yl.love.configuration.exception.BizException
+import math.yl.love.database.domain.entity.BankAndPoint
 import math.yl.love.database.domain.entity.QuestionBank
-import math.yl.love.database.domain.result.questionBank.SingleChoiceAnswer
-import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
+import math.yl.love.database.domain.params.questionBank.SaveQuestionBankParam
 import math.yl.love.database.mapper.QuestionBankMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -14,14 +11,25 @@ import kotlin.reflect.KClass
 
 @Service
 @Transactional(readOnly = true)
-class QuestionBankService: BaseService<QuestionBank, QuestionBankMapper>() {
+class QuestionBankService(
+    private val bankAndPointService: BankAndPointService,
+): BaseService<QuestionBank, QuestionBankMapper>() {
     override val entityClass: KClass<QuestionBank> get() = QuestionBank::class
 
-    fun  getAnswer(questionBank: QuestionBank): Any {
-        return when(questionBank.type) {
-            QuestionTypeEnum.SINGLE_CHOICE -> questionBank.answer.parseJson<SingleChoiceAnswer>()
-            QuestionTypeEnum.SHORT_ANSWER -> questionBank.answer.parseJson<String>()
-            else -> throw BizException("未知题型...")
+    /**
+     * 创建题目并关联知识点
+     * @param param 需要题目列表和知识点列表
+     */
+    @Transactional(rollbackFor = [Exception::class])
+    fun save(param: SaveQuestionBankParam): Boolean {
+        save(param.questionBank)
+        if (param.knowledgePointIds.isNotEmpty()) {
+            val bankId = param.questionBank.id!!
+            val values = param.knowledgePointIds.map {
+                BankAndPoint(questionBankId = bankId, knowledgePointId = it.toLong())
+            }
+            bankAndPointService.saveBatch(values)
         }
+        return true
     }
 }
