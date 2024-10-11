@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-03 20:09:48
- * @LastEditTime: 2024-10-08 21:11:43
+ * @LastEditTime: 2024-10-09 20:24:39
  * @Description: 数据检查
  */
 
@@ -31,10 +31,15 @@ export function checkEmpty(value: any, msg: string = EmptyMsg) {
 
 /**
  * 检查传入数组参数是否为空
- * @param {any} value - 要检查的数组
+ * @param {T} value - 要检查的数组数据
  * @param {string} msg - 错误信息
+ * @param needToCheck - 待检查的某一项，默认直接检查元素
  */
-export function checkListEmpty(value: any[], msg: string = EmptyMsg) {
+export function checkListEmpty<T>(
+  value: T[],
+  msg: string = EmptyMsg,
+  needToCheck?: (item: T) => any,
+) {
   if (!value) {
     message.error(msg);
     throw new Error(msg);
@@ -45,7 +50,11 @@ export function checkListEmpty(value: any[], msg: string = EmptyMsg) {
   }
 
   value.forEach((item) => {
-    checkEmpty(item, msg);
+    if (needToCheck) {
+      checkEmpty(needToCheck(item), msg);
+    } else {
+      checkEmpty(item, msg);
+    }
   });
 }
 
