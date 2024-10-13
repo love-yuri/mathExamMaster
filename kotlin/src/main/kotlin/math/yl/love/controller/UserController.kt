@@ -22,10 +22,6 @@ class UserController: BaseController<User, UserMapper, UserService>() {
     @Operation(summary = "登陆")
     fun login(@RequestBody query: LoginQuery) = R.success(baseService.login(query))
 
-    @PostMapping("list")
-    @Operation(summary = "获取所有数据")
-    fun list() = R.success(baseService.list())
-
     @PostMapping("info")
     @Operation(summary = "获取用户信息")
     fun getUserInfo() = R.success(baseService.getUserInfo())

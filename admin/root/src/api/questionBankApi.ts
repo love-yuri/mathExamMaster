@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2024-10-11 20:36:57
+ * @LastEditTime: 2024-10-13 14:03:32
  * @Description: 题目
  */
 import { BaseApi } from '#/common/base/baseApi/baseApi';
@@ -14,6 +14,17 @@ export enum QuestionTypeEnum {
   SINGLE_CHOICE = 'SINGLE_CHOICE', // 单选题
   SUBJECTIVE = 'SUBJECTIVE', // 主观题
 }
+
+/**
+ * 题目对应中文标题
+ */
+export const QuestionTypeMap = {
+  [QuestionTypeEnum.GAP_FILLING]: '填空题',
+  [QuestionTypeEnum.JUDGE]: '判断题',
+  [QuestionTypeEnum.MULTIPLE_CHOICE]: '多选题',
+  [QuestionTypeEnum.SINGLE_CHOICE]: '单选题',
+  [QuestionTypeEnum.SUBJECTIVE]: '主观题',
+};
 
 export class QuestionBank extends BaseEntity {
   /**

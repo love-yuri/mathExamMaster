@@ -16,13 +16,11 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/knowledge/point")
 @Tag(name = "知识点")
 class KnowledgePointController: BaseController<KnowledgePoint, KnowledgePointMapper, KnowledgePointService>() {
-
     @PostMapping("page")
     @Operation(summary = "分页")
     fun page(@RequestBody param: PageParam) = R.success(baseService.page(param.current, param.size))
 
     @PostMapping("list")
     @Operation(summary = "获取所有知识点")
-    fun list() = R.success(baseService.list())
-
+    fun list() =  R.success(baseService.list())
 }

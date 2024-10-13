@@ -22,5 +22,7 @@ class QuestionBankController: BaseController<QuestionBank, QuestionBankMapper, Q
     @Operation(summary = "保存题目")
     fun save(@RequestBody param: SaveQuestionBankParam) = R.success(baseService.save(param))
 
-
+    @PostMapping("page")
+    @Operation(summary = "分页")
+    fun page(@RequestBody param: PageParam) = R.success(baseService.page(param.current, param.size))
 }

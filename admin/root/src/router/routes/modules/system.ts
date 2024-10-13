@@ -39,26 +39,6 @@ const routes: RouteRecordRaw[] = [
           title: '输入测试',
         },
       },
-      {
-        name: 'knowledgePoint',
-        path: '/knowledge/point',
-        component: () => import('#/views/system/knowledgePoint/index.vue'),
-        meta: {
-          affixTab: false,
-          icon: 'lucide:area-chart',
-          title: '知识点管理',
-        },
-      },
-      {
-        name: 'Question Bank Management',
-        path: '/question/bank',
-        component: () => import('#/views/system/questionBank/index.vue'),
-        meta: {
-          affixTab: false,
-          icon: 'lucide:area-chart',
-          title: '题库管理',
-        },
-      },
     ],
   },
 ];

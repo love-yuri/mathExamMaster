@@ -88,7 +88,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { type SingleChoiceAnswer } from '#/views/system/questionBank/types';
+import { type SingleChoiceAnswer } from '#/views/questionManager/questionBank/types';
 import {
   QuestionBank,
   questionBankApi,

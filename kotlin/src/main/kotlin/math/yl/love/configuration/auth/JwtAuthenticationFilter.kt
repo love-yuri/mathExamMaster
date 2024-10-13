@@ -39,6 +39,19 @@ class JwtAuthenticationFilter(
             return
         }
 
+        /**
+         * 放行yuri检查
+         */
+        // TODO: 正式版本记得删除
+        if (systemConfig.isYuriDevelop == true) {
+            val res = LoginJwtResult(1L, "yuri")
+            val authentication = UsernamePasswordAuthenticationToken(res, null, emptyList())
+            authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
+            SecurityContextHolder.getContext().authentication = authentication
+            filterChain.doFilter(request, response)
+            return
+        }
+
         request.getHeader(HeadersConstant.AUTHORIZATION)?.also {
             try {
                 val res = JwtUtils.verifyTokenAndParse(it, LoginJwtResult::class)

@@ -14,4 +14,4 @@ WHERE
 
 
 
-select * from question_bank;
+select * from question_bank where type = 1;

@@ -1,6 +1,7 @@
 package math.yl.love.common.mybatis
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import math.yl.love.common.base.R

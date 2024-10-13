@@ -12,5 +12,5 @@ data class LoginJwtResult (
     val username: String,
 
     @Schema(description = "角色")
-    val role: Int?
+    val role: Int? = null
 )

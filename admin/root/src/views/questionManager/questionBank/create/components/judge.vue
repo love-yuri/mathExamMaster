@@ -1,8 +1,8 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
- * @Date: 2024-10-08 21:02:28
- * @LastEditTime: 2024-10-11 21:04:32
- * @Description: 填空题
+ * @Date: 2024-10-08 20:59:15
+ * @LastEditTime: 2024-10-11 21:04:23
+ * @Description: 单选题
 -->
 <template>
   <div>
@@ -21,17 +21,17 @@
       placeholder="请选择关联知识点..."
     />
     <div class="my-3 flex">
-      <Button
-        class=""
-        icon="pi pi-plus"
-        label="添加答案"
-        severity="info"
-        @click="
-          answer.answer.push({
-            value: '',
-          })
-        "
-      />
+      <div class="flex items-center">
+        <span class="ml-2 text-xl font-semibold">正确答案: &nbsp;&nbsp;</span>
+        <div class="mx-2">
+          <RadioButton v-model="answer.answer" :value="false" />
+          <label class="ml-2">错误</label>
+        </div>
+        <div>
+          <RadioButton v-model="answer.answer" :value="true" />
+          <label class="ml-2">正确</label>
+        </div>
+      </div>
       <Button
         class="mx-2"
         icon="pi pi-plus"
@@ -47,47 +47,27 @@
         @click="cleanQuestion"
       />
     </div>
-    <div class="flex flex-col">
-      <div class="flex flex-col">
-        <div
-          v-for="(item, index) in answer.answer"
-          :key="index"
-          class="mb-2 flex h-12 flex-row items-center"
-        >
-          <div class="flex-shrink-0">第 {{ index + 1 }} 问答案:</div>
-          <InputText
-            v-model="item.value"
-            class="ml-2 w-full"
-            placeholder="请输入答案..."
-          />
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 <script setup lang="ts">
-import { type GapFillingAnswer } from '#/views/system/questionBank/types';
+import { type JudgeAnswer } from '#/views/questionManager/questionBank/types';
 import {
   QuestionBank,
   questionBankApi,
   QuestionTypeEnum,
 } from '#/api/questionBankApi';
-import { Button, InputText, MultiSelect, WangEditor } from '#/components';
+import { Button, MultiSelect, RadioButton, WangEditor } from '#/components';
 import { onMounted, ref } from 'vue';
-import {
-  checkEmpty,
-  checkListEmpty,
-  checkSuccess,
-} from '#/common/utils/valueCheck';
+import { checkEmpty, checkSuccess } from '#/common/utils/valueCheck';
 import message from '#/common/utils/message';
 import {
   type KnowledgePoint,
   knowledgePointApi,
 } from '#/api/knowledgePointApi';
 
-const question = ref(new QuestionBank(QuestionTypeEnum.GAP_FILLING));
-const answer = ref<GapFillingAnswer>({
-  answer: [],
+const question = ref(new QuestionBank(QuestionTypeEnum.JUDGE));
+const answer = ref<JudgeAnswer>({
+  answer: false,
 });
 
 /**
@@ -106,11 +86,11 @@ const loadKnowledgePoints = async () => {
  */
 function create() {
   checkEmpty(question.value.content, '请输入题目!');
+  checkEmpty(answer.value.answer, '请选择正确答案!');
   if (question.value.content === '<p><br></p>') {
     message.error('请输入题目!');
     return;
   }
-  checkListEmpty(answer.value.answer, '请输入正确答案!', (v) => v.value);
   question.value.answer = JSON.stringify(answer.value);
   checkSuccess(
     questionBankApi.save({
@@ -128,7 +108,7 @@ function create() {
 function cleanQuestion() {
   question.value.reset();
   selectedKnowledgePoints.value.length = 0;
-  answer.value.answer.length = 0;
+  answer.value.answer = false;
 }
 
 /**

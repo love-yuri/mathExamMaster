@@ -15,14 +15,4 @@ import kotlin.reflect.KClass
 class KnowledgePointService: BaseService<KnowledgePoint, KnowledgePointMapper>() {
     override val entityClass: KClass<KnowledgePoint> get() = KnowledgePoint::class
 
-    /**
-     * 分页数据
-     * @param current 当前页码
-     * @param size 每页大小
-     */
-     fun page(current: Long, size: Long): BasePage<KnowledgePoint> {
-        val p = Page<KnowledgePoint>(current, size)
-        val res = baseMapper.selectPage(p, queryWrapper)
-        return BasePage<KnowledgePoint>(res)
-    }
 }

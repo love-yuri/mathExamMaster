@@ -150,7 +150,7 @@ function pointerDownOutside(e: Event) {
       ref="contentRef"
       :class="
         cn(
-          'border-border left-0 right-0 top-[10vh] mx-auto flex max-h-[80%] w-[520px] flex-col border p-0',
+          'border-border left-0 right-0 top-[10vh] mx-auto flex max-h-[80%] w-[820px] flex-col border p-0',
           props.class,
           {
             'left-0 top-0 size-full max-h-full !translate-x-0 !translate-y-0':

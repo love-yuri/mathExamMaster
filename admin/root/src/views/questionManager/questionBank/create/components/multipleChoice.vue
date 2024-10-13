@@ -87,7 +87,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { type MultipleChoiceAnswer } from '#/views/system/questionBank/types';
+import { type MultipleChoiceAnswer } from '#/views/questionManager/questionBank/types';
 import {
   QuestionBank,
   questionBankApi,

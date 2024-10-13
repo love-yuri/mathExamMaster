@@ -1,11 +1,12 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-02 19:23:36
- * @LastEditTime: 2024-10-11 18:45:20
+ * @LastEditTime: 2024-10-13 15:22:20
  * @Description: 通用组件导出
  */
 
 export { default as WangEditor } from './wangEditor/index.vue';
+export { default as PreviewEditor } from './wangEditor/previewEditor.vue';
 export { default as Button } from 'primevue/button';
 export { default as Calendar } from 'primevue/calendar';
 export { default as Card } from 'primevue/card';
@@ -24,6 +25,7 @@ export { default as InputText } from 'primevue/inputtext';
 export { default as Menu } from 'primevue/menu';
 export { default as Message } from 'primevue/message';
 export { default as MultiSelect } from 'primevue/multiselect';
+export { default as Paginator } from 'primevue/paginator';
 export { default as ProgressSpinner } from 'primevue/progressspinner';
 export { default as RadioButton } from 'primevue/radiobutton';
 export { default as Select } from 'primevue/select';
@@ -32,6 +34,7 @@ export { default as Tab } from 'primevue/tab';
 export { default as TabList } from 'primevue/tablist';
 export { default as TabPanel } from 'primevue/tabpanel';
 export { default as Tabs } from 'primevue/tabs';
+export { default as Tag } from 'primevue/tag';
 export { default as Textarea } from 'primevue/textarea';
 export { default as Toast } from 'primevue/toast';
 export { default as Toolbar } from 'primevue/toolbar';

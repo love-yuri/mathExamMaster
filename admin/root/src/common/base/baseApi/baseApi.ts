@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-08-11 16:05:57
- * @LastEditTime: 2024-10-03 22:31:39
+ * @LastEditTime: 2024-10-13 13:44:56
  * @Description: 基础api
  */
 
@@ -17,6 +17,7 @@ import { type BaseEntity, type RequestConfig, RequestType } from './types';
 export interface PageParam {
   current: number;
   size: number;
+  total?: number;
 }
 
 /**
