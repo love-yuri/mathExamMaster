@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 21:03:18
- * @LastEditTime: 2024-10-11 21:06:59
+ * @LastEditTime: 2024-10-18 22:10:43
  * @Description: 主观题
 -->
 <template>
@@ -21,9 +21,9 @@
       placeholder="请选择关联知识点..."
     />
     <Button
-      class="my-2"
-      icon="pi pi-plus"
-      label="创建题目"
+      :icon="`pi ${isUpdate ? 'pi-pencil' : 'pi-plus'}`"
+      :label="`${isUpdate ? '修改' : '创建'}题目`"
+      class="mx-2"
       severity="success"
       @click="create"
     />
@@ -33,6 +33,14 @@
       label="重置答案"
       severity="danger"
       @click="cleanQuestion"
+    />
+    <Button
+      v-if="isUpdate"
+      class="mr-2"
+      icon="pi pi-spin pi-spinner"
+      label="取消修改"
+      severity="secondary"
+      @click="$emit('cancel')"
     />
   </div>
 </template>
@@ -51,6 +59,9 @@ import {
   knowledgePointApi,
 } from '#/api/knowledgePointApi';
 
+const emits = defineEmits(['cancel', 'update']);
+
+const isUpdate = ref(false);
 const question = ref(new QuestionBank(QuestionTypeEnum.SUBJECTIVE));
 
 /**
@@ -74,13 +85,21 @@ function create() {
     return;
   }
   question.value.answer = '{}';
+  const fun = isUpdate.value
+    ? questionBankApi.updateSimple
+    : questionBankApi.saveSimple;
   checkSuccess(
-    questionBankApi.save({
+    fun({
       knowledgePointIds: selectedKnowledgePoints.value.map((it) => it.id!),
       questionBank: question.value,
     }),
-    true,
+    !isUpdate.value,
     '题目',
+    () => {
+      if (isUpdate.value) {
+        emits('update');
+      }
+    },
   );
 }
 
@@ -91,6 +110,16 @@ function cleanQuestion() {
   question.value.reset();
   selectedKnowledgePoints.value.length = 0;
 }
+
+/**
+ * 处理更新
+ */
+function openAsUpdate(v: QuestionBank, k: KnowledgePoint[]) {
+  isUpdate.value = true;
+  question.value.copy(v);
+  selectedKnowledgePoints.value = k;
+}
+defineExpose({ openAsUpdate });
 
 /**
  * 挂载时加载

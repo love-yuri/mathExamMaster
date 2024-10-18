@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 21:02:28
- * @LastEditTime: 2024-10-13 16:24:07
+ * @LastEditTime: 2024-10-18 21:37:31
  * @Description: 填空题
 -->
 <template>
@@ -33,9 +33,9 @@
         "
       />
       <Button
+        :icon="`pi ${isUpdate ? 'pi-pencil' : 'pi-plus'}`"
+        :label="`${isUpdate ? '修改' : '创建'}题目`"
         class="mx-2"
-        icon="pi pi-plus"
-        label="创建题目"
         severity="success"
         @click="create"
       />
@@ -45,6 +45,14 @@
         label="重置答案"
         severity="danger"
         @click="cleanQuestion"
+      />
+      <Button
+        v-if="isUpdate"
+        class="mr-2"
+        icon="pi pi-spin pi-spinner"
+        label="取消修改"
+        severity="secondary"
+        @click="$emit('cancel')"
       />
     </div>
     <div class="flex flex-col">
@@ -91,6 +99,9 @@ import {
   knowledgePointApi,
 } from '#/api/knowledgePointApi';
 
+const emits = defineEmits(['cancel', 'update']);
+
+const isUpdate = ref(false);
 const question = ref(new QuestionBank(QuestionTypeEnum.GAP_FILLING));
 const answer = ref<GapFillingAnswer>({
   answer: [],
@@ -118,13 +129,21 @@ function create() {
   }
   checkListEmpty(answer.value.answer, '请输入正确答案!', (v) => v.value);
   question.value.answer = JSON.stringify(answer.value);
+  const fun = isUpdate.value
+    ? questionBankApi.updateSimple
+    : questionBankApi.saveSimple;
   checkSuccess(
-    questionBankApi.save({
+    fun({
       knowledgePointIds: selectedKnowledgePoints.value.map((it) => it.id!),
       questionBank: question.value,
     }),
-    true,
+    !isUpdate.value,
     '题目',
+    () => {
+      if (isUpdate.value) {
+        emits('update');
+      }
+    },
   );
 }
 
@@ -144,6 +163,17 @@ function cleanQuestion() {
   selectedKnowledgePoints.value.length = 0;
   answer.value.answer.length = 0;
 }
+
+/**
+ * 处理更新
+ */
+function openAsUpdate(v: QuestionBank, k: KnowledgePoint[]) {
+  isUpdate.value = true;
+  question.value.copy(v);
+  answer.value = JSON.parse(v.answer!) as GapFillingAnswer;
+  selectedKnowledgePoints.value = k;
+}
+defineExpose({ openAsUpdate });
 
 /**
  * 挂载时加载

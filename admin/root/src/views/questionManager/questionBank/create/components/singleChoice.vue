@@ -27,9 +27,9 @@
         "
       />
       <Button
+        :icon="`pi ${isUpdate ? 'pi-pencil' : 'pi-plus'}`"
+        :label="`${isUpdate ? '修改' : '创建'}题目`"
         class="mx-2"
-        icon="pi pi-plus"
-        label="创建题目"
         severity="success"
         @click="create"
       />
@@ -39,6 +39,14 @@
         label="重置答案"
         severity="danger"
         @click="cleanQuestion"
+      />
+      <Button
+        v-if="isUpdate"
+        class="mr-2"
+        icon="pi pi-spin pi-spinner"
+        label="取消修改"
+        severity="secondary"
+        @click="$emit('cancel')"
       />
     </div>
     <div
@@ -109,6 +117,9 @@ import {
   knowledgePointApi,
 } from '#/api/knowledgePointApi';
 
+const emits = defineEmits(['cancel', 'update']);
+
+const isUpdate = ref(false);
 const question = ref(new QuestionBank(QuestionTypeEnum.SINGLE_CHOICE));
 const answer = ref<SingleChoiceAnswer>({
   answer: undefined,
@@ -141,13 +152,21 @@ function create() {
     return;
   }
   question.value.answer = JSON.stringify(answer.value);
+  const fun = isUpdate.value
+    ? questionBankApi.updateSimple
+    : questionBankApi.saveSimple;
   checkSuccess(
-    questionBankApi.save({
+    fun({
       knowledgePointIds: selectedKnowledgePoints.value.map((it) => it.id!),
       questionBank: question.value,
     }),
-    true,
+    !isUpdate.value,
     '题目',
+    () => {
+      if (isUpdate.value) {
+        emits('update');
+      }
+    },
   );
 }
 
@@ -177,6 +196,17 @@ function cleanQuestion() {
   answer.value.answer = undefined;
   answer.value.keys.length = 0;
 }
+
+/**
+ * 处理更新
+ */
+function openAsUpdate(v: QuestionBank, k: KnowledgePoint[]) {
+  isUpdate.value = true;
+  question.value.copy(v);
+  answer.value = JSON.parse(v.answer!) as SingleChoiceAnswer;
+  selectedKnowledgePoints.value = k;
+}
+defineExpose({ openAsUpdate });
 
 /**
  * 挂载时加载
