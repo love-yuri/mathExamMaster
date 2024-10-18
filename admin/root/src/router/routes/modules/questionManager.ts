@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 23:35:05
- * @LastEditTime: 2024-10-13 12:57:33
+ * @LastEditTime: 2024-10-18 21:12:36
  * @Description: 系统路由
  */
 import type { RouteRecordRaw } from 'vue-router';
@@ -61,6 +61,18 @@ const routes: RouteRecordRaw[] = [
           affixTab: false,
           icon: 'lucide:area-chart',
           title: '创建题目',
+        },
+      },
+      {
+        name: 'questionBankUpdate',
+        path: String.raw`/question/bank/update/:id(\d+)`,
+        component: () =>
+          import('#/views/questionManager/questionBank/components/update.vue'),
+        meta: {
+          affixTab: false,
+          hideInMenu: true,
+          icon: 'lucide:area-chart',
+          title: '修改题目',
         },
       },
     ],
