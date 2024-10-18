@@ -11,4 +11,8 @@ import kotlin.reflect.KClass
 @Transactional(readOnly = true)
 class BankAndPointService: BaseService<BankAndPoint, BankAndPointMapper>() {
     override val entityClass: KClass<BankAndPoint> get() = BankAndPoint::class
+
+    fun findByQuestionBankId(questionBankId: Long): List<BankAndPoint> {
+        return list(queryWrapper.eq(BankAndPoint::questionBankId, questionBankId))
+    }
 }
