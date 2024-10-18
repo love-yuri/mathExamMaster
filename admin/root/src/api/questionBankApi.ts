@@ -1,11 +1,16 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2024-10-13 14:03:32
+ * @LastEditTime: 2024-10-18 21:23:28
  * @Description: 题目
  */
-import { BaseApi } from '#/common/base/baseApi/baseApi';
+import {
+  BaseApi,
+  type PageParam,
+  type PageResult,
+} from '#/common/base/baseApi/baseApi';
 import { BaseEntity, RequestType } from '#/common/base/baseApi/types';
+import type { KnowledgePoint } from './knowledgePointApi';
 
 export enum QuestionTypeEnum {
   GAP_FILLING = 'GAP_FILLING', // 填空题
@@ -70,11 +75,32 @@ export interface SaveQuestionBankParam {
   questionBank: QuestionBank;
 }
 
+export interface FullQuestionBank {
+  knowledgePoints: KnowledgePoint[];
+  questionBank: QuestionBank;
+}
+
 class Api extends BaseApi<QuestionBank> {
   override baseUrl: string = '/question/bank';
 
-  save = (param: SaveQuestionBankParam) => {
-    return this.add<boolean>(RequestType.POST, '/save', param);
+  detail = (id: string) => {
+    return this.add<FullQuestionBank>(RequestType.POST, `/detail/${id}`);
+  };
+
+  pageSimple = (param: PageParam) => {
+    return this.add<PageResult<FullQuestionBank>>(
+      RequestType.POST,
+      '/page/simple',
+      param,
+    );
+  };
+
+  saveSimple = (param: SaveQuestionBankParam) => {
+    return this.add<boolean>(RequestType.POST, '/save/simple', param);
+  };
+
+  updateSimple = (param: SaveQuestionBankParam) => {
+    return this.add<boolean>(RequestType.POST, '/update/simple', param);
   };
 }
 
