@@ -1,21 +1,12 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 19:57:12
- * @LastEditTime: 2024-10-08 21:29:47
+ * @LastEditTime: 2024-10-17 19:08:06
  * @Description: 创建题目
 -->
 <template>
   <div class="p-2">
     <div class="mb-2 flex items-center">
-      <!-- <Button
-        v-for="(item, index) in questionComponents"
-        :key="index"
-        :label="item.title"
-        :severity="qaType === index ? 'success' : 'secondary'"
-        class="mr-2"
-        icon="pi pi-check"
-        @click="qaType = index"
-      /> -->
       <SelectButton
         v-model="qaType"
         :options="questionComponents"

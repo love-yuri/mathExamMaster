@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 19:49:21
- * @LastEditTime: 2024-10-13 16:44:31
+ * @LastEditTime: 2024-10-18 22:08:05
  * @Description: 题库管理
 -->
 
@@ -9,7 +9,11 @@
   <div class="p-2">
     <Card>
       <template #content>
-        <DataTable :value="questionBanks" table-style="min-width: 50rem">
+        <DataTable
+          :value="questionBanks"
+          scrollable
+          table-style="min-width: 50rem"
+        >
           <template #header>
             <div class="flex flex-wrap items-center justify-between gap-2">
               <span class="text-xl font-bold">题库</span>
@@ -21,21 +25,50 @@
               />
             </div>
           </template>
-          <Column field="type" header="题目类型">
-            <template #body="slotProps: { data: QuestionBank }">
+          <Column field="type" header="题目类型" style="min-width: 110px">
+            <template #body="slotProps: { data: QuestionBankType }">
               <Tag
                 :severity="QuestionTypeColorMap[slotProps.data.type]"
                 :value="QuestionTypeMap[slotProps.data.type]"
               />
             </template>
           </Column>
-          <Column field="updateTime" header="创建时间" />
-          <Column field="action" header="">
-            <template #body="slotProps: { data: QuestionBank }">
+          <Column field="content" header="题目内容" style="min-width: 300px">
+            <template #body="slotProps: { data: QuestionBankType }">
+              <EllipsisText :max-width="300">
+                {{
+                  extractPlainTextFromHTML(slotProps.data.content.slice(0, 30))
+                }}
+              </EllipsisText>
+            </template>
+          </Column>
+          <Column field="updateTime" header="修改时间" />
+          <Column field="knowledgePoint" header="知识点">
+            <template #body="slotProps: { data: QuestionBankType }">
+              <EllipsisText :max-width="500">
+                <Tag
+                  v-for="item in slotProps.data.knowledgePoints"
+                  :key="item.id"
+                  :severity="QuestionTypeColorMap[slotProps.data.type]"
+                  :value="item.name"
+                  class="mx-1 my-1 flex-shrink-0"
+                />
+              </EllipsisText>
+            </template>
+          </Column>
+          <Column field="action" header="" style="min-width: 210px">
+            <template #body="slotProps: { data: QuestionBankType }">
               <Button
                 icon="pi pi-eye"
                 label="预览"
                 @click="show(slotProps.data)"
+              />
+              <Button
+                class="ml-2"
+                icon="pi pi-pencil"
+                label="编辑"
+                severity="warn"
+                @click="edit(slotProps.data)"
               />
             </template>
           </Column>
@@ -54,9 +87,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, unref } from 'vue';
+import { computed, onMounted, ref, unref } from 'vue';
 import { Button, Card, Column, DataTable, Paginator, Tag } from '#/components';
 import {
+  type FullQuestionBank,
   QuestionBank,
   questionBankApi,
   QuestionTypeEnum,
@@ -66,11 +100,24 @@ import { type PageParam } from '#/common/base/baseApi/baseApi';
 import type { PageState } from 'primevue/paginator';
 import Preview from './components/preview.vue';
 import { router } from '#/router';
+import { EllipsisText } from '@vben/common-ui';
+import type { KnowledgePoint } from '#/api/knowledgePointApi';
 
 /**
  * 处理数据分页
  */
-const questionBanks = ref<QuestionBank[]>([]);
+const fullQuestionBanks = ref<FullQuestionBank[]>([]);
+
+type QuestionBankType = {
+  knowledgePoints: KnowledgePoint[];
+} & QuestionBank;
+
+const questionBanks = computed((): QuestionBankType[] =>
+  fullQuestionBanks.value.map((item) => ({
+    ...item.questionBank,
+    knowledgePoints: item.knowledgePoints,
+  })),
+);
 const QuestionTypeColorMap = {
   [QuestionTypeEnum.GAP_FILLING]: 'primary',
   [QuestionTypeEnum.JUDGE]: 'secondary',
@@ -86,6 +133,16 @@ const pageParam = ref<PageParam>({
 });
 
 /**
+ * 获取文本数据
+ * @param htmlContent HTML内容
+ */
+function extractPlainTextFromHTML(htmlContent: string) {
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = htmlContent;
+  return tempDiv.textContent || '';
+}
+
+/**
  * 页码改变
  */
 function onPage(p: PageState) {
@@ -94,12 +151,9 @@ function onPage(p: PageState) {
   loadData();
 }
 
-/**
- * 加载数据
- */
 async function loadData() {
-  const res = await questionBankApi.page(pageParam.value);
-  questionBanks.value = res.records;
+  const res = await questionBankApi.pageSimple(pageParam.value);
+  fullQuestionBanks.value = res.records;
   pageParam.value.total = res.total;
 }
 
@@ -109,7 +163,10 @@ onMounted(loadData);
  * 处理预览
  */
 const previewRef = ref();
-function show(questionBank: QuestionBank) {
+async function show(questionBank: QuestionBankType) {
   unref(previewRef).open(questionBank);
+}
+async function edit(questionBank: QuestionBankType) {
+  router.push(`/question/bank/update/${questionBank.id}`);
 }
 </script>
