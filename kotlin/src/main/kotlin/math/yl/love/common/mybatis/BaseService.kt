@@ -24,7 +24,22 @@ abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>>: ISe
      * @param current 当前页码
      * @param size 每页大小
      */
-    fun page(current: Long, size: Long) =  BasePage(page(Page(current, size)))
+    fun page(current: Long, size: Long) = BasePage(page(Page(current, size)))
 
+    fun deleteByIds(ids: Collection<*>) {
+        if (ids.isNotEmpty()) {
+            remove(queryWrapper.`in`(BaseEntity::id, ids))
+        }
+    }
+
+    /**
+     * 根据id集合查询
+     */
+    fun findByIds(ids: Collection<*>): List<Entity> {
+        if (ids.isNotEmpty()) {
+            return list(queryWrapper.`in`(BaseEntity::id, ids))
+        }
+        return emptyList()
+    }
 }
 
