@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-03 20:09:48
- * @LastEditTime: 2024-10-09 20:24:39
+ * @LastEditTime: 2024-10-18 22:09:29
  * @Description: 数据检查
  */
 
@@ -70,6 +70,7 @@ export async function checkSuccess(
   promise: Promise<boolean>,
   isCreate: boolean = true,
   msg: string = '',
+  callBack?: () => void,
 ): Promise<unknown> {
   const res: boolean = await promise;
   const messageStr = isCreate ? '创建' : '修改';
@@ -78,6 +79,9 @@ export async function checkSuccess(
   } else {
     message.error(`${msg} ${messageStr}失败!`);
     throw new Error(`${msg} ${messageStr}失败!`);
+  }
+  if (callBack) {
+    callBack();
   }
   return res;
 }
