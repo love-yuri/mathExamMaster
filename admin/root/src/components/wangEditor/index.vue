@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2024-10-08 21:33:30
+ * @LastEditTime: 2024-10-17 20:42:04
  * @Description: 封装富文本编辑器
 -->
 <template>
@@ -56,8 +56,24 @@ const editorConfig: Partial<IEditorConfig> = {
 
 // 内容 HTML
 const valueHtml = ref(props.content);
+const isUpdating = ref(false); // 添加一个标志位来控制更新
+
+// 监听 props.content 的变化，并同步更新 valueHtml
+watch(
+  () => props.content,
+  (newContent) => {
+    if (!isUpdating.value) {
+      // 仅在非更新状态下同步
+      valueHtml.value = newContent;
+    }
+  },
+);
+
+// 监听 valueHtml 的变化，并 emit 出去
 watch(valueHtml, (newVal: string) => {
+  isUpdating.value = true; // 标记为更新状态
   emit('update:content', newVal);
+  isUpdating.value = false; // 重置标志位
 });
 
 const toolbarConfig = {};
