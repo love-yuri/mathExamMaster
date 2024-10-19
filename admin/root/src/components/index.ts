@@ -1,10 +1,11 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-02 19:23:36
- * @LastEditTime: 2024-10-13 15:22:20
+ * @LastEditTime: 2024-10-19 20:27:42
  * @Description: 通用组件导出
  */
 
+export { default as DefaultConfirmDialog } from './confirmDialog/default.vue';
 export { default as WangEditor } from './wangEditor/index.vue';
 export { default as PreviewEditor } from './wangEditor/previewEditor.vue';
 export { default as Button } from 'primevue/button';
@@ -30,6 +31,8 @@ export { default as ProgressSpinner } from 'primevue/progressspinner';
 export { default as RadioButton } from 'primevue/radiobutton';
 export { default as Select } from 'primevue/select';
 export { default as SelectButton } from 'primevue/selectbutton';
+export { default as Sidebar } from 'primevue/sidebar';
+export { default as SplitButton } from 'primevue/splitbutton';
 export { default as Tab } from 'primevue/tab';
 export { default as TabList } from 'primevue/tablist';
 export { default as TabPanel } from 'primevue/tabpanel';
