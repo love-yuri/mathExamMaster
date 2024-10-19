@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 19:57:12
- * @LastEditTime: 2024-10-18 22:12:01
+ * @LastEditTime: 2024-10-19 19:40:05
  * @Description: 创建题目
 -->
 <template>
@@ -74,6 +74,6 @@ onMounted(async () => {
 
 function cancel() {
   closeCurrentTab();
-  router.push(`/question/bank/`);
+  router.push({ name: 'questionBank' });
 }
 </script>
