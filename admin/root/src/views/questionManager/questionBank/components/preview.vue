@@ -76,6 +76,9 @@ import { computed, ref } from 'vue';
 
 /* 处理预览弹窗 */
 const [Model, modelApi] = useVbenModal({
+  onConfirm() {
+    modelApi.close();
+  },
   title: '查看题目',
 });
 
