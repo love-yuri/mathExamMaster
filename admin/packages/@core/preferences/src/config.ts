@@ -12,7 +12,7 @@ const defaultPreferences: Preferences = {
     defaultAvatar:
       'https://unpkg.com/@vbenjs/static-source@0.1.6/source/avatar-v1.webp',
     dynamicTitle: true,
-    enableCheckUpdates: true,
+    enableCheckUpdates: false,
     enablePreferences: true,
     enableRefreshToken: false,
     isMobile: false,
