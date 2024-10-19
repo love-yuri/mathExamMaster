@@ -6,12 +6,14 @@ import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.builtins.LongAsStringSerializer
+import math.yl.love.common.base.NoArg
 import math.yl.love.common.constant.DataBaseConstant
 import math.yl.love.database.domain.typeEnum.FileTypeEnum
 import java.time.LocalDateTime
 
-@TableName("system_file")
+@NoArg
 @Serializable
+@TableName("system_file")
 data class SystemFile (
     @TableId(type = IdType.ASSIGN_ID)
     @Schema(description = "主键id")

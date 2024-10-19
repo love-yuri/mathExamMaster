@@ -7,10 +7,12 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import math.yl.love.common.constant.DataBaseConstant
 import kotlinx.serialization.builtins.LongAsStringSerializer
+import math.yl.love.common.base.NoArg
 import java.time.LocalDateTime
 
-@TableName("bank_and_point")
+@NoArg
 @Serializable
+@TableName("bank_and_point")
 data class BankAndPoint (
     @TableId(type = IdType.ASSIGN_ID)
     @Schema(description = "主键id")

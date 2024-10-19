@@ -7,10 +7,12 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import math.yl.love.common.constant.DataBaseConstant
 import kotlinx.serialization.builtins.LongAsStringSerializer
+import math.yl.love.common.base.NoArg
 import java.time.LocalDateTime
 
-@TableName("knowledge_point")
+@NoArg
 @Serializable
+@TableName("knowledge_point")
 data class KnowledgePoint (
     @TableId(type = IdType.ASSIGN_ID)
     @Schema(description = "主键id")

@@ -7,11 +7,13 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import math.yl.love.common.constant.DataBaseConstant
 import kotlinx.serialization.builtins.LongAsStringSerializer
+import math.yl.love.common.base.NoArg
 import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
 import java.time.LocalDateTime
 
-@TableName("question_bank")
+@NoArg
 @Serializable
+@TableName("question_bank")
 data class QuestionBank (
     @TableId(type = IdType.ASSIGN_ID)
     @Schema(description = "主键id")
