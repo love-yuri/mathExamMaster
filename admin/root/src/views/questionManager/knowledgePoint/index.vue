@@ -1,14 +1,18 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-03 19:00:46
- * @LastEditTime: 2024-10-13 16:42:44
+ * @LastEditTime: 2024-10-19 20:34:12
  * @Description: 知识点管理
 -->
 <template>
   <div class="p-2">
     <Card>
       <template #content>
-        <DataTable :value="knowledgePoints" table-style="min-width: 50rem">
+        <DataTable
+          :value="knowledgePoints"
+          scrollable
+          table-style="min-width: 50rem"
+        >
           <template #header>
             <div class="flex flex-wrap items-center justify-between gap-2">
               <span class="text-xl font-bold">知识点</span>
@@ -22,7 +26,29 @@
           </template>
           <Column field="name" header="知识点名称" />
           <Column field="description" header="知识点描述" />
-          <Column field="updateTime" header="创建时间" />
+          <Column field="updateTime" header="更新时间" />
+          <Column field="action" header="" style="min-width: 110px">
+            <template #body="slotProps: { data: KnowledgePoint }">
+              <SplitButton
+                :model="[
+                  {
+                    label: '编辑',
+                    icon: 'pi pi-pencil',
+                    command: () => edit(slotProps.data),
+                  },
+                  {
+                    label: '删除',
+                    icon: 'pi pi-trash',
+                    command: () => remove(slotProps.data.id!),
+                  },
+                ]"
+                icon="pi pi-eye"
+                label="预览"
+                raised
+                severity="info"
+              />
+            </template>
+          </Column>
         </DataTable>
         <Paginator
           :rows="pageParam.size"
@@ -33,12 +59,22 @@
         />
       </template>
     </Card>
+    <Update ref="updateModelRef" @update="loadData" />
+    <DefaultConfirmDialog group="headless" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { Button, Card, Column, DataTable, Paginator } from '#/components';
+import { onMounted, ref, unref } from 'vue';
+import {
+  Button,
+  Card,
+  Column,
+  DataTable,
+  DefaultConfirmDialog,
+  Paginator,
+  SplitButton,
+} from '#/components';
 import { type PageParam } from '#/common/base/baseApi/baseApi';
 import type { PageState } from 'primevue/paginator';
 import {
@@ -46,6 +82,12 @@ import {
   knowledgePointApi,
 } from '#/api/knowledgePointApi';
 import { router } from '#/router';
+import Update from './components/update.vue';
+
+import { useConfirm } from 'primevue/useconfirm';
+import Msg from '#/common/utils/message';
+
+const confirm = useConfirm();
 
 /**
  * 处理数据分页
@@ -77,4 +119,30 @@ async function loadData() {
 }
 
 onMounted(loadData);
+
+/**
+ * 删除
+ * @param id 题目id
+ */
+
+function remove(id: string) {
+  confirm.require({
+    accept: () => {
+      knowledgePointApi.delete(id).then(() => {
+        Msg.success('删除成功');
+        loadData();
+      });
+    },
+    group: 'headless',
+    message: '是否要删除该知识点?',
+  });
+}
+
+/**
+ * 编辑
+ */
+const updateModelRef = ref();
+async function edit(knowledgePoint: KnowledgePoint) {
+  unref(updateModelRef).open(knowledgePoint);
+}
 </script>

@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2024-10-17 20:42:04
+ * @LastEditTime: 2024-10-19 20:58:20
  * @Description: 封装富文本编辑器
 -->
 <template>
@@ -24,13 +24,18 @@
 </template>
 <script setup lang="ts">
 import '@wangeditor/editor/dist/css/style.css'; // 引入 css
-import { type IDomEditor, type IEditorConfig } from '@wangeditor/editor';
+import {
+  type IDomEditor,
+  type IEditorConfig,
+  type IToolbarConfig,
+} from '@wangeditor/editor';
 import { onBeforeUnmount, ref, shallowRef, watch } from 'vue';
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 import { systemApi } from '#/api/systemApi';
 import { systemFileApi } from '#/api/systemFileApi';
 import { loadHtmlImg } from '#/common/utils/rtfToJpg';
 import type { WangEditorProps } from './types';
+import ToolbarKeys from './toolbarKeys.json';
 
 const props = defineProps<WangEditorProps>();
 
@@ -76,7 +81,9 @@ watch(valueHtml, (newVal: string) => {
   isUpdating.value = false; // 重置标志位
 });
 
-const toolbarConfig = {};
+const toolbarConfig: Partial<IToolbarConfig> = {
+  toolbarKeys: ToolbarKeys,
+};
 
 // 组件销毁时，也及时销毁编辑器
 onBeforeUnmount(() => {

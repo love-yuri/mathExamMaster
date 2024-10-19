@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 19:49:21
- * @LastEditTime: 2024-10-18 22:08:05
+ * @LastEditTime: 2024-10-19 20:31:49
  * @Description: 题库管理
 -->
 
@@ -56,19 +56,26 @@
               </EllipsisText>
             </template>
           </Column>
-          <Column field="action" header="" style="min-width: 210px">
+          <Column field="action" header="" style="min-width: 110px">
             <template #body="slotProps: { data: QuestionBankType }">
-              <Button
+              <SplitButton
+                :model="[
+                  {
+                    label: '编辑',
+                    icon: 'pi pi-pencil',
+                    command: () => edit(slotProps.data),
+                  },
+                  {
+                    label: '删除',
+                    icon: 'pi pi-trash',
+                    command: () => remove(slotProps.data.id!),
+                  },
+                ]"
                 icon="pi pi-eye"
                 label="预览"
+                raised
+                severity="info"
                 @click="show(slotProps.data)"
-              />
-              <Button
-                class="ml-2"
-                icon="pi pi-pencil"
-                label="编辑"
-                severity="warn"
-                @click="edit(slotProps.data)"
               />
             </template>
           </Column>
@@ -83,12 +90,22 @@
       </template>
     </Card>
     <Preview ref="previewRef" />
+    <DefaultConfirmDialog group="headless" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, ref, unref } from 'vue';
-import { Button, Card, Column, DataTable, Paginator, Tag } from '#/components';
+import {
+  Button,
+  Card,
+  Column,
+  DataTable,
+  DefaultConfirmDialog,
+  Paginator,
+  SplitButton,
+  Tag,
+} from '#/components';
 import {
   type FullQuestionBank,
   QuestionBank,
@@ -102,6 +119,10 @@ import Preview from './components/preview.vue';
 import { router } from '#/router';
 import { EllipsisText } from '@vben/common-ui';
 import type { KnowledgePoint } from '#/api/knowledgePointApi';
+import message from '#/common/utils/message';
+import { useConfirm } from 'primevue/useconfirm';
+
+const confirm = useConfirm();
 
 /**
  * 处理数据分页
@@ -160,6 +181,23 @@ async function loadData() {
 onMounted(loadData);
 
 /**
+ * 删除
+ * @param id 题目id
+ */
+function remove(id: string) {
+  confirm.require({
+    accept: () => {
+      questionBankApi.delete(id).then(() => {
+        message.success('删除成功');
+        loadData();
+      });
+    },
+    group: 'headless',
+    message: '是否要删除该题目?',
+  });
+}
+
+/**
  * 处理预览
  */
 const previewRef = ref();
@@ -167,6 +205,6 @@ async function show(questionBank: QuestionBankType) {
   unref(previewRef).open(questionBank);
 }
 async function edit(questionBank: QuestionBankType) {
-  router.push(`/question/bank/update/${questionBank.id}`);
+  router.push({ name: 'questionBankUpdate', params: { id: questionBank.id } });
 }
 </script>
