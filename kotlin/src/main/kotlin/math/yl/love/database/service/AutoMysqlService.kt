@@ -127,11 +127,13 @@ class AutoMysqlService(
             import kotlinx.serialization.Serializable
             import kotlinx.serialization.Transient
             import math.yl.love.common.constant.DataBaseConstant
+            import math.yl.love.common.base.NoArg
             import kotlinx.serialization.builtins.LongAsStringSerializer
             import java.time.LocalDateTime
 
-            @TableName("$tableName")
+            @NoArg
             @Serializable
+            @TableName("$tableName")
             data class $entityName (
                 @TableId(type = IdType.ASSIGN_ID)
                 @Schema(description = "主键id")
