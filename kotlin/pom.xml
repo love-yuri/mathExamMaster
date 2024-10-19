@@ -193,12 +193,20 @@
                     </execution>
                 </executions>
                 <configuration>
+
                     <args>
                         <arg>-Xjsr305=strict</arg>
                         <arg>-jvm-target=21</arg>
                     </args>
+                    <pluginOptions>
+                        <!-- 这里!! 配置你刚刚新建的NoArg注解 -->
+                        <option>no-arg:annotation=math.yl.love.common.base.NoArg</option>
+                    </pluginOptions>
                     <compilerPlugins>
+                        <!-- 无参构造生成插件 -->
+                        <plugin>no-arg</plugin>
                         <plugin>spring</plugin>
+                        <!-- kotlinx-serialization 序列化插件-->
                         <plugin>kotlinx-serialization</plugin>
                     </compilerPlugins>
                 </configuration>
@@ -208,9 +216,18 @@
                         <artifactId>kotlin-maven-allopen</artifactId>
                         <version>${kotlin.version}</version>
                     </dependency>
+
+                    <!-- json序列化插件 -->
                     <dependency>
                         <groupId>org.jetbrains.kotlin</groupId>
                         <artifactId>kotlin-maven-serialization</artifactId>
+                        <version>${kotlin.version}</version>
+                    </dependency>
+
+                    <!-- 无参构造插件 -->
+                    <dependency>
+                        <groupId>org.jetbrains.kotlin</groupId>
+                        <artifactId>kotlin-maven-noarg</artifactId>
                         <version>${kotlin.version}</version>
                     </dependency>
                 </dependencies>
