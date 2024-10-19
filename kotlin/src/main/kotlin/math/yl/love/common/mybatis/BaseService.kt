@@ -26,6 +26,7 @@ abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>>: ISe
      */
     fun page(current: Long, size: Long) = BasePage(page(Page(current, size)))
 
+    @Transactional(rollbackFor = [Exception::class])
     fun deleteByIds(ids: Collection<*>) {
         if (ids.isNotEmpty()) {
             remove(queryWrapper.`in`(BaseEntity::id, ids))

@@ -36,7 +36,7 @@ abstract class BaseController<Entity: BaseEntity, Mapper: BaseMapper<Entity>, Se
 
     @PostMapping("delete/{id}")
     @Operation(summary = "根据id删除")
-    open fun delete(@PathVariable @Schema(description = "主键id") id: Long) = R.success(baseService.removeById(id))
+    open fun delete(@PathVariable @Schema(description = "主键id") id: String) = R.success(baseService.removeById(id))
 
     @PostMapping("get/{id}")
     @Operation(summary = "根据id获取")
