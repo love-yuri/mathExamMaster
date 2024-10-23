@@ -14,8 +14,8 @@ const logo = computed(() => preferences.logo.source);
   <AuthPageLayout
     :app-name="appName"
     :logo="logo"
-    :page-description="$t('authentication.pageDesc')"
-    :page-title="$t('authentication.pageTitle')"
+    page-description="快乐学习，快乐生活"
+    page-title="高等数学考试系统"
   >
     <!-- 自定义工具栏 -->
     <!-- <template #toolbar></template> -->
