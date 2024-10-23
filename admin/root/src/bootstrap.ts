@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-08 15:42:02
- * @LastEditTime: 2024-10-19 19:59:15
+ * @LastEditTime: 2024-10-22 21:22:09
  * @Description: 启动配置
  */
 import { createApp } from 'vue';
@@ -15,6 +15,10 @@ import Aura from '@primevue/themes/aura';
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import Katex from 'katex';
+import 'katex/dist/katex.min.css'; // 引入 KaTeX 样式
 
 import { setupI18n } from '#/locales';
 
@@ -35,6 +39,9 @@ async function bootstrap(namespace: string) {
 
   // 配置路由及路由守卫
   app.use(router);
+
+  // 配置 katex
+  app.use(Katex);
 
   // 配置primevue
   app.use(ToastService);

@@ -38,8 +38,11 @@
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",
     "dayjs": "^1.11.13",
+    "katex": "^0.16.11",
+    "mathlive": "^0.101.1",
     "pinia": "2.2.2",
     "primevue": "^4.0.5",
+    "snabbdom": "^3.6.2",
     "vue": "^3.5.3",
     "vue-router": "^4.4.3"
   },
