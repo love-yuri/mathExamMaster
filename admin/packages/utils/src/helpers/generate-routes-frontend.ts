@@ -64,7 +64,7 @@ function hasAuthority(route: RouteRecordRaw, access: string[]) {
  */
 function menuHasVisibleWithForbidden(route: RouteRecordRaw) {
   return (
-    !!route.meta?.authority &&
+    // !!route.meta?.authority && TODO: 取消authority的判断
     Reflect.has(route.meta || {}, 'menuVisibleWithForbidden') &&
     !!route.meta?.menuVisibleWithForbidden
   );
