@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2024-10-19 20:58:20
+ * @LastEditTime: 2024-10-23 21:36:25
  * @Description: 封装富文本编辑器
 -->
 <template>
@@ -15,14 +15,16 @@
       <Editor
         v-model="valueHtml"
         :default-config="editorConfig"
-        style="min-height: 300px; height: 300px"
+        style="min-height: 400px; height: 400px"
         @custom-paste="customPaste"
         @on-created="handleCreated"
       />
+      <MathModal ref="mathModalRef" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
+// import Mathjax from 'mathjax';
 import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 import {
   type IDomEditor,
@@ -34,16 +36,25 @@ import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 import { systemApi } from '#/api/systemApi';
 import { systemFileApi } from '#/api/systemFileApi';
 import { loadHtmlImg } from '#/common/utils/rtfToJpg';
-import type { WangEditorProps } from './types';
+import { type WangEditorProps } from './types';
 import ToolbarKeys from './toolbarKeys.json';
+import MathModal from '../math/mathModal.vue';
+import '#/components/wangEditor/templates';
 
 const props = defineProps<WangEditorProps>();
 
 const emit = defineEmits(['update:content']);
 
+const mathModalRef = ref();
+
 type InsertFnType = (url: string, alt: string, href: string) => void;
 const editorRef = shallowRef();
 const editorConfig: Partial<IEditorConfig> = {
+  hoverbarKeys: {
+    'yuri-math': {
+      menuKeys: ['EditMathMenu', 'RemoveMathMenu'],
+    },
+  },
   MENU_CONF: {
     uploadImage: {
       async customUpload(file: File, insertFn: InsertFnType) {
@@ -95,6 +106,14 @@ onBeforeUnmount(() => {
 const handleCreated = (editor: IDomEditor) => {
   // 记录 editor 实例，重要！
   editorRef.value = editor;
+  // @ts-ignore
+  editor.editYuriMath = (m) => {
+    mathModalRef.value?.open(m, false);
+  };
+  // @ts-ignore
+  editor.insertYuriMath = (m) => {
+    mathModalRef.value?.open(m, true);
+  };
 };
 
 function customPaste(editor: IDomEditor, event: ClipboardEvent) {
