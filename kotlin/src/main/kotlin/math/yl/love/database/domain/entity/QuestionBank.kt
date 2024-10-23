@@ -58,6 +58,6 @@ data class QuestionBank (
 
     @Schema(description = "难度: 默认1")
     @TableField(value = "difficulty")
-    val difficulty: Int = 1,
+    val difficulty: Int = 5,
 
 ) : BaseEntity
