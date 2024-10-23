@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2024-10-18 21:23:28
+ * @LastEditTime: 2024-10-23 21:39:45
  * @Description: 题目
  */
 import {
@@ -66,7 +66,7 @@ export class QuestionBank extends BaseEntity {
   override reset(): void {
     this.content = '';
     this.answer = '';
-    this.difficulty = 0;
+    this.difficulty = 5;
   }
 }
 

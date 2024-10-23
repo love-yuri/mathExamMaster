@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 23:35:05
- * @LastEditTime: 2024-10-18 21:12:36
+ * @LastEditTime: 2024-10-23 21:32:03
  * @Description: 系统路由
  */
 import type { RouteRecordRaw } from 'vue-router';
@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
           import('#/views/questionManager/knowledgePoint/index.vue'),
         meta: {
           affixTab: false,
-          icon: 'lucide:area-chart',
+          icon: 'lucide:copyright',
           title: '知识点管理',
         },
       },
@@ -37,7 +37,7 @@ const routes: RouteRecordRaw[] = [
           import('#/views/questionManager/knowledgePoint/create/index.vue'),
         meta: {
           affixTab: false,
-          icon: 'lucide:area-chart',
+          icon: 'lucide:baggage-claim',
           title: '创建知识点',
         },
       },
@@ -48,7 +48,7 @@ const routes: RouteRecordRaw[] = [
           import('#/views/questionManager/questionBank/index.vue'),
         meta: {
           affixTab: false,
-          icon: 'lucide:area-chart',
+          icon: 'lucide:cannabis',
           title: '题库管理',
         },
       },
@@ -59,7 +59,7 @@ const routes: RouteRecordRaw[] = [
           import('#/views/questionManager/questionBank/create/index.vue'),
         meta: {
           affixTab: false,
-          icon: 'lucide:area-chart',
+          icon: 'lucide:fish',
           title: '创建题目',
         },
       },
@@ -71,7 +71,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           affixTab: false,
           hideInMenu: true,
-          icon: 'lucide:area-chart',
+          icon: 'lucide:vegan',
           title: '修改题目',
         },
       },

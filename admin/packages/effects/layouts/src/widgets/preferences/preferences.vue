@@ -40,6 +40,10 @@ const listen = computed(() => {
         result[`update:${key}${capitalizeFirstLetter(subKey)}`] = (
           val: any,
         ) => {
+          // TODO: 暂时禁用
+          if (key === 'sidebar') {
+            val = true;
+          }
           updatePreferences({ [key]: { [subKey]: val } });
           if (key === 'app' && subKey === 'locale') {
             loadLocaleMessages(val);
