@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-03 19:00:46
- * @LastEditTime: 2024-10-19 20:34:12
+ * @LastEditTime: 2024-10-23 21:01:18
  * @Description: 知识点管理
 -->
 <template>
@@ -43,9 +43,10 @@
                   },
                 ]"
                 icon="pi pi-eye"
-                label="预览"
+                label="编辑"
                 raised
                 severity="info"
+                @click="edit(slotProps.data)"
               />
             </template>
           </Column>
