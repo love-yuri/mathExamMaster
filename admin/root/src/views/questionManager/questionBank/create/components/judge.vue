@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 20:59:15
- * @LastEditTime: 2024-10-18 22:10:38
+ * @LastEditTime: 2024-10-23 21:43:14
  * @Description: 单选题
 -->
 <template>
@@ -11,6 +11,10 @@
         v-model:content="question.content"
         placeholder="请输入题目..."
       />
+    </div>
+    <div class="my-2 flex items-center">
+      <div class="mr-4 text-[20px]">难度:</div>
+      <Rating v-model="question.difficulty" :stars="9" />
     </div>
     <MultiSelect
       v-model="selectedKnowledgePoints"
@@ -64,7 +68,13 @@ import {
   questionBankApi,
   QuestionTypeEnum,
 } from '#/api/questionBankApi';
-import { Button, MultiSelect, RadioButton, WangEditor } from '#/components';
+import {
+  Button,
+  MultiSelect,
+  RadioButton,
+  Rating,
+  WangEditor,
+} from '#/components';
 import { onMounted, ref } from 'vue';
 import { checkEmpty, checkSuccess } from '#/common/utils/valueCheck';
 import message from '#/common/utils/message';

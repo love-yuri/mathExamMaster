@@ -97,7 +97,7 @@ function handleGo(path: string) {
         {{ title || `${$t('authentication.welcomeBack')} 👋🏻` }}
         <template #desc>
           <span class="text-muted-foreground">
-            {{ subTitle || $t('authentication.loginSubtitle') }}
+            {{ subTitle || '仅支持账号密码登陆' }}
           </span>
         </template>
       </Title>

@@ -6,6 +6,10 @@
         placeholder="请输入题目..."
       />
     </div>
+    <div class="my-2 flex items-center">
+      <div class="mr-4 text-[20px]">难度:</div>
+      <Rating v-model="question.difficulty" :stars="9" />
+    </div>
     <MultiSelect
       v-model="selectedKnowledgePoints"
       :options="knowledgePoints"
@@ -107,6 +111,7 @@ import {
   InputText,
   MultiSelect,
   RadioButton,
+  Rating,
   WangEditor,
 } from '#/components';
 import { onMounted, ref } from 'vue';
