@@ -29,6 +29,7 @@ export { default as MultiSelect } from 'primevue/multiselect';
 export { default as Paginator } from 'primevue/paginator';
 export { default as ProgressSpinner } from 'primevue/progressspinner';
 export { default as RadioButton } from 'primevue/radiobutton';
+export { default as Rating } from 'primevue/rating';
 export { default as Select } from 'primevue/select';
 export { default as SelectButton } from 'primevue/selectbutton';
 export { default as Sidebar } from 'primevue/sidebar';
