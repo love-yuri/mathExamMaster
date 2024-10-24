@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-23 18:14:15
- * @LastEditTime: 2024-10-01 21:24:51
+ * @LastEditTime: 2024-10-24 17:20:06
  * @Description: RTF 转 JPG
  */
 
@@ -62,7 +62,8 @@ export function hexToFile(hex: string, fileName: string): File {
  * @return LoadImgResult 新的html数据，图片列表
  */
 function findAllImgSrcsFromHtml(htmlData: string): LoadImgResult {
-  const imgReg = /<img.*?(?:>|\/>)/gi; // 匹配图片中的img标签
+  // eslint-disable-next-line unicorn/better-regex
+  const imgReg = /<img[\s\S]*?(?:>|\/>)/gi; // 匹配图片中的img标签
   const srcReg = /src=["']?([^"']*)["']?/i; // 匹配图片中的src
 
   const arr = htmlData.match(imgReg); // 筛选出所有的img
@@ -88,8 +89,8 @@ function findAllImgSrcsFromHtml(htmlData: string): LoadImgResult {
     };
 
     if (element.includes('width') && element.includes('height')) {
-      const widthMatch = element.match(/width=["']?([^"']*)["']?/i);
-      const heightMatch = element.match(/height=["']?([^"']*)["']?/i);
+      const widthMatch = element.match(/width=["']?(\d+)["']?/i);
+      const heightMatch = element.match(/height=["']?(\d+)["']?/i);
       img.width = widthMatch?.[1];
       img.height = heightMatch?.[1];
       let newElement = element.replace(widthMatch?.[0] ?? '', '');
@@ -138,11 +139,10 @@ async function replaceImagesFile(
     imageHex = imageHex
       .replace(regexPictureHeader, '')
       .replaceAll(/[^\da-f]/gi, '');
-
     const res = await systemFileApi.wmfToJpg({
       file: hexToFile(imageHex, img.name),
     });
-    htmlData = htmlData.replace(img.url, systemFileApi.getFile(res.id));
+    htmlData = htmlData.replace(img.url, systemFileApi.getFile(res.id!));
   }
 
   return htmlData;
@@ -152,6 +152,8 @@ async function replaceImagesFile(
  * 从html数据和rtf数据中加载图片
  */
 export function loadHtmlImg(html: string, rtf: string): Promise<string> {
+  // eslint-disable-next-line prettier/prettier, unicorn/better-regex
+  html = html.replaceAll(/<span[^>]*>(?=[\s\S]*?<img[\s\S]*?(?:>|\/>))([\s\S]*?)<\/span>/gi, '$1');
   html = html.replaceAll(/text-indent:-(.*?)pt/gi, '');
   // 去除包括img标签的span标签
   html = html.replaceAll(/<span>\s*(<img[^>]*>)\s*<\/span>/gi, '$1');
