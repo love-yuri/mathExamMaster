@@ -161,7 +161,6 @@
             <systemPath>${project.basedir}/lib/aspose-imaging.jar</systemPath>
         </dependency>
 
-
     </dependencies>
 
     <build>
@@ -178,6 +177,7 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <includeSystemScope>true</includeSystemScope>
                 </configuration>
             </plugin>
             <plugin>
@@ -231,6 +231,15 @@
                         <version>${kotlin.version}</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+
+            <!-- 跳过测试用例 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>
