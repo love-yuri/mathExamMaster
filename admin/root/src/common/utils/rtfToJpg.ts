@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-23 18:14:15
- * @LastEditTime: 2024-10-24 17:20:06
+ * @LastEditTime: 2024-10-24 21:18:41
  * @Description: RTF 转 JPG
  */
 
@@ -139,6 +139,7 @@ async function replaceImagesFile(
     imageHex = imageHex
       .replace(regexPictureHeader, '')
       .replaceAll(/[^\da-f]/gi, '');
+    console.log('yuri: ', imageHex);
     const res = await systemFileApi.wmfToJpg({
       file: hexToFile(imageHex, img.name),
     });

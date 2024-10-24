@@ -8,6 +8,7 @@ spring:
       max-request-size: 100MB
 
 
+
   # 数据源设置
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/zyl?useUnicode=true&useJDBCCompliantTimezoneShift=true&serverTimezone=UTC&utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true
@@ -39,6 +40,11 @@ knife4j:
   enable: true # 开启文档接口增强功能
 
 server:
+  tomcat:
+    max-http-header-size: 81920
+    max-http-response-header-size: 81920
+    max-http-form-post-size: 81920
+
   port: 2078
 
 #system:

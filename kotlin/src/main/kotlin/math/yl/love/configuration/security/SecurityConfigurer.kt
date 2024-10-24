@@ -2,6 +2,7 @@ package math.yl.love.configuration.security
 
 
 import math.yl.love.configuration.auth.JwtAuthenticationFilter
+import math.yl.love.configuration.auth.SimplePasswordEncoder
 import math.yl.love.configuration.config.SystemConfig
 import math.yl.love.configuration.handler.AccessDeniedHandler
 import org.springframework.context.annotation.Bean
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authorization.AuthorizationManager
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -28,11 +30,10 @@ class SecurityConfigurer(
 ) {
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
+    fun passwordEncoder(): PasswordEncoder = SimplePasswordEncoder()
 
     @Bean
     fun authenticationManager(config: AuthenticationConfiguration): AuthenticationManager = config.authenticationManager
-
 
     @Bean
     fun securityFilterChain(http: HttpSecurity, authenticationConfiguration: AuthenticationConfiguration): SecurityFilterChain {

@@ -19,7 +19,8 @@ CREATE TABLE user (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户表';
 
-insert into user value (1, 1, 'yuri', '$2a$10$b2nCP59gVbx1Eqhw6c2p2OS6jlbX.8GrjziRuGNjTQ.1lKuU5y3f.', 0, NOW(), 1, NOW(), 1);
+# insert into user value (1, 1, 'yuri', '$2a$10$b2nCP59gVbx1Eqhw6c2p2OS6jlbX.8GrjziRuGNjTQ.1lKuU5y3f.', 0, NOW(), 1, NOW(), 1);
+insert into user value (1, 1, 'yuri', 'yuri', 0, NOW(), 1, NOW(), 1);
 
 DROP TABLE IF EXISTS `system_file`;
 CREATE TABLE `system_file` (

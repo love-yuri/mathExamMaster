@@ -2,6 +2,7 @@ package math.yl.love.database.service
 
 import com.aspose.imaging.Image
 import com.aspose.imaging.License
+import math.yl.love.common.base.Log.log
 import math.yl.love.common.mybatis.BaseService
 import math.yl.love.database.domain.typeEnum.FileTypeEnum
 import math.yl.love.common.utils.FileUtils.getMd5
@@ -54,6 +55,7 @@ class SystemFileService(
          */
         if (res.isEmpty()) {
             Files.write(target, byteArray)
+            logger.info("写入数据 ... ${target}")
         }
 
         // 创建数据

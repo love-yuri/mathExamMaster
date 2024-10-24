@@ -13,5 +13,4 @@ WHERE
     tab.TABLE_SCHEMA = 'zyl' AND tab.TABLE_NAME = 'user';
 
 
-
-select * from question_bank where type = 1;
+select * from question_bank;
