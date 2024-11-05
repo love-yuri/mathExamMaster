@@ -1,3 +1,9 @@
+<!--
+ * @Author: love-yuri yuri2078170658@gmail.com
+ * @Date: 2024-10-25 18:27:45
+ * @LastEditTime: 2024-11-05 19:24:17
+ * @Description: 
+-->
 <script lang="ts" setup>
 import { computed } from 'vue';
 
@@ -40,10 +46,6 @@ const listen = computed(() => {
         result[`update:${key}${capitalizeFirstLetter(subKey)}`] = (
           val: any,
         ) => {
-          // TODO: 暂时禁用
-          if (key === 'sidebar') {
-            val = true;
-          }
           updatePreferences({ [key]: { [subKey]: val } });
           if (key === 'app' && subKey === 'locale') {
             loadLocaleMessages(val);
