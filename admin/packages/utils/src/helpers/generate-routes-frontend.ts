@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-07 21:03:54
- * @LastEditTime: 2024-09-09 12:45:35
+ * @LastEditTime: 2024-11-05 19:24:27
  * @Description: 生成路由-前端方式
  */
 import type { RouteRecordRaw } from 'vue-router';
@@ -64,7 +64,7 @@ function hasAuthority(route: RouteRecordRaw, access: string[]) {
  */
 function menuHasVisibleWithForbidden(route: RouteRecordRaw) {
   return (
-    // !!route.meta?.authority && TODO: 取消authority的判断
+    !!route.meta?.authority &&
     Reflect.has(route.meta || {}, 'menuVisibleWithForbidden') &&
     !!route.meta?.menuVisibleWithForbidden
   );
