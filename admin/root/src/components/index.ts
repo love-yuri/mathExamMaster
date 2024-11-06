@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-02 19:23:36
- * @LastEditTime: 2024-10-19 20:27:42
+ * @LastEditTime: 2024-11-06 20:43:47
  * @Description: 通用组件导出
  */
 
@@ -16,6 +16,7 @@ export { default as Column } from 'primevue/column';
 export { default as ColumnGroup } from 'primevue/columngroup';
 export { default as ConfirmDialog } from 'primevue/confirmdialog';
 export { default as DataTable } from 'primevue/datatable';
+export { default as DatePicker } from 'primevue/datepicker';
 export { default as Dialog } from 'primevue/dialog';
 export { default as Divider } from 'primevue/divider';
 export { default as Dropdown } from 'primevue/dropdown';
@@ -23,6 +24,7 @@ export { default as FileUpload } from 'primevue/fileupload';
 export { default as FloatLabel } from 'primevue/floatlabel';
 export { default as InputSwitch } from 'primevue/inputswitch';
 export { default as InputText } from 'primevue/inputtext';
+export { default as Knob } from 'primevue/knob';
 export { default as Menu } from 'primevue/menu';
 export { default as Message } from 'primevue/message';
 export { default as MultiSelect } from 'primevue/multiselect';
