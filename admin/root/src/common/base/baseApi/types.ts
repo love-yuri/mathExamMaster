@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-09 14:18:19
- * @LastEditTime: 2024-10-03 22:51:57
+ * @LastEditTime: 2024-11-06 19:56:28
  * @Description: baseApi types
  */
 
@@ -31,6 +31,10 @@ export abstract class BaseEntity {
   createTime?: string;
   id?: string;
   updateTime?: string;
+
+  constructor() {
+    this.reset();
+  }
 
   /**
    * @description: 拷贝另外一个类的属性
