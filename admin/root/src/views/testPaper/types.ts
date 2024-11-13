@@ -1,9 +1,10 @@
+import type { FullQuestionBank } from '#/api/questionBankApi';
 import { BaseEntity } from '#/common/base/baseApi/types';
 
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-11-06 19:42:04
- * @LastEditTime: 2024-11-06 20:32:47
+ * @LastEditTime: 2024-11-13 21:29:26
  * @Description: 创建试卷常用接口
  */
 
@@ -18,6 +19,10 @@ export interface ExamPageUserRelation {
   score: number;
   user_id: string;
 }
+
+export type QuestionAndPoint = {
+  score: number;
+} & FullQuestionBank;
 
 export class ExamPageCreateVO extends BaseEntity {
   deadline?: Date;
