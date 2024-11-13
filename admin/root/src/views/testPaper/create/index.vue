@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2024-11-06 21:31:25
+ * @LastEditTime: 2024-11-13 21:29:43
  * @Description: 创建试卷
 -->
 <template>
@@ -109,6 +109,7 @@
         </div>
       </div>
     </div>
+    <Show v-model:questions="questionMap" />
   </div>
 </template>
 <script setup lang="ts">
@@ -122,9 +123,16 @@ import {
   Tag,
 } from '#/components';
 import { computed, ref } from 'vue';
-import { ExamPageCreateVO, subjectOptions, typeOptions } from '../types';
+import {
+  ExamPageCreateVO,
+  type QuestionAndPoint,
+  subjectOptions,
+  typeOptions,
+} from '#/views/testPaper/types';
+import Show from '#/views/testPaper/components/show.vue';
 
 const createVo = ref<ExamPageCreateVO>(new ExamPageCreateVO());
+const questionMap = ref(new Map<string, QuestionAndPoint>());
 
 function formatTime(seconds: number) {
   const hours = Math.floor(seconds / 3600);
