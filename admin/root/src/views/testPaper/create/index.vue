@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2024-11-13 21:29:43
+ * @LastEditTime: 2024-11-14 19:20:48
  * @Description: 创建试卷
 -->
 <template>
@@ -109,7 +109,14 @@
         </div>
       </div>
     </div>
-    <Show v-model:questions="questionMap" />
+    <div class="flex items-center justify-center p-2">
+      <Button
+        class="h-[50px] w-[120px] text-[22px]"
+        label="发布试卷"
+        @click="releasePage"
+      />
+    </div>
+    <Show v-model:questions="questionMap" :create-vo="createVo" />
   </div>
 </template>
 <script setup lang="ts">
@@ -130,6 +137,7 @@ import {
   typeOptions,
 } from '#/views/testPaper/types';
 import Show from '#/views/testPaper/components/show.vue';
+import { checkEqual } from '#/common/utils/valueCheck';
 
 const createVo = ref<ExamPageCreateVO>(new ExamPageCreateVO());
 const questionMap = ref(new Map<string, QuestionAndPoint>());
@@ -143,6 +151,24 @@ function formatTime(seconds: number) {
 const formatLimetedTime = computed(() =>
   formatTime(createVo.value.limited_time),
 );
+
+function valueCheck(): boolean {
+  let totalScore = 0;
+  for (const v of questionMap.value.values()) {
+    totalScore += v.score;
+  }
+
+  checkEqual(totalScore, createVo.value.total_score, '总分与题目总分不一致');
+  console.log('yuri: 总分为', totalScore);
+  return true;
+}
+
+function releasePage() {
+  if (!valueCheck()) {
+    return;
+  }
+  console.log(createVo.value);
+}
 </script>
 <style lang="less" scoped>
 .required-text {
