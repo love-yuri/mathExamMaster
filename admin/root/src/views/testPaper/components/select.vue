@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 19:49:21
- * @LastEditTime: 2024-11-13 21:30:08
+ * @LastEditTime: 2024-11-14 18:18:45
  * @Description: 题库管理
 -->
 
@@ -62,13 +62,22 @@
                 </EllipsisText>
               </template>
             </Column>
+            <Column header="难度">
+              <template #body="slotProps: { data: QuestionAndPoint }">
+                <Rating
+                  :model-value="slotProps.data.questionBank.difficulty"
+                  :readonly="true"
+                  :stars="9"
+                />
+              </template>
+            </Column>
             <Column field="action" header="" style="min-width: 110px">
               <template #body="slotProps: { data: QuestionAndPoint }">
                 <div class="flex items-center">
                   <Button
                     :icon="`pi pi-${questionAndPoints.has(slotProps.data.questionBank.id!) ? 'minus' : 'plus'}`"
+                    :label="`${questionAndPoints.has(slotProps.data.questionBank.id!) ? '删除' : '添加'}`"
                     :severity="`${questionAndPoints.has(slotProps.data.questionBank.id!) ? 'danger' : 'info'}`"
-                    label="添加"
                     raised
                     @click="add(slotProps.data)"
                   />
@@ -100,7 +109,15 @@
 
 <script setup lang="ts">
 import { ref, unref } from 'vue';
-import { Button, Card, Column, DataTable, Paginator, Tag } from '#/components';
+import {
+  Button,
+  Card,
+  Column,
+  DataTable,
+  Paginator,
+  Rating,
+  Tag,
+} from '#/components';
 import {
   questionBankApi,
   QuestionTypeEnum,
@@ -113,16 +130,7 @@ import { router } from '#/router';
 import { EllipsisText, useVbenModal } from '@vben/common-ui';
 import type { QuestionAndPoint } from '#/views/testPaper/types';
 
-const [Modal, modalApi] = useVbenModal({
-  fullscreen: true,
-  title: '选择题目',
-});
-
-function open() {
-  modalApi.open();
-}
-
-defineExpose({ open });
+const questionBanks = ref<QuestionAndPoint[]>([]);
 const questionAndPoints = defineModel<Map<string, QuestionAndPoint>>(
   'questions',
   {
@@ -130,8 +138,6 @@ const questionAndPoints = defineModel<Map<string, QuestionAndPoint>>(
     type: Map<string, QuestionAndPoint>,
   },
 );
-
-const questionBanks = ref<QuestionAndPoint[]>([]);
 
 const QuestionTypeColorMap = {
   [QuestionTypeEnum.GAP_FILLING]: 'primary',
@@ -145,6 +151,17 @@ const pageParam = ref<PageParam>({
   current: 1,
   size: 10,
   total: 0,
+});
+
+const [Modal, modalApi] = useVbenModal({
+  fullscreen: true,
+  onBeforeClose: () => {
+    questionBanks.value = [];
+    pageParam.value.current = 1;
+    return true;
+  },
+  onConfirm: () => modalApi.close(),
+  title: '选择题目',
 });
 
 /**
@@ -175,7 +192,7 @@ async function loadData() {
     }));
   });
 }
-loadData();
+// loadData();
 
 /**
  * 处理预览
@@ -193,4 +210,11 @@ async function add(v: QuestionAndPoint) {
     questionAndPoints.value.set(v.questionBank.id!, v);
   }
 }
+
+function open() {
+  modalApi.open();
+  loadData();
+}
+
+defineExpose({ open });
 </script>
