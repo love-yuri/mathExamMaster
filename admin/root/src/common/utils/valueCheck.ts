@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-03 20:09:48
- * @LastEditTime: 2024-10-18 22:09:29
+ * @LastEditTime: 2024-11-14 18:49:32
  * @Description: 数据检查
  */
 
@@ -84,4 +84,11 @@ export async function checkSuccess(
     callBack();
   }
   return res;
+}
+
+export function checkEqual<T>(a: T, b: T, msg: string = '数据不相等!') {
+  if (a !== b) {
+    message.error(msg);
+    throw new Error(msg);
+  }
 }
