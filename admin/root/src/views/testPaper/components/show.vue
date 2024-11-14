@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-11-07 18:54:50
- * @LastEditTime: 2024-11-13 21:24:12
+ * @LastEditTime: 2024-11-14 19:25:40
  * @Description: 展示选择的题目
 -->
 
@@ -11,14 +11,24 @@
       <template #content>
         <DataTable :value="questions" scrollable table-style="min-width: 50rem">
           <template #header>
-            <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center justify-between">
               <span class="text-xl font-bold">题库</span>
-              <Button
-                icon="pi pi-plus"
-                raised
-                rounded
-                @click="selectQuestionRef.open()"
-              />
+              <div class="flex items-center">
+                <SpeedDial
+                  :model="menus"
+                  :tooltip-options="{ position: 'top' }"
+                  direction="left"
+                  hide-icon="pi pi-th-large"
+                  show-icon="pi pi-th-large"
+                />
+                <Button
+                  class="ml-2"
+                  icon="pi pi-plus"
+                  rounded
+                  severity="info"
+                  @click="selectQuestionRef.open()"
+                />
+              </div>
             </div>
           </template>
           <Column header="题目类型" style="min-width: 110px">
@@ -57,7 +67,16 @@
               </EllipsisText>
             </template>
           </Column>
-          <Column header="" style="min-width: 90px">
+          <Column header="难度">
+            <template #body="slotProps: { data: QuestionAndPoint }">
+              <Rating
+                :model-value="slotProps.data.questionBank.difficulty"
+                :readonly="true"
+                :stars="9"
+              />
+            </template>
+          </Column>
+          <Column header="">
             <template
               #body="slotProps: { data: QuestionAndPoint; index: number }"
             >
@@ -67,6 +86,7 @@
                   <InputNumber
                     v-model="slotProps.data.score"
                     :max="99"
+                    :min="1"
                     :step="1"
                     button-layout="horizontal"
                     fluid
@@ -118,6 +138,8 @@ import {
   Column,
   DataTable,
   InputNumber,
+  Rating,
+  SpeedDial,
   SplitButton,
   Tag,
 } from '#/components';
@@ -128,8 +150,15 @@ import {
 } from '#/api/questionBankApi';
 import { EllipsisText } from '@vben/common-ui';
 import Preview from '#/views/questionManager/questionBank/components/preview.vue';
-import type { QuestionAndPoint } from '#/views/testPaper/types';
+import type {
+  ExamPageCreateVO,
+  QuestionAndPoint,
+} from '#/views/testPaper/types';
 import SelectQuestion from '#/views/testPaper/components/select.vue';
+
+const props = defineProps<{
+  createVo: ExamPageCreateVO;
+}>();
 
 defineEmits(['remove']);
 
@@ -144,6 +173,26 @@ const questionAndPoints = defineModel<Map<string, QuestionAndPoint>>(
 );
 
 const questions = computed(() => [...questionAndPoints.value.values()]);
+
+type Menu = {
+  command: () => void;
+  icon: string;
+  label: string;
+};
+
+const menus: Menu[] = [
+  {
+    command: () => {
+      const totalScore = props.createVo.total_score;
+      const size = questions.value.length;
+      questions.value.forEach((v) => {
+        v.score = Math.floor(totalScore / size);
+      });
+    },
+    icon: 'pi pi-equals',
+    label: '平均题目分数',
+  },
+];
 
 const QuestionTypeColorMap = {
   [QuestionTypeEnum.GAP_FILLING]: 'primary',
