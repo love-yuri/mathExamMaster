@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-02 19:23:36
- * @LastEditTime: 2024-11-07 21:14:33
+ * @LastEditTime: 2024-11-14 19:01:41
  * @Description: 通用组件导出
  */
 
@@ -36,6 +36,7 @@ export { default as Rating } from 'primevue/rating';
 export { default as Select } from 'primevue/select';
 export { default as SelectButton } from 'primevue/selectbutton';
 export { default as Sidebar } from 'primevue/sidebar';
+export { default as SpeedDial } from 'primevue/speeddial';
 export { default as SplitButton } from 'primevue/splitbutton';
 export { default as Tab } from 'primevue/tab';
 export { default as TabList } from 'primevue/tablist';
