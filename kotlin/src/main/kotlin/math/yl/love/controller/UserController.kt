@@ -25,4 +25,8 @@ class UserController: BaseController<User, UserMapper, UserService>() {
     @PostMapping("info")
     @Operation(summary = "获取用户信息")
     fun getUserInfo() = R.success(baseService.getUserInfo())
+
+    @PostMapping("students")
+    @Operation(summary = "获取学生列表")
+    fun students() = R.success(baseService.students())
 }
