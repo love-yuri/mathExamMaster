@@ -9,6 +9,7 @@ import math.yl.love.database.domain.entity.User
 import math.yl.love.database.domain.params.user.LoginQuery
 import math.yl.love.database.domain.result.user.LoginJwtResult
 import math.yl.love.database.domain.result.user.LoginResult
+import math.yl.love.database.domain.result.user.StudentResult
 import math.yl.love.database.mapper.UserMapper
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -64,4 +65,9 @@ class UserService(
         val userDetails = authentication.principal as LoginJwtResult
         return getByUsername(userDetails.username)!!
     }
+
+    /**
+     * 获取学生列表
+     */
+    fun students(): List<StudentResult> = list().map { StudentResult(it.id!!, it.username!!) }
 }
