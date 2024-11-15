@@ -4,20 +4,13 @@ import { BaseEntity } from '#/common/base/baseApi/types';
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-11-06 19:42:04
- * @LastEditTime: 2024-11-13 21:29:26
+ * @LastEditTime: 2024-11-15 19:33:40
  * @Description: 创建试卷常用接口
  */
 
 export interface ExamPageQuestionRelation {
-  exam_page_id: string;
-  question_bank_id: string;
+  questionBankId: string;
   score: number;
-}
-
-export interface ExamPageUserRelation {
-  exam_page_id: string;
-  score: number;
-  user_id: string;
 }
 
 export type QuestionAndPoint = {
@@ -27,13 +20,13 @@ export type QuestionAndPoint = {
 export class ExamPageCreateVO extends BaseEntity {
   deadline?: Date;
   difficulty!: number;
-  limited_time!: number;
+  limitedTime!: number;
   questions!: ExamPageQuestionRelation[];
   subject!: number;
   title!: string;
-  total_score!: number;
+  totalScore!: number;
   type!: number;
-  users!: ExamPageUserRelation[];
+  users!: string[];
 
   /**
    * 手动调用reset
@@ -45,8 +38,9 @@ export class ExamPageCreateVO extends BaseEntity {
 
   override reset(): void {
     this.difficulty = 5;
-    this.limited_time = 7200;
-    this.total_score = 100;
+    this.limitedTime = 7200;
+    this.totalScore = 100;
+    this.title = '';
     this.type = 0;
     this.subject = 0;
     this.deadline = undefined;
