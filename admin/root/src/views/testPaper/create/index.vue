@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2024-11-14 19:20:48
+ * @LastEditTime: 2024-11-15 19:33:49
  * @Description: 创建试卷
 -->
 <template>
@@ -54,8 +54,9 @@
     <div class="mt-2 flex items-center">
       <div class="flex flex-col items-center justify-center">
         <Knob
-          v-model="createVo.limited_time"
+          v-model="createVo.limitedTime"
           :max="20000"
+          :min="60"
           :size="150"
           :step="60"
           :value-template="formatLimetedTime"
@@ -68,22 +69,23 @@
         </Tag>
         <div class="flex gap-2">
           <Button
-            :disabled="createVo.limited_time >= 20000"
+            :disabled="createVo.limitedTime >= 20000"
             icon="pi pi-plus"
-            @click="createVo.limited_time += 600"
+            @click="createVo.limitedTime += 600"
           />
           <Button
-            :disabled="createVo.limited_time <= 600"
+            :disabled="createVo.limitedTime <= 600"
             icon="pi pi-minus"
             severity="danger"
-            @click="createVo.limited_time -= 600"
+            @click="createVo.limitedTime -= 600"
           />
         </div>
       </div>
       <div class="ml-3 mt-2 flex flex-col items-center justify-center">
         <Knob
-          v-model="createVo.total_score"
+          v-model="createVo.totalScore"
           :max="200"
+          :min="1"
           :size="150"
           :step="10"
           value-template="{value}分"
@@ -96,18 +98,29 @@
         </Tag>
         <div class="flex gap-2">
           <Button
-            :disabled="createVo.total_score >= 200"
+            :disabled="createVo.totalScore >= 200"
             icon="pi pi-plus"
-            @click="createVo.total_score += 10"
+            @click="createVo.totalScore += 10"
           />
           <Button
-            :disabled="createVo.total_score <= 10"
+            :disabled="createVo.totalScore <= 10"
             icon="pi pi-minus"
             severity="danger"
-            @click="createVo.total_score -= 10"
+            @click="createVo.totalScore -= 10"
           />
         </div>
       </div>
+    </div>
+    <div class="flex justify-center p-2">
+      <MultiSelect
+        v-model="createVo.users"
+        :options="users"
+        class="w-full"
+        filter
+        option-label="username"
+        option-value="id"
+        placeholder="请选择学生"
+      />
     </div>
     <div class="flex items-center justify-center p-2">
       <Button
@@ -125,11 +138,12 @@ import {
   DatePicker,
   InputText,
   Knob,
+  MultiSelect,
   Rating,
   Select,
   Tag,
 } from '#/components';
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import {
   ExamPageCreateVO,
   type QuestionAndPoint,
@@ -137,10 +151,18 @@ import {
   typeOptions,
 } from '#/views/testPaper/types';
 import Show from '#/views/testPaper/components/show.vue';
-import { checkEqual } from '#/common/utils/valueCheck';
+import {
+  checkEmpty,
+  checkEqual,
+  checkSuccess,
+} from '#/common/utils/valueCheck';
+import { examPageApi } from '#/api/examPageApi';
+import { type Student, userApi } from '#/api/userApi';
 
 const createVo = ref<ExamPageCreateVO>(new ExamPageCreateVO());
 const questionMap = ref(new Map<string, QuestionAndPoint>());
+
+const users = ref<Student[]>([]);
 
 function formatTime(seconds: number) {
   const hours = Math.floor(seconds / 3600);
@@ -149,7 +171,7 @@ function formatTime(seconds: number) {
 }
 
 const formatLimetedTime = computed(() =>
-  formatTime(createVo.value.limited_time),
+  formatTime(createVo.value.limitedTime),
 );
 
 function valueCheck(): boolean {
@@ -158,16 +180,34 @@ function valueCheck(): boolean {
     totalScore += v.score;
   }
 
-  checkEqual(totalScore, createVo.value.total_score, '总分与题目总分不一致');
-  console.log('yuri: 总分为', totalScore);
+  checkEmpty(createVo.value.title, '试卷标题不能为空!');
+  checkEmpty(createVo.value.limitedTime, '考试时长不能为空!');
+  checkEmpty(questionMap.value, '题目不能为空!');
+  checkEmpty(createVo.value.users, '学生数不能为空!');
+  checkEqual(totalScore, createVo.value.totalScore, '总分与题目总分不一致!');
   return true;
 }
+
+onMounted(() => {
+  userApi.students().then((res) => {
+    users.value = res;
+  });
+});
 
 function releasePage() {
   if (!valueCheck()) {
     return;
   }
-  console.log(createVo.value);
+  createVo.value.questions = [...questionMap.value.values()].map((item) => ({
+    questionBankId: item.questionBank.id!,
+    score: item.score,
+  }));
+  checkSuccess(examPageApi.release(createVo.value), true, '试卷发布', (v) => {
+    if (v) {
+      createVo.value.reset();
+      questionMap.value.clear();
+    }
+  });
 }
 </script>
 <style lang="less" scoped>
