@@ -14,3 +14,13 @@ WHERE
 
 
 select * from question_bank;
+
+insert into user values (2, 0, 'alice', 'alice', 0, NOW(), 1, NOW(), 1);
+insert into user values (3, 0, 'bob', 'bob', 0, NOW(), 1, NOW(), 1);
+insert into user values (4, 0, 'charlie', 'charlie', 0, NOW(), 1, NOW(), 1);
+insert into user values (5, 0, 'diana', 'diana', 0, NOW(), 1, NOW(), 1);
+insert into user values (6, 0, 'eve', 'eve', 0, NOW(), 1, NOW(), 1);
+insert into user values (7, 0, 'frank', 'frank', 0, NOW(), 1, NOW(), 1);
+insert into user values (8, 0, 'grace', 'grace', 0, NOW(), 1, NOW(), 1);
+insert into user values (9, 0, 'hank', 'hank', 0, NOW(), 1, NOW(), 1);
+insert into user values (10, 0, 'iris', 'iris', 0, NOW(), 1, NOW(), 1);
