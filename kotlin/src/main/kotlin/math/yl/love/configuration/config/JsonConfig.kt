@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 
@@ -59,7 +60,8 @@ class JsonConfig : ConfigurationCustomizer {
         }
 
         override fun deserialize(decoder: Decoder): LocalDateTime {
-            return LocalDateTime.parse(decoder.decodeString(), formatter)
+            val formatter = DateTimeFormatter.ISO_DATE_TIME
+            return ZonedDateTime.parse(decoder.decodeString(), formatter).toLocalDateTime()
         }
     }
 
