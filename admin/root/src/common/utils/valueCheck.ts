@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-03 20:09:48
- * @LastEditTime: 2024-11-14 18:49:32
+ * @LastEditTime: 2024-11-15 19:32:17
  * @Description: 数据检查
  */
 
@@ -15,17 +15,29 @@ const EmptyMsg = '数据不能为空!!!';
  * @param {string} msg - 错误信息
  */
 export function checkEmpty(value: any, msg: string = EmptyMsg) {
-  if (value === null || value === undefined) {
+  const showError = () => {
     message.error(msg);
     throw new Error(msg);
+  };
+
+  // 普通判断
+  if (value === null || value === undefined) {
+    showError();
   }
 
+  // map判断
+  if (value instanceof Map && value.size === 0) {
+    showError();
+  }
+
+  // 数组判断
   if (Array.isArray(value) && value.length === 0) {
-    message.error(msg);
-    throw new Error(msg);
-  } else if (typeof value === 'string' && value.trim() === '') {
-    message.error(msg);
-    throw new Error(msg);
+    showError();
+  }
+
+  // 字符串判断
+  if (typeof value === 'string' && value.trim() === '') {
+    showError();
   }
 }
 
@@ -70,7 +82,7 @@ export async function checkSuccess(
   promise: Promise<boolean>,
   isCreate: boolean = true,
   msg: string = '',
-  callBack?: () => void,
+  callBack?: (v: boolean) => void,
 ): Promise<unknown> {
   const res: boolean = await promise;
   const messageStr = isCreate ? '创建' : '修改';
@@ -81,7 +93,7 @@ export async function checkSuccess(
     throw new Error(`${msg} ${messageStr}失败!`);
   }
   if (callBack) {
-    callBack();
+    callBack(res);
   }
   return res;
 }
