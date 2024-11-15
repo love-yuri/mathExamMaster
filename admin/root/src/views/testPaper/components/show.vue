@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-11-07 18:54:50
- * @LastEditTime: 2024-11-14 19:25:40
+ * @LastEditTime: 2024-11-15 19:00:30
  * @Description: 展示选择的题目
 -->
 
@@ -183,7 +183,7 @@ type Menu = {
 const menus: Menu[] = [
   {
     command: () => {
-      const totalScore = props.createVo.total_score;
+      const totalScore = props.createVo.totalScore;
       const size = questions.value.length;
       questions.value.forEach((v) => {
         v.score = Math.floor(totalScore / size);
