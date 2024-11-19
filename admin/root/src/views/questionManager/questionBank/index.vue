@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 19:49:21
- * @LastEditTime: 2024-10-19 20:31:49
+ * @LastEditTime: 2024-11-19 19:06:43
  * @Description: 题库管理
 -->
 
@@ -173,9 +173,10 @@ function onPage(p: PageState) {
 }
 
 async function loadData() {
-  const res = await questionBankApi.pageSimple(pageParam.value);
-  fullQuestionBanks.value = res.records;
-  pageParam.value.total = res.total;
+  questionBankApi.pageSimple(pageParam.value).then((res) => {
+    fullQuestionBanks.value = res.records;
+    pageParam.value.total = res.total;
+  });
 }
 
 onMounted(loadData);
