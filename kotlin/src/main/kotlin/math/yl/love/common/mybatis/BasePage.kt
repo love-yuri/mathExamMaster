@@ -13,5 +13,10 @@ class BasePage<T>(
     val size: Long = page.size
     val records: List<T> = page.records
     val total: Long = page.total
+
+    constructor(current: Long, size: Long, records: List<T>, total: Long) : this(Page<T>(current, size).apply {
+        this.records = records
+        this.total = total
+    })
 }
 
