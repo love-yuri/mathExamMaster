@@ -65,7 +65,6 @@ class SecurityConfigurer(
         return http.build()
     }
 
-
     companion object {
         val safeUrl = arrayOf(
             // knife4jc 文档
