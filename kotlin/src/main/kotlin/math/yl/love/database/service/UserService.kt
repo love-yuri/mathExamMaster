@@ -26,14 +26,6 @@ class UserService(
 
     override val entityClass: KClass<User> get() = User::class
 
-    override fun list(): List<User> {
-        super.list().forEach {
-            logger.info("yuri: list -> ${it.toJson()}")
-        }
-
-        return super.list()
-    }
-
     fun test2(): String {
         return R.success().toJson();
     }
