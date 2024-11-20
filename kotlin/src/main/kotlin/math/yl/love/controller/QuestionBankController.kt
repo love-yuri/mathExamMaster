@@ -37,5 +37,5 @@ class QuestionBankController: BaseController<QuestionBank, QuestionBankMapper, Q
 
     @PostMapping("detail/{id}")
     @Operation(summary = "获取详细结果")
-    fun detail(@PathVariable id: String) = R.success(baseService.detail(id))
+    fun detail(@PathVariable id: Long) = R.success(baseService.detail(id))
 }
