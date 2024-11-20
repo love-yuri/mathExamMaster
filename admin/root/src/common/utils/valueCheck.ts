@@ -87,10 +87,10 @@ export async function checkSuccess(
   const res: boolean = await promise;
   const messageStr = isCreate ? '创建' : '修改';
   if (res) {
-    message.success(`${msg} ${messageStr}成功!`);
+    message.success(`${msg}${messageStr}成功!`);
   } else {
-    message.error(`${msg} ${messageStr}失败!`);
-    throw new Error(`${msg} ${messageStr}失败!`);
+    message.error(`${msg}${messageStr}失败!`);
+    throw new Error(`${msg}${messageStr}失败!`);
   }
   if (callBack) {
     callBack(res);
