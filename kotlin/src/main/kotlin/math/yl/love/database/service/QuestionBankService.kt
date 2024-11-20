@@ -77,8 +77,8 @@ class QuestionBankService(
         return BasePage(result)
     }
 
-    fun detail(id: String): FullQuestionBank {
-        val questionBank = getById(id.toLong()) ?: throw BizException("题目不存在!!!")
+    fun detail(id: Long): FullQuestionBank {
+        val questionBank = getById(id) ?: throw BizException("题目不存在!!!")
         val knowledgePointIds = bankAndPointService.findByQuestionBankId(questionBank.id!!).map {
             it.knowledgePointId
         }
