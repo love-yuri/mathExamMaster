@@ -4,7 +4,7 @@ import { BaseEntity } from '#/common/base/baseApi/types';
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-11-06 19:42:04
- * @LastEditTime: 2024-11-20 19:05:38
+ * @LastEditTime: 2024-11-22 19:15:13
  * @Description: 创建试卷常用接口
  */
 
@@ -34,7 +34,7 @@ export const SubjectTypeMap = {
   [SubjectType.HighMath]: '高等数学',
 };
 export class ExamPageCreateVO extends BaseEntity {
-  deadline?: Date;
+  deadline?: string;
   difficulty!: number;
   limitedTime!: number;
   questions!: ExamPageQuestionRelation[];
@@ -55,6 +55,7 @@ export class ExamPageCreateVO extends BaseEntity {
   override reset(): void {
     this.difficulty = 5;
     this.limitedTime = 7200;
+    this.deadline = undefined;
     this.totalScore = 100;
     this.title = '';
     this.type = ExamPageType.DEFULT;
