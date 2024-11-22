@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2024-11-20 18:52:19
+ * @LastEditTime: 2024-11-22 18:38:01
  * @Description:
  */
 import {
@@ -41,6 +41,13 @@ class Api extends BaseApi<BaseEntity> {
    */
   release = (param: ExamPageCreateVO) => {
     return this.add<boolean>(RequestType.POST, '/release', param);
+  };
+
+  /**
+   * 发布试卷
+   */
+  updatePage = (param: ExamPageCreateVO) => {
+    return this.add<boolean>(RequestType.POST, '/update/page', param);
   };
 }
 
