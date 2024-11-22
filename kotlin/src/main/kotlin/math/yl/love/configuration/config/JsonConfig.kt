@@ -13,7 +13,9 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import math.yl.love.common.base.Log.log
 import org.apache.ibatis.type.LocalDateTimeTypeHandler
+import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -47,6 +49,7 @@ class JsonConfig : ConfigurationCustomizer {
         configuration?.typeHandlerRegistry?.register(LocalDateTimeTypeHandler::class.java)
     }
 
+
     /**
      * java LocalDateTime 序列化器
      */
@@ -60,8 +63,11 @@ class JsonConfig : ConfigurationCustomizer {
         }
 
         override fun deserialize(decoder: Decoder): LocalDateTime {
-            val formatter = DateTimeFormatter.ISO_DATE_TIME
-            return ZonedDateTime.parse(decoder.decodeString(), formatter).toLocalDateTime()
+            val str = decoder.decodeString()
+            if (str.contains("T")) {
+                return LocalDateTime.parse(str, formatter)
+            }
+            return LocalDateTime.parse(str, DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))
         }
     }
 
