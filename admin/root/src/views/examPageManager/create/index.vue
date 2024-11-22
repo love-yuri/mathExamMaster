@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2024-11-20 20:39:21
+ * @LastEditTime: 2024-11-22 19:25:25
  * @Description: 创建试卷
 -->
 <template>
@@ -48,11 +48,15 @@
       <span class="title"> 截止时间: </span>
       <DatePicker
         v-model="createVo.deadline"
+        :min-date="new Date()"
         :readonly="isReadOnly"
         :show-on-focus="false"
+        date-format="yy-mm-dd"
         fluid
+        hour-format="24"
         placeholder="请选择截止时间"
         show-icon
+        show-time
       />
     </div>
     <div class="mt-2 flex items-center">
@@ -231,10 +235,15 @@ function releasePage() {
     questionBankId: item.questionBank.id!,
     score: item.score,
   }));
+  if (createVo.value.deadline) {
+    createVo.value.deadline = new Date(
+      createVo.value.deadline,
+    ).toLocaleString();
+  }
   const isUpdate = !!createVo.value.id;
-  const fun = isUpdate ? examPageApi.update : examPageApi.create;
+  const fun = isUpdate ? examPageApi.updatePage : examPageApi.release;
   checkSuccess(fun(createVo.value), !isUpdate, '试卷', (v) => {
-    if (v) {
+    if (v && !createVo.value.id) {
       createVo.value.reset();
       questionMap.value.clear();
     }
