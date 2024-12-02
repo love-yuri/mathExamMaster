@@ -16,7 +16,6 @@
   - `subject` 试卷科目 默认0: 高等数学
   - `type` 试卷的类型 默认0： 普通试卷
   - `difficulty` 试卷的难度: 默认5 最高9
-  - `deadline` 截止时间： 默认null 没有截止时间
   - `limited_time` 试卷限时： 默认7200 2消失
   - `total_score` 试卷总分: 默认100
 - [x] 试卷-题目关联表
@@ -29,6 +28,7 @@
   - `exam_page_id` 试卷id
   - `user_id` 用户id
   - `status` 当前试卷的状态，默认0: 未完成
+  - `deadline` 截止时间： 默认null 没有截止时间
 
 ## 功能完善
 
