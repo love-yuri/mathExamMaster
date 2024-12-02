@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2024-11-22 19:25:25
+ * @LastEditTime: 2024-12-02 18:20:54
  * @Description: 创建试卷
 -->
 <template>
@@ -44,7 +44,7 @@
       <span class="title required-text"> 试卷难度: </span>
       <Rating v-model="createVo.difficulty" :readonly="isReadOnly" :stars="9" />
     </div>
-    <div class="mt-2 flex items-center">
+    <!-- <div class="mt-2 flex items-center">
       <span class="title"> 截止时间: </span>
       <DatePicker
         v-model="createVo.deadline"
@@ -58,7 +58,7 @@
         show-icon
         show-time
       />
-    </div>
+    </div> -->
     <div class="mt-2 flex items-center">
       <div class="flex flex-col items-center justify-center">
         <Knob
@@ -121,7 +121,7 @@
         </div>
       </div>
     </div>
-    <div class="flex justify-center p-2">
+    <!-- <div class="flex justify-center p-2">
       <MultiSelect
         v-model="createVo.users"
         :disabled="isReadOnly"
@@ -132,7 +132,7 @@
         option-value="id"
         placeholder="请选择学生"
       />
-    </div>
+    </div> -->
     <div class="flex items-center justify-center p-2">
       <Button
         v-if="!isReadOnly"
@@ -150,16 +150,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import {
-  Button,
-  DatePicker,
-  InputText,
-  Knob,
-  MultiSelect,
-  Rating,
-  Select,
-  Tag,
-} from '#/components';
+import { Button, InputText, Knob, Rating, Select, Tag } from '#/components';
 import { computed, onMounted, ref } from 'vue';
 import {
   ExamPageCreateVO,
@@ -204,7 +195,6 @@ function valueCheck(): boolean {
   checkEmpty(createVo.value.title, '试卷标题不能为空!');
   checkEmpty(createVo.value.limitedTime, '考试时长不能为空!');
   checkEmpty(questionMap.value, '题目不能为空!');
-  checkEmpty(createVo.value.users, '学生数不能为空!');
   checkEqual(totalScore, createVo.value.totalScore, '总分与题目总分不一致!');
   return true;
 }
@@ -235,11 +225,11 @@ function releasePage() {
     questionBankId: item.questionBank.id!,
     score: item.score,
   }));
-  if (createVo.value.deadline) {
-    createVo.value.deadline = new Date(
-      createVo.value.deadline,
-    ).toLocaleString();
-  }
+  // if (createVo.value.deadline) {
+  //   createVo.value.deadline = new Date(
+  //     createVo.value.deadline,
+  //   ).toLocaleString();
+  // }
   const isUpdate = !!createVo.value.id;
   const fun = isUpdate ? examPageApi.updatePage : examPageApi.release;
   checkSuccess(fun(createVo.value), !isUpdate, '试卷', (v) => {

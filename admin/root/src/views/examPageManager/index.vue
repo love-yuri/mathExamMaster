@@ -66,6 +66,12 @@
                 label="预览"
                 raised
                 severity="info"
+                @click="
+                  router.push({
+                    name: 'examPageUpdate',
+                    params: { id: slotProps.data.id },
+                  })
+                "
               />
             </template>
           </Column>
