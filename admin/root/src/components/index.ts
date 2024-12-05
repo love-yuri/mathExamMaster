@@ -45,5 +45,6 @@ export { default as Tabs } from 'primevue/tabs';
 export { default as Tag } from 'primevue/tag';
 export { default as Textarea } from 'primevue/textarea';
 export { default as Toast } from 'primevue/toast';
+export { default as ToggleSwitch } from 'primevue/toggleswitch';
 export { default as Toolbar } from 'primevue/toolbar';
 export { default as Tooltip } from 'primevue/tooltip';
