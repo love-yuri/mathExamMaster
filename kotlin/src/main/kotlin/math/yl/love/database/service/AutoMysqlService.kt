@@ -53,12 +53,12 @@ class AutoMysqlService(
      * 创建生成的代码文件
      * 如果需要替换原来的内容请删除存在检测
      */
-    fun createFile(path: String): File {
+    fun createFile(path: String, override: Boolean): File {
         return File(path).apply {
             if (!parentFile.exists()) {
                 parentFile.mkdirs()
             }
-            if (exists()) {
+            if (!override && exists()) {
                 val msg = "$path 已存在!!"
                 log.error(msg)
                 throw BizException(msg)
@@ -97,7 +97,8 @@ class AutoMysqlService(
             param.tableName,
             entityName,
             res[0].tableComment,
-            column = res
+            column = res,
+            override = param.override
         )
 
         createEntity(createParam)
@@ -113,8 +114,8 @@ class AutoMysqlService(
      * 返回实体类名
      */
     fun createEntity(param: CreateTableFileParam) {
-        val ( tableName, entityName, _, _, _, _, _, column ) = param
-        val file = createFile("${dbPath}/${GenerateMapperConstant.ENTITY_PATH}/${entityName}.kt")
+        val ( tableName, entityName, _, _, _, _, _, column, override ) = param
+        val file = createFile("${dbPath}/${GenerateMapperConstant.ENTITY_PATH}/${entityName}.kt", override)
         val packageName = GenerateMapperConstant.ENTITY_PATH.replace("/", ".").dropLast(1)
         param.entity = "$packageName.$entityName"
 
@@ -201,11 +202,11 @@ class AutoMysqlService(
      */
     fun createMapper(param: CreateTableFileParam) {
         val packageName = GenerateMapperConstant.MAPPER_PATH.replace("/", ".").dropLast(1)
-        val ( _, entityName, _, entity, _, _, _, _ ) = param.apply {
+        val ( _, entityName, _, entity, _, _, _, _, override ) = param.apply {
             param.mapper = "${packageName}.${entityName}Mapper"
         }
         val baseName = "${entityName}Mapper"
-        val file = createFile("${dbPath}/${GenerateMapperConstant.MAPPER_PATH}/${baseName}.kt")
+        val file = createFile("${dbPath}/${GenerateMapperConstant.MAPPER_PATH}/${baseName}.kt", override)
 
         val content = """
             package $packageName
@@ -226,11 +227,11 @@ class AutoMysqlService(
      */
     fun createService(param: CreateTableFileParam) {
         val packageName = GenerateMapperConstant.SERVICE_PATH.replace("/", ".").dropLast(1)
-        val ( _, entityName, _, entity, mapper, _, _, _ ) = param.apply {
+        val ( _, entityName, _, entity, mapper, _, _, _, override ) = param.apply {
             param.service = "${packageName}.${entityName}Service"
         }
         val baseName = "${entityName}Service"
-        val file = createFile("${dbPath}/${GenerateMapperConstant.SERVICE_PATH}/${baseName}.kt")
+        val file = createFile("${dbPath}/${GenerateMapperConstant.SERVICE_PATH}/${baseName}.kt", override)
 
         val content = """
             package $packageName
@@ -257,11 +258,11 @@ class AutoMysqlService(
      */
     fun createController(param: CreateTableFileParam) {
         val packageName = GenerateMapperConstant.CONTROLLER_PATH.replace("/", ".").dropLast(1)
-        val ( tableName, entityName, tableComment, entity, mapper, service, _, _ ) = param.apply {
+        val ( tableName, entityName, tableComment, entity, mapper, service, _, _, override ) = param.apply {
             param.controller = "${packageName}.${entityName}Controller"
         }
         val baseName = "${entityName}Controller"
-        val file = createFile("${dbPath}/${GenerateMapperConstant.CONTROLLER_PATH}/${baseName}.kt")
+        val file = createFile("${dbPath}/${GenerateMapperConstant.CONTROLLER_PATH}/${baseName}.kt", override)
 
         val content = """
             package $packageName
