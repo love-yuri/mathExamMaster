@@ -1,10 +1,11 @@
 import type { FullQuestionBank } from '#/api/questionBankApi';
+import type { User } from '#/api/userApi';
 import { BaseEntity } from '#/common/base/baseApi/types';
 
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-11-06 19:42:04
- * @LastEditTime: 2024-12-02 18:21:34
+ * @LastEditTime: 2024-12-05 19:57:31
  * @Description: 创建试卷常用接口
  */
 
@@ -99,3 +100,47 @@ export const typeOptions: BaseOption[] = [
     value: ExamPageType.DEFULT,
   },
 ];
+
+export class ExamPageReleaseParam extends BaseEntity {
+  endTime!: string;
+  examPageId!: string;
+  startTime!: string;
+  userIds!: User[];
+
+  /**
+   * 手动调用reset
+   */
+  constructor() {
+    super();
+    this.reset();
+  }
+
+  override reset(): void {
+    this.startTime = '';
+    this.endTime = '';
+    this.userIds = [];
+    this.examPageId = '';
+  }
+}
+
+/**
+ * 试卷发布结果
+ */
+export class ExamPageReleaseResult extends ExamPageReleaseParam {
+  examPage?: ExamPageResult;
+  users: User[] = [];
+
+  /**
+   * 手动调用reset
+   */
+  constructor() {
+    super();
+    this.reset();
+  }
+
+  override reset(): void {
+    super.reset();
+    this.users = [];
+    this.examPage = undefined;
+  }
+}
