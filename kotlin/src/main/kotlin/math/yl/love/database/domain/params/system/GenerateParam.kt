@@ -6,4 +6,5 @@ import kotlinx.serialization.Serializable
 data class GenerateParam (
     val tableName: String,
     val dataBaseName: String = "zyl",
+    val override: Boolean = false, // 是否覆盖
 )

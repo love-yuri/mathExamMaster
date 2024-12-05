@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-29 11:34:19
- * @LastEditTime: 2024-10-03 19:02:59
+ * @LastEditTime: 2024-12-03 18:34:53
  * @Description: 
 -->
 <template>
@@ -20,6 +20,10 @@
       option-label="name"
       placeholder="请选择待生成的表"
     />
+    <div class="mt-7 flex items-center">
+      <span class="mx-2 text-[20px]">是否覆盖原有数据</span>
+      <ToggleSwitch v-model="override" />
+    </div>
     <Button class="mt-7" @click="handleGenerate">生成</Button>
   </div>
 </template>
@@ -27,7 +31,7 @@
 <script setup lang="ts">
 import message from '#/common/utils/message';
 import { systemApi } from '#/api/systemApi';
-import { Button, Select } from '#/components';
+import { Button, Select, ToggleSwitch } from '#/components';
 import { onMounted, ref, watch } from 'vue';
 
 type Option = {
@@ -38,6 +42,7 @@ const selectedDb = ref();
 const selectedTable = ref();
 const databases = ref<Option[]>([]);
 const tables = ref<Option[]>([]);
+const override = ref(false);
 
 const loadDatabases = async () => {
   const res = await systemApi.databases();
@@ -57,6 +62,7 @@ function handleGenerate() {
   systemApi
     .generate({
       dataBaseName: selectedDb.value.name,
+      override: override.value,
       tableName: selectedTable.value.name,
     })
     .then(() => {

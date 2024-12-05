@@ -10,5 +10,6 @@ data class CreateTableFileParam(
     var mapper: String = "",
     var service: String = "",
     var controller: String = "",
-    val column: List<ColumnInfoResult>
+    val column: List<ColumnInfoResult>,
+    val override: Boolean = false
 )
