@@ -61,6 +61,15 @@
                     icon: 'pi pi-trash',
                     command: () => remove(slotProps.data.id!),
                   },
+                  {
+                    label: '发布试卷',
+                    icon: 'pi pi-trash',
+                    command: () =>
+                      router.push({
+                        name: 'examPageReleasePage',
+                        params: { id: slotProps.data.id },
+                      }),
+                  },
                 ]"
                 icon="pi pi-eye"
                 label="预览"
