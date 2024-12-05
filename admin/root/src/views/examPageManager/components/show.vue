@@ -1,12 +1,12 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-11-07 18:54:50
- * @LastEditTime: 2024-11-20 20:31:24
+ * @LastEditTime: 2024-12-05 19:31:35
  * @Description: 展示选择的题目
 -->
 
 <template>
-  <div class="testPager-show p-2">
+  <div class="testPager-show">
     <Card>
       <template #content>
         <DataTable :value="questions" scrollable table-style="min-width: 50rem">
