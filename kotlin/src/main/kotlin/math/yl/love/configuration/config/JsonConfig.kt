@@ -67,7 +67,7 @@ class JsonConfig : ConfigurationCustomizer {
             if (str.contains("T")) {
                 return LocalDateTime.parse(str, formatter)
             }
-            return LocalDateTime.parse(str, DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))
+            return LocalDateTime.parse(str, DateTimeFormatter.ofPattern("yyyy/M/d HH:mm:ss"))
         }
     }
 
