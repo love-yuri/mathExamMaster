@@ -110,10 +110,24 @@ CREATE TABLE `exam_page_question_relation` (
    PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='试卷-题目关联表';
 
+DROP TABLE IF EXISTS `exam_page_release`;
+CREATE TABLE `exam_page_release` (
+   `id` bigint NOT NULL COMMENT '主键id',
+   `exam_page_id` bigint NOT NULL COMMENT '试卷id',
+   `start_time` datetime NOT NULL COMMENT '开始时间',
+   `end_time` datetime NOT NULL COMMENT '结束时间',
+   `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
+   `create_time` datetime NOT NULL COMMENT '创建时间',
+   `create_by` varchar(16) NOT NULL comment '创建用户',
+   `update_time` datetime NOT NULL COMMENT '最后修改时间',
+   `update_by` varchar(16) NOT NULL comment '更新用户',
+   PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='试卷-发布表';
+
 DROP TABLE IF EXISTS `exam_page_user_relation`;
 CREATE TABLE `exam_page_user_relation` (
    `id` bigint NOT NULL COMMENT '主键id',
-   `exam_page_id` bigint NOT NULL COMMENT '试卷id',
+   `page_release_id` bigint NOT NULL COMMENT '试卷发布',
    `user_id` bigint NOT NULL COMMENT '用户id',
    `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '当前试卷的状态，默认0: 未完成',
    `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
