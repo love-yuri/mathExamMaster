@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2024-10-03 19:03:31
+ * @LastEditTime: 2024-12-03 18:33:07
  * @Description:
  */
 import { BaseApi } from '#/common/base/baseApi/baseApi';
@@ -11,6 +11,7 @@ import type { UploadFileParam } from '@vben/request';
 
 export interface GenerateParams {
   dataBaseName: string;
+  override: boolean;
   tableName: string;
 }
 
