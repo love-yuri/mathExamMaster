@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2024-12-05 19:44:23
+ * @LastEditTime: 2024-12-09 18:54:48
  * @Description:
  */
 import {
@@ -14,7 +14,6 @@ import {
   ExamPageCreateVO,
   ExamPageReleaseParam,
   type ExamPageReleaseResult,
-  ExamPageResult,
 } from '#/views/examPageManager/types';
 
 class Api extends BaseApi<BaseEntity> {
@@ -24,7 +23,7 @@ class Api extends BaseApi<BaseEntity> {
    * 根据id获取详情
    */
   detail = (id: string) => {
-    return this.add<ExamPageResult>(RequestType.POST, '/detail', id);
+    return this.add<ExamPageReleaseResult>(RequestType.POST, `/detail/${id}`);
   };
 
   /**
@@ -43,6 +42,13 @@ class Api extends BaseApi<BaseEntity> {
    */
   release = (param: ExamPageReleaseParam) => {
     return this.add<boolean>(RequestType.POST, '/release', param);
+  };
+
+  /**
+   * 更新发布试卷
+   */
+  releaseUpdate = (param: ExamPageReleaseParam) => {
+    return this.add<boolean>(RequestType.POST, '/release/update', param);
   };
 
   /**
