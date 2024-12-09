@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2024-12-05 19:41:43
+ * @LastEditTime: 2024-12-09 19:18:27
  * @Description: 创建试卷
 -->
 <template>
@@ -125,12 +125,14 @@ import Show from '#/views/examPageManager/components/show.vue';
 
 import { examPageApi } from '#/api/examPageApi';
 import { type Student, userApi } from '#/api/userApi';
-import { useRoute } from '#/router';
+import { router, useRoute } from '#/router';
 import { checkEmpty } from '#/common/utils/valueCheck';
 import { formatPrimeVueTime } from '#/common/utils/timeUtils';
 import { examPageReleaseApi } from '#/api/examPageReleaseApi';
 import message from '#/common/utils/message';
+import { useTabs } from '@vben/hooks';
 
+const { closeCurrentTab } = useTabs();
 const route = useRoute();
 
 const releaseParam = ref<ExamPageReleaseParam>(new ExamPageReleaseParam());
@@ -187,6 +189,10 @@ function release() {
   examPageReleaseApi.release(releaseParam.value).then((res) => {
     if (res) {
       message.success('试卷发布成功');
+      closeCurrentTab();
+      router.push({
+        name: 'examPageRelease',
+      });
     } else {
       message.error('试卷发布失败');
     }
