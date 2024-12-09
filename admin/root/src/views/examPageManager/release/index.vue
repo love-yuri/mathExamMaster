@@ -12,7 +12,7 @@
                 rounded
                 @click="
                   router.push({
-                    name: 'examPageReleasePage',
+                    name: 'examPage',
                   })
                 "
               />
@@ -49,8 +49,10 @@
                     icon: 'pi pi-pencil',
                     command: () => {
                       router.push({
-                        name: 'examPageUpdate',
-                        params: { id: slotProps.data.id },
+                        name: 'examPageReleasePageUpdate',
+                        params: {
+                          id: slotProps.data.id,
+                        },
                       });
                     },
                   },
@@ -61,13 +63,13 @@
                   },
                 ]"
                 icon="pi pi-eye"
-                label="预览"
+                label="预览试卷"
                 raised
                 severity="info"
                 @click="
                   router.push({
                     name: 'examPageUpdate',
-                    params: { id: slotProps.data.id },
+                    params: { id: slotProps.data.examPage?.id!! },
                   })
                 "
               />
@@ -99,7 +101,6 @@ import {
   Tag,
 } from '#/components';
 import { type ExamPageReleaseResult } from '#/views/examPageManager/types';
-import { examPageApi } from '#/api/examPageApi';
 import type { PageParam } from '#/common/base/baseApi/baseApi';
 import type { PageState } from 'primevue/paginator';
 import { useConfirm } from 'primevue/useconfirm';
@@ -107,6 +108,9 @@ import { router } from '#/router';
 import { EllipsisText } from '@vben/common-ui';
 import message from '#/common/utils/message';
 import { examPageReleaseApi } from '#/api/examPageReleaseApi';
+import { useTabs } from '@vben/hooks';
+
+const { closeTabByKey } = useTabs();
 
 const confirm = useConfirm();
 const pageParam = ref<PageParam>({
@@ -142,8 +146,9 @@ onMounted(loadData);
 function remove(id: string) {
   confirm.require({
     accept: () => {
-      examPageApi.delete(id).then(() => {
+      examPageReleaseApi.delete(id).then(() => {
         message.success('删除成功');
+        closeTabByKey(`/exam/page/release/page/update/${id}`);
         loadData();
       });
     },
