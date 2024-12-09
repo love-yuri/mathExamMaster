@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 23:35:05
- * @LastEditTime: 2024-12-05 18:29:53
+ * @LastEditTime: 2024-12-09 18:24:37
  * @Description: 系统路由
  */
 import type { RouteRecordRaw } from 'vue-router';
@@ -70,6 +70,18 @@ const routes: RouteRecordRaw[] = [
           hideInMenu: true,
           icon: 'lucide:copyright',
           title: '发布试卷',
+        },
+      },
+      {
+        name: 'examPageReleasePageUpdate',
+        path: String.raw`/exam/page/release/page/update/:id(\d+)`,
+        component: () =>
+          import('#/views/examPageManager/release/releasePageUpdate.vue'),
+        meta: {
+          affixTab: false,
+          hideInMenu: true,
+          icon: 'lucide:copyright',
+          title: '更新发布试卷',
         },
       },
     ],
