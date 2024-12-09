@@ -105,7 +105,7 @@ export class ExamPageReleaseParam extends BaseEntity {
   endTime!: string;
   examPageId!: string;
   startTime!: string;
-  userIds!: User[];
+  userIds!: string[];
 
   /**
    * 手动调用reset
