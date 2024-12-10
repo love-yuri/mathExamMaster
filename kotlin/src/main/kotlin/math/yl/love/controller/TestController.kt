@@ -30,11 +30,6 @@ class TestController(
 
     private val log = LoggerFactory.getLogger(TestController::class.java)
 
-    @GetMapping("hello2")
-    fun hello2(): R<String> {
-        return R.success(userService.test2())
-    }
-
     @PostMapping("page/test")
     fun pageTest() {
         val page = Page<KnowledgePoint>().apply {

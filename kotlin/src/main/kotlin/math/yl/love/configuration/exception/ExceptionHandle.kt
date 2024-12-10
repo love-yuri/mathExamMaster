@@ -1,5 +1,6 @@
 package math.yl.love.configuration.exception
 
+import cn.dev33.satoken.exception.NotLoginException
 import math.yl.love.common.base.R
 import math.yl.love.common.base.SystemCode
 import org.slf4j.LoggerFactory
@@ -48,6 +49,15 @@ class ExceptionHandle {
     fun handler(e: BizException): R<*> {
         log.error("yuri: 业务逻辑异常 -> ${e.message}", e)
         return R.fail(SystemCode.BizError.code,  e.message ?: SystemCode.BizError.message)
+    }
+
+    /**
+     * token解析失败
+     */
+    @ExceptionHandler(NotLoginException::class)
+    @ResponseBody
+    fun handler(e: NotLoginException): R<*> {
+        return R.fail(SystemCode.AccessTokenError.code,  e.message ?: SystemCode.AccessTokenError.message)
     }
 
     /**

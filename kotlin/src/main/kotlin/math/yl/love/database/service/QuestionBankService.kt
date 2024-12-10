@@ -1,5 +1,6 @@
 package math.yl.love.database.service
 
+import cn.dev33.satoken.stp.StpUtil
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import math.yl.love.common.mybatis.BasePage
 import math.yl.love.common.mybatis.BaseService

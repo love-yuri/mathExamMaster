@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 16:37:25
- * @LastEditTime: 2024-09-10 22:51:25
+ * @LastEditTime: 2024-12-10 19:05:35
  * @Description:
  */
 /**
@@ -38,8 +38,6 @@ function createRequestClient(baseURL: string) {
   // 请求头处理
   client.addRequestInterceptor({
     fulfilled: async (config) => {
-      const accessStore = useAccessStore();
-      config.headers.Authorization = accessStore.accessToken;
       config.headers['Accept-Language'] = preferences.app.locale;
       return config;
     },
@@ -57,6 +55,7 @@ function createRequestClient(baseURL: string) {
         return data.data;
       } else {
         message.error(`请求失败! code: ${data.code} -> ${data.message}`);
+        requestError(data);
         throw new Error(`请求失败! code: ${data.code} -> ${data.message}`);
       }
     },
@@ -66,29 +65,7 @@ function createRequestClient(baseURL: string) {
         const data = error.response.data as R;
         message.error(`请求失败: ${data.code} -> ${data.message}`);
 
-        // 如果是未登陆或token过期，跳转到登录页面
-        if (
-          [SystemCode.AccessTokenError, SystemCode.UNAUTHORIZED].includes(
-            data.code,
-          )
-        ) {
-          // window.location.href = '/login';
-          const accessStore = useAccessStore();
-          if (accessStore.isAccessChecked) {
-            accessStore.setLoginExpired(true);
-          } else {
-            // 回登陆页带上当前路由地址
-            await useAuthStore().logout();
-            await router.replace({
-              path: LOGIN_PATH,
-              query: {
-                redirect: encodeURIComponent(
-                  router.currentRoute.value.fullPath,
-                ),
-              },
-            });
-          }
-        }
+        requestError(data);
         throw error;
       } else if (error.request) {
         // 请求已发出，但没有收到响应
@@ -114,6 +91,28 @@ function createRequestClient(baseURL: string) {
   // );
 
   return client;
+}
+
+async function requestError(data: R) {
+  // 如果是未登陆或token过期，跳转到登录页面
+  if (
+    [SystemCode.AccessTokenError, SystemCode.UNAUTHORIZED].includes(data.code)
+  ) {
+    // window.location.href = '/login';
+    const accessStore = useAccessStore();
+    if (accessStore.isAccessChecked) {
+      accessStore.setLoginExpired(true);
+    } else {
+      // 回登陆页带上当前路由地址
+      await useAuthStore().logout();
+      await router.replace({
+        path: LOGIN_PATH,
+        query: {
+          redirect: encodeURIComponent(router.currentRoute.value.fullPath),
+        },
+      });
+    }
+  }
 }
 
 export const requestClient = createRequestClient(apiURL);

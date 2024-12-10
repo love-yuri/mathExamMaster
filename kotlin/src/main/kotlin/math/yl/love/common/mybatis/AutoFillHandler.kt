@@ -1,9 +1,8 @@
 package math.yl.love.common.mybatis
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler
-import math.yl.love.database.domain.result.user.LoginJwtResult
+import math.yl.love.common.utils.CommonUtils
 import org.apache.ibatis.reflection.MetaObject
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 import java.util.*
@@ -17,17 +16,14 @@ class AutoFillHandler : MetaObjectHandler {
     override fun insertFill(metaObject: MetaObject) {
         this.strictInsertFill(metaObject, "createTime", LocalDateTime::class.java, LocalDateTime.now())
         this.strictInsertFill(metaObject, "updateTime", LocalDateTime::class.java, LocalDateTime.now())
-        val authentication = SecurityContextHolder.getContext().authentication
-        val userDetails = authentication.principal as LoginJwtResult
-        this.strictInsertFill(metaObject, "createBy", String::class.java, userDetails.username)
-        this.strictInsertFill(metaObject, "updateBy", String::class.java, userDetails.username)
+        
+        this.strictInsertFill(metaObject, "createBy", String::class.java, CommonUtils.username)
+        this.strictInsertFill(metaObject, "updateBy", String::class.java, CommonUtils.username)
     }
 
     override fun updateFill(metaObject: MetaObject) {
         this.strictUpdateFill(metaObject, "updateTime", LocalDateTime::now, LocalDateTime::class.java)
-        val authentication = SecurityContextHolder.getContext().authentication
-        val userDetails = authentication.principal as LoginJwtResult
-        this.strictInsertFill(metaObject, "updateBy", String::class.java, userDetails.username)
+        this.strictInsertFill(metaObject, "updateBy", String::class.java, CommonUtils.username)
     }
 
     /**
