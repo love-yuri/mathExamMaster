@@ -10,7 +10,7 @@ CREATE TABLE user (
   `id` bigint NOT NULL COMMENT 'id',
   `role` tinyint(1) NOT NULL default 1 comment '角色: 1: 管理员, 2: 老师， 3: 学生',
   `user_name` varchar(16) NOT NULL unique comment '用户名',
-  `pass_word` varchar(128) NOT NULL comment '密码',
+  `pass_word` varchar(32) NOT NULL comment '密码',
   `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `create_by` varchar(16) NOT NULL comment '创建用户',
@@ -19,8 +19,21 @@ CREATE TABLE user (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户表';
 
-# insert into user value (1, 1, 'yuri', '$2a$10$b2nCP59gVbx1Eqhw6c2p2OS6jlbX.8GrjziRuGNjTQ.1lKuU5y3f.', 0, NOW(), 1, NOW(), 1);
-insert into user value (1, 1, 'yuri', 'yuri', 0, NOW(), 1, NOW(), 1);
+insert into user value (1, 1, 'yuri', 'yuri', 0, NOW(), 'yuri', NOW(), 'yuri');
+
+DROP TABLE IF EXISTS `department`;
+CREATE TABLE department (
+  `id` bigint NOT NULL COMMENT 'id',
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '组织名称',
+  `parent_id` bigint NULL DEFAULT NULL comment '父组织id',
+  `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `create_by` varchar(16) NOT NULL comment '创建用户',
+  `update_time` datetime NOT NULL COMMENT '最后修改时间',
+  `update_by` varchar(16) NOT NULL  comment '更新用户',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='组织-部门表';
+insert into department value (1, '常熟理工学院', NULL, 0, NOW(), 'yuri', NOW(), 'yuri');
 
 DROP TABLE IF EXISTS `system_file`;
 CREATE TABLE `system_file` (
