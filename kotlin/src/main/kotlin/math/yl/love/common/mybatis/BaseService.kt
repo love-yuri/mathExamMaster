@@ -42,5 +42,11 @@ abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>>: ISe
         }
         return emptyList()
     }
+
+    /**
+     * 直接返回list
+     * @return list结果
+     */
+    fun KtQueryWrapper<Entity>.list(): List<Entity> = list(this)
 }
 
