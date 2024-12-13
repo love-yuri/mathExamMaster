@@ -1,11 +1,12 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2024-12-12 20:36:17
+ * @LastEditTime: 2024-12-13 18:59:58
  * @Description: 题目
  */
 import { BaseApi } from '#/common/base/baseApi/baseApi';
 import { BaseEntity, RequestType } from '#/common/base/baseApi/types';
+import type { UserResult } from './userApi';
 
 export interface TreeResult {
   children?: TreeResult[];
@@ -37,8 +38,20 @@ export class Department extends BaseEntity {
   }
 }
 
+export interface DepartmentDetail {
+  createTime: string;
+  id: string;
+  name: string;
+  parentId: string;
+  users: UserResult[];
+}
+
 class Api extends BaseApi<Department> {
   override baseUrl: string = '/department';
+
+  detail = (id: string) => {
+    return this.add<DepartmentDetail>(RequestType.POST, '/detail', id);
+  };
 
   tree = () => {
     return this.add<TreeResult>(RequestType.GET, '/tree');
