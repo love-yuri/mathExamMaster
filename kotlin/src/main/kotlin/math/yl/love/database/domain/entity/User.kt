@@ -49,9 +49,9 @@ data class User (
 
     @TableField("user_name")
     @Schema(description = "用户名")
-    val username: String? = null,
+    val username: String,
 
     @TableField("pass_word")
     @Schema(description = "密码")
-    val password: String? = null,
+    val password: String,
 ) : BaseEntity
