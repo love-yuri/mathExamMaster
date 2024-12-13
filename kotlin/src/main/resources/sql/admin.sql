@@ -19,7 +19,22 @@ CREATE TABLE user (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户表';
 
+# 默认管理
 insert into user value (1, 1, 'yuri', 'yuri', 0, NOW(), 'yuri', NOW(), 'yuri');
+
+DROP TABLE IF EXISTS `user_department`;
+CREATE TABLE user_department (
+  `id` bigint NOT NULL COMMENT 'id',
+  `user_id` bigint NOT NULL comment '用户id',
+  `department_id` bigint NOT NULL comment '组织id',
+  `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `create_by` varchar(16) NOT NULL comment '创建用户',
+  `update_time` datetime NOT NULL COMMENT '最后修改时间',
+  `update_by` varchar(16) NOT NULL  comment '更新用户',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户-组织关联表';
+
 
 DROP TABLE IF EXISTS `department`;
 CREATE TABLE department (
