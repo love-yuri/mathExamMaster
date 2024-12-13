@@ -1,10 +1,14 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 17:05:12
- * @LastEditTime: 2024-11-15 18:35:32
+ * @LastEditTime: 2024-12-13 19:27:27
  * @Description:
  */
-import { BaseApi } from '#/common/base/baseApi/baseApi';
+import {
+  BaseApi,
+  type PageParam,
+  type PageResult,
+} from '#/common/base/baseApi/baseApi';
 import { BaseEntity, RequestType } from '#/common/base/baseApi/types';
 import type { UserInfo } from '@vben/types';
 
@@ -38,6 +42,11 @@ export interface Student {
   username: string;
 }
 
+export interface UserResult {
+  id: string;
+  username: string;
+}
+
 class Api extends BaseApi<User> {
   override baseUrl: string = '/user';
 
@@ -48,6 +57,13 @@ class Api extends BaseApi<User> {
    */
   login = async (params: LoginParams) => {
     return this.add<LoginResult>(RequestType.POST, '/login', params);
+  };
+
+  /**
+   * 分页
+   */
+  resultPage = async (param: PageParam) => {
+    return this.add<PageResult<UserResult>>(RequestType.POST, '/page', param);
   };
 
   /**
