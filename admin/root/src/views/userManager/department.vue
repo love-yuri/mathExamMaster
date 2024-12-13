@@ -1,85 +1,148 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-12 17:47:35
- * @LastEditTime: 2024-12-12 20:54:09
+ * @LastEditTime: 2024-12-13 21:20:56
  * @Description: 组织管理
 -->
 
 <template>
-  <div class="card overflow-x-auto">
-    {{ selectKey }}
-    <OrganizationChart @node-select="handleNodeSelect" v-model:selection-keys="selectKey" v-if="treeData" :value="treeData" collapsible selection-mode="single">
-      <!-- <template #person="slotProps">
-        <div class="flex flex-col">
-          <div class="flex flex-col items-center">
-            <img
-              :alt="slotProps.node.data.name"
-              :src="slotProps.node.data.image"
-              class="mb-4 h-12 w-12"
-            />
-            <span class="mb-2 font-bold">{{ slotProps.node.data.name }}</span>
-            <span>{{ slotProps.node.data.title }}</span>
-          </div>
-        </div>
-      </template> -->
+  <div class="flex h-full p-2">
+    <OrganizationChart
+      v-if="treeData"
+      v-model:selection-keys="selectKey"
+      :value="treeData"
+      class="flex-grow"
+      collapsible
+      selection-mode="single"
+      @node-select="handleNodeSelect"
+    >
       <template #default="slotProps">
         <!-- @click="(e) => onSelect(e, slotProps.node)" -->
-        <span class="cursor-pointer" >{{ slotProps.node.label }}
-        </span>
+        <span class="cursor-pointer">{{ slotProps.node.label }} </span>
       </template>
     </OrganizationChart>
-    <Popover ref="popoverRef">
-      <div>
-        <div class="flex flex-col items-center">
-          <span class="mb-2 text-[20px] font-semibold">创建组织</span>
-          <InputText v-model="createParam.name" placeholder="请输入组织名称" />
-          <Button
-            class="mt-2 h-6 w-24"
-            label="确认"
-            @click="createDepartment"
-          />
+    <div
+      class="min-h-full w-[400px] flex-shrink-0 rounded-[12px] bg-[#DFE3E9] p-2"
+    >
+      <div v-if="currentDep">
+        <div class="my-1 flex justify-between">
+          <Button icon="pi pi-plus" label="添加用户" @click="addUser" />
+          <Button icon="pi pi-plus" label="添加下级组织" @click="onSelect" />
+        </div>
+        <div class="">
+          <div class="ml-4 text-[15px] text-[#84888F]">组织名称</div>
+          <div class="mt-1 rounded-[4px] bg-white p-2">
+            {{ currentDep?.name }}
+          </div>
+        </div>
+        <div class="mt-3">
+          <div class="ml-4 text-[15px] text-[#84888F]">组织创建时间</div>
+          <div class="mt-1 rounded-[4px] bg-white p-2">
+            {{ currentDep.createTime }}
+          </div>
+        </div>
+        <div class="mt-3">
+          <div class="ml-4 text-[15px] text-[#84888F]">用户列表</div>
+          <div
+            v-for="user in currentDep.users"
+            :key="user.id"
+            class="mt-1 rounded-[4px] bg-white p-2"
+          >
+            {{ user.username }}
+          </div>
         </div>
       </div>
-    </Popover>
+      <div v-else class="flex h-full items-center justify-center">
+        <span class="text-[23px] font-semibold">请选择一个组织</span>
+      </div>
+    </div>
+    <UserSelect ref="userSelectRef" />
   </div>
+  <Popover ref="popoverRef">
+    <div class="flex flex-col items-center">
+      <span class="mb-2 text-[20px] font-semibold">创建组织</span>
+      <InputText v-model="createParam.name" placeholder="请输入组织名称" />
+      <Button class="mt-2 h-6 w-24" label="确认" @click="createDepartment" />
+    </div>
+  </Popover>
 </template>
 
 <script setup lang="ts">
 import {
   Department,
   departmentApi,
+  type DepartmentDetail,
   type TreeResult,
 } from '#/api/departmentApi';
+import { userDepartmentApi } from '#/api/userDepartmentApi';
+import message from '#/common/utils/message';
 import { checkEmpty, checkSuccess } from '#/common/utils/valueCheck';
-import { Button, InputText, OrganizationChart, Popover } from '#/components';
+import {
+  Button,
+  InputText,
+  OrganizationChart,
+  Popover,
+  UserSelect,
+} from '#/components';
 import { onMounted, ref, useTemplateRef } from 'vue';
 
+const popoverRef = useTemplateRef('popoverRef');
 const treeData = ref<TreeResult>();
 const selectKey = ref<TreeResult>();
+const currentDep = ref<DepartmentDetail>();
 const createParam = ref<Department>(new Department());
-const popoverRef = useTemplateRef('popoverRef');
+const userSelectRef = useTemplateRef('userSelectRef');
 
 function loadData() {
   departmentApi.tree().then((res) => (treeData.value = res));
 }
 
-function onSelect(event: Event, node: TreeResult) {
-  createParam.value.parentId = node.key;
+function onSelect(event: Event) {
   popoverRef.value?.toggle(event);
 }
 
 function createDepartment() {
+  createParam.value.parentId = currentDep.value!!.id;
   checkEmpty(createParam.value.name, '组织名称不能为空!!!');
+  checkEmpty(createParam.value.parentId, '父级组织id不能为空!!!');
   checkSuccess(departmentApi.create(createParam.value), true, '组织', (v) => {
     if (v) {
       popoverRef.value?.hide();
+      createParam.value.reset();
       loadData();
     }
   });
 }
 
-function handleNodeSelect(node) {
-  console.log('yuri: ', node.label);
+function loadNodeData(id: string) {
+  departmentApi.detail(id).then((res) => {
+    currentDep.value = res;
+  });
+}
+
+function handleNodeSelect(node: TreeResult) {
+  loadNodeData(node.key);
+}
+
+function addUser() {
+  userSelectRef.value?.show(currentDep.value!!.users, (res) => {
+    if (res.length === 0) {
+      return;
+    }
+    userDepartmentApi
+      .batchSave({
+        departmentId: currentDep.value?.id!!,
+        userIds: res.map((v) => v.id),
+      })
+      .then((v) => {
+        if (v) {
+          setTimeout(() => {
+            loadNodeData(currentDep.value!!.id);
+          }, 400);
+          message.success('添加成功');
+        }
+      });
+  });
 }
 
 onMounted(loadData);
