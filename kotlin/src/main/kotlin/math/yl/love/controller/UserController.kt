@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "用户管理")
 class UserController: BaseController<User, UserMapper, UserService>() {
 
+    class PageParam: BaseController.PageParam() {
+
+    }
+
     @PostMapping("login")
     @Operation(summary = "登陆")
     fun login(@RequestBody query: LoginQuery) = R.success(baseService.login(query))
@@ -29,4 +33,8 @@ class UserController: BaseController<User, UserMapper, UserService>() {
     @PostMapping("students")
     @Operation(summary = "获取学生列表")
     fun students() = R.success(baseService.students())
+
+    @PostMapping("page")
+    @Operation(summary = "分页")
+    fun pageSimple(@RequestBody param: PageParam) = R.success(baseService.page(param))
 }
