@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-08 15:42:02
- * @LastEditTime: 2024-10-22 21:22:09
+ * @LastEditTime: 2024-12-13 19:40:10
  * @Description: 启动配置
  */
 import { createApp } from 'vue';
@@ -14,6 +14,7 @@ import '@vben/styles/ele';
 import Aura from '@primevue/themes/aura';
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
+import DialogService from 'primevue/dialogservice';
 import ToastService from 'primevue/toastservice';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -46,6 +47,7 @@ async function bootstrap(namespace: string) {
   // 配置primevue
   app.use(ToastService);
   app.use(ConfirmationService);
+  app.use(DialogService);
   app.use(PrimeVue, {
     ripple: true,
     theme: {
