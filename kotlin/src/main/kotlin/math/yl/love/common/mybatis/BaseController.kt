@@ -17,7 +17,7 @@ abstract class BaseController<Entity: BaseEntity, Mapper: BaseMapper<Entity>, Se
 
     protected val log: Logger = LoggerFactory.getLogger(javaClass)
 
-    class PageParam {
+    open class PageParam {
         val current: Long = 1
         val size: Long = 10
     }
