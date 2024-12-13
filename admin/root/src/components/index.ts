@@ -1,11 +1,12 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-02 19:23:36
- * @LastEditTime: 2024-11-14 19:01:41
+ * @LastEditTime: 2024-12-13 19:36:45
  * @Description: 通用组件导出
  */
 
 export { default as DefaultConfirmDialog } from './confirmDialog/default.vue';
+export { default as UserSelect } from './userSelect/index.vue';
 export { default as WangEditor } from './wangEditor/index.vue';
 export { default as PreviewEditor } from './wangEditor/previewEditor.vue';
 export { default as Button } from 'primevue/button';
@@ -20,6 +21,7 @@ export { default as DatePicker } from 'primevue/datepicker';
 export { default as Dialog } from 'primevue/dialog';
 export { default as Divider } from 'primevue/divider';
 export { default as Dropdown } from 'primevue/dropdown';
+export { default as DynamicDialog } from 'primevue/dynamicdialog';
 export { default as FileUpload } from 'primevue/fileupload';
 export { default as FloatLabel } from 'primevue/floatlabel';
 export { default as InputNumber } from 'primevue/inputnumber';
