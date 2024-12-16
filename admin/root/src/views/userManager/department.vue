@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-12 17:47:35
- * @LastEditTime: 2024-12-13 21:20:56
+ * @LastEditTime: 2024-12-16 18:30:43
  * @Description: 组织管理
 -->
 
@@ -28,11 +28,25 @@
         <div class="my-1 flex justify-between">
           <Button icon="pi pi-plus" label="添加用户" @click="addUser" />
           <Button icon="pi pi-plus" label="添加下级组织" @click="onSelect" />
+          <Button
+            icon="pi pi-trash"
+            label="删除组织"
+            severity="danger"
+            @click="removeDep"
+          />
         </div>
         <div class="">
           <div class="ml-4 text-[15px] text-[#84888F]">组织名称</div>
-          <div class="mt-1 rounded-[4px] bg-white p-2">
-            {{ currentDep?.name }}
+          <div class="flex items-center">
+            <InputText
+              v-model="currentDep.name"
+              class="mr-1 w-full rounded-[4px] bg-white"
+            />
+            <Button
+              class="w-16 flex-shrink-0"
+              label="修改"
+              @click="updateDep"
+            />
           </div>
         </div>
         <div class="mt-3">
@@ -57,14 +71,15 @@
       </div>
     </div>
     <UserSelect ref="userSelectRef" />
+    <Popover ref="popoverRef">
+      <div class="flex flex-col items-center">
+        <span class="mb-2 text-[20px] font-semibold">创建组织</span>
+        <InputText v-model="createParam.name" placeholder="请输入组织名称" />
+        <Button class="mt-2 h-6 w-24" label="确认" @click="createDepartment" />
+      </div>
+    </Popover>
+    <DefaultConfirmDialog group="headless" />
   </div>
-  <Popover ref="popoverRef">
-    <div class="flex flex-col items-center">
-      <span class="mb-2 text-[20px] font-semibold">创建组织</span>
-      <InputText v-model="createParam.name" placeholder="请输入组织名称" />
-      <Button class="mt-2 h-6 w-24" label="确认" @click="createDepartment" />
-    </div>
-  </Popover>
 </template>
 
 <script setup lang="ts">
@@ -79,12 +94,16 @@ import message from '#/common/utils/message';
 import { checkEmpty, checkSuccess } from '#/common/utils/valueCheck';
 import {
   Button,
+  DefaultConfirmDialog,
   InputText,
   OrganizationChart,
   Popover,
   UserSelect,
 } from '#/components';
+import { useConfirm } from 'primevue/useconfirm';
 import { onMounted, ref, useTemplateRef } from 'vue';
+
+const confirm = useConfirm();
 
 const popoverRef = useTemplateRef('popoverRef');
 const treeData = ref<TreeResult>();
@@ -143,6 +162,37 @@ function addUser() {
         }
       });
   });
+}
+
+/**
+ * 删除
+ */
+function removeDep() {
+  confirm.require({
+    accept: () => {
+      departmentApi.delete(currentDep.value?.id!!).then(() => {
+        message.success('删除成功');
+        currentDep.value = undefined;
+        loadData();
+      });
+    },
+    group: 'headless',
+    message: '是否要删除该组织?',
+  });
+}
+
+function updateDep() {
+  checkEmpty(currentDep.value?.name, '组织名称不能为空!!!');
+  checkSuccess(
+    departmentApi.update({
+      id: currentDep.value!!.id!!,
+      name: currentDep.value!!.name,
+      parentId: currentDep.value!!.parentId,
+    } as Department),
+    false,
+    '组织信息',
+    loadData,
+  );
 }
 
 onMounted(loadData);
