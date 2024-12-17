@@ -40,6 +40,7 @@
     "commit": "czg",
     "dev": "turbo-run dev",
     "dev:play": "pnpm -F @vben/web-prime run dev",
+    "dev:student": "pnpm -F @vben/student run dev",
     "format": "vsh lint --format",
     "lint": "vsh lint",
     "postinstall": "turbo run stub",

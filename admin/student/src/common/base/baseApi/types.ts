@@ -1,0 +1,54 @@
+/*
+ * @Author: love-yuri yuri2078170658@gmail.com
+ * @Date: 2024-09-09 14:18:19
+ * @LastEditTime: 2024-11-06 19:56:28
+ * @Description: baseApi types
+ */
+
+/**
+ * @description: 请求类型
+ */
+export enum RequestType {
+  GET,
+  POST,
+  UPLOAD, // 上传
+}
+
+/**
+ * @description: 请求配置
+ */
+export type RequestConfig = {
+  method: RequestType;
+  params?: any;
+  url: string;
+};
+
+/**
+ * @description: 基础实体
+ * 需要重写reset方法
+ */
+export abstract class BaseEntity {
+  createTime?: string;
+  id?: string;
+  updateTime?: string;
+
+  constructor() {
+    this.reset();
+  }
+
+  /**
+   * @description: 拷贝另外一个类的属性
+   * @param {this} other 另一个属性
+   * 该属性仅仅在数据是自行new的情况下才能使用
+   * 如果数据是从服务器获取的，则不能使用该方法
+   */
+  public copy(other: this): void {
+    const keys = Object.keys(this) as Array<keyof this>;
+
+    keys.forEach((key) => {
+      this[key] = other[key]!; // 复制属性
+    });
+  }
+
+  abstract reset(): void;
+}

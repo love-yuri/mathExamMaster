@@ -137,6 +137,10 @@
       "path": "root",
     },
     {
+      "name": "@vben/student",
+      "path": "student",
+    },
+    {
       "name": "@vben/turbo-run",
       "path": "scripts/turbo-run",
     },
