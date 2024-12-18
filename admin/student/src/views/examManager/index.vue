@@ -1,4 +1,45 @@
 <template>
-  <div>练习管理</div>
+  <div class="flex w-full flex-col items-center justify-center">
+    <div class="my-2 flex justify-between">
+      <GaganButton
+        :clicked="currentMode === 0"
+        class="!mr-1"
+        @click="currentMode = 0"
+      >
+        进行中
+      </GaganButton>
+      <GaganButton :clicked="currentMode === 1" @click="currentMode = 1">
+        已结束
+      </GaganButton>
+    </div>
+
+    <div class="mt-2">
+      <div
+        v-for="exam in examList"
+        :key="exam.id"
+        class="mt-1bg-white rounded-md p-2"
+      >
+        <FameraButton>{{ exam.name }}</FameraButton>
+      </div>
+    </div>
+  </div>
 </template>
-<script setup lang="ts"></script>
+
+<script setup lang="ts">
+import {
+  type ExamListResult,
+  examPageReleaseApi,
+} from '#/api/examPageReleaseApi';
+import { FameraButton, GaganButton } from '#/components';
+import { ref, watchEffect } from 'vue';
+
+const currentMode = ref(0);
+const examList = ref<ExamListResult[]>([]);
+
+watchEffect(async () => {
+  console.log(currentMode.value);
+  examList.value = await examPageReleaseApi.examList({
+    mode: currentMode.value,
+  });
+});
+</script>
