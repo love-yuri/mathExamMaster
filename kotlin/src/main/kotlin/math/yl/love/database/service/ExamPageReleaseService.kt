@@ -1,0 +1,154 @@
+package math.yl.love.database.service
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page
+import math.yl.love.common.mybatis.BaseController.PageParam
+import math.yl.love.common.mybatis.BasePage
+import math.yl.love.common.mybatis.BaseService
+import math.yl.love.common.utils.CommonUtils
+import math.yl.love.configuration.exception.BizException
+import math.yl.love.database.domain.entity.ExamPageRelease
+import math.yl.love.database.domain.entity.ExamPageUserRelation
+import math.yl.love.database.domain.entity.User
+import math.yl.love.database.domain.params.examPageRelease.ExamListParam
+import math.yl.love.database.domain.params.examPageRelease.ExamPageReleaseParam
+import math.yl.love.database.domain.result.examPageRelease.ExamListResult
+import math.yl.love.database.domain.result.examPageRelease.ExamPageReleaseResult
+import math.yl.love.database.mapper.ExamPageReleaseMapper
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import kotlin.reflect.KClass
+
+@Service
+@Transactional(readOnly = true)
+class ExamPageReleaseService(
+    val userService: UserService,
+    val examPageService: ExamPageService,
+    val userRelationService: ExamPageUserRelationService
+): BaseService<ExamPageRelease, ExamPageReleaseMapper>() {
+    override val entityClass: KClass<ExamPageRelease> get() = ExamPageRelease::class
+
+    /**
+     * 发布试卷
+     */
+    @Transactional(rollbackFor = [Exception::class])
+    fun release(param: ExamPageReleaseParam): Boolean {
+        // 先保存试卷本体
+        val examPageRelease = ExamPageRelease(
+            startTime = param.startTime,
+            endTime = param.endTime,
+            examPageId = param.examPageId
+        )
+        save(examPageRelease)
+
+        // 保存试卷与用户的关系
+        val relations = param.userIds.map {
+            ExamPageUserRelation(
+                pageReleaseId = examPageRelease.id!!,
+                userId = it,
+            )
+        }
+        userRelationService.saveBatch(relations)
+        return true
+    }
+
+    /**
+     * 更新发布试卷
+     */
+    @Transactional(rollbackFor = [Exception::class])
+    fun releaseUpdate(param: ExamPageReleaseParam): Boolean {
+        val origin = detail(param.id ?: throw BizException("发布id不能为空!!!"))
+        // 先更新试卷本体
+        val examPageRelease = ExamPageRelease(
+            id = param.id,
+            startTime = param.startTime,
+            endTime = param.endTime,
+            examPageId = param.examPageId
+        )
+        updateById(examPageRelease)
+
+        val oldUserIds = origin.users.map { it.id!! }
+
+        // 新增
+        val relations = (param.userIds - oldUserIds.toSet()).map {
+            ExamPageUserRelation(
+                pageReleaseId = examPageRelease.id!!,
+                userId = it,
+            )
+        }
+        // 删除
+        userRelationService.removeByRelease(param.id, oldUserIds - param.userIds.toSet())
+        // 新增
+        userRelationService.saveBatch(relations)
+        return true
+    }
+
+
+    /**
+     * 获取当前用户所有发布过的试卷
+     */
+    fun pageSimple(param: PageParam): BasePage<ExamPageReleaseResult> {
+        val pages = page(Page(param.current, param.size), queryWrapper.eq(ExamPageRelease::createBy, CommonUtils.username))
+        val records = pages.records.map {
+            ExamPageReleaseResult(
+                id = it.id!!,
+                createTime = it.createTime,
+                examPage = examPageService.getById(it.examPageId),
+                startTime = it.startTime,
+                endTime = it.endTime,
+                users = findByReleaseId(it.id!!)
+            )
+        }
+        return BasePage(pages.current, pages.size, records, pages.total)
+    }
+
+    /**
+     * 根据发布id获取所有发布人员
+     * @param id 发布id
+     */
+    fun findByReleaseId(id: Long): List<User> {
+        val res = userRelationService.findByReleaseId(id)
+        return userService.findByIds(res.map { it.userId })
+    }
+
+    /**
+     * 根据id获取详细数据
+     * @param id 主键id
+     */
+    fun detail(id: Long): ExamPageReleaseResult {
+        val it = getById(id)
+        return ExamPageReleaseResult(
+            id = it.id!!,
+            createTime = it.createTime,
+            examPage = examPageService.getById(it.examPageId),
+            startTime = it.startTime,
+            endTime = it.endTime,
+            users = findByReleaseId(it.id!!)
+        )
+    }
+
+    /**
+     * 根据id删除数据
+     */
+    @Transactional(rollbackFor = [Exception::class])
+    fun removeDetail(id: String): Boolean {
+        return removeById(id.toLong()) && userRelationService.removeByRelease(id.toLong())
+    }
+
+    /**
+     * 获取试卷列表
+     */
+    fun examList(param: ExamListParam): List<ExamListResult> {
+        val pages = userRelationService.findByUser(param)
+        val result = mutableListOf<ExamListResult>()
+        pages.forEach {
+            val release = getById(it.pageReleaseId)
+            val examPage = examPageService.getById(release!!.examPageId)
+            result.add(ExamListResult(
+                id = release.id!!,
+                createTime = release.createTime,
+                name = examPage.title
+            ))
+        }
+        return result
+    }
+}
