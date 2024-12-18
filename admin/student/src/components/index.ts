@@ -1,11 +1,13 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-02 19:23:36
- * @LastEditTime: 2024-12-13 19:36:45
+ * @LastEditTime: 2024-12-18 20:08:55
  * @Description: 通用组件导出
  */
 
 export { default as DefaultConfirmDialog } from './confirmDialog/default.vue';
+export { default as FameraButton } from './cssButtons/famera.vue';
+export { default as GaganButton } from './cssButtons/gagan.vue';
 export { default as UserSelect } from './userSelect/index.vue';
 export { default as WangEditor } from './wangEditor/index.vue';
 export { default as PreviewEditor } from './wangEditor/previewEditor.vue';
