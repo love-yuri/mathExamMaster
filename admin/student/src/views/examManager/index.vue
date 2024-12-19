@@ -19,7 +19,18 @@
         :key="exam.id"
         class="mt-1bg-white rounded-md p-2"
       >
-        <FameraButton>{{ exam.name }}</FameraButton>
+        <FameraButton
+          @click="
+            router.push({
+              name: 'doExam',
+              params: {
+                id: exam.id,
+              },
+            })
+          "
+        >
+          {{ exam.name }}
+        </FameraButton>
       </div>
     </div>
   </div>
@@ -31,13 +42,13 @@ import {
   examPageReleaseApi,
 } from '#/api/examPageReleaseApi';
 import { FameraButton, GaganButton } from '#/components';
+import { router } from '#/router';
 import { ref, watchEffect } from 'vue';
 
 const currentMode = ref(0);
 const examList = ref<ExamListResult[]>([]);
 
 watchEffect(async () => {
-  console.log(currentMode.value);
   examList.value = await examPageReleaseApi.examList({
     mode: currentMode.value,
   });
