@@ -1026,6 +1026,91 @@ importers:
         specifier: ^0.2.10
         version: 0.2.10
 
+  student:
+    dependencies:
+      '@primevue/themes':
+        specifier: ^4.0.5
+        version: 4.0.5
+      '@vben/access':
+        specifier: workspace:*
+        version: link:../packages/effects/access
+      '@vben/common-ui':
+        specifier: workspace:*
+        version: link:../packages/effects/common-ui
+      '@vben/constants':
+        specifier: workspace:*
+        version: link:../packages/constants
+      '@vben/hooks':
+        specifier: workspace:*
+        version: link:../packages/effects/hooks
+      '@vben/icons':
+        specifier: workspace:*
+        version: link:../packages/icons
+      '@vben/layouts':
+        specifier: workspace:*
+        version: link:../packages/effects/layouts
+      '@vben/locales':
+        specifier: workspace:*
+        version: link:../packages/locales
+      '@vben/plugins':
+        specifier: workspace:*
+        version: link:../packages/effects/plugins
+      '@vben/preferences':
+        specifier: workspace:*
+        version: link:../packages/preferences
+      '@vben/request':
+        specifier: workspace:*
+        version: link:../packages/effects/request
+      '@vben/stores':
+        specifier: workspace:*
+        version: link:../packages/stores
+      '@vben/styles':
+        specifier: workspace:*
+        version: link:../packages/styles
+      '@vben/types':
+        specifier: workspace:*
+        version: link:../packages/types
+      '@vben/utils':
+        specifier: workspace:*
+        version: link:../packages/utils
+      '@vueuse/core':
+        specifier: ^11.0.3
+        version: 11.0.3(vue@3.5.3(typescript@5.5.4))
+      '@wangeditor/editor':
+        specifier: ^5.1.23
+        version: 5.1.23
+      '@wangeditor/editor-for-vue':
+        specifier: ^5.1.12
+        version: 5.1.12(@wangeditor/editor@5.1.23)(vue@3.5.3(typescript@5.5.4))
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
+      katex:
+        specifier: ^0.16.11
+        version: 0.16.11
+      mathlive:
+        specifier: ^0.101.1
+        version: 0.101.1
+      pinia:
+        specifier: 2.2.2
+        version: 2.2.2(typescript@5.5.4)(vue@3.5.3(typescript@5.5.4))
+      primevue:
+        specifier: ^4.0.5
+        version: 4.0.5(vue@3.5.3(typescript@5.5.4))
+      snabbdom:
+        specifier: ^3.6.2
+        version: 3.6.2
+      vue:
+        specifier: 3.5.3
+        version: 3.5.3(typescript@5.5.4)
+      vue-router:
+        specifier: ^4.4.3
+        version: 4.4.3(vue@3.5.3(typescript@5.5.4))
+    devDependencies:
+      primeicons:
+        specifier: ^7.0.0
+        version: 7.0.0
+
 packages:
 
   '@alloc/quick-lru@5.2.0':
@@ -10491,7 +10576,7 @@ snapshots:
     dependencies:
       '@babel/code-frame': 7.24.7
       '@babel/generator': 7.25.0
-      '@babel/parser': 7.25.3
+      '@babel/parser': 7.25.6
       '@babel/template': 7.25.0
       '@babel/types': 7.25.2
       debug: 4.3.7
