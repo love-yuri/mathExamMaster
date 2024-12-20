@@ -2,6 +2,7 @@ package math.yl.love.database.service
 
 import math.yl.love.common.mybatis.BaseService
 import math.yl.love.common.utils.CommonUtils
+import math.yl.love.configuration.exception.BizException
 import math.yl.love.database.domain.entity.ExamPageUserRelation
 import math.yl.love.database.domain.params.examPageRelease.ExamListParam
 import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
@@ -58,5 +59,20 @@ class ExamPageUserRelationService(
         }
 
         return pages.list()
+    }
+
+    /**
+     * 根据发布id和用户id查找发布数据
+     * @param id 发布试卷id
+     * @param userId 用户id
+     */
+    fun findByReleaseIdAndUserId(id: Long, userId: Long?): ExamPageUserRelation? = queryWrapper
+        .eq(ExamPageUserRelation::pageReleaseId, id)
+        .eq(ExamPageUserRelation::userId, userId)
+        .selectOne()
+
+    fun relation(releaseId: Long): ExamPageUserRelation {
+        val userId = userService.getUserInfo()!!.id
+        return findByReleaseIdAndUserId(releaseId, userId) ?: throw BizException("不存在的发布!!")
     }
 }
