@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2024-12-19 18:34:57
+ * @LastEditTime: 2024-12-20 18:03:57
  * @Description:
  */
 import {
@@ -107,6 +107,10 @@ class Api extends BaseApi<BaseEntity> {
    */
   release = (param: ExamPageCreateVO) => {
     return this.add<boolean>(RequestType.POST, '/release', param);
+  };
+
+  startExam = (pageId: string) => {
+    return this.add<boolean>(RequestType.POST, '/start/exam', pageId);
   };
 
   /**
