@@ -1,15 +1,14 @@
 package math.yl.love.database.service
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import math.yl.love.common.mybatis.BasePage
 import math.yl.love.common.mybatis.BaseService
 import math.yl.love.configuration.exception.BizException
 import math.yl.love.database.domain.entity.ExamPage
 import math.yl.love.database.domain.entity.ExamPageQuestionRelation
-import math.yl.love.database.domain.entity.ExamPageUserRelation
 import math.yl.love.database.domain.params.examPage.ExamPageQuestion
 import math.yl.love.database.domain.params.examPage.ReleasePageParam
 import math.yl.love.database.domain.result.examPage.ExamPageResult
+import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
 import math.yl.love.database.mapper.ExamPageMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -21,7 +20,8 @@ import kotlin.reflect.KClass
 class ExamPageService(
     private val examPageQuestionRelationService: ExamPageQuestionRelationService,
     private val examPageUserRelationService: ExamPageUserRelationService,
-    private val questionBankService: QuestionBankService
+    private val questionBankService: QuestionBankService,
+    private val userService: UserService
 ): BaseService<ExamPage, ExamPageMapper>() {
 
     override val entityClass: KClass<ExamPage> get() = ExamPage::class
@@ -164,5 +164,24 @@ class ExamPageService(
             it.fullQuestionBank = questionBankService.detail(it.questionBankId)
         }
         return result
+    }
+
+    /**
+     * 开始考试
+     * @param id 试卷id
+     */
+    @Transactional(rollbackFor = [Exception::class])
+    fun startExam(id: Long): Any {
+        val userId = userService.getUserInfo()!!.id
+
+        // 检查是否存在该发布 - 该练习是否未开始
+        val relation = examPageUserRelationService.findByReleaseIdAndUserId(id, userId) ?: throw BizException("不存在的发布!!")
+        if (relation.status != ExamPageStatusEnum.NOT_START) {
+            throw BizException("该练习已开始或已结束!!")
+        }
+
+        return examPageUserRelationService.updateById(relation.copy(
+            status = ExamPageStatusEnum.DOING
+        ))
     }
 }
