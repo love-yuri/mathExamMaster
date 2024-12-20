@@ -35,12 +35,21 @@
               </div>
               <div class="info">
                 <span class="title">考试时长: </span>
-                <span class="content">{{ currentPage.limitedTime / 60 }} 分钟</span>
+                <span class="content">
+                  {{ currentPage.limitedTime / 60 }} 分钟
+                </span>
               </div>
             </div>
           </div>
           <div class="flex justify-center">
-            <FameraButton> 开始考试 </FameraButton>
+            <FameraButton @click="startExam">
+              {{
+                currentRelation.status ===
+                ExamPageUserRelationStatusType.NOT_START
+                  ? '开始考试'
+                  : '继续考试'
+              }}
+            </FameraButton>
           </div>
         </div>
       </template>
@@ -61,9 +70,15 @@ import {
 import { useRoute } from '#/router';
 import { computed, onMounted, ref } from 'vue';
 import { Card, FameraButton, Rating } from '#/components';
+import {
+  ExamPageUserRelation,
+  examPageUserRelationApi,
+  ExamPageUserRelationStatusType,
+} from '#/api/examPageUserRelationApi';
 
 const route = useRoute();
 
+const currentRelation = ref<ExamPageUserRelation>(new ExamPageUserRelation());
 const currentRelease = ref<ExamPageReleaseResult>(new ExamPageReleaseResult());
 const currentPage = ref<ExamPageResult>(new ExamPageResult());
 const examPageType = computed(() => ExamPageMap[currentPage.value.type]);
@@ -77,9 +92,20 @@ async function loadData() {
     return;
   }
   const release = await examPageReleaseApi.detail(id);
+  currentRelation.value.copy(
+    await examPageUserRelationApi.relation(release.id!!),
+  );
   const page = await examPageApi.detail(release.examPage!!.id!!);
   currentPage.value.copy(page);
   currentRelease.value.copy(release);
+}
+
+function startExam() {
+  if (
+    currentRelation.value.status === ExamPageUserRelationStatusType.NOT_START
+  ) {
+    examPageApi.startExam(currentRelease.value.id!!);
+  }
 }
 
 onMounted(loadData);
