@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2024-12-19 18:38:50
+ * @LastEditTime: 2024-12-23 19:24:51
  * @Description:
  */
 import { BaseApi } from '#/common/base/baseApi/baseApi';
@@ -65,6 +65,13 @@ export class ExamPageReleaseResult extends ExamPageReleaseParam {
   }
 }
 
+export interface StartExamResult {
+  endTime: string;
+  examPageId: string;
+  name: string;
+  startTime?: string;
+}
+
 class Api extends BaseApi<BaseEntity> {
   override baseUrl: string = '/exam/page/release';
 
@@ -80,6 +87,14 @@ class Api extends BaseApi<BaseEntity> {
    */
   examList = (param: ExamListParam) => {
     return this.add<ExamListResult[]>(RequestType.POST, '/exam/list', param);
+  };
+
+  startExam = (releaseId: string) => {
+    return this.add<StartExamResult>(
+      RequestType.POST,
+      '/start/exam',
+      releaseId,
+    );
   };
 }
 
