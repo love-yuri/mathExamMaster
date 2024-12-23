@@ -165,23 +165,4 @@ class ExamPageService(
         }
         return result
     }
-
-    /**
-     * 开始考试
-     * @param id 试卷id
-     */
-    @Transactional(rollbackFor = [Exception::class])
-    fun startExam(id: Long): Any {
-        val userId = userService.getUserInfo()!!.id
-
-        // 检查是否存在该发布 - 该练习是否未开始
-        val relation = examPageUserRelationService.findByReleaseIdAndUserId(id, userId) ?: throw BizException("不存在的发布!!")
-        if (relation.status != ExamPageStatusEnum.NOT_START) {
-            throw BizException("该练习已开始或已结束!!")
-        }
-
-        return examPageUserRelationService.updateById(relation.copy(
-            status = ExamPageStatusEnum.DOING
-        ))
-    }
 }
