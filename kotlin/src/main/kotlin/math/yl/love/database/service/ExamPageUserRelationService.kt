@@ -71,6 +71,18 @@ class ExamPageUserRelationService(
         .eq(ExamPageUserRelation::userId, userId)
         .selectOne()
 
+    /**
+     * 检查该用户的该发布是否有考试权限
+     */
+    fun checkExamInfo(id: Long): ExamPageUserRelation {
+        val userId = userService.getUserInfo()!!.id
+        val relation = findByReleaseIdAndUserId(id, userId) ?: throw BizException("该用户不存在该练习!!!")
+        if (relation.status == ExamPageStatusEnum.FINISHED) {
+            throw BizException("该练习已结束!!!")
+        }
+        return relation
+    }
+
     fun relation(releaseId: Long): ExamPageUserRelation {
         val userId = userService.getUserInfo()!!.id
         return findByReleaseIdAndUserId(releaseId, userId) ?: throw BizException("不存在的发布!!")
