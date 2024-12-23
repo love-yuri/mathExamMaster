@@ -1,5 +1,8 @@
 <template>
-  <div class="flex w-full flex-col items-center justify-center">
+  <div
+    v-if="!currentReleaseId"
+    class="flex w-full flex-col items-center justify-center"
+  >
     <div class="my-2 flex justify-between">
       <GaganButton
         :clicked="currentMode === 0"
@@ -19,21 +22,13 @@
         :key="exam.id"
         class="mt-1bg-white rounded-md p-2"
       >
-        <FameraButton
-          @click="
-            router.push({
-              name: 'doExam',
-              params: {
-                id: exam.id,
-              },
-            })
-          "
-        >
+        <FameraButton @click="startExam(exam.id)">
           {{ exam.name }}
         </FameraButton>
       </div>
     </div>
   </div>
+  <DoExam v-else :id="currentReleaseId" />
 </template>
 
 <script setup lang="ts">
@@ -42,9 +37,15 @@ import {
   examPageReleaseApi,
 } from '#/api/examPageReleaseApi';
 import { FameraButton, GaganButton } from '#/components';
-import { router } from '#/router';
 import { ref, watchEffect } from 'vue';
+import DoExam from './doExam.vue';
+import { useExamStore } from '#/store';
+import { storeToRefs } from 'pinia';
 
+const examStore = useExamStore();
+const { releaseId } = storeToRefs(examStore);
+
+const currentReleaseId = ref<string | undefined>(releaseId.value);
 const currentMode = ref(0);
 const examList = ref<ExamListResult[]>([]);
 
@@ -53,4 +54,9 @@ watchEffect(async () => {
     mode: currentMode.value,
   });
 });
+
+function startExam(id: string) {
+  currentReleaseId.value = id;
+  examStore.startExam(id);
+}
 </script>
