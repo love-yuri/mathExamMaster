@@ -1,6 +1,7 @@
 package math.yl.love.database.service
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
+import math.yl.love.common.base.R
 import math.yl.love.common.mybatis.BaseController.PageParam
 import math.yl.love.common.mybatis.BasePage
 import math.yl.love.common.mybatis.BaseService
@@ -13,6 +14,8 @@ import math.yl.love.database.domain.params.examPageRelease.ExamListParam
 import math.yl.love.database.domain.params.examPageRelease.ExamPageReleaseParam
 import math.yl.love.database.domain.result.examPageRelease.ExamListResult
 import math.yl.love.database.domain.result.examPageRelease.ExamPageReleaseResult
+import math.yl.love.database.domain.result.examPageRelease.StartExamResult
+import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
 import math.yl.love.database.mapper.ExamPageReleaseMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -150,5 +153,31 @@ class ExamPageReleaseService(
             ))
         }
         return result
+    }
+
+    /**
+     * 开始考试
+     * @param id 发布id
+     */
+    @Transactional(rollbackFor = [Exception::class])
+    fun startExam(id: Long): StartExamResult {
+        // 检查信息
+        val release = getById(id) ?: throw BizException("发布不存在")
+        val relation = userRelationService.checkExamInfo(release.id!!)
+        val examPage = examPageService.getById(release.examPageId) ?: throw BizException("试卷不存在!")
+
+        // 开始考试 -  更新状态
+        if (relation.status == ExamPageStatusEnum.NOT_START) {
+            userRelationService.updateById(relation.copy(
+                status = ExamPageStatusEnum.DOING
+            ))
+        }
+        
+        return StartExamResult (
+            examPageId = examPage.id!!,
+            name = examPage.title,
+            startTime = release.startTime,
+            endTime = release.endTime
+        )
     }
 }
