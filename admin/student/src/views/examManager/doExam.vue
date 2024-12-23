@@ -1,5 +1,8 @@
 <template>
-  <div class="flex h-full w-full items-center justify-center bg-gray-100 p-6">
+  <div
+    v-if="!isExam"
+    class="flex h-full w-full items-center justify-center bg-gray-100 p-6"
+  >
     <Card class="rounded-lg bg-white p-6 shadow-lg">
       <template #content>
         <div class="min-w-[800px] space-y-6">
@@ -55,6 +58,7 @@
       </template>
     </Card>
   </div>
+  <Examing v-else :exam-info="examInfo!!" />
 </template>
 <script setup lang="ts">
 import {
@@ -66,18 +70,23 @@ import {
 import {
   examPageReleaseApi,
   ExamPageReleaseResult,
+  type StartExamResult,
 } from '#/api/examPageReleaseApi';
-import { useRoute } from '#/router';
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { Card, FameraButton, Rating } from '#/components';
 import {
   ExamPageUserRelation,
   examPageUserRelationApi,
   ExamPageUserRelationStatusType,
 } from '#/api/examPageUserRelationApi';
+import Examing from './components/examing.vue';
 
-const route = useRoute();
+const { id } = defineProps<{
+  id?: string;
+}>();
 
+const isExam = ref(false);
+const examInfo = ref<StartExamResult>();
 const currentRelation = ref<ExamPageUserRelation>(new ExamPageUserRelation());
 const currentRelease = ref<ExamPageReleaseResult>(new ExamPageReleaseResult());
 const currentPage = ref<ExamPageResult>(new ExamPageResult());
@@ -86,8 +95,7 @@ const examPageSubject = computed(
   () => SubjectTypeMap[currentPage.value.subject],
 );
 
-async function loadData() {
-  const id = route.params.id as string;
+watchEffect(async () => {
   if (!id) {
     return;
   }
@@ -98,17 +106,14 @@ async function loadData() {
   const page = await examPageApi.detail(release.examPage!!.id!!);
   currentPage.value.copy(page);
   currentRelease.value.copy(release);
-}
+});
 
 function startExam() {
-  if (
-    currentRelation.value.status === ExamPageUserRelationStatusType.NOT_START
-  ) {
-    examPageApi.startExam(currentRelease.value.id!!);
-  }
+  examPageReleaseApi.startExam(currentRelease.value.id!!).then((res) => {
+    examInfo.value = res;
+    isExam.value = true;
+  });
 }
-
-onMounted(loadData);
 </script>
 <style lang="scss" scoped>
 .info {
