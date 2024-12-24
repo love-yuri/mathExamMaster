@@ -1,12 +1,13 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2024-12-23 19:24:51
+ * @LastEditTime: 2024-12-24 19:19:04
  * @Description:
  */
 import { BaseApi } from '#/common/base/baseApi/baseApi';
 import { BaseEntity, RequestType } from '#/common/base/baseApi/types';
-import type { ExamPageResult } from './examPageApi';
+import type { ExamPageResult, ExamPageType, SubjectType } from './examPageApi';
+import type { ExamPageUserRelationStatusType } from './examPageUserRelationApi';
 
 export interface ExamListParam {
   mode: number;
@@ -72,6 +73,39 @@ export interface StartExamResult {
   startTime?: string;
 }
 
+export interface ExamInfoResult {
+  difficulty: number;
+
+  /** 考试结束时间 */
+  endTime: string;
+
+  /** 开始考试时间 */
+  examStartTime?: null | string;
+
+  limitedTime: number;
+
+  /** 发布id */
+  releaseId: string;
+
+  /** 考试开始时间 */
+  startTime: string;
+
+  /** 考试状态 */
+  status: ExamPageUserRelationStatusType;
+
+  /** 考试科目 */
+  subject: SubjectType;
+
+  /** 试卷标题 */
+  title: string;
+
+  /** 总分 */
+  totalScore: number;
+
+  /** 试卷类型 */
+  type: ExamPageType;
+}
+
 class Api extends BaseApi<BaseEntity> {
   override baseUrl: string = '/exam/page/release';
 
@@ -80,6 +114,13 @@ class Api extends BaseApi<BaseEntity> {
    */
   detail = (id: string) => {
     return this.add<ExamPageReleaseResult>(RequestType.POST, `/detail/${id}`);
+  };
+
+  /**
+   * 根据id获取练习信息
+   */
+  examInfo = (id: string) => {
+    return this.add<ExamInfoResult>(RequestType.POST, `/exam/info`, id);
   };
 
   /**
