@@ -45,4 +45,8 @@ class ExamPageReleaseController: BaseController<ExamPageRelease, ExamPageRelease
     @PostMapping("start/exam")
     @Operation(summary = "开始考试")
     fun startExam(@RequestBody id:Long) = R.success(baseService.startExam(id))
+
+    @PostMapping("exam/info")
+    @Operation(summary = "考试信息")
+    fun examInfo(@RequestBody id:Long) = R.success(baseService.examInfo(id))
 }
