@@ -158,6 +158,7 @@ CREATE TABLE `exam_page_user_relation` (
    `page_release_id` bigint NOT NULL COMMENT '试卷发布',
    `user_id` bigint NOT NULL COMMENT '用户id',
    `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '当前试卷的状态，默认0: 未完成',
+   `exam_start_time` datetime NULL DEFAULT NULL COMMENT '开始练习时间',
    `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
    `create_time` datetime NOT NULL COMMENT '创建时间',
    `create_by` varchar(16) NOT NULL comment '创建用户',
