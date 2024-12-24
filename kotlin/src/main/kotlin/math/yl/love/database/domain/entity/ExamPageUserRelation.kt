@@ -56,4 +56,8 @@ data class ExamPageUserRelation (
     @TableField(value = "status")
     val status: ExamPageStatusEnum = ExamPageStatusEnum.NOT_START,
 
+    @Contextual
+    @Schema(description = "开始练习时间")
+    @TableField(value = "exam_start_time", fill = FieldFill.INSERT_UPDATE)
+    val examStartTime: LocalDateTime? = null,
 ) : BaseEntity
