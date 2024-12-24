@@ -14,6 +14,7 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import math.yl.love.common.base.Log.log
+import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
 import org.apache.ibatis.type.LocalDateTimeTypeHandler
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
@@ -69,6 +70,22 @@ class JsonConfig : ConfigurationCustomizer {
             }
             return LocalDateTime.parse(str, DateTimeFormatter.ofPattern("yyyy/M/d HH:mm:ss"))
         }
+    }
+
+    /**
+     * ExamPageStatusEnum 序列化器
+     */
+    object ExamPageStatusSerializer : KSerializer<ExamPageStatusEnum> {
+        override val descriptor: SerialDescriptor get() = PrimitiveSerialDescriptor("ExamPageStatusEnum", PrimitiveKind.STRING)
+
+        override fun deserialize(decoder: Decoder): ExamPageStatusEnum {
+            return ExamPageStatusEnum.valueOf(decoder.decodeString())
+        }
+
+        override fun serialize(encoder: Encoder, value: ExamPageStatusEnum) {
+            return encoder.encodeString(value.value.toString())
+        }
+
     }
 
     @Bean
