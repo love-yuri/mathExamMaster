@@ -12,6 +12,7 @@ import math.yl.love.database.domain.entity.ExamPageUserRelation
 import math.yl.love.database.domain.entity.User
 import math.yl.love.database.domain.params.examPageRelease.ExamListParam
 import math.yl.love.database.domain.params.examPageRelease.ExamPageReleaseParam
+import math.yl.love.database.domain.result.examPageRelease.ExamInfoResult
 import math.yl.love.database.domain.result.examPageRelease.ExamListResult
 import math.yl.love.database.domain.result.examPageRelease.ExamPageReleaseResult
 import math.yl.love.database.domain.result.examPageRelease.StartExamResult
@@ -19,6 +20,7 @@ import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
 import math.yl.love.database.mapper.ExamPageReleaseMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 import kotlin.reflect.KClass
 
 @Service
@@ -168,8 +170,13 @@ class ExamPageReleaseService(
 
         // 开始考试 -  更新状态
         if (relation.status == ExamPageStatusEnum.NOT_START) {
+            val now = LocalDateTime.now()
+            if (now.isBefore(release.startTime)) {
+                throw BizException("考试未开始!!!")
+            }
             userRelationService.updateById(relation.copy(
-                status = ExamPageStatusEnum.DOING
+                status = ExamPageStatusEnum.DOING,
+                examStartTime = now
             ))
         }
         
@@ -179,5 +186,14 @@ class ExamPageReleaseService(
             startTime = release.startTime,
             endTime = release.endTime
         )
+    }
+
+    /**
+     * 获取当前用户考试信息
+     * @param id 发布id
+     */
+    fun examInfo(id: Long): ExamInfoResult {
+        val userId = userService.getUserInfo()!!.id
+        return baseMapper.examInfo(id, userId) ?: throw BizException("考试不存在!!")
     }
 }
