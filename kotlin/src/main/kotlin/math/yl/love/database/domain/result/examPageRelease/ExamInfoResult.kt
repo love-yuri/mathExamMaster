@@ -13,6 +13,10 @@ import java.time.LocalDateTime
 @Serializable
 @NoArg
 data class ExamInfoResult (
+    @Schema(description = "详情id")
+    @Serializable(with = LongAsStringSerializer::class)
+    val relationId: Long,
+
     @Schema(description = "发布id")
     @Serializable(with = LongAsStringSerializer::class)
     val releaseId: Long,
