@@ -1,7 +1,7 @@
 package math.yl.love.database.service
 
+import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import math.yl.love.common.mybatis.BaseService
-import math.yl.love.common.utils.CommonUtils
 import math.yl.love.configuration.exception.BizException
 import math.yl.love.database.domain.entity.ExamPageUserRelation
 import math.yl.love.database.domain.params.examPageRelease.ExamListParam
@@ -86,5 +86,14 @@ class ExamPageUserRelationService(
     fun relation(releaseId: Long): ExamPageUserRelation {
         val userId = userService.getUserInfo()!!.id
         return findByReleaseIdAndUserId(releaseId, userId) ?: throw BizException("不存在的发布!!")
+    }
+
+    @Transactional(rollbackFor = [Exception::class])
+    fun finish(relationId: Long) {
+        val updateWrapper = KtUpdateWrapper(ExamPageUserRelation::class.java)
+            .eq(ExamPageUserRelation::id, relationId)
+            .set(ExamPageUserRelation::status, ExamPageStatusEnum.FINISHED)
+
+        baseMapper.update(updateWrapper)
     }
 }
