@@ -20,6 +20,7 @@ import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
 import math.yl.love.database.mapper.ExamPageReleaseMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Duration
 import java.time.LocalDateTime
 import kotlin.reflect.KClass
 
@@ -195,5 +196,22 @@ class ExamPageReleaseService(
     fun examInfo(id: Long): ExamInfoResult {
         val userId = userService.getUserInfo()!!.id
         return baseMapper.examInfo(id, userId) ?: throw BizException("考试不存在!!")
+    }
+
+    /**
+     * 检查用户的试卷是否已结束
+     */
+    @Transactional(rollbackFor = [Exception::class])
+    fun check(id: Long): Boolean {
+        val examInfo = examInfo(id)
+        if (examInfo.status == ExamPageStatusEnum.DOING) {
+            val diff = Duration.between(examInfo.examStartTime, LocalDateTime.now())
+            if (diff.toMinutes() > examInfo.limitedTime) {
+                userRelationService.finish(examInfo.relationId)
+                return false
+            }
+            return true
+        }
+        return false
     }
 }
