@@ -11,6 +11,7 @@ interface ExamPageReleaseMapper: BaseMapper<ExamPageRelease> {
 
     @Select("""
        select exam_page_release.id as releaseId,
+       exam_page_user_relation.id as relationId,
        title,
        subject,
        type,
