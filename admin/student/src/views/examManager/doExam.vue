@@ -62,7 +62,7 @@
       </template>
     </Card>
   </div>
-  <Examing v-else :exam-page-info="examPageInfo!!" />
+  <Examing v-else :exam-info="examInfo!!" />
 </template>
 <script setup lang="ts">
 import {
@@ -74,7 +74,6 @@ import {
 import {
   type ExamInfoResult,
   examPageReleaseApi,
-  type StartExamResult,
 } from '#/api/examPageReleaseApi';
 import { computed, onUnmounted, ref, watchEffect } from 'vue';
 import { Card, FameraButton, Rating } from '#/components';
@@ -88,7 +87,6 @@ const { id } = defineProps<{
 const isExam = ref(false);
 const leftTime = ref(0);
 const examInfo = ref<ExamInfoResult>();
-const examPageInfo = ref<StartExamResult>();
 const examPageType = computed(
   () => ExamPageMap[examInfo.value?.type ?? ExamPageType.DEFULT],
 );
@@ -168,8 +166,7 @@ function calculateTimeDiff(endTime: string): number {
 }
 
 function startExam() {
-  examPageReleaseApi.startExam(examInfo.value!!.releaseId).then((res) => {
-    examPageInfo.value = res;
+  examPageReleaseApi.startExam(examInfo.value!!.releaseId).then((_) => {
     isExam.value = true;
   });
 }
