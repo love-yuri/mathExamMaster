@@ -49,4 +49,8 @@ class ExamPageReleaseController: BaseController<ExamPageRelease, ExamPageRelease
     @PostMapping("exam/info")
     @Operation(summary = "考试信息")
     fun examInfo(@RequestBody id:Long) = R.success(baseService.examInfo(id))
+
+    @PostMapping("check")
+    @Operation(summary = "检查该用户的练习")
+    fun check(@RequestBody id: Long) = R.success(baseService.check(id))
 }
