@@ -110,6 +110,13 @@ class Api extends BaseApi<BaseEntity> {
   override baseUrl: string = '/exam/page/release';
 
   /**
+   * 根据id检查是否正常
+   */
+  check = (id: string) => {
+    return this.add<boolean>(RequestType.POST, `/check`, id);
+  };
+
+  /**
    * 根据id获取详情
    */
   detail = (id: string) => {
