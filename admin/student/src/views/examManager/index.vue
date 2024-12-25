@@ -45,11 +45,19 @@ import { storeToRefs } from 'pinia';
 const examStore = useExamStore();
 const { releaseId } = storeToRefs(examStore);
 
-const currentReleaseId = ref<string | undefined>(releaseId.value);
+const currentReleaseId = ref<string | undefined>();
 const currentMode = ref(0);
 const examList = ref<ExamListResult[]>([]);
 
 watchEffect(async () => {
+  if (releaseId.value) {
+    const res = await examPageReleaseApi.check(releaseId.value);
+    currentReleaseId.value = res ? releaseId.value : undefined;
+    if (res) {
+      return;
+    }
+  }
+
   examList.value = await examPageReleaseApi.examList({
     mode: currentMode.value,
   });
