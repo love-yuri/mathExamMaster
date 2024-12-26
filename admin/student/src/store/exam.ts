@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-23 18:27:48
- * @LastEditTime: 2024-12-23 18:41:20
+ * @LastEditTime: 2024-12-26 18:10:01
  * @Description: 考试状态
  */
 import { acceptHMRUpdate, defineStore } from 'pinia';
@@ -26,10 +26,10 @@ export const useExamStore = defineStore('exam-info', {
     paths: ['releaseId', 'status'],
   },
   state: (): {
-    releaseId: string;
+    releaseId?: string;
     status: ExamStatus;
   } => ({
-    releaseId: '',
+    releaseId: undefined,
     status: ExamStatus.NOT_STARTED,
   }),
 });
