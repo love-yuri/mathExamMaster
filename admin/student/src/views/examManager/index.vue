@@ -37,7 +37,7 @@ import {
   examPageReleaseApi,
 } from '#/api/examPageReleaseApi';
 import { FameraButton, GaganButton } from '#/components';
-import { ref, watchEffect } from 'vue';
+import { ref, watch } from 'vue';
 import DoExam from './doExam.vue';
 import { useExamStore } from '#/store';
 import { storeToRefs } from 'pinia';
@@ -49,21 +49,29 @@ const currentReleaseId = ref<string | undefined>();
 const currentMode = ref(0);
 const examList = ref<ExamListResult[]>([]);
 
-watchEffect(async () => {
-  if (releaseId.value) {
-    const res = await examPageReleaseApi.check(releaseId.value);
-    currentReleaseId.value = res ? releaseId.value : undefined;
-    if (res) {
-      return;
+watch(
+  currentMode,
+  async () => {
+    if (releaseId?.value) {
+      const res = await examPageReleaseApi.check(releaseId.value);
+      currentReleaseId.value = res ? releaseId.value : undefined;
+      if (res) {
+        return;
+      }
+      releaseId.value = undefined;
     }
-  }
 
-  examList.value = await examPageReleaseApi.examList({
-    mode: currentMode.value,
-  });
-});
+    examList.value = await examPageReleaseApi.examList({
+      mode: currentMode.value,
+    });
+  },
+  { immediate: true },
+);
 
 function startExam(id: string) {
+  if (currentMode.value === 1) {
+    return;
+  }
   currentReleaseId.value = id;
   examStore.startExam(id);
 }
