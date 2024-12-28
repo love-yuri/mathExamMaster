@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-23 18:55:25
- * @LastEditTime: 2024-12-26 18:56:29
+ * @LastEditTime: 2024-12-28 15:38:09
  * @Description: 
 -->
 <template>
@@ -33,20 +33,30 @@
                 <Button label="已完成" raised rounded severity="success" />
                 <Button label="当前" raised rounded severity="info" />
               </div>
-              <div
-                class="rounded-sm bg-gray-200 px-[5px] py-[4px] text-[22px] font-bold"
-              >
-                选择题
-              </div>
-              <div class="mt-2 grid grid-cols-5 gap-2">
-                <Button label="1" raised rounded severity="secondary" />
-                <Button label="2" raised rounded severity="success" />
-                <Button label="3" raised rounded severity="info" />
-                <Button label="3" raised rounded severity="info" />
-                <Button label="3" raised rounded severity="info" />
-                <Button label="3" raised rounded severity="info" />
-                <Button label="3" raised rounded severity="info" />
-              </div>
+              <template v-for="type in questions.keys()" :key="type">
+                <div
+                  class="mt-4 rounded-sm bg-gray-200 px-[5px] py-[4px] text-[22px] font-bold"
+                >
+                  {{ QuestionTypeMap[type] }}
+                </div>
+                <div class="mt-2 grid grid-cols-5 gap-2">
+                  <Button
+                    v-for="question in questions.get(type)"
+                    :key="question.id"
+                    :label="`${answerMap.get(question.id || '')?.index}`"
+                    :severity="`${question.id === currentQuestion ? 'info' : answerMap.get(question.id || '')?.hasAnswer ? 'success' : 'secondary'} `"
+                    raised
+                    rounded
+                    @click="selectQuestion(question)"
+                  />
+                  <!-- <Button label="2" raised rounded severity="success" />
+                  <Button label="3" raised rounded severity="info" />
+                  <Button label="3" raised rounded severity="info" />
+                  <Button label="3" raised rounded severity="info" />
+                  <Button label="3" raised rounded severity="info" />
+                  <Button label="3" raised rounded severity="info" /> -->
+                </div>
+              </template>
             </div>
           </template>
         </Card>
@@ -54,21 +64,44 @@
     </div>
 
     <!-- 主答题区域 -->
-    <div class="h-full flex-grow p-6"></div>
+    <div class="h-full flex-grow p-6">
+      {{ questions }}
+      <div>------------------------------</div>
+      {{ questions.get(QuestionTypeEnum.SINGLE_CHOICE) }}
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
 import { Button, Card } from '#/components';
 import type { ExamInfoResult } from '#/api/examPageReleaseApi';
 import { computed, onUnmounted, ref, watchEffect } from 'vue';
+import {
+  type QuestionAnswer,
+  type QuestionBank,
+  QuestionTypeEnum,
+  QuestionTypeMap,
+} from '#/api/questionBankApi';
+import { examPageApi } from '#/api/examPageApi';
 
 const { examInfo } = defineProps<{
   examInfo: ExamInfoResult;
 }>();
 
+/**
+ * 处理题目显示和答案
+ */
+const questions = ref<Map<QuestionTypeEnum, QuestionBank[]>>(new Map());
+const answerMap = ref<Map<string, QuestionAnswer>>(new Map());
+const currentQuestion = ref<string>();
+function selectQuestion(question: QuestionBank) {
+  currentQuestion.value = question.id;
+}
+
+/**
+ * 处理倒计时
+ */
 const leftTime = ref(0);
 let interval: ReturnType<typeof setInterval> | undefined;
-
 const leftTimeText = computed(() => {
   if (leftTime.value <= 0) {
     return '00:00:00';
@@ -107,6 +140,25 @@ watchEffect(() => {
   // 计算剩余时间
   leftTime.value =
     examInfo.limitedTime - calculateTimeDiff(examInfo.examStartTime!!);
+
+  examPageApi.questionInfo(examInfo.examPageId).then((res) => {
+    questions.value = new Map<string, QuestionBank[]>(
+      Object.entries(res),
+    ) as Map<QuestionTypeEnum, QuestionBank[]>;
+    // 初始化答案map
+    let index = 1;
+    questions.value.forEach((v) => {
+      if (!currentQuestion.value) {
+        currentQuestion.value = v[0]?.id;
+      }
+      v.forEach((item) => {
+        answerMap.value.set(item.id!!, {
+          hasAnswer: false,
+          index: index++,
+        });
+      });
+    });
+  });
 
   // 定义定时器
   interval = setInterval(() => {
