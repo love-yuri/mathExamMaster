@@ -34,4 +34,8 @@ class ExamPageController: BaseController<ExamPage, ExamPageMapper, ExamPageServi
     @PostMapping("detail")
     @Operation(summary = "查找详细信息")
     fun generate(@RequestBody id: Long) = R.success(baseService.detail(id))
+
+    @PostMapping("question/info")
+    @Operation(summary = "获取考试信息")
+    fun questionInfo(@RequestBody id: Long) = R.success(baseService.questionInfo(id))
 }

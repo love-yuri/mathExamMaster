@@ -5,10 +5,12 @@ import math.yl.love.common.mybatis.BaseService
 import math.yl.love.configuration.exception.BizException
 import math.yl.love.database.domain.entity.ExamPage
 import math.yl.love.database.domain.entity.ExamPageQuestionRelation
+import math.yl.love.database.domain.entity.QuestionBank
 import math.yl.love.database.domain.params.examPage.ExamPageQuestion
 import math.yl.love.database.domain.params.examPage.ReleasePageParam
 import math.yl.love.database.domain.result.examPage.ExamPageResult
 import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
+import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
 import math.yl.love.database.mapper.ExamPageMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -164,5 +166,15 @@ class ExamPageService(
             it.fullQuestionBank = questionBankService.detail(it.questionBankId)
         }
         return result
+    }
+
+    /**
+     * 根据id获取试卷考试信息
+     * @param id 试卷id
+     */
+    fun questionInfo(id: Long): Map<QuestionTypeEnum, List<QuestionBank>> {
+        val questions = baseMapper.questionInfo(id)
+        val qMap = questions.groupBy { it.type }
+        return qMap
     }
 }
