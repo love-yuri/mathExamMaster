@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2024-12-23 19:23:42
+ * @LastEditTime: 2024-12-28 14:49:05
  * @Description:
  */
 import {
@@ -10,7 +10,11 @@ import {
   type PageResult,
 } from '#/common/base/baseApi/baseApi';
 import { BaseEntity, RequestType } from '#/common/base/baseApi/types';
-import type { FullQuestionBank } from './questionBankApi';
+import type {
+  FullQuestionBank,
+  QuestionBank,
+  QuestionTypeEnum,
+} from './questionBankApi';
 
 export interface ExamPageQuestionRelation {
   fullQuestionBank?: FullQuestionBank;
@@ -99,6 +103,17 @@ class Api extends BaseApi<BaseEntity> {
       RequestType.POST,
       '/page/simple',
       param,
+    );
+  };
+
+  /**
+   * 根据id获取题目信息
+   */
+  questionInfo = (id: string) => {
+    return this.add<Map<QuestionTypeEnum, QuestionBank[]>>(
+      RequestType.POST,
+      '/question/info',
+      id,
     );
   };
 

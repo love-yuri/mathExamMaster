@@ -79,6 +79,9 @@ export interface ExamInfoResult {
   /** 考试结束时间 */
   endTime: string;
 
+  /** 试卷id */
+  examPageId: string;
+
   /** 开始考试时间 */
   examStartTime?: null | string;
 

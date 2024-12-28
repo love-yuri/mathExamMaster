@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2024-10-23 21:39:45
+ * @LastEditTime: 2024-12-28 15:40:36
  * @Description: 题目
  */
 import {
@@ -11,6 +11,12 @@ import {
 } from '#/common/base/baseApi/baseApi';
 import { BaseEntity, RequestType } from '#/common/base/baseApi/types';
 import type { KnowledgePoint } from './knowledgePointApi';
+
+export interface QuestionAnswer {
+  answer?: any;
+  hasAnswer: boolean;
+  index: number;
+}
 
 export enum QuestionTypeEnum {
   GAP_FILLING = 'GAP_FILLING', // 填空题
