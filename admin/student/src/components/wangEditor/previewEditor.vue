@@ -5,11 +5,11 @@
  * @Description: 封装富文本编辑器
 -->
 <template>
-  <div class="">
+  <div class="overflow-hidden rounded-[12px] shadow-md">
     <Editor
       v-model="htmlText"
       :default-config="editorConfig"
-      style="min-height: 300px; height: 300px"
+      style="min-height: 300px; height: 500px"
       @on-created="handleCreated"
     />
   </div>
