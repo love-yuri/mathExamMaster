@@ -4,11 +4,14 @@ import cn.dev33.satoken.stp.StpUtil
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import math.yl.love.common.mybatis.BasePage
 import math.yl.love.common.mybatis.BaseService
+import math.yl.love.common.utils.JsonUtils.parseJson
 import math.yl.love.configuration.exception.BizException
 import math.yl.love.database.domain.entity.BankAndPoint
 import math.yl.love.database.domain.entity.QuestionBank
 import math.yl.love.database.domain.params.questionBank.SaveQuestionBankParam
-import math.yl.love.database.domain.result.questionBank.FullQuestionBank
+import math.yl.love.database.domain.result.questionBank.*
+import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
+import math.yl.love.database.domain.typeEnum.QuestionTypeEnum.*
 import math.yl.love.database.mapper.QuestionBankMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -85,5 +88,18 @@ class QuestionBankService(
         }
 
         return FullQuestionBank(questionBank, knowledgePointService.findByIds(knowledgePointIds))
+    }
+
+    /**
+     * 将答案解析回去
+     */
+    fun parseOptions(questionBank: QuestionBank): List<String> {
+        return when (questionBank.type) {
+            SINGLE_CHOICE -> questionBank.answer.parseJson<SingleChoiceAnswer>().keys.map { it.value }
+            MULTIPLE_CHOICE -> questionBank.answer.parseJson<MultipleChoiceAnswer>().keys.map { it.value }
+            JUDGE -> listOf()
+            GAP_FILLING -> questionBank.answer.parseJson<GapFillingAnswer>().answer.map { "" }
+            SUBJECTIVE -> listOf()
+        }
     }
 }

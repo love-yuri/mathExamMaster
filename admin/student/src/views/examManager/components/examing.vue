@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-23 18:55:25
- * @LastEditTime: 2024-12-28 16:04:17
+ * @LastEditTime: 2024-12-30 20:11:27
  * @Description: 
 -->
 <template>
@@ -33,18 +33,18 @@
                 <Button label="已完成" raised rounded severity="success" />
                 <Button label="当前" raised rounded severity="info" />
               </div>
-              <template v-for="type in questions.keys()" :key="type">
+              <template v-for="item in questions" :key="item.type">
                 <div
                   class="mt-4 rounded-sm bg-gray-200 px-[5px] py-[4px] text-[22px] font-bold"
                 >
-                  {{ QuestionTypeMap[type] }}
+                  {{ QuestionTypeMap[item.type] }}
                 </div>
                 <div class="mt-2 grid grid-cols-5 gap-2">
                   <Button
-                    v-for="question in questions.get(type)"
+                    v-for="question in item.infos"
                     :key="question.id"
-                    :label="`${answerMap.get(question.id || '')?.index}`"
-                    :severity="`${question.id === currentQuestion.id ? 'info' : answerMap.get(question.id || '')?.hasAnswer ? 'success' : 'secondary'} `"
+                    :label="`${question.index}`"
+                    :severity="`${question.id === currentQuestionInfo?.id ? 'info' : question?.hasAnswer ? 'success' : 'secondary'} `"
                     raised
                     rounded
                     @click="selectQuestion(question)"
@@ -59,63 +59,92 @@
 
     <!-- 主答题区域 -->
     <div class="h-full flex-grow p-6">
-      <div v-if="currentQuestion">
-        <PreviewEditor :content="currentQuestion.content" />
-        <template
-          v-if="currentQuestion.type === QuestionTypeEnum.SINGLE_CHOICE"
-        >
-          <div class="flex flex-col p-2">
-            <Button
-              v-for="(item, index) in singleChoiceAnswer.keys"
-              :key="index"
-              :label="`${String.fromCharCode(65 + index)}: ${item.value}`"
-              :severity="
-                index === singleChoiceAnswer.answer ? 'success' : 'secondary'
-              "
-              class="my-2"
-            />
-          </div>
-        </template>
-        <template
-          v-else-if="currentQuestion.type === QuestionTypeEnum.MULTIPLE_CHOICE"
-        >
-          <div class="flex flex-col p-2">
-            <Button
-              v-for="(item, index) in multipleChoiceAnswer.keys"
-              :key="index"
-              :label="`${String.fromCharCode(65 + index)}: ${item.value}`"
-              :severity="
-                multipleChoiceAnswer.answer.includes(index)
-                  ? 'success'
-                  : 'secondary'
-              "
-              class="my-2"
-            />
-          </div>
-        </template>
-        <template
-          v-else-if="currentQuestion.type === QuestionTypeEnum.GAP_FILLING"
-        >
-          <div class="flex flex-col p-2">
-            <div
-              v-for="(item, index) in gapFillingAnswer.answer"
-              :key="index"
-              class="my-2 text-[20px]"
+      <div v-if="currentQuestionInfo">
+        <PreviewEditor :content="currentQuestionInfo.content" />
+        <Card class="mt-4">
+          <template #content>
+            <template
+              v-if="currentQuestionInfo.type === QuestionTypeEnum.SINGLE_CHOICE"
             >
-              第{{ index + 1 }}空: {{ item.value }}
-            </div>
-          </div>
-        </template>
-        <template v-else-if="currentQuestion.type === QuestionTypeEnum.JUDGE">
-          <div class="mt-2 flex items-center">
-            <div class="mr-3 text-xl">正确答案:</div>
-            <Button
-              :icon="judgeAnswer.answer ? 'pi pi-check' : 'pi pi-times'"
-              :severity="judgeAnswer.answer ? 'success' : 'danger'"
-              rounded
-            />
-          </div>
-        </template>
+              <div class="flex flex-col p-2">
+                <Button
+                  v-for="(item, index) in currentQuestionInfo.options"
+                  :key="index"
+                  :label="`${String.fromCharCode(65 + index)}: ${item}`"
+                  :severity="
+                    currentQuestionInfo.answer[0]?.includes(index.toString())
+                      ? 'success'
+                      : 'secondary'
+                  "
+                  class="my-2"
+                  @click="chooseAnswer(index)"
+                />
+              </div>
+            </template>
+            <template
+              v-else-if="
+                currentQuestionInfo.type === QuestionTypeEnum.MULTIPLE_CHOICE
+              "
+            >
+              <div class="flex flex-col p-2">
+                <Button
+                  v-for="(item, index) in currentQuestionInfo.options"
+                  :key="index"
+                  :label="`${String.fromCharCode(65 + index)}: ${item}`"
+                  :severity="
+                    currentQuestionInfo.answer.includes(index.toString())
+                      ? 'success'
+                      : 'secondary'
+                  "
+                  class="my-2"
+                  @click="chooseAnswer(index)"
+                />
+              </div>
+            </template>
+            <template
+              v-else-if="
+                currentQuestionInfo.type === QuestionTypeEnum.GAP_FILLING
+              "
+            >
+              <div class="flex flex-col p-2">
+                <div
+                  v-for="(item, index) in currentQuestionInfo.options"
+                  :key="index"
+                  class="my-2 text-[20px]"
+                >
+                  第{{ index + 1 }}空: {{ item }}
+                </div>
+              </div>
+            </template>
+            <template
+              v-else-if="currentQuestionInfo.type === QuestionTypeEnum.JUDGE"
+            >
+              <div class="mt-2 flex items-center">
+                <Button
+                  :severity="
+                    currentQuestionInfo.answer[0] === '0'
+                      ? 'success'
+                      : 'secondary'
+                  "
+                  icon="pi pi-check"
+                  rounded
+                  @click="chooseAnswer(0)"
+                />
+                <Button
+                  :severity="
+                    currentQuestionInfo.answer[0] === '1'
+                      ? 'success'
+                      : 'secondary'
+                  "
+                  class="ml-2"
+                  icon="pi pi-times"
+                  rounded
+                  @click="chooseAnswer(1)"
+                />
+              </div>
+            </template>
+          </template>
+        </Card>
       </div>
     </div>
   </div>
@@ -124,13 +153,12 @@
 import { Button, Card, PreviewEditor } from '#/components';
 import type { ExamInfoResult } from '#/api/examPageReleaseApi';
 import { computed, onUnmounted, ref, watchEffect } from 'vue';
+import { QuestionTypeEnum, QuestionTypeMap } from '#/api/questionBankApi';
 import {
-  type QuestionAnswer,
-  QuestionBank,
-  QuestionTypeEnum,
-  QuestionTypeMap,
-} from '#/api/questionBankApi';
-import { examPageApi } from '#/api/examPageApi';
+  examPageApi,
+  type QuestionInfo,
+  type QuestionInfoResult,
+} from '#/api/examPageApi';
 
 const { examInfo } = defineProps<{
   examInfo: ExamInfoResult;
@@ -139,75 +167,56 @@ const { examInfo } = defineProps<{
 /**
  * 处理题目显示和答案
  */
-const questions = ref<Map<QuestionTypeEnum, QuestionBank[]>>(new Map());
-const answerMap = ref<Map<string, QuestionAnswer>>(new Map());
-const currentQuestion = ref<QuestionBank>(new QuestionBank());
-function selectQuestion(question: QuestionBank) {
-  currentQuestion.value = question;
+const questions = ref<QuestionInfoResult[]>([]);
+const currentQuestionInfo = ref<QuestionInfo>();
+function selectQuestion(question: QuestionInfo) {
+  currentQuestionInfo.value = question;
+  if (!currentQuestionInfo.value.hasAnswer) {
+    currentQuestionInfo.value.hasAnswer = false;
+    currentQuestionInfo.value.answer = [''];
+  }
 }
 
-/**
- * 单选题json数据
- */
-export interface SingleChoiceAnswer {
-  /**
-   * 正确答案
-   * 选项的顺序 从0开始
-   */
-  answer?: number;
-
-  /**
-   * 选项列表
-   */
-  keys: {
-    // 选项的值
-    value: string;
-  }[];
+function chooseAnswer(index_: number) {
+  if (!currentQuestionInfo.value) {
+    return;
+  }
+  const index = index_.toString();
+  switch (currentQuestionInfo.value?.type) {
+    // 单选
+    case QuestionTypeEnum.SINGLE_CHOICE: {
+      currentQuestionInfo.value.answer = [index];
+      break;
+    }
+    // 多选
+    case QuestionTypeEnum.MULTIPLE_CHOICE: {
+      if (currentQuestionInfo.value.answer.includes(index)) {
+        currentQuestionInfo.value.answer =
+          currentQuestionInfo.value.answer.filter((item) => item !== index);
+      } else {
+        currentQuestionInfo.value.answer.push(index);
+      }
+      break;
+    }
+    // 判断
+    case QuestionTypeEnum.JUDGE: {
+      currentQuestionInfo.value.answer = [index];
+      break;
+    }
+  }
+  switch (currentQuestionInfo.value!!.type) {
+    case QuestionTypeEnum.JUDGE:
+    case QuestionTypeEnum.SINGLE_CHOICE: {
+      currentQuestionInfo.value.hasAnswer = true;
+      break;
+    }
+    case QuestionTypeEnum.MULTIPLE_CHOICE: {
+      currentQuestionInfo.value.hasAnswer =
+        currentQuestionInfo.value.answer.length > 0;
+      break;
+    }
+  }
 }
-
-/**
- * 多选题json数据
- */
-interface MultipleChoiceAnswer {
-  answer: number[];
-  keys: {
-    // 选项的值
-    value: string;
-  }[];
-}
-
-/**
- * 判断题json数据
- */
-export interface JudgeAnswer {
-  answer: boolean;
-}
-
-/**
- * 填空题json数据
- */
-export interface GapFillingAnswer {
-  answer: {
-    // 答案
-    value: string;
-  }[];
-}
-
-const singleChoiceAnswer = computed(
-  () => JSON.parse(currentQuestion.value!!.answer) as SingleChoiceAnswer,
-);
-
-const multipleChoiceAnswer = computed(
-  () => JSON.parse(currentQuestion.value!!.answer) as MultipleChoiceAnswer,
-);
-
-const gapFillingAnswer = computed(
-  () => JSON.parse(currentQuestion.value!!.answer) as GapFillingAnswer,
-);
-
-const judgeAnswer = computed(
-  () => JSON.parse(currentQuestion.value!!.answer) as JudgeAnswer,
-);
 
 /**
  * 处理倒计时
@@ -254,22 +263,12 @@ watchEffect(() => {
     examInfo.limitedTime - calculateTimeDiff(examInfo.examStartTime!!);
 
   examPageApi.questionInfo(examInfo.examPageId).then((res) => {
-    questions.value = new Map<string, QuestionBank[]>(
-      Object.entries(res),
-    ) as Map<QuestionTypeEnum, QuestionBank[]>;
-    // 初始化答案map
-    let index = 1;
-    questions.value.forEach((v) => {
-      if (!currentQuestion.value.id && v.length > 0) {
-        currentQuestion.value.copy(v[0]!!);
-      }
-      v.forEach((item) => {
-        answerMap.value.set(item.id!!, {
-          hasAnswer: false,
-          index: index++,
-        });
-      });
-    });
+    questions.value = res;
+    if (res.length > 0 && res[0]!!.infos.length > 0) {
+      currentQuestionInfo.value = res[0]?.infos[0]!!;
+      currentQuestionInfo.value.hasAnswer = false;
+      currentQuestionInfo.value.answer = [''];
+    }
   });
 
   // 定义定时器

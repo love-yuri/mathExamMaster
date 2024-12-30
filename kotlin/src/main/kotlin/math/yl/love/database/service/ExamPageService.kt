@@ -9,6 +9,7 @@ import math.yl.love.database.domain.entity.QuestionBank
 import math.yl.love.database.domain.params.examPage.ExamPageQuestion
 import math.yl.love.database.domain.params.examPage.ReleasePageParam
 import math.yl.love.database.domain.result.examPage.ExamPageResult
+import math.yl.love.database.domain.result.examPage.QuestionInfoResult
 import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
 import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
 import math.yl.love.database.mapper.ExamPageMapper
@@ -172,9 +173,22 @@ class ExamPageService(
      * 根据id获取试卷考试信息
      * @param id 试卷id
      */
-    fun questionInfo(id: Long): Map<QuestionTypeEnum, List<QuestionBank>> {
-        val questions = baseMapper.questionInfo(id)
-        val qMap = questions.groupBy { it.type }
-        return qMap
+    fun questionInfo(id: Long): List<QuestionInfoResult> {
+        val questions = baseMapper.questionInfo(id).groupBy { it.type }
+        var index = 0
+        return questions.map {
+            QuestionInfoResult(
+                type = it.key,
+                infos = it.value.map { q ->
+                    QuestionInfoResult.QuestionInfo(
+                        id = q.id,
+                        content = q.content,
+                        options = questionBankService.parseOptions(q),
+                        index = ++index,
+                        type = it.key
+                    )
+                }
+            )
+        }
     }
 }

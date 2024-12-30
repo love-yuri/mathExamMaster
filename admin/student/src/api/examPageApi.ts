@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2024-12-28 14:49:05
+ * @LastEditTime: 2024-12-30 20:04:19
  * @Description:
  */
 import {
@@ -10,11 +10,7 @@ import {
   type PageResult,
 } from '#/common/base/baseApi/baseApi';
 import { BaseEntity, RequestType } from '#/common/base/baseApi/types';
-import type {
-  FullQuestionBank,
-  QuestionBank,
-  QuestionTypeEnum,
-} from './questionBankApi';
+import type { FullQuestionBank, QuestionTypeEnum } from './questionBankApi';
 
 export interface ExamPageQuestionRelation {
   fullQuestionBank?: FullQuestionBank;
@@ -85,6 +81,52 @@ export class ExamPageResult extends ExamPageCreateVO {
   }
 }
 
+export interface QuestionInfo {
+  /**
+   * 答案
+   */
+  answer: string[];
+  /**
+   * 题目内容
+   */
+  content: string;
+  /**
+   * 是否已作答
+   */
+  hasAnswer: boolean;
+  /**
+   * 主键id
+   * 类型为字符串，表示可能是长整型的序列化形式
+   */
+  id?: string;
+
+  /**
+   * 题目序号
+   */
+  index: number;
+
+  /**
+   * 题目选项
+   * 由于是任意类型，可根据具体实现进一步细化
+   */
+  options: string[];
+  /**
+   * 题目类型
+   */
+  type: QuestionTypeEnum;
+}
+
+/**
+ * 问题信息结果
+ */
+export interface QuestionInfoResult {
+  infos: QuestionInfo[];
+  /**
+   * 题目类型
+   */
+  type: QuestionTypeEnum;
+}
+
 class Api extends BaseApi<BaseEntity> {
   override baseUrl: string = '/exam/page';
 
@@ -110,7 +152,7 @@ class Api extends BaseApi<BaseEntity> {
    * 根据id获取题目信息
    */
   questionInfo = (id: string) => {
-    return this.add<Map<QuestionTypeEnum, QuestionBank[]>>(
+    return this.add<QuestionInfoResult[]>(
       RequestType.POST,
       '/question/info',
       id,
