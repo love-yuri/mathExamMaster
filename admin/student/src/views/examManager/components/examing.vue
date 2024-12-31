@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-23 18:55:25
- * @LastEditTime: 2024-12-30 20:11:27
+ * @LastEditTime: 2024-12-31 20:08:58
  * @Description: 
 -->
 <template>
@@ -108,11 +108,16 @@
             >
               <div class="flex flex-col p-2">
                 <div
-                  v-for="(item, index) in currentQuestionInfo.options"
+                  v-for="(_, index) in currentQuestionInfo.options"
                   :key="index"
-                  class="my-2 text-[20px]"
+                  class="my-2 flex text-[20px]"
                 >
-                  第{{ index + 1 }}空: {{ item }}
+                  <span class="mr-2 flex-shrink-0">第{{ index + 1 }}空:</span>
+                  <InputText
+                    v-model="currentQuestionInfo.answer[index]"
+                    class="w-full"
+                    @change="updateAnswer"
+                  />
                 </div>
               </div>
             </template>
@@ -143,6 +148,19 @@
                 />
               </div>
             </template>
+            <template
+              v-else-if="
+                currentQuestionInfo.type === QuestionTypeEnum.SUBJECTIVE
+              "
+            >
+              <div class="mt-2 flex items-center">
+                <WangEditor
+                  v-model:content="currentQuestionInfo.answer[0]!!"
+                  placeholder="请输入答案..."
+                  @change="updateAnswer"
+                />
+              </div>
+            </template>
           </template>
         </Card>
       </div>
@@ -150,7 +168,13 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { Button, Card, PreviewEditor } from '#/components';
+import {
+  Button,
+  Card,
+  InputText,
+  PreviewEditor,
+  WangEditor,
+} from '#/components';
 import type { ExamInfoResult } from '#/api/examPageReleaseApi';
 import { computed, onUnmounted, ref, watchEffect } from 'vue';
 import { QuestionTypeEnum, QuestionTypeMap } from '#/api/questionBankApi';
@@ -159,6 +183,8 @@ import {
   type QuestionInfo,
   type QuestionInfoResult,
 } from '#/api/examPageApi';
+import { debounce } from '#/common/utils/commonUtils';
+import message from '#/common/utils/message';
 
 const { examInfo } = defineProps<{
   examInfo: ExamInfoResult;
@@ -173,9 +199,40 @@ function selectQuestion(question: QuestionInfo) {
   currentQuestionInfo.value = question;
   if (!currentQuestionInfo.value.hasAnswer) {
     currentQuestionInfo.value.hasAnswer = false;
-    currentQuestionInfo.value.answer = [''];
+    currentQuestionInfo.value.answer = [];
   }
 }
+
+/**
+ * 更新用户答案
+ */
+const updateAnswer = debounce(() => {
+  currentQuestionInfo.value!!.hasAnswer =
+    currentQuestionInfo.value!!.answer.length > 0;
+  if (currentQuestionInfo.value?.type === QuestionTypeEnum.GAP_FILLING) {
+    let hasAnswer = false;
+    currentQuestionInfo.value.answer.forEach((k) => {
+      if (k !== '') {
+        hasAnswer = true;
+      }
+    });
+    currentQuestionInfo.value.hasAnswer = hasAnswer;
+  }
+  const param: any = {};
+  questions.value.forEach((k, _) => {
+    k.infos.forEach((q) => {
+      param[q.id!!] = Array.isArray(q.answer) ? q.answer : [];
+    });
+  });
+  examPageApi
+    .updateUserAnswer({
+      answer: param,
+      relationId: examInfo.relationId,
+    })
+    .then(() => {
+      message.success('保存成功');
+    });
+}, 1000);
 
 function chooseAnswer(index_: number) {
   if (!currentQuestionInfo.value) {
@@ -204,18 +261,7 @@ function chooseAnswer(index_: number) {
       break;
     }
   }
-  switch (currentQuestionInfo.value!!.type) {
-    case QuestionTypeEnum.JUDGE:
-    case QuestionTypeEnum.SINGLE_CHOICE: {
-      currentQuestionInfo.value.hasAnswer = true;
-      break;
-    }
-    case QuestionTypeEnum.MULTIPLE_CHOICE: {
-      currentQuestionInfo.value.hasAnswer =
-        currentQuestionInfo.value.answer.length > 0;
-      break;
-    }
-  }
+  updateAnswer();
 }
 
 /**
@@ -262,14 +308,17 @@ watchEffect(() => {
   leftTime.value =
     examInfo.limitedTime - calculateTimeDiff(examInfo.examStartTime!!);
 
-  examPageApi.questionInfo(examInfo.examPageId).then((res) => {
-    questions.value = res;
-    if (res.length > 0 && res[0]!!.infos.length > 0) {
-      currentQuestionInfo.value = res[0]?.infos[0]!!;
-      currentQuestionInfo.value.hasAnswer = false;
-      currentQuestionInfo.value.answer = [''];
-    }
-  });
+  examPageApi
+    .questionInfo({
+      examPageId: examInfo.examPageId,
+      relationId: examInfo.relationId,
+    })
+    .then((res) => {
+      questions.value = res;
+      if (res.length > 0 && res[0]!!.infos.length > 0) {
+        currentQuestionInfo.value = res[0]?.infos[0]!!;
+      }
+    });
 
   // 定义定时器
   interval = setInterval(() => {
