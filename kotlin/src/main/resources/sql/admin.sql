@@ -39,7 +39,7 @@ CREATE TABLE user_department (
 DROP TABLE IF EXISTS `department`;
 CREATE TABLE department (
   `id` bigint NOT NULL COMMENT 'id',
-  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '组织名称',
+  `name` varchar(64) NOT NULL comment '组织名称',
   `parent_id` bigint NULL DEFAULT NULL comment '父组织id',
   `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
   `create_time` datetime NOT NULL COMMENT '创建时间',
@@ -54,8 +54,8 @@ DROP TABLE IF EXISTS `system_file`;
 CREATE TABLE `system_file` (
   `id` bigint NOT NULL COMMENT '文件id',
   `type` tinyint(2) NOT NULL DEFAULT 0 comment '文件类型: 默认其他类型',
-  `filename` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '文件名',
-  `path` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '路径',
+  `filename` varchar(128) NOT NULL comment '文件名',
+  `path` varchar(128) NOT NULL comment '路径',
   `md5` varchar(32) NOT NULL comment '文件md5值',
   `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
   `create_time` datetime NOT NULL COMMENT '创建时间',
@@ -83,8 +83,8 @@ CREATE TABLE `question_bank` (
 DROP TABLE IF EXISTS `knowledge_point`;
 CREATE TABLE `knowledge_point` (
  `id` bigint NOT NULL COMMENT '主键id',
- `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '知识点名称',
- `description` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL comment '知识点描述',
+ `name` varchar(128) NOT NULL comment '知识点名称',
+ `description` varchar(128) NULL comment '知识点描述',
  `parent` bigint NOT NULL DEFAULT 0 comment '父级知识点: 0 代表根知识',
  `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
  `create_time` datetime NOT NULL COMMENT '创建时间',
@@ -110,7 +110,7 @@ CREATE TABLE `bank_and_point` (
 DROP TABLE IF EXISTS `exam_page`;
 CREATE TABLE `exam_page` (
  `id` bigint NOT NULL COMMENT '试卷的id',
- `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '试卷的标题',
+ `title` varchar(255) NOT NULL COMMENT '试卷的标题',
  `subject` tinyint(1) NOT NULL DEFAULT 0 COMMENT '试卷科目，默认0: 高等数学',
  `type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '试卷的类型，默认0: 普通试卷',
  `difficulty` tinyint(1) NOT NULL DEFAULT 5 COMMENT '试卷的难度，默认5，最高9',
@@ -159,6 +159,7 @@ CREATE TABLE `exam_page_user_relation` (
    `user_id` bigint NOT NULL COMMENT '用户id',
    `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '当前试卷的状态，默认0: 未完成',
    `exam_start_time` datetime NULL DEFAULT NULL COMMENT '开始练习时间',
+   `answer` JSON NULL DEFAULT NULL COMMENT '用户答案',
    `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
    `create_time` datetime NOT NULL COMMENT '创建时间',
    `create_by` varchar(16) NOT NULL comment '创建用户',
@@ -166,3 +167,6 @@ CREATE TABLE `exam_page_user_relation` (
    `update_by` varchar(16) NOT NULL comment '更新用户',
    PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='试卷-学生关联表';
+
+# 插入答案列
+ALTER TABLE `exam_page_user_relation` ADD COLUMN `answer` JSON NULL DEFAULT NULL COMMENT '用户答案' AFTER `status`;
