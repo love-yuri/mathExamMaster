@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2024-12-30 20:04:19
+ * @LastEditTime: 2024-12-31 19:22:29
  * @Description:
  */
 import {
@@ -151,11 +151,11 @@ class Api extends BaseApi<BaseEntity> {
   /**
    * 根据id获取题目信息
    */
-  questionInfo = (id: string) => {
+  questionInfo = (param: { examPageId: string; relationId: string }) => {
     return this.add<QuestionInfoResult[]>(
       RequestType.POST,
       '/question/info',
-      id,
+      param,
     );
   };
 
@@ -166,11 +166,15 @@ class Api extends BaseApi<BaseEntity> {
     return this.add<boolean>(RequestType.POST, '/release', param);
   };
 
-  /**
-   * 发布试卷
-   */
   updatePage = (param: ExamPageCreateVO) => {
     return this.add<boolean>(RequestType.POST, '/update/page', param);
+  };
+
+  /**
+   * 更新用户答案
+   */
+  updateUserAnswer = (param: { answer: any; relationId: string }) => {
+    return this.add<boolean>(RequestType.POST, '/update/user/answer', param);
   };
 }
 
