@@ -6,6 +6,8 @@ import math.yl.love.common.base.R
 import math.yl.love.common.mybatis.BaseController
 import math.yl.love.database.domain.entity.ExamPage
 import math.yl.love.database.domain.params.examPage.ReleasePageParam
+import math.yl.love.database.domain.params.examPage.UpdateUserAnswerParam
+import math.yl.love.database.domain.params.examPageRelease.QuestionInfoParam
 import math.yl.love.database.domain.params.system.GenerateParam
 import math.yl.love.database.mapper.ExamPageMapper
 import math.yl.love.database.service.ExamPageService
@@ -37,5 +39,9 @@ class ExamPageController: BaseController<ExamPage, ExamPageMapper, ExamPageServi
 
     @PostMapping("question/info")
     @Operation(summary = "获取考试信息")
-    fun questionInfo(@RequestBody id: Long) = R.success(baseService.questionInfo(id))
+    fun questionInfo(@RequestBody param: QuestionInfoParam) = R.success(baseService.questionInfo(param))
+
+    @PostMapping("update/user/answer")
+    @Operation(summary = "更新用户答案")
+    fun updateUserAnswer(@RequestBody param: UpdateUserAnswerParam) = R.success(baseService.updateUserAnswer(param))
 }

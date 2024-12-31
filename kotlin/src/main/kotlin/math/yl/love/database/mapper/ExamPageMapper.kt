@@ -16,5 +16,5 @@ interface ExamPageMapper: BaseMapper<ExamPage> {
             where exam_page_id = #{id}
         );
     """)
-    fun questionInfo(id: Long):List<QuestionBank>
+    fun questionInfo(id: Long): List<QuestionBank>
 }

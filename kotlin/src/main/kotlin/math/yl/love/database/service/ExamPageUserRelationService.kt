@@ -96,4 +96,18 @@ class ExamPageUserRelationService(
 
         baseMapper.update(updateWrapper)
     }
+
+    /**
+     * 更新用户答案
+     * @param relationId 考试关联id
+     * @param newAnswer 新答案
+     * @return 是否更新成功
+     */
+    fun updateAnswer(relationId: Long, newAnswer: String): Boolean {
+        val updateWrapper = KtUpdateWrapper(ExamPageUserRelation::class.java)
+            .eq(ExamPageUserRelation::id, relationId)
+            .set(ExamPageUserRelation::answer, newAnswer)
+
+        return baseMapper.update(updateWrapper) > 0
+    }
 }
