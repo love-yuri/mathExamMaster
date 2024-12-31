@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2024-12-24 19:19:04
+ * @LastEditTime: 2024-12-31 18:12:55
  * @Description:
  */
 import { BaseApi } from '#/common/base/baseApi/baseApi';
@@ -85,7 +85,11 @@ export interface ExamInfoResult {
   /** 开始考试时间 */
   examStartTime?: null | string;
 
+  /** 试卷限时 */
   limitedTime: number;
+
+  /** 详情id */
+  relationId: string;
 
   /** 发布id */
   releaseId: string;
