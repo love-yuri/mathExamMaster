@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2024-12-31 20:04:20
+ * @LastEditTime: 2025-01-02 19:28:17
  * @Description: 封装富文本编辑器
 -->
 <template>
@@ -13,7 +13,7 @@
         style="border-bottom: 1px solid #ccc"
       />
       <Editor
-        v-model="valueHtml"
+        v-model="content"
         :default-config="editorConfig"
         style="min-height: 400px; height: 400px"
         @custom-paste="customPaste"
@@ -26,13 +26,13 @@
 </template>
 <script setup lang="ts">
 // import Mathjax from 'mathjax';
-import '@wangeditor/editor/dist/css/style.css'; // 引入 css
+import '@wangeditor-next/editor/dist/css/style.css'; // 引入 css
 import {
   type IDomEditor,
   type IEditorConfig,
   type IToolbarConfig,
 } from '@wangeditor/editor';
-import { onBeforeUnmount, ref, shallowRef, watch } from 'vue';
+import { onBeforeUnmount, ref, shallowRef } from 'vue';
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 import { systemApi } from '#/api/systemApi';
 import { systemFileApi } from '#/api/systemFileApi';
@@ -43,13 +43,17 @@ import MathModal from '../math/mathModal.vue';
 import '#/components/wangEditor/templates';
 
 const props = defineProps<WangEditorProps>();
+defineEmits(['change']);
 
-const emit = defineEmits(['update:content', 'change']);
+const content = defineModel('content');
 
 const mathModalRef = ref();
 
 type InsertFnType = (url: string, alt: string, href: string) => void;
 const editorRef = shallowRef();
+function setText(text: string) {
+  content.value = text;
+}
 const editorConfig: Partial<IEditorConfig> = {
   hoverbarKeys: {
     'yuri-math': {
@@ -70,28 +74,6 @@ const editorConfig: Partial<IEditorConfig> = {
   },
   placeholder: props.placeholder,
 };
-
-// 内容 HTML
-const valueHtml = ref(props.content);
-const isUpdating = ref(false); // 添加一个标志位来控制更新
-
-// 监听 props.content 的变化，并同步更新 valueHtml
-watch(
-  () => props.content,
-  (newContent) => {
-    if (!isUpdating.value) {
-      // 仅在非更新状态下同步
-      valueHtml.value = newContent;
-    }
-  },
-);
-
-// 监听 valueHtml 的变化，并 emit 出去
-watch(valueHtml, (newVal: string) => {
-  isUpdating.value = true; // 标记为更新状态
-  emit('update:content', newVal);
-  isUpdating.value = false; // 重置标志位
-});
 
 const toolbarConfig: Partial<IToolbarConfig> = {
   toolbarKeys: ToolbarKeys,
@@ -127,4 +109,6 @@ function customPaste(editor: IDomEditor, event: ClipboardEvent) {
   }
   return true;
 }
+
+defineExpose({ setText });
 </script>
