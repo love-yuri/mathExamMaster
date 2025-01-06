@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2025-01-02 19:28:17
+ * @LastEditTime: 2025-01-06 20:41:07
  * @Description: 封装富文本编辑器
 -->
 <template>
@@ -31,7 +31,7 @@ import {
   type IDomEditor,
   type IEditorConfig,
   type IToolbarConfig,
-} from '@wangeditor/editor';
+} from '@wangeditor-next/editor';
 import { onBeforeUnmount, ref, shallowRef } from 'vue';
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 import { systemApi } from '#/api/systemApi';
@@ -46,14 +46,10 @@ const props = defineProps<WangEditorProps>();
 defineEmits(['change']);
 
 const content = defineModel('content');
-
 const mathModalRef = ref();
 
 type InsertFnType = (url: string, alt: string, href: string) => void;
 const editorRef = shallowRef();
-function setText(text: string) {
-  content.value = text;
-}
 const editorConfig: Partial<IEditorConfig> = {
   hoverbarKeys: {
     'yuri-math': {
@@ -62,6 +58,7 @@ const editorConfig: Partial<IEditorConfig> = {
   },
   MENU_CONF: {
     uploadImage: {
+      base64LimitSize: 0,
       async customUpload(file: File, insertFn: InsertFnType) {
         const res = await systemApi.upload({
           file,
@@ -70,6 +67,11 @@ const editorConfig: Partial<IEditorConfig> = {
         const url = systemFileApi.getFile(res.id);
         insertFn(url, '', '');
       },
+      metaWithUrl: false,
+      onError: () => {},
+      onFailed: () => {},
+      onSuccess: () => {},
+      server: '',
     },
   },
   placeholder: props.placeholder,
@@ -109,6 +111,4 @@ function customPaste(editor: IDomEditor, event: ClipboardEvent) {
   }
   return true;
 }
-
-defineExpose({ setText });
 </script>

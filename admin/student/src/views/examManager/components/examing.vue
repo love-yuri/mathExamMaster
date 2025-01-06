@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-23 18:55:25
- * @LastEditTime: 2024-12-31 20:08:58
+ * @LastEditTime: 2025-01-06 20:42:00
  * @Description: 
 -->
 <template>
@@ -153,8 +153,9 @@
                 currentQuestionInfo.type === QuestionTypeEnum.SUBJECTIVE
               "
             >
-              <div class="mt-2 flex items-center">
+              <div v-if="showEditor" class="mt-2 flex items-center">
                 <WangEditor
+                  ref="editorRef"
                   v-model:content="currentQuestionInfo.answer[0]!!"
                   placeholder="请输入答案..."
                   @change="updateAnswer"
@@ -176,7 +177,14 @@ import {
   WangEditor,
 } from '#/components';
 import type { ExamInfoResult } from '#/api/examPageReleaseApi';
-import { computed, onUnmounted, ref, watchEffect } from 'vue';
+import {
+  computed,
+  nextTick,
+  onUnmounted,
+  ref,
+  useTemplateRef,
+  watchEffect,
+} from 'vue';
 import { QuestionTypeEnum, QuestionTypeMap } from '#/api/questionBankApi';
 import {
   examPageApi,
@@ -195,7 +203,13 @@ const { examInfo } = defineProps<{
  */
 const questions = ref<QuestionInfoResult[]>([]);
 const currentQuestionInfo = ref<QuestionInfo>();
-function selectQuestion(question: QuestionInfo) {
+const editorRef = useTemplateRef('editorRef');
+const showEditor = ref(false);
+async function selectQuestion(question: QuestionInfo) {
+  showEditor.value = false;
+  await nextTick(); // 等待dom渲染完成
+  showEditor.value = true;
+  await nextTick(); // 等待dom渲染完成
   currentQuestionInfo.value = question;
   if (!currentQuestionInfo.value.hasAnswer) {
     currentQuestionInfo.value.hasAnswer = false;
