@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-23 18:55:25
- * @LastEditTime: 2025-01-06 20:42:00
+ * @LastEditTime: 2025-01-06 20:43:53
  * @Description: 
 -->
 <template>
@@ -155,7 +155,6 @@
             >
               <div v-if="showEditor" class="mt-2 flex items-center">
                 <WangEditor
-                  ref="editorRef"
                   v-model:content="currentQuestionInfo.answer[0]!!"
                   placeholder="请输入答案..."
                   @change="updateAnswer"
@@ -177,14 +176,7 @@ import {
   WangEditor,
 } from '#/components';
 import type { ExamInfoResult } from '#/api/examPageReleaseApi';
-import {
-  computed,
-  nextTick,
-  onUnmounted,
-  ref,
-  useTemplateRef,
-  watchEffect,
-} from 'vue';
+import { computed, nextTick, onUnmounted, ref, watchEffect } from 'vue';
 import { QuestionTypeEnum, QuestionTypeMap } from '#/api/questionBankApi';
 import {
   examPageApi,
@@ -203,7 +195,6 @@ const { examInfo } = defineProps<{
  */
 const questions = ref<QuestionInfoResult[]>([]);
 const currentQuestionInfo = ref<QuestionInfo>();
-const editorRef = useTemplateRef('editorRef');
 const showEditor = ref(false);
 async function selectQuestion(question: QuestionInfo) {
   showEditor.value = false;
