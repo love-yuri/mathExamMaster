@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-23 18:55:25
- * @LastEditTime: 2025-01-06 20:43:53
+ * @LastEditTime: 2025-01-07 19:14:08
  * @Description: 
 -->
 <template>
@@ -22,6 +22,7 @@
               icon="pi pi-times"
               label="交卷"
               severity="danger"
+              @click="overExam"
             />
           </template>
         </Card>
@@ -116,7 +117,7 @@
                   <InputText
                     v-model="currentQuestionInfo.answer[index]"
                     class="w-full"
-                    @change="updateAnswer"
+                    @change="chooseAnswer(index)"
                   />
                 </div>
               </div>
@@ -157,7 +158,7 @@
                 <WangEditor
                   v-model:content="currentQuestionInfo.answer[0]!!"
                   placeholder="请输入答案..."
-                  @change="updateAnswer"
+                  @change="editorContentChange"
                 />
               </div>
             </template>
@@ -165,12 +166,39 @@
         </Card>
       </div>
     </div>
+    <ConfirmDialog group="overExam">
+      <template #container="{ message, acceptCallback, rejectCallback }">
+        <div
+          class="bg-surface-0 dark:bg-surface-900 flex flex-col items-center rounded p-8"
+        >
+          <p class="mb-0">{{ message.message }}</p>
+          <div class="mt-6 flex items-center gap-2">
+            <Button
+              class="w-32"
+              icon="pi pi-trash"
+              label="确定"
+              severity="danger"
+              @click="acceptCallback"
+            />
+            <Button
+              class="w-32"
+              icon="pi pi-times"
+              label="取消"
+              outlined
+              severity="secondary"
+              @click="rejectCallback"
+            />
+          </div>
+        </div>
+      </template>
+    </ConfirmDialog>
   </div>
 </template>
 <script lang="ts" setup>
 import {
   Button,
   Card,
+  ConfirmDialog,
   InputText,
   PreviewEditor,
   WangEditor,
@@ -184,7 +212,9 @@ import {
   type QuestionInfoResult,
 } from '#/api/examPageApi';
 import { debounce } from '#/common/utils/commonUtils';
-import message from '#/common/utils/message';
+import messageInfo from '#/common/utils/message';
+import { useConfirm } from 'primevue/useconfirm';
+import { router } from '#/router';
 
 const { examInfo } = defineProps<{
   examInfo: ExamInfoResult;
@@ -197,32 +227,20 @@ const questions = ref<QuestionInfoResult[]>([]);
 const currentQuestionInfo = ref<QuestionInfo>();
 const showEditor = ref(false);
 async function selectQuestion(question: QuestionInfo) {
-  showEditor.value = false;
-  await nextTick(); // 等待dom渲染完成
-  showEditor.value = true;
-  await nextTick(); // 等待dom渲染完成
-  currentQuestionInfo.value = question;
-  if (!currentQuestionInfo.value.hasAnswer) {
-    currentQuestionInfo.value.hasAnswer = false;
-    currentQuestionInfo.value.answer = [];
+  // 先卸载组件防止切换时数据冲突报错
+  if (question.type === QuestionTypeEnum.SUBJECTIVE) {
+    showEditor.value = false;
+    await nextTick(); // 等待dom渲染完成
+    showEditor.value = true;
+    await nextTick(); // 等待dom渲染完成
   }
+  currentQuestionInfo.value = question;
 }
 
 /**
  * 更新用户答案
  */
 const updateAnswer = debounce(() => {
-  currentQuestionInfo.value!!.hasAnswer =
-    currentQuestionInfo.value!!.answer.length > 0;
-  if (currentQuestionInfo.value?.type === QuestionTypeEnum.GAP_FILLING) {
-    let hasAnswer = false;
-    currentQuestionInfo.value.answer.forEach((k) => {
-      if (k !== '') {
-        hasAnswer = true;
-      }
-    });
-    currentQuestionInfo.value.hasAnswer = hasAnswer;
-  }
   const param: any = {};
   questions.value.forEach((k, _) => {
     k.infos.forEach((q) => {
@@ -235,9 +253,28 @@ const updateAnswer = debounce(() => {
       relationId: examInfo.relationId,
     })
     .then(() => {
-      message.success('保存成功');
+      messageInfo.success('保存成功');
     });
-}, 1000);
+}, 5000);
+
+/**
+ * 交卷
+ */
+const confirm = useConfirm();
+function overExam() {
+  confirm.require({
+    accept: () => {
+      examPageApi.overExam(examInfo.relationId).then(() => {
+        messageInfo.success('交卷成功!!');
+        router.push({
+          name: 'overExam',
+        });
+      });
+    },
+    group: 'overExam',
+    message: '是否要提前交卷?',
+  });
+}
 
 function chooseAnswer(index_: number) {
   if (!currentQuestionInfo.value) {
@@ -266,8 +303,24 @@ function chooseAnswer(index_: number) {
       break;
     }
   }
+  currentQuestionInfo.value!!.hasAnswer =
+    currentQuestionInfo.value!!.answer.length > 0;
+  if (currentQuestionInfo.value?.type === QuestionTypeEnum.GAP_FILLING) {
+    let hasAnswer = false;
+    currentQuestionInfo.value.answer.forEach((k) => {
+      if (k !== '') {
+        hasAnswer = true;
+      }
+    });
+    currentQuestionInfo.value.hasAnswer = hasAnswer;
+  }
   updateAnswer();
 }
+
+const editorContentChange = debounce(() => {
+  currentQuestionInfo.value!!.hasAnswer = true;
+  updateAnswer();
+}, 4000);
 
 /**
  * 处理倒计时
@@ -289,7 +342,10 @@ const leftTimeText = computed(() => {
   return `${pad(hours)}:${pad(minutes)}:${pad(secs)}`;
 });
 
-function calculateTimeDiff(endTime: string): number {
+function calculateTimeDiff(endTime?: string): number {
+  if (!endTime || endTime === null) {
+    return 0;
+  }
   const start = Date.now(); // 转为时间戳（毫秒）
   const end = new Date(endTime).getTime(); // 转为时间戳（毫秒）
 
