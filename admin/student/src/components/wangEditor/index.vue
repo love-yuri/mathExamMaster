@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2025-01-06 20:41:07
+ * @LastEditTime: 2025-01-07 18:30:22
  * @Description: 封装富文本编辑器
 -->
 <template>
@@ -15,9 +15,8 @@
       <Editor
         v-model="content"
         :default-config="editorConfig"
-        style="min-height: 400px; height: 400px"
+        style="min-height: 400px; height: 500px"
         @custom-paste="customPaste"
-        @on-change="$emit('change')"
         @on-created="handleCreated"
       />
       <MathModal ref="mathModalRef" />
@@ -32,7 +31,7 @@ import {
   type IEditorConfig,
   type IToolbarConfig,
 } from '@wangeditor-next/editor';
-import { onBeforeUnmount, ref, shallowRef } from 'vue';
+import { onBeforeUnmount, ref, shallowRef, watch } from 'vue';
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 import { systemApi } from '#/api/systemApi';
 import { systemFileApi } from '#/api/systemFileApi';
@@ -43,7 +42,7 @@ import MathModal from '../math/mathModal.vue';
 import '#/components/wangEditor/templates';
 
 const props = defineProps<WangEditorProps>();
-defineEmits(['change']);
+const emits = defineEmits(['change']);
 
 const content = defineModel('content');
 const mathModalRef = ref();
@@ -80,6 +79,10 @@ const editorConfig: Partial<IEditorConfig> = {
 const toolbarConfig: Partial<IToolbarConfig> = {
   toolbarKeys: ToolbarKeys,
 };
+
+watch(content, () => {
+  emits('change');
+});
 
 // 组件销毁时，也及时销毁编辑器
 onBeforeUnmount(() => {
