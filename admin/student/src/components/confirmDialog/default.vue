@@ -1,3 +1,9 @@
+<!--
+ * @Author: love-yuri yuri2078170658@gmail.com
+ * @Date: 2024-12-17 18:08:12
+ * @LastEditTime: 2025-01-07 18:41:31
+ * @Description: 默认确认框
+-->
 <template>
   <ConfirmDialog :group="group">
     <template #container="{ message, acceptCallback, rejectCallback }">
@@ -7,17 +13,17 @@
         <p class="mb-0">{{ message.message }}</p>
         <div class="mt-6 flex items-center gap-2">
           <Button
+            :label="`${confirmText ? confirmText : '取消'} `"
             class="w-32"
             icon="pi pi-times"
-            label="取消"
             outlined
             severity="secondary"
             @click="rejectCallback"
           />
           <Button
+            :label="`${cancelText ? cancelText : '删除'} `"
             class="w-32"
             icon="pi pi-trash"
-            label="删除"
             severity="danger"
             @click="acceptCallback"
           />
@@ -30,6 +36,8 @@
 import { Button, ConfirmDialog } from '#/components';
 
 defineProps<{
+  cancelText?: string;
+  confirmText?: string;
   group: string;
 }>();
 </script>
