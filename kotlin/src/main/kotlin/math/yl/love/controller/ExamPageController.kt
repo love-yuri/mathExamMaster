@@ -44,4 +44,8 @@ class ExamPageController: BaseController<ExamPage, ExamPageMapper, ExamPageServi
     @PostMapping("update/user/answer")
     @Operation(summary = "更新用户答案")
     fun updateUserAnswer(@RequestBody param: UpdateUserAnswerParam) = R.success(baseService.updateUserAnswer(param))
+
+    @PostMapping("over/exam")
+    @Operation(summary = "交卷")
+    fun overExam(@RequestBody id: Long) = R.success(baseService.overExam(id))
 }

@@ -187,7 +187,9 @@ class ExamPageService(
                 type = it.key,
                 infos = it.value.map { q ->
                     val answer = answerMap[q.id]?.takeIf { k ->
-                        q.type != QuestionTypeEnum.GAP_FILLING || k.any { t -> t.isNotEmpty() }
+                        k.any {
+                            t -> t.isNotEmpty() && t.trim() != ""
+                        }
                     } ?: listOf()
 
                     QuestionInfoResult.QuestionInfo(
@@ -222,5 +224,20 @@ class ExamPageService(
     fun updateUserAnswer(param: UpdateUserAnswerParam): Boolean {
         val newAnswer = param.answer.toJson()
         return examPageUserRelationService.updateAnswer(param.relationId, newAnswer)
+    }
+
+    /**
+     * 交卷
+     * @param id 发布id
+     */
+    @Transactional(rollbackFor = [Exception::class])
+    fun overExam(id: Long): Boolean {
+        val relation = examPageUserRelationService.getById(id) ?: throw BizException("未找到考试关联!!")
+        if (relation.status != ExamPageStatusEnum.DOING) {
+            throw BizException("试卷状态不正确!!!")
+        }
+        return examPageUserRelationService.updateById(relation.copy(
+            status = ExamPageStatusEnum.FINISHED,
+        ))
     }
 }

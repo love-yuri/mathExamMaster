@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2024-12-31 19:22:29
+ * @LastEditTime: 2025-01-07 18:50:51
  * @Description:
  */
 import {
@@ -135,6 +135,13 @@ class Api extends BaseApi<BaseEntity> {
    */
   detail = (id: string) => {
     return this.add<ExamPageResult>(RequestType.POST, '/detail', id);
+  };
+
+  /**
+   * 交卷
+   */
+  overExam = (id: string) => {
+    return this.add<boolean>(RequestType.POST, '/over/exam', id);
   };
 
   /**
