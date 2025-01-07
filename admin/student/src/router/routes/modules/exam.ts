@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 23:35:05
- * @LastEditTime: 2024-12-23 18:26:00
+ * @LastEditTime: 2025-01-07 19:13:51
  * @Description: 系统路由
  */
 import type { RouteRecordRaw } from 'vue-router';
@@ -27,6 +27,18 @@ const routes: RouteRecordRaw[] = [
           affixTab: false,
           icon: 'lucide:copyright',
           title: '练习管理',
+        },
+      },
+      {
+        name: 'overExam',
+        path: '/over/exam',
+        component: () => import('#/views/examManager/components/overExam.vue'),
+        meta: {
+          affixTab: false,
+          hideInMenu: true,
+          hideInTab: true,
+          icon: 'lucide:copyright',
+          title: '考试结束',
         },
       },
     ],
