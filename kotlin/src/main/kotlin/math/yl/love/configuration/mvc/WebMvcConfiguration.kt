@@ -1,20 +1,35 @@
 package math.yl.love.configuration.mvc
 
+import cn.dev33.satoken.`fun`.SaParamFunction
+import cn.dev33.satoken.interceptor.SaInterceptor
+import cn.dev33.satoken.stp.StpUtil
 import math.yl.love.configuration.config.JsonConfig.Companion.json
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.KotlinSerializationJsonHttpMessageConverter
-import org.springframework.web.servlet.config.annotation.CorsRegistry
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
+import org.springframework.web.servlet.config.annotation.*
+
 
 @Configuration
 class WebMvcConfiguration: WebMvcConfigurationSupport() {
 
     private val log = LoggerFactory.getLogger(WebMvcConfiguration::class.java)
+
+    public override fun addInterceptors(registry: InterceptorRegistry) {
+        // 注册 Sa-Token 拦截器，校验规则为 StpUtil.checkLogin() 登录校验。
+        registry.addInterceptor(SaInterceptor { StpUtil.checkLogin() })
+            .addPathPatterns("/**")
+            .excludePathPatterns("/system/file/get/**")
+            .excludePathPatterns("/user/login")
+            .excludePathPatterns("/doc.html") // 排除 Knife4j 的文档路径
+            .excludePathPatterns("/swagger-resources/**") // 排除 Swagger 资源路径
+            .excludePathPatterns("/webjars/**") // 排除 Webjars 静态资源路径
+            .excludePathPatterns("/v2/api-docs/**") // 排除 Swagger API 文档路径
+            .excludePathPatterns("/v3/api-docs/**") // 排除 Swagger API 文档路径
+
+    }
 
     public override fun addViewControllers(registry: ViewControllerRegistry) {
         registry.addRedirectViewController("/", "/student/index.html")

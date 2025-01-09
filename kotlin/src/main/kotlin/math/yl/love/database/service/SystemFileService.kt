@@ -33,10 +33,11 @@ class SystemFileService(
         }
     }
 
+
     /**
      * 根据md5 查找数据
      */
-    fun findByMd5(md5: String) = list(queryWrapper.eq(SystemFile::md5, md5))
+    fun findByMd5(md5: String): List<SystemFile> = list(queryWrapper.eq(SystemFile::md5, md5))
 
     /**
      * 上传文件并返回文件数据
@@ -55,7 +56,6 @@ class SystemFileService(
          */
         if (res.isEmpty()) {
             Files.write(target, byteArray)
-            logger.info("写入数据 ... ${target}")
         }
 
         // 创建数据
@@ -71,7 +71,7 @@ class SystemFileService(
      * 根据文件id获取文件访问路径
      * @param fileId 文件id
      */
-    fun getFile(fileId: Long): ResponseEntity<UrlResource> {
+    fun getFile(fileId: Long): ResponseEntity<Any> {
         val file = getById(fileId) ?: throw BizException("该文件不存在!!")
         return try {
             val filePath = Paths.get(file.path)
@@ -83,7 +83,11 @@ class SystemFileService(
                     .body(resource)
 
             } else {
-                ResponseEntity.notFound().build()
+                if (resource.exists()) {
+                    ResponseEntity.ok("File(${filePath}) is not readable!!")
+                } else {
+                    ResponseEntity.ok("File(${filePath}) is not exist!!")
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
