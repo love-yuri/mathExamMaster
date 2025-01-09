@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2025-01-02 19:08:20
+ * @LastEditTime: 2025-01-09 18:45:15
  * @Description: 封装富文本编辑器
 -->
 <template>
@@ -18,7 +18,7 @@
 import '@wangeditor-next/editor/dist/css/style.css'; // 引入 css
 import { type IDomEditor, type IEditorConfig } from '@wangeditor-next/editor';
 import { onBeforeUnmount, shallowRef } from 'vue';
-import { Editor } from '@wangeditor/editor-for-vue';
+import { Editor } from '@wangeditor-next/editor-for-vue';
 
 const content = defineModel('content');
 

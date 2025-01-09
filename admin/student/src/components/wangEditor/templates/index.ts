@@ -3,7 +3,7 @@ import {
   DomEditor,
   type IDomEditor,
   type IModuleConf,
-} from '@wangeditor/editor';
+} from '@wangeditor-next/editor';
 import { yuriMathConf } from './yuriMath';
 import { InsertMathMenuConf } from './insertMathMenu';
 import { EditMathMenuConf } from './editMathMenu';

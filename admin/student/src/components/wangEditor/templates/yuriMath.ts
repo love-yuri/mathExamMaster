@@ -3,7 +3,7 @@ import {
   type IDomEditor,
   type SlateDescendant,
   SlateElement,
-} from '@wangeditor/editor';
+} from '@wangeditor-next/editor';
 import { h, type VNode } from 'snabbdom';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

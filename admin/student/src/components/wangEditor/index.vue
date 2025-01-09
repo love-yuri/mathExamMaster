@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2025-01-07 18:30:22
+ * @LastEditTime: 2025-01-09 18:45:21
  * @Description: 封装富文本编辑器
 -->
 <template>
@@ -32,7 +32,7 @@ import {
   type IToolbarConfig,
 } from '@wangeditor-next/editor';
 import { onBeforeUnmount, ref, shallowRef, watch } from 'vue';
-import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
+import { Editor, Toolbar } from '@wangeditor-next/editor-for-vue';
 import { systemApi } from '#/api/systemApi';
 import { systemFileApi } from '#/api/systemFileApi';
 import { loadHtmlImg } from '#/common/utils/rtfToJpg';

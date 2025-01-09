@@ -1,4 +1,4 @@
-import { type IDomEditor } from '@wangeditor/editor';
+import { type IDomEditor } from '@wangeditor-next/editor';
 import { type ComponentPublicInstance } from 'vue';
 import { BaseButtonMenu } from './baseButton';
 

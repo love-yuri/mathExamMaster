@@ -4,7 +4,7 @@
  * @LastEditTime: 2024-10-23 19:09:08
  * @Description:
  */
-import { type IDomEditor } from '@wangeditor/editor';
+import { type IDomEditor } from '@wangeditor-next/editor';
 import { type ComponentPublicInstance } from 'vue';
 import { BaseButtonMenu } from './baseButton';
 
