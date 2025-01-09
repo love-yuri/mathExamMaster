@@ -8,7 +8,7 @@ import {
   DomEditor,
   type IDomEditor,
   SlateTransforms,
-} from '@wangeditor/editor';
+} from '@wangeditor-next/editor';
 import { type ComponentPublicInstance } from 'vue';
 import { BaseButtonMenu } from './baseButton';
 

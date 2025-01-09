@@ -1,9 +1,9 @@
-import type { IButtonMenu, IDomEditor } from '@wangeditor/editor';
+import type { IButtonMenu, IDomEditor } from '@wangeditor-next/editor';
 
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-23 18:54:55
- * @LastEditTime: 2024-10-23 18:57:10
+ * @LastEditTime: 2025-01-09 18:44:32
  * @Description:
  */
 export abstract class BaseButtonMenu implements IButtonMenu {

@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2024-10-23 21:36:25
+ * @LastEditTime: 2025-01-09 18:42:57
  * @Description: 封装富文本编辑器
 -->
 <template>
@@ -13,9 +13,9 @@
         style="border-bottom: 1px solid #ccc"
       />
       <Editor
-        v-model="valueHtml"
+        v-model="content"
         :default-config="editorConfig"
-        style="min-height: 400px; height: 400px"
+        style="min-height: 400px; height: 500px"
         @custom-paste="customPaste"
         @on-created="handleCreated"
       />
@@ -25,14 +25,14 @@
 </template>
 <script setup lang="ts">
 // import Mathjax from 'mathjax';
-import '@wangeditor/editor/dist/css/style.css'; // 引入 css
+import '@wangeditor-next/editor/dist/css/style.css'; // 引入 css
 import {
   type IDomEditor,
   type IEditorConfig,
   type IToolbarConfig,
-} from '@wangeditor/editor';
+} from '@wangeditor-next/editor';
 import { onBeforeUnmount, ref, shallowRef, watch } from 'vue';
-import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
+import { Editor, Toolbar } from '@wangeditor-next/editor-for-vue';
 import { systemApi } from '#/api/systemApi';
 import { systemFileApi } from '#/api/systemFileApi';
 import { loadHtmlImg } from '#/common/utils/rtfToJpg';
@@ -42,9 +42,9 @@ import MathModal from '../math/mathModal.vue';
 import '#/components/wangEditor/templates';
 
 const props = defineProps<WangEditorProps>();
+const emits = defineEmits(['change']);
 
-const emit = defineEmits(['update:content']);
-
+const content = defineModel('content');
 const mathModalRef = ref();
 
 type InsertFnType = (url: string, alt: string, href: string) => void;
@@ -57,6 +57,7 @@ const editorConfig: Partial<IEditorConfig> = {
   },
   MENU_CONF: {
     uploadImage: {
+      base64LimitSize: 0,
       async customUpload(file: File, insertFn: InsertFnType) {
         const res = await systemApi.upload({
           file,
@@ -65,36 +66,23 @@ const editorConfig: Partial<IEditorConfig> = {
         const url = systemFileApi.getFile(res.id);
         insertFn(url, '', '');
       },
+      metaWithUrl: false,
+      onError: () => {},
+      onFailed: () => {},
+      onSuccess: () => {},
+      server: '',
     },
   },
   placeholder: props.placeholder,
 };
 
-// 内容 HTML
-const valueHtml = ref(props.content);
-const isUpdating = ref(false); // 添加一个标志位来控制更新
-
-// 监听 props.content 的变化，并同步更新 valueHtml
-watch(
-  () => props.content,
-  (newContent) => {
-    if (!isUpdating.value) {
-      // 仅在非更新状态下同步
-      valueHtml.value = newContent;
-    }
-  },
-);
-
-// 监听 valueHtml 的变化，并 emit 出去
-watch(valueHtml, (newVal: string) => {
-  isUpdating.value = true; // 标记为更新状态
-  emit('update:content', newVal);
-  isUpdating.value = false; // 重置标志位
-});
-
 const toolbarConfig: Partial<IToolbarConfig> = {
   toolbarKeys: ToolbarKeys,
 };
+
+watch(content, () => {
+  emits('change');
+});
 
 // 组件销毁时，也及时销毁编辑器
 onBeforeUnmount(() => {

@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-22 18:41:52
- * @LastEditTime: 2024-10-23 20:56:12
+ * @LastEditTime: 2025-01-09 18:43:31
  * @Description: 修改公式
 -->
 <template>
@@ -26,7 +26,7 @@ import {
   DomEditor,
   type IDomEditor,
   SlateTransforms,
-} from '@wangeditor/editor';
+} from '@wangeditor-next/editor';
 import type { YuriMathNode } from '../wangEditor/templates/yuriMath';
 
 import { MathfieldElement } from 'mathlive';

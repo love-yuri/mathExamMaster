@@ -1,42 +1,31 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2024-10-13 15:30:53
+ * @LastEditTime: 2025-01-09 18:42:42
  * @Description: 封装富文本编辑器
 -->
 <template>
-  <div class="">
+  <div class="overflow-hidden rounded-[12px] shadow-md">
     <Editor
-      v-model="htmlText"
+      v-model="content"
       :default-config="editorConfig"
-      style="min-height: 300px; height: 300px"
+      style="min-height: 300px; height: 500px"
       @on-created="handleCreated"
     />
   </div>
 </template>
 <script setup lang="ts">
-import '@wangeditor/editor/dist/css/style.css'; // 引入 css
-import { type IDomEditor, type IEditorConfig } from '@wangeditor/editor';
-import { onBeforeUnmount, ref, shallowRef, watch } from 'vue';
-import { Editor } from '@wangeditor/editor-for-vue';
+import '@wangeditor-next/editor/dist/css/style.css'; // 引入 css
+import { type IDomEditor, type IEditorConfig } from '@wangeditor-next/editor';
+import { onBeforeUnmount, shallowRef } from 'vue';
+import { Editor } from '@wangeditor-next/editor-for-vue';
 
-const props = defineProps<{
-  content: string;
-}>();
+const content = defineModel('content');
 
-const htmlText = ref('');
 const editorRef = shallowRef();
 const editorConfig: Partial<IEditorConfig> = {
   readOnly: true,
 };
-
-watch(
-  () => props.content,
-  (newVal) => {
-    htmlText.value = newVal;
-  },
-  { immediate: true },
-);
 
 // 组件销毁时，也及时销毁编辑器
 onBeforeUnmount(() => {

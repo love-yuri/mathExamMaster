@@ -1,10 +1,10 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-23 18:58:42
- * @LastEditTime: 2024-10-23 19:09:08
+ * @LastEditTime: 2025-01-09 18:44:28
  * @Description:
  */
-import { type IDomEditor } from '@wangeditor/editor';
+import { type IDomEditor } from '@wangeditor-next/editor';
 import { type ComponentPublicInstance } from 'vue';
 import { BaseButtonMenu } from './baseButton';
 
