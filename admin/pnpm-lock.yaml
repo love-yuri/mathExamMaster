@@ -916,6 +916,9 @@ importers:
       '@primevue/themes':
         specifier: ^4.0.5
         version: 4.0.5
+      '@tauri-apps/api':
+        specifier: ^2.2.0
+        version: 2.2.0
       '@vben/access':
         specifier: workspace:*
         version: link:../packages/effects/access
@@ -3734,6 +3737,9 @@ packages:
     resolution: {integrity: sha512-MVJhQh57OR3wg2pWL/25IN1/nITFNnpFaz4gOvRCqnxhsH0WRePBBKvixOaFTgiyYfmrjFbb4d0nRMTvsjZZdQ==}
     peerDependencies:
       vue: 3.5.3
+
+  '@tauri-apps/api@2.2.0':
+    resolution: {integrity: sha512-R8epOeZl1eJEl603aUMIGb4RXlhPjpgxbGVEaqY+0G5JG9vzV/clNlzTeqc+NLYXVqXcn8mb4c5b9pJIUDEyAg==}
 
   '@tootallnate/once@1.1.2':
     resolution: {integrity: sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==}
@@ -12385,6 +12391,8 @@ snapshots:
     dependencies:
       '@tanstack/virtual-core': 3.9.0
       vue: 3.5.3(typescript@5.5.4)
+
+  '@tauri-apps/api@2.2.0': {}
 
   '@tootallnate/once@1.1.2': {}
 
