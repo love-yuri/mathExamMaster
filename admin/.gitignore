@@ -49,3 +49,5 @@ vite.config.ts.*
 *.sln
 *.sw?
 .history
+/src-tauri/target/
+/src-tauri/gen/schemas
