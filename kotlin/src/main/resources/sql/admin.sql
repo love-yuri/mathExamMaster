@@ -167,6 +167,6 @@ CREATE TABLE `exam_page_user_relation` (
    `update_by` varchar(16) NOT NULL comment '更新用户',
    PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='试卷-学生关联表';
-
-# 插入答案列
-ALTER TABLE `exam_page_user_relation` ADD COLUMN `answer` JSON NULL DEFAULT NULL COMMENT '用户答案' AFTER `status`;
+#
+# # 插入答案列
+# ALTER TABLE `exam_page_user_relation` ADD COLUMN `answer` JSON NULL DEFAULT NULL COMMENT '用户答案' AFTER `status`;
