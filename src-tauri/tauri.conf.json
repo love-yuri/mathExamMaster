@@ -2,12 +2,12 @@
   "$schema": "https://schema.tauri.app/config/2.0.0-rc",
   "productName": "math-admin",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.math.admin",
   "build": {
     "frontendDist": "../admin/root/dist",
     "devUrl": "http://127.0.0.1:5778",
     "beforeDevCommand": "pnpm dev:play",
-    "beforeBuildCommand": "pnpm dev:build"
+    "beforeBuildCommand": "pnpm build:play"
   },
   "app": {
     "windows": [
