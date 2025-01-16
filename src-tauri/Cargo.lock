@@ -95,8 +95,7 @@ name = "app"
 version = "0.1.0"
 dependencies = [
  "log",
- "serde",
- "serde_json",
+ "regex",
  "tauri",
  "tauri-build",
  "tauri-plugin-log",
