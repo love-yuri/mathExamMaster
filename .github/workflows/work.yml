@@ -52,16 +52,17 @@ jobs:
         working-directory: admin/
         run: pnpm install
 
-      - name: 获取最近的提交信息
-        id: commit_messages
+      - name: 获取最近的提交信息(Windows)
+        if: runner.os == 'Windows'
         run: |
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            $commits = git log --oneline --since="1 week ago"
-            echo "COMMITS=$commits" >> $env:GITHUB_ENV
-          else
-            COMMITS=$(git log --oneline --since="1 week ago")
-            echo "COMMITS=$COMMITS" >> $GITHUB_ENV
-          fi
+          $commits = git log --oneline --since="1 week ago"
+          echo "COMMITS=$commits" >> $env:GITHUB_ENV
+
+      - name: 获取最近的提交信息(Linux/macOS)
+        if: runner.os != 'Windows'
+        run: |
+          COMMITS=$(git log --oneline --since="1 week ago")
+          echo "COMMITS=$COMMITS" >> $GITHUB_ENV
 
       - name: 开始打包应用
         uses: tauri-apps/tauri-action@v0
