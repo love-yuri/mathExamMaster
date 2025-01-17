@@ -24,7 +24,8 @@ jobs:
 
     runs-on: ${{ matrix.platform }}
     steps:
-      - uses: actions/checkout@v4
+      - name: 拉取代码
+        uses: actions/checkout@v4
 
       - name: 设置node环境
         uses: actions/setup-node@v4
@@ -51,13 +52,22 @@ jobs:
         working-directory: admin/
         run: pnpm install
 
-      - uses: tauri-apps/tauri-action@v0
+      - name: 获取最近的提交信息
+      id: commit_messages
+      run: |
+        COMMITS=$(git log --oneline --since="1 week ago")  # 获取过去一周的提交
+        echo "COMMITS=$COMMITS" >> $GITHUB_ENV
+
+      - name: 开始打包应用
+        uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
+          tagName: app-v__VERSION__
           releaseName: 'App v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
-          releaseDraft: true
+          releaseBody: |
+            ## 最近更新：
+            ${{ env.COMMITS }}
+          releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
