@@ -1,7 +1,7 @@
 use regex::Regex;
 
 #[tauri::command]
-fn parse_html(str: &str) -> String {
+pub fn parse_html(str: &str) -> String {
   let mut html = String::from(str);
 
   let re = Regex::new(r#"<img\s+[^>]*src="([^"]*)"[^>]*>"#).unwrap();
