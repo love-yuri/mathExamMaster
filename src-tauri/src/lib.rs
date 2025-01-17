@@ -15,7 +15,6 @@ pub fn run() {
       }
       Ok(())
     })
-    .plugin(tauri_plugin_clipboard_manager::init())
     .invoke_handler(tauri::generate_handler![greet, parse_html])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
@@ -23,7 +22,6 @@ pub fn run() {
 // 定义一个简单的命令
 #[tauri::command]
 fn greet(name: &str) -> String {
-  println!("Hello, {}!", name);
   let name = String::from("yuri is yes");
   format!("Hello, {}!", name)
 }
