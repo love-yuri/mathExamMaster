@@ -53,10 +53,10 @@ jobs:
         run: pnpm install
 
       - name: 获取最近的提交信息
-      id: commit_messages
-      run: |
-        COMMITS=$(git log --oneline --since="1 week ago")  # 获取过去一周的提交
-        echo "COMMITS=$COMMITS" >> $GITHUB_ENV
+        id: commit_messages
+        run: |
+          COMMITS=$(git log --oneline --since="1 week ago")  # 获取过去一周的提交
+          echo "COMMITS=$COMMITS" >> $GITHUB_ENV
 
       - name: 开始打包应用
         uses: tauri-apps/tauri-action@v0
