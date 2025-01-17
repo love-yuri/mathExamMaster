@@ -55,8 +55,13 @@ jobs:
       - name: 获取最近的提交信息
         id: commit_messages
         run: |
-          COMMITS=$(git log --oneline --since="1 week ago")  # 获取过去一周的提交
-          echo "COMMITS=$COMMITS" >> $GITHUB_ENV
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            $commits = git log --oneline --since="1 week ago"
+            echo "COMMITS=$commits" >> $env:GITHUB_ENV
+          else
+            COMMITS=$(git log --oneline --since="1 week ago")
+            echo "COMMITS=$COMMITS" >> $GITHUB_ENV
+          fi
 
       - name: 开始打包应用
         uses: tauri-apps/tauri-action@v0
