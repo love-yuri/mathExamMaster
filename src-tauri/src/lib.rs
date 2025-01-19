@@ -1,10 +1,13 @@
-mod parse_html;
 
-use parse_html::parse_html;
+mod invoke;
+mod api;
+
+use invoke::parse_html::parse_html;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
   tauri::Builder::default()
+    .plugin(tauri_plugin_http::init())
     .setup(|app| {
       if cfg!(debug_assertions) {
         app.handle().plugin(
@@ -21,7 +24,7 @@ pub fn run() {
 }
 // 定义一个简单的命令
 #[tauri::command]
-fn greet(name: &str) -> String {
+fn greet(_name: &str) -> String {
   let name = String::from("yuri is yes");
   format!("Hello, {}!", name)
 }
