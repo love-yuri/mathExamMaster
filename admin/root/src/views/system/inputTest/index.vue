@@ -16,7 +16,5 @@ import WangEditor from '#/components/wangEditor/index.vue';
 import { ref } from 'vue';
 
 // const content = ref(`<p><yuri data-w-e-type="yuri" dd="just do it">yuri is yes</yuri></p>`);
-const content = ref(
-  `<p><yuri-math math="c = \\pm\\sqrt{a^2 + b^2}"></yuri-math>we<yuri-math math="c = \\pm\\sqrt{a^2 + b^2}"></yuri-math><yuri-math math="c = \\pm\\sqrt{a^2 + b^2}"></yuri-math></p>`,
-);
+const content = ref('');
 </script>
