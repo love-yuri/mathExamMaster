@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2025-01-09 18:42:57
+ * @LastEditTime: 2025-01-19 18:55:10
  * @Description: 封装富文本编辑器
 -->
 <template>
@@ -35,7 +35,7 @@ import { onBeforeUnmount, ref, shallowRef, watch } from 'vue';
 import { Editor, Toolbar } from '@wangeditor-next/editor-for-vue';
 import { systemApi } from '#/api/systemApi';
 import { systemFileApi } from '#/api/systemFileApi';
-import { loadHtmlImg } from '#/common/utils/rtfToJpg';
+import { invoke } from '@tauri-apps/api/core';
 import { type WangEditorProps } from './types';
 import ToolbarKeys from './toolbarKeys.json';
 import MathModal from '../math/mathModal.vue';
@@ -104,14 +104,14 @@ const handleCreated = (editor: IDomEditor) => {
   };
 };
 
-function customPaste(editor: IDomEditor, event: ClipboardEvent) {
+async function customPaste(editor: IDomEditor, event: ClipboardEvent) {
   const html: string | undefined = event.clipboardData?.getData('text/html');
-  const rtf = event.clipboardData?.getData('text/rtf');
-  if (html && rtf) {
-    loadHtmlImg(html, rtf).then((html) => editor.dangerouslyInsertHtml(html));
-    event.preventDefault();
-    return false;
-  }
-  return true;
+  event.preventDefault();
+  const res = await invoke('parse_html', {
+    cookie: document.cookie,
+    str: html,
+  });
+  editor.dangerouslyInsertHtml(res as string);
+  return false;
 }
 </script>
