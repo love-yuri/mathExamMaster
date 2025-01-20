@@ -6,7 +6,7 @@ on:
       - main
 
     paths:
-      - '__VERSION__'  # 仅当 __VERSION__ 文件发生更改时触发
+      - 'src-tauri/tauri.conf.json'
 
 jobs:
   publish-tauri:
