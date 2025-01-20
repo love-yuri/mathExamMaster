@@ -58,14 +58,19 @@ jobs:
       - name: 获取最近的提交信息(Windows)
         if: runner.os == 'Windows'
         run: |
-          $commits = git log --oneline --since="1 week ago"
+          $commits = git log --oneline -n 15
           echo "COMMITS=$commits" >> $env:GITHUB_ENV
 
       - name: 获取最近的提交信息(Linux/macOS)
         if: runner.os != 'Windows'
         run: |
-          COMMITS=$(git log --oneline --since="1 week ago")
+          COMMITS=$(git log --oneline -n 15)
           echo "COMMITS=$COMMITS" >> $GITHUB_ENV
+
+      - name: 打印提交信息
+        run: |
+          echo "最近 15 条提交信息："
+          echo "${{ env.COMMITS }}"
 
       - name: 开始打包应用
         uses: tauri-apps/tauri-action@v0
