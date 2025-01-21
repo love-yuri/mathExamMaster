@@ -44,7 +44,7 @@ import '#/components/wangEditor/templates';
 const props = defineProps<WangEditorProps>();
 const emits = defineEmits(['change']);
 
-const content = defineModel('content');
+const content = defineModel<string>('content');
 const mathModalRef = ref();
 
 type InsertFnType = (url: string, alt: string, href: string) => void;

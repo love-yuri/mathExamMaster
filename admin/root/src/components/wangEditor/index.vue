@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2025-01-19 18:55:10
+ * @LastEditTime: 2025-01-21 11:20:01
  * @Description: 封装富文本编辑器
 -->
 <template>
@@ -39,12 +39,15 @@ import { invoke } from '@tauri-apps/api/core';
 import { type WangEditorProps } from './types';
 import ToolbarKeys from './toolbarKeys.json';
 import MathModal from '../math/mathModal.vue';
+import { useAccessStore } from '@vben/stores';
+import { useAppConfig } from '@vben/hooks';
+
 import '#/components/wangEditor/templates';
 
 const props = defineProps<WangEditorProps>();
 const emits = defineEmits(['change']);
 
-const content = defineModel('content');
+const content = defineModel<string>('content');
 const mathModalRef = ref();
 
 type InsertFnType = (url: string, alt: string, href: string) => void;
@@ -104,12 +107,15 @@ const handleCreated = (editor: IDomEditor) => {
   };
 };
 
+const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
 async function customPaste(editor: IDomEditor, event: ClipboardEvent) {
   const html: string | undefined = event.clipboardData?.getData('text/html');
   event.preventDefault();
+  const accessStore = useAccessStore();
   const res = await invoke('parse_html', {
-    cookie: document.cookie,
+    token: accessStore.accessToken,
     str: html,
+    baseUrl: apiURL,
   });
   editor.dangerouslyInsertHtml(res as string);
   return false;
