@@ -57,17 +57,19 @@ jobs:
         working-directory: admin/
         run: pnpm install
 
-      - name: 获取最近的提交信息(Windows)
+      - name: 获取最近的提交信息 (Windows)
         if: runner.os == 'Windows'
         run: |
-          $commits = git log --oneline -n 15
-          echo "COMMITS=$commits" >> $env:GITHUB_ENV
-
-      - name: 获取最近的提交信息(Linux/macOS)
+          echo "COMMITS<<EOF" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+          git log --oneline -n 15 | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+          echo "EOF" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+      
+      - name: 获取最近的提交信息 (Linux/macOS)
         if: runner.os != 'Windows'
         run: |
-          COMMITS=$(git log --oneline -n 15)
-          echo "COMMITS=$COMMITS" >> $GITHUB_ENV
+          echo "COMMITS<<EOF" >> $GITHUB_ENV
+          git log --oneline -n 15 >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: 打印提交信息
         run: |
