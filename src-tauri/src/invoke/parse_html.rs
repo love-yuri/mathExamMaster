@@ -5,7 +5,7 @@ use regex::Regex;
 use crate::api::upload::upload_file;
 
 #[tauri::command]
-pub async fn parse_html(str: &str, cookie: &str) -> Result<String, String> {
+pub async fn parse_html(str: &str, token: &str, base_url: &str) -> Result<String, String> {
   let mut html = String::from(str);
   
   let re = Regex::new(r#"<img\s+[^>]*src="([^"]*)"[^>]*>"#).unwrap();
@@ -40,7 +40,7 @@ pub async fn parse_html(str: &str, cookie: &str) -> Result<String, String> {
     }
     
     if src.starts_with("file://") {
-      let mut new_src = "/api/system/file/get/3".to_string();
+      let mut new_src = format!("{}/system/file/get/3", base_url);
       let mut img_src = src.replace("file://", "").replace("/", &MAIN_SEPARATOR.to_string());
       let os = std::env::consts::OS;
       if os == "windows" && img_src.starts_with("\\") {
@@ -53,8 +53,8 @@ pub async fn parse_html(str: &str, cookie: &str) -> Result<String, String> {
           .and_then(|name| name.to_str()) // 转换为 &str
           .unwrap_or("temp"); // 如果提取失败，使用默认文件名
         
-        let file = upload_file(file, file_name, cookie).await?;
-        new_src = format!("/api/system/file/get/{}", file.data.unwrap().id);
+        let file = upload_file(file, file_name, token, base_url).await?;
+        new_src = format!("{}/system/file/get/{}", base_url, file.data.unwrap().id);
       } else {
         info!("找不到文件: {}", img_src);
       }

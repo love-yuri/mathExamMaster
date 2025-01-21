@@ -13,7 +13,7 @@ pub struct SystemFile {
   pub(crate) id: String,      // 文件 ID
 }
 
-pub async fn upload_file(mut file: File, file_name: &str, cookie: &str) -> Result<R<SystemFile>, String> {
+pub async fn upload_file(mut file: File, file_name: &str, token: &str, base_url: &str) -> Result<R<SystemFile>, String> {
   // 读取文件内容
   let mut file_data = Vec::new();
   file.read_to_end(&mut file_data).map_err(|e| e.to_string())?;
@@ -28,10 +28,16 @@ pub async fn upload_file(mut file: File, file_name: &str, cookie: &str) -> Resul
   
   // 发送 POST 请求
   let client = reqwest::Client::new();
+  let url = if base_url == "/api" {
+      "http://localhost:2078/system/upload".to_string()
+  } else {
+      format!("{}/system/upload", base_url)
+  };
+
   let response = client
-    .post("http://localhost:2078/system/upload") // 替换为你的后端地址
+    .post(&url) // 替换为你的后端地址
     .multipart(form)
-    .header("Cookie", cookie)
+    .header("Authorization", token)
     .send()
     .await
     .map_err(|e| e.to_string())?;
