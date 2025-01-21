@@ -1,7 +1,9 @@
 package math.yl.love.configuration.mvc
 
+import cn.dev33.satoken.`fun`.SaFunction
 import cn.dev33.satoken.`fun`.SaParamFunction
 import cn.dev33.satoken.interceptor.SaInterceptor
+import cn.dev33.satoken.router.SaRouter
 import cn.dev33.satoken.stp.StpUtil
 import math.yl.love.configuration.config.JsonConfig.Companion.json
 import org.slf4j.LoggerFactory
@@ -19,15 +21,22 @@ class WebMvcConfiguration: WebMvcConfigurationSupport() {
 
     public override fun addInterceptors(registry: InterceptorRegistry) {
         // 注册 Sa-Token 拦截器，校验规则为 StpUtil.checkLogin() 登录校验。
-        registry.addInterceptor(SaInterceptor { StpUtil.checkLogin() })
-            .addPathPatterns("/**")
-            .excludePathPatterns("/system/file/get/**")
-            .excludePathPatterns("/user/login")
-            .excludePathPatterns("/doc.html") // 排除 Knife4j 的文档路径
-            .excludePathPatterns("/swagger-resources/**") // 排除 Swagger 资源路径
-            .excludePathPatterns("/webjars/**") // 排除 Webjars 静态资源路径
-            .excludePathPatterns("/v2/api-docs/**") // 排除 Swagger API 文档路径
-            .excludePathPatterns("/v3/api-docs/**") // 排除 Swagger API 文档路径
+        registry.addInterceptor(SaInterceptor {
+            // 让 OPTIONS 请求跳过 Sa-Token 校验
+            SaRouter.match("/**").notMatchMethod("OPTIONS").apply {
+                // 这里需要用 lambda 明确指定 check 需要调用的重载
+                this.check(SaFunction {
+                    StpUtil.checkLogin() // 仅对非 OPTIONS 请求进行登录校验
+                })
+            }
+        }).addPathPatterns("/**")
+        .excludePathPatterns("/system/file/get/**")
+        .excludePathPatterns("/user/login")
+        .excludePathPatterns("/doc.html") // 排除 Knife4j 的文档路径
+        .excludePathPatterns("/swagger-resources/**") // 排除 Swagger 资源路径
+        .excludePathPatterns("/webjars/**") // 排除 Webjars 静态资源路径
+        .excludePathPatterns("/v2/api-docs/**") // 排除 Swagger API 文档路径
+        .excludePathPatterns("/v3/api-docs/**") // 排除 Swagger API 文档路径
 
     }
 

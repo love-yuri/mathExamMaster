@@ -29,7 +29,7 @@ class UserService : BaseService<User, UserMapper>() {
         val user = getByUsername(loginQuery.username) ?: throw RuntimeException("用户不存在")
         check(user.password == loginQuery.password) { "密码错误" }
         StpUtil.login(user.username)
-        return LoginResult(user, StpUtil.getLoginId().toString())
+        return LoginResult(user, StpUtil.getTokenValue())
     }
 
     /**
