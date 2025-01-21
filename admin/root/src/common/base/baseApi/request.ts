@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 16:37:25
- * @LastEditTime: 2024-12-10 19:05:35
+ * @LastEditTime: 2025-01-21 10:23:51
  * @Description:
  */
 /**
@@ -38,7 +38,10 @@ function createRequestClient(baseURL: string) {
   // 请求头处理
   client.addRequestInterceptor({
     fulfilled: async (config) => {
+      const accessStore = useAccessStore();
+      config.headers.Authorization = accessStore.accessToken;
       config.headers['Accept-Language'] = preferences.app.locale;
+      config.withCredentials = true; // 允许携带凭证
       return config;
     },
     rejected(error) {
