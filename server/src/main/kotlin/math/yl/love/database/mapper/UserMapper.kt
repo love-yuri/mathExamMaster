@@ -21,7 +21,7 @@ interface UserMapper: BaseMapper<User> {
     @Select(("""
         select * from user where role = 3 and not exists(
             select 1 from user_department where user_id = user.id
-        ) and deleted = false;
+        ) and deleted = false 
     """))
     fun getNoClassStudents(page: Page<User>): Page<User>
 }
