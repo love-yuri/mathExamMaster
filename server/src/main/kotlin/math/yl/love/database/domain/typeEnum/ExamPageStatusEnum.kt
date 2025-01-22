@@ -1,10 +1,6 @@
 package math.yl.love.database.domain.typeEnum
 
-import com.aspose.imaging.ImageOptionsBase
-import com.aspose.imaging.imageoptions.JpegOptions
-import com.aspose.imaging.imageoptions.PngOptions
 import com.baomidou.mybatisplus.annotation.IEnum
-import org.springframework.http.MediaType
 
 enum class ExamPageStatusEnum(
     val type: Int

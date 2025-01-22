@@ -18,8 +18,4 @@ class SystemFileController: BaseController<SystemFile, SystemFileMapper, SystemF
     @GetMapping("/get/{fileId}")
     @Operation(summary = "直接访问文件")
     fun getFile(@PathVariable fileId: Long) = baseService.getFile(fileId)
-
-    @PostMapping("/wmf/to/jpg")
-    @Operation(summary = "wmf文件转jpg")
-    fun uploadFile(@RequestParam("file") file: MultipartFile) = R.success(baseService.wmfToJpg(file))
 }

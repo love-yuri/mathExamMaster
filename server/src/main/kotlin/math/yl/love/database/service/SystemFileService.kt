@@ -1,8 +1,5 @@
 package math.yl.love.database.service
 
-import com.aspose.imaging.Image
-import com.aspose.imaging.License
-import math.yl.love.common.base.Log.log
 import math.yl.love.common.mybatis.BaseService
 import math.yl.love.database.domain.typeEnum.FileTypeEnum
 import math.yl.love.common.utils.FileUtils.getMd5
@@ -14,8 +11,6 @@ import org.springframework.core.io.UrlResource
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.multipart.MultipartFile
-import java.io.*
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.io.path.pathString
@@ -93,25 +88,5 @@ class SystemFileService(
             e.printStackTrace()
             ResponseEntity.internalServerError().build()
         }
-    }
-
-    /**
-     * 将wmf文件转为图像文件
-     * @param file wmf文件
-     */
-    @Transactional(rollbackFor = [Exception::class])
-    fun wmfToJpg(file: MultipartFile): SystemFile {
-        License().setLicense(ByteArrayInputStream(ByteArray(0)))
-        val outPutStream = ByteArrayOutputStream()
-
-        // 保存文件
-        Image.load(file.inputStream).also {
-            val option = FileTypeEnum.getImgOption(file.originalFilename ?: "temp.jpg")
-            it.save(outPutStream, option)
-            it.dispose()
-        }
-
-        // 上传文件
-        return uploadFile(outPutStream.toByteArray(), file.originalFilename ?: "temp.jpg")
     }
 }

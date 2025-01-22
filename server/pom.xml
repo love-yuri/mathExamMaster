@@ -166,14 +166,6 @@
             <version>4.4.0</version>
         </dependency>
 
-        <!-- aspose 图片处理 使用lib目录下的依赖 如有正版，请使用正版源 -->
-        <dependency>
-            <groupId>com.aspose</groupId>
-            <artifactId>aspose-imaging</artifactId>
-            <version>24.6</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/aspose-imaging.jar</systemPath>
-        </dependency>
 
     </dependencies>
 
