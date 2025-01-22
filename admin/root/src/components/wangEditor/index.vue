@@ -110,14 +110,17 @@ const handleCreated = (editor: IDomEditor) => {
 const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
 async function customPaste(editor: IDomEditor, event: ClipboardEvent) {
   const html: string | undefined = event.clipboardData?.getData('text/html');
-  event.preventDefault();
-  const accessStore = useAccessStore();
-  const res = await invoke('parse_html', {
-    token: accessStore.accessToken,
-    str: html,
-    baseUrl: apiURL,
-  });
-  editor.dangerouslyInsertHtml(res as string);
-  return false;
+  if (html) {
+    event.preventDefault();
+    const accessStore = useAccessStore();
+    const res = await invoke('parse_html', {
+      token: accessStore.accessToken,
+      str: html,
+      baseUrl: apiURL,
+    });
+    editor.dangerouslyInsertHtml(res as string);
+    return false;
+  }
+  return true;
 }
 </script>
