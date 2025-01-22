@@ -9,6 +9,7 @@ import math.yl.love.common.utils.JsonUtils.toJson
 import math.yl.love.common.utils.JwtUtils
 import math.yl.love.controller.UserController
 import math.yl.love.database.domain.entity.User
+import math.yl.love.database.domain.params.user.GetStudentEnum
 import math.yl.love.database.domain.params.user.LoginQuery
 import math.yl.love.database.domain.result.user.LoginJwtResult
 import math.yl.love.database.domain.result.user.LoginResult
@@ -52,7 +53,11 @@ class UserService : BaseService<User, UserMapper>() {
      * @param param 分页参数
      */
     fun page(param: UserController.PageParam): BasePage<UserResult> {
-        val p = page(Page(param.current, param.size), queryWrapper)
+        val p = when(param.studentFlag) {
+            GetStudentEnum.All -> page(Page(param.current, param.size), queryWrapper)
+            GetStudentEnum.HasClass -> TODO()
+            GetStudentEnum.NoClass -> baseMapper.getNoClassStudents(Page<User>(param.current, param.size))
+        }
         return BasePage(
             current = p.current,
             size = p.size,

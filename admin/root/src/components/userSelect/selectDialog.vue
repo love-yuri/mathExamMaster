@@ -56,18 +56,18 @@
 import { inject, onMounted, ref } from 'vue';
 import { Button, Card, Column, DataTable, Paginator } from '#/components';
 
-import { type PageParam } from '#/common/base/baseApi/baseApi';
 import type { PageState } from 'primevue/paginator';
-import { userApi, type UserResult } from '#/api/userApi';
+import { userApi, type UserPageParam, type UserResult } from '#/api/userApi';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 
 const dialogRef = inject<{ value: DynamicDialogInstance }>('dialogRef');
 const users = ref<UserResult[]>([]);
 const selectUsers = ref<Map<string, UserResult>>(new Map());
-const pageParam = ref<PageParam>({
+const pageParam = ref<UserPageParam>({
   current: 1,
   size: 10,
   total: 0,
+  studentFlag: 2,
 });
 
 /**

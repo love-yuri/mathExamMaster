@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 17:05:12
- * @LastEditTime: 2024-12-13 19:27:27
+ * @LastEditTime: 2025-01-22 15:43:04
  * @Description:
  */
 import {
@@ -19,6 +19,11 @@ export class User extends BaseEntity {
     this.username = '';
   }
 }
+
+export interface UserPageParam extends PageParam {
+  studentFlag: number;
+}
+
 
 /** 登录接口参数 */
 export interface LoginParams {
@@ -62,7 +67,7 @@ class Api extends BaseApi<User> {
   /**
    * 分页
    */
-  resultPage = async (param: PageParam) => {
+  resultPage = async (param: UserPageParam) => {
     return this.add<PageResult<UserResult>>(RequestType.POST, '/page', param);
   };
 

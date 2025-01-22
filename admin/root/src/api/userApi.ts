@@ -20,6 +20,10 @@ export class User extends BaseEntity {
   }
 }
 
+export interface UserPageParam extends PageParam {
+  studentFlag: number;
+}
+
 /** 登录接口参数 */
 export interface LoginParams {
   password: string;
@@ -62,7 +66,7 @@ class Api extends BaseApi<User> {
   /**
    * 分页
    */
-  resultPage = async (param: PageParam) => {
+  resultPage = async (param: UserPageParam) => {
     return this.add<PageResult<UserResult>>(RequestType.POST, '/page', param);
   };
 

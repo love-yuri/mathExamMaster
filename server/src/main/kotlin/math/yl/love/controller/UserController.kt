@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import math.yl.love.common.base.R
 import math.yl.love.common.mybatis.BaseController
 import math.yl.love.database.domain.entity.User
+import math.yl.love.database.domain.params.user.GetStudentEnum
 import math.yl.love.database.domain.params.user.LoginQuery
 import math.yl.love.database.mapper.UserMapper
 import math.yl.love.database.service.UserService
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 class UserController: BaseController<User, UserMapper, UserService>() {
 
     class PageParam: BaseController.PageParam() {
-
+        val studentFlag: GetStudentEnum = GetStudentEnum.All
     }
 
     @PostMapping("login")
