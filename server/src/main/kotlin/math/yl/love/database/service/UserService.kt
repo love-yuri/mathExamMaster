@@ -56,7 +56,9 @@ class UserService : BaseService<User, UserMapper>() {
         val p = when(param.studentFlag) {
             GetStudentEnum.All -> page(Page(param.current, param.size), queryWrapper)
             GetStudentEnum.HasClass -> TODO()
-            GetStudentEnum.NoClass -> baseMapper.getNoClassStudents(Page<User>(param.current, param.size))
+            GetStudentEnum.NoClass ->{
+                baseMapper.getNoClassStudents(Page<User>(param.current, param.size))
+            }
         }
         return BasePage(
             current = p.current,
