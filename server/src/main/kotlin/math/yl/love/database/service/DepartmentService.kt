@@ -59,6 +59,10 @@ class DepartmentService(
 
     @Transactional(rollbackFor = [Exception::class])
     override fun removeById(id: Serializable): Boolean {
+        val child = queryWrapper.eq(Department::parentId, id).list()
+        if (child.isNotEmpty()) {
+            throw BizException("该组织下有子组织，无法删除!!!")
+        }
         return super.removeById(id) && userDepartmentService.removeByDepartmentId(id)
     }
 }
