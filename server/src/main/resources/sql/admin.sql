@@ -8,7 +8,7 @@ use zyl;
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE user (
   `id` bigint NOT NULL COMMENT 'id',
-  `role` tinyint(1) NOT NULL default 1 comment '角色: 1: 管理员, 2: 老师， 3: 学生',
+  `role` tinyint(1) NOT NULL default 3 comment '角色: 1: 管理员, 2: 老师， 3: 学生',
   `user_name` varchar(16) NOT NULL unique comment '用户名',
   `pass_word` varchar(32) NOT NULL comment '密码',
   `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',

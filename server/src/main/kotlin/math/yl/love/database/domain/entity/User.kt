@@ -8,6 +8,7 @@ import kotlinx.serialization.Transient
 import math.yl.love.common.constant.DataBaseConstant
 import kotlinx.serialization.builtins.LongAsStringSerializer
 import math.yl.love.common.base.NoArg
+import math.yl.love.database.domain.typeEnum.UserRoleEnum
 import java.time.LocalDateTime
 
 @NoArg
@@ -45,7 +46,7 @@ data class User (
 
     @TableField("role")
     @Schema(description = "用户角色")
-    val role: Int? = null,
+    val role: UserRoleEnum = UserRoleEnum.STUDENT,
 
     @TableField("user_name")
     @Schema(description = "用户名")
