@@ -3,7 +3,9 @@ package math.yl.love.database.mapper
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import math.yl.love.database.domain.entity.User
+import math.yl.love.database.domain.result.user.StudentResult
 import org.apache.ibatis.annotations.Mapper
+import org.apache.ibatis.annotations.Select
 
 @Mapper
 interface UserMapper: BaseMapper<User> {
@@ -11,4 +13,14 @@ interface UserMapper: BaseMapper<User> {
         return selectOne(LambdaQueryWrapper<User>()
             .eq(User::id, 1))
     }
+
+    /**
+     * 获取所有没有设置班级的学生
+     */
+    @Select(("""
+        select * from user where role = 3 and not exists(
+            select 1 from user_department where user_id = user.id
+        ) and deleted = false;
+    """))
+    fun getNoClassStudents(): List<User>
 }

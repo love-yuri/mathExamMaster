@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import math.yl.love.common.base.R
 import math.yl.love.common.mybatis.BaseController
 import math.yl.love.database.domain.entity.User
+import math.yl.love.database.domain.params.user.GetStudentEnum
 import math.yl.love.database.domain.params.user.LoginQuery
 import math.yl.love.database.mapper.UserMapper
 import math.yl.love.database.service.UserService
@@ -18,10 +19,6 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "用户管理")
 class UserController: BaseController<User, UserMapper, UserService>() {
 
-    class PageParam: BaseController.PageParam() {
-
-    }
-
     @PostMapping("login")
     @Operation(summary = "登陆")
     fun login(@RequestBody query: LoginQuery) = R.success(baseService.login(query))
@@ -32,7 +29,7 @@ class UserController: BaseController<User, UserMapper, UserService>() {
 
     @PostMapping("students")
     @Operation(summary = "获取学生列表")
-    fun students() = R.success(baseService.students())
+    fun students(@RequestBody flag: GetStudentEnum) = R.success(baseService.students(flag))
 
     @PostMapping("page")
     @Operation(summary = "分页")
