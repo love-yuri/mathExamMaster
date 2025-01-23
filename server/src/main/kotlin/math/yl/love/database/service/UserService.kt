@@ -2,16 +2,12 @@ package math.yl.love.database.service
 
 import cn.dev33.satoken.stp.StpUtil
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
-import math.yl.love.common.base.R
 import math.yl.love.common.mybatis.BasePage
 import math.yl.love.common.mybatis.BaseService
-import math.yl.love.common.utils.JsonUtils.toJson
-import math.yl.love.common.utils.JwtUtils
 import math.yl.love.controller.UserController
 import math.yl.love.database.domain.entity.User
 import math.yl.love.database.domain.params.user.GetStudentEnum
 import math.yl.love.database.domain.params.user.LoginQuery
-import math.yl.love.database.domain.result.user.LoginJwtResult
 import math.yl.love.database.domain.result.user.LoginResult
 import math.yl.love.database.domain.result.user.StudentResult
 import math.yl.love.database.domain.result.user.UserResult
@@ -22,7 +18,7 @@ import kotlin.reflect.KClass
 
 @Service
 @Transactional(readOnly = true)
-class UserService : BaseService<User, UserMapper>() {
+class UserService: BaseService<User, UserMapper>() {
 
     override val entityClass: KClass<User> get() = User::class
 

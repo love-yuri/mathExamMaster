@@ -1,7 +1,6 @@
 package math.yl.love.configuration.mvc
 
 import cn.dev33.satoken.`fun`.SaFunction
-import cn.dev33.satoken.`fun`.SaParamFunction
 import cn.dev33.satoken.interceptor.SaInterceptor
 import cn.dev33.satoken.router.SaRouter
 import cn.dev33.satoken.stp.StpUtil
@@ -20,6 +19,7 @@ class WebMvcConfiguration: WebMvcConfigurationSupport() {
     private val log = LoggerFactory.getLogger(WebMvcConfiguration::class.java)
 
     public override fun addInterceptors(registry: InterceptorRegistry) {
+
         // 注册 Sa-Token 拦截器，校验规则为 StpUtil.checkLogin() 登录校验。
         registry.addInterceptor(SaInterceptor {
             // 让 OPTIONS 请求跳过 Sa-Token 校验
@@ -37,7 +37,6 @@ class WebMvcConfiguration: WebMvcConfigurationSupport() {
         .excludePathPatterns("/webjars/**") // 排除 Webjars 静态资源路径
         .excludePathPatterns("/v2/api-docs/**") // 排除 Swagger API 文档路径
         .excludePathPatterns("/v3/api-docs/**") // 排除 Swagger API 文档路径
-
     }
 
     public override fun addViewControllers(registry: ViewControllerRegistry) {
