@@ -9,6 +9,18 @@ data class SystemConfig(
     val uploadPath: String? = null,
 
     /**
+     * redis里用户信息的过期时间 单位s
+     * 默认 1 天
+     */
+    val userInfoTimeout: Long = 60 * 60 * 24,
+
+    /**
+     * redis里默认信息的过期时间 单位s
+     * 默认 1 天
+     */
+    val redisDefaultTimeout: Long = 60 * 60 * 24,
+
+    /**
      * 是否为快速开发环境，如果是将会取消token验证
      */
     val isYuriDevelop: Boolean? = false,
