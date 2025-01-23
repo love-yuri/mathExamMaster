@@ -1,5 +1,5 @@
 use std::fs::File;
-use std::path::{Path, MAIN_SEPARATOR};
+use std::path::{Path, MAIN_SEPARATOR_STR};
 use log::info;
 use regex::Regex;
 use crate::api::upload::upload_file;
@@ -41,7 +41,7 @@ pub async fn parse_html(str: &str, token: &str, base_url: &str) -> Result<String
     
     if src.starts_with("file://") {
       let mut new_src = format!("{}/system/file/get/3", base_url);
-      let mut img_src = src.replace("file://", "").replace("/", &MAIN_SEPARATOR.to_string());
+      let mut img_src = src.replace("file://", "").replace("/", MAIN_SEPARATOR_STR);
       let os = std::env::consts::OS;
       if os == "windows" && img_src.starts_with("\\") {
         img_src = img_src[1..].to_string();
@@ -58,8 +58,7 @@ pub async fn parse_html(str: &str, token: &str, base_url: &str) -> Result<String
       } else {
         info!("找不到文件: {}", img_src);
       }
-      flag = flag - (src.len() - new_src.len());
-      
+      flag -= src.len() - new_src.len();
       // 设置为只替换一次，防止出现图片重复但是查找不重复的问题
       html = html.replacen(src, &new_src, 1);
     }
