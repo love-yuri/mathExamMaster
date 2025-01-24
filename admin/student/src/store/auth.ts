@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 16:37:25
- * @LastEditTime: 2024-12-23 18:28:14
+ * @LastEditTime: 2025-01-24 15:59:30
  * @Description: 认证模块
  */
 
@@ -69,6 +69,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function logout(redirect: boolean = true) {
     // await logoutApi();
+    await userApi.logout();
     resetAllStores();
     accessStore.setLoginExpired(false);
 

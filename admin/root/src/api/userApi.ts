@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 17:05:12
- * @LastEditTime: 2024-12-13 19:27:27
+ * @LastEditTime: 2025-01-24 14:38:35
  * @Description:
  */
 import {
@@ -61,6 +61,13 @@ class Api extends BaseApi<User> {
    */
   login = async (params: LoginParams) => {
     return this.add<LoginResult>(RequestType.POST, '/login', params);
+  };
+
+  /**
+   * 退出登录
+   */
+  logout = async () => {
+    return this.add(RequestType.POST, '/logout');
   };
 
   /**
