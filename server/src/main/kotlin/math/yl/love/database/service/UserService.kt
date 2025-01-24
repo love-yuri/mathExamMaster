@@ -2,8 +2,10 @@ package math.yl.love.database.service
 
 import cn.dev33.satoken.stp.StpUtil
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
+import math.yl.love.common.constant.RedisConstant
 import math.yl.love.common.mybatis.BasePage
 import math.yl.love.common.mybatis.BaseService
+import math.yl.love.configuration.config.SystemConfig
 import math.yl.love.controller.UserController
 import math.yl.love.database.domain.entity.User
 import math.yl.love.database.domain.params.user.GetStudentEnum
@@ -18,7 +20,10 @@ import kotlin.reflect.KClass
 
 @Service
 @Transactional(readOnly = true)
-class UserService: BaseService<User, UserMapper>() {
+class UserService(
+    val redisService: RedisService,
+    val systemConfig: SystemConfig
+): BaseService<User, UserMapper>() {
 
     override val entityClass: KClass<User> get() = User::class
 
@@ -30,14 +35,27 @@ class UserService: BaseService<User, UserMapper>() {
     }
 
     /**
+     * 退出登录
+     */
+    fun logout() {
+        StpUtil.logout()
+    }
+
+    /**
      * 根据用户名查询
      */
     fun getByUsername(username: String?): User? = getOne(queryWrapper.eq(!username.isNullOrEmpty(), User::username, username))
 
     /**
      * 查找用户信息
+     * 默认使用
      */
-    fun getUserInfo() = getByUsername(StpUtil.getLoginId().toString())
+    fun getUserInfo(): User? {
+        val username = StpUtil.getLoginId().toString()
+        return redisService.getOrReSet("${RedisConstant.USER_INFO}:${username}", {
+            getByUsername(username)
+        }, systemConfig.userInfoTimeout)
+    }
 
     /**
      * 获取学生列表
@@ -51,10 +69,8 @@ class UserService: BaseService<User, UserMapper>() {
     fun page(param: UserController.PageParam): BasePage<UserResult> {
         val p = when(param.studentFlag) {
             GetStudentEnum.All -> page(Page(param.current, param.size), queryWrapper)
-            GetStudentEnum.HasClass -> TODO()
-            GetStudentEnum.NoClass ->{
-                baseMapper.getNoClassStudents(Page<User>(param.current, param.size))
-            }
+            GetStudentEnum.HasClass -> TODO("暂未实现")
+            GetStudentEnum.NoClass -> baseMapper.getNoClassStudents(Page<User>(param.current, param.size))
         }
         return BasePage(
             current = p.current,

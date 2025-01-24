@@ -1,5 +1,6 @@
 package math.yl.love.database.service
 
+import math.yl.love.common.constant.RedisConstant
 import math.yl.love.common.mybatis.BaseService
 import math.yl.love.database.domain.typeEnum.FileTypeEnum
 import math.yl.love.common.utils.FileUtils.getMd5
@@ -11,6 +12,7 @@ import org.springframework.core.io.UrlResource
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.io.Serializable
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.io.path.pathString
@@ -19,7 +21,8 @@ import kotlin.reflect.KClass
 @Service
 @Transactional(readOnly = true)
 class SystemFileService(
-    systemConfig: SystemConfig
+    systemConfig: SystemConfig,
+    val redisService: RedisService
 ): BaseService<SystemFile, SystemFileMapper>() {
     override val entityClass: KClass<SystemFile> get() = SystemFile::class
     private val uploadPath = Paths.get(systemConfig.uploadPath ?: "files/upload").apply {
@@ -60,6 +63,12 @@ class SystemFileService(
             path = target.pathString,
             type = FileTypeEnum.getFileTypeByName(filename)
         ).apply { save(this) }
+    }
+
+    override fun getById(id: Serializable): SystemFile? {
+        return redisService.getOrReSet("${RedisConstant.SYSTEM_FILE_GET}:$id", {
+            super.getById(id)
+        })
     }
 
     /**
