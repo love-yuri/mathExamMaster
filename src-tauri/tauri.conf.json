@@ -24,6 +24,18 @@
     }
   },
   "bundle": {
+    "shortDescription": "高等数学考试系统-管理端",
+    "longDescription": "高等数学考试系统-管理端",
+    "windows": {
+      "wix": {
+        "language": "zh-CN"
+      },
+      "nsis": {
+        "languages": ["SimpChinese", "English"],
+        "displayLanguageSelector": true
+      }
+    },
+
     "active": true,
     "targets": "all",
     "icon": [
