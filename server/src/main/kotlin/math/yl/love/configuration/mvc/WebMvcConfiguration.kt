@@ -2,6 +2,7 @@ package math.yl.love.configuration.mvc
 
 import cn.dev33.satoken.`fun`.SaFunction
 import cn.dev33.satoken.interceptor.SaInterceptor
+import cn.dev33.satoken.router.SaHttpMethod
 import cn.dev33.satoken.router.SaRouter
 import cn.dev33.satoken.stp.StpUtil
 import math.yl.love.configuration.config.JsonConfig.Companion.json
@@ -22,21 +23,28 @@ class WebMvcConfiguration: WebMvcConfigurationSupport() {
 
         // 注册 Sa-Token 拦截器，校验规则为 StpUtil.checkLogin() 登录校验。
         registry.addInterceptor(SaInterceptor {
-            // 让 OPTIONS 请求跳过 Sa-Token 校验
-            SaRouter.match("/**").notMatchMethod("OPTIONS").apply {
-                // 这里需要用 lambda 明确指定 check 需要调用的重载
-                this.check(SaFunction {
-                    StpUtil.checkLogin() // 仅对非 OPTIONS 请求进行登录校验
-                })
-            }
-        }).addPathPatterns("/**")
+            // option请求直接放行
+            SaRouter.match(SaHttpMethod.OPTIONS).back()
+
+            // 所有接口进行登录校验
+            StpUtil.checkLogin()
+        })
+        // 对所有接口进行校验
+        .addPathPatterns("/**")
+
+        // 放行文件查看接口
         .excludePathPatterns("/system/file/get/**")
+
+        // 放行登录/退出登录接口
         .excludePathPatterns("/user/login")
-        .excludePathPatterns("/doc.html") // 排除 Knife4j 的文档路径
-        .excludePathPatterns("/swagger-resources/**") // 排除 Swagger 资源路径
-        .excludePathPatterns("/webjars/**") // 排除 Webjars 静态资源路径
-        .excludePathPatterns("/v2/api-docs/**") // 排除 Swagger API 文档路径
-        .excludePathPatterns("/v3/api-docs/**") // 排除 Swagger API 文档路径
+        .excludePathPatterns("/user/logout")
+
+        // 放行Knife4j文档
+        .excludePathPatterns("/doc.html")
+        .excludePathPatterns("/swagger-resources/**")
+        .excludePathPatterns("/webjars/**")
+        .excludePathPatterns("/v2/api-docs/**")
+        .excludePathPatterns("/v3/api-docs/**")
     }
 
     public override fun addViewControllers(registry: ViewControllerRegistry) {

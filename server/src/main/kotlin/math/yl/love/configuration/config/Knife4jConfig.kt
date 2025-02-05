@@ -31,12 +31,14 @@ class Knife4jConfig {
     fun globalOperationCustomizer(): GlobalOperationCustomizer {
         return GlobalOperationCustomizer { operation: Operation, _: HandlerMethod? ->
             val authorizationHeader =
-                Parameter().`in`("header").schema(StringSchema()).name(HeadersConstant.AUTHORIZATION).description("JWT Token")
-                    .required(false)
+                Parameter()
+                .`in`("header")
+                .schema(StringSchema())
+                .name(HeadersConstant.AUTHORIZATION)
+                .description("SaToken 认证信息")
+                .required(false)
             operation.addParametersItem(authorizationHeader)
             operation
         }
     }
-
-
 }
