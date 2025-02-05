@@ -68,8 +68,10 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout(redirect: boolean = true) {
-    // await logoutApi();
-    await userApi.logout();
+    // 仅在不重定向时调用退出接口
+    if (!redirect) {
+      await userApi.logout();
+    }
     resetAllStores();
     accessStore.setLoginExpired(false);
 
