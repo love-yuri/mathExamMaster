@@ -23,7 +23,7 @@ class ExamPageReleaseController: BaseController<ExamPageRelease, ExamPageRelease
     fun release(@RequestBody param: ExamPageReleaseParam) = R.success(baseService.release(param))
 
     @PostMapping("release/update")
-    @Operation(summary = "发布试卷")
+    @Operation(summary = "更新发布试卷")
     fun releaseUpdate(@RequestBody param: ExamPageReleaseParam) = R.success(baseService.releaseUpdate(param))
 
     @PostMapping("page/simple")
