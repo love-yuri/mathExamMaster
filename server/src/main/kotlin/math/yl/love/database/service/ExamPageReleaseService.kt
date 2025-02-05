@@ -38,6 +38,7 @@ class ExamPageReleaseService(
      */
     @Transactional(rollbackFor = [Exception::class])
     fun release(param: ExamPageReleaseParam): Boolean {
+
         // 先保存试卷本体
         val examPageRelease = ExamPageRelease(
             startTime = param.startTime,
