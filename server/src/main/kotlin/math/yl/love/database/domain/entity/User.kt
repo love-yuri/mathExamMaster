@@ -52,6 +52,10 @@ data class User (
     @Schema(description = "用户名")
     val username: String,
 
+    @TableField("nick_name")
+    @Schema(description = "昵称")
+    val nickname: String,
+
     @TableField("pass_word")
     @Schema(description = "密码")
     val password: String,

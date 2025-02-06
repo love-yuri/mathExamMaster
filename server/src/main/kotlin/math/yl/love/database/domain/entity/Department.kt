@@ -51,4 +51,8 @@ data class Department (
     @TableField(value = "parent_id")
     val parentId: Long? = null,
 
+    @Schema(description = "老师id")
+    @TableField(value = "teacher_id")
+    val teacherId: Long? = null,
+
 ) : BaseEntity
