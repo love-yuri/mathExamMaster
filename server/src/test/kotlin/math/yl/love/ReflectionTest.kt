@@ -28,15 +28,6 @@ class ReflectionTest {
         val createdTime: LocalDateTime? = null,
     )
 
-    @Test
-    fun member() {
-        val user = User(1, false, LocalDateTime.now(), "", LocalDateTime.now())
-
-        val p = user.toBean(Uu::class)
-        log.info("yuri: user -> ${user.toJson()}")
-        log.info("yuri: p -> ${p.toJson()}")
-    }
-
     @Suppress("UNCHECKED_CAST")
     private fun <T: Any, V: Any> T.toBean(clazz: KClass<V>): V? {
         try {
