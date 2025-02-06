@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import math.yl.love.database.domain.entity.User
-import math.yl.love.database.domain.result.user.StudentResult
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Select
 

@@ -15,4 +15,7 @@ data class UserResult (
 
     @Schema(description = "用户名称")
     val username: String,
+
+    @Schema(description = "昵称")
+    val nickname: String,
 )

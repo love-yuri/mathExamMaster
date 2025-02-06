@@ -24,7 +24,7 @@ class UserRoleList(
         loginId: Any?,
         loginType: String?
     ): List<String>? {
-        val user = userService.getUserInfo() ?: throw BizException("用户不存在!!!")
+        val user = userService.getUserInfo()
         return listOf(user.role.toString())
     }
 }

@@ -14,7 +14,7 @@ import kotlin.reflect.KClass
 @Service
 @Transactional(readOnly = true)
 class UserDepartmentService(
-    private val userService: UserService
+    val userService: UserService
 ): BaseService<UserDepartment, UserDepartmentMapper>() {
     override val entityClass: KClass<UserDepartment> get() = UserDepartment::class
 
@@ -24,15 +24,9 @@ class UserDepartmentService(
      * @param id 组织id
      */
     fun findByDepartmentId(id: Long): List<UserResult> {
-        val userIds = queryWrapper.eq(UserDepartment::departmentId, id).list().map {
-            it.userId
-        }
-        return userService.findByIds(userIds).map {
-            UserResult(
-                it.id!!,
-                it.username
-            )
-        }
+        return queryWrapper.eq(UserDepartment::departmentId, id)
+            .list().map { it.userId }
+            .let { userService.getResultByIds(it) }
     }
 
     /**
@@ -68,4 +62,9 @@ class UserDepartmentService(
      */
     @Transactional(rollbackFor = [Exception::class])
     fun removeByDepartmentId(id: Serializable) = remove(queryWrapper.eq(UserDepartment::departmentId, id))
+
+    /**
+     * 根据组织id查询用户
+     */
+    fun getUsersByDepartmentId(lng: Long) = queryWrapper.eq(UserDepartment::departmentId, lng).list()
 }

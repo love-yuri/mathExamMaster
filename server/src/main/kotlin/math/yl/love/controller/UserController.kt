@@ -7,6 +7,7 @@ import math.yl.love.common.mybatis.BaseController
 import math.yl.love.database.domain.entity.User
 import math.yl.love.database.domain.params.user.GetStudentEnum
 import math.yl.love.database.domain.params.user.LoginQuery
+import math.yl.love.database.domain.params.user.SetTeacherParam
 import math.yl.love.database.mapper.UserMapper
 import math.yl.love.database.service.UserService
 import org.springframework.web.bind.annotation.PostMapping
@@ -35,11 +36,15 @@ class UserController: BaseController<User, UserMapper, UserService>() {
     @Operation(summary = "获取用户信息")
     fun getUserInfo() = R.success(baseService.getUserInfo())
 
-    @PostMapping("students")
-    @Operation(summary = "获取学生列表")
-    fun students() = R.success(baseService.students())
-
     @PostMapping("page")
     @Operation(summary = "分页")
     fun pageSimple(@RequestBody param: PageParam) = R.success(baseService.page(param))
+
+    @PostMapping("set/teacher")
+    @Operation(summary = "为组织设置老师")
+    fun setTeacher(@RequestBody param: SetTeacherParam) = R.success(baseService.setTeacher(param))
+
+    @PostMapping("teachers")
+    @Operation(summary = "获取所有老师")
+    fun teachers(param: Int = 0) = R.success(baseService.teachers(param))
 }
