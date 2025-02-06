@@ -21,4 +21,8 @@ class DepartmentController: BaseController<Department, DepartmentMapper, Departm
     @PostMapping("detail")
     @Operation(summary = "查找详细信息")
     fun generate(@RequestBody id: Long) = R.success(baseService.detail(id))
+
+    @PostMapping("owner/departments")
+    @Operation(summary = "获取当前用户管理的班级")
+    fun ownerDepartments() = R.success(baseService.ownerDepartments())
 }
