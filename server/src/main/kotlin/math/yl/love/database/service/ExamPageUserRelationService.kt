@@ -23,18 +23,6 @@ class ExamPageUserRelationService(
     /**
      * 删除发布试卷的用户
      * @param id 发布试卷id
-     * @param userIds 用户id列表
-     */
-    fun removeByRelease(id: Long, userIds: List<Long>) {
-        remove(queryWrapper
-            .eq(ExamPageUserRelation::pageReleaseId, id)
-            .`in`(ExamPageUserRelation::userId, userIds)
-        )
-    }
-
-    /**
-     * 删除发布试卷的用户
-     * @param id 发布试卷id
      */
     fun removeByRelease(id: Long): Boolean {
         return remove(queryWrapper
@@ -47,14 +35,16 @@ class ExamPageUserRelationService(
      */
     fun findByUser(param: ExamListParam): List<ExamPageUserRelation> {
         val user = userService.getUserInfo()
-        val pages = queryWrapper.eq(ExamPageUserRelation::userId, user!!.id)
+        val pages = queryWrapper.eq(ExamPageUserRelation::userId, user.id)
 
         when(param.mode) {
+            // 所有未开始获取进行中
             0 -> pages.`in`(ExamPageUserRelation::status, listOf(
                 ExamPageStatusEnum.NOT_START,
                 ExamPageStatusEnum.DOING
             ))
 
+            // 已经完成的试卷
             1 -> pages.eq(ExamPageUserRelation::status, ExamPageStatusEnum.FINISHED)
         }
 
@@ -75,7 +65,7 @@ class ExamPageUserRelationService(
      * 检查该用户的该发布是否有考试权限
      */
     fun checkExamInfo(id: Long): ExamPageUserRelation {
-        val userId = userService.getUserInfo()!!.id
+        val userId = userService.getUserInfo().id
         val relation = findByReleaseIdAndUserId(id, userId) ?: throw BizException("该用户不存在该练习!!!")
         if (relation.status == ExamPageStatusEnum.FINISHED) {
             throw BizException("该练习已结束!!!")
@@ -84,7 +74,7 @@ class ExamPageUserRelationService(
     }
 
     fun relation(releaseId: Long): ExamPageUserRelation {
-        val userId = userService.getUserInfo()!!.id
+        val userId = userService.getUserInfo().id
         return findByReleaseIdAndUserId(releaseId, userId) ?: throw BizException("不存在的发布!!")
     }
 

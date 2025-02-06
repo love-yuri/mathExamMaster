@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import io.swagger.v3.oas.annotations.media.Schema
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.builtins.LongAsStringSerializer
+import math.yl.love.database.domain.entity.Department
 import math.yl.love.database.domain.result.questionBank.FullQuestionBank
 import java.time.LocalDateTime
 
@@ -23,6 +24,6 @@ data class ExamPageReleaseParam(
     @Schema(description = "结束时间")
     val endTime: LocalDateTime,
 
-    @Schema(description = "发布用户id")
-    val userIds: List<Long>,
+    @Schema(description = "发布组织id")
+    val departmentId: Long,
 )

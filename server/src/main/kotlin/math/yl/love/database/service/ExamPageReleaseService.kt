@@ -1,7 +1,6 @@
 package math.yl.love.database.service
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
-import math.yl.love.common.base.R
 import math.yl.love.common.mybatis.BaseController.PageParam
 import math.yl.love.common.mybatis.BasePage
 import math.yl.love.common.mybatis.BaseService
@@ -38,7 +37,6 @@ class ExamPageReleaseService(
      */
     @Transactional(rollbackFor = [Exception::class])
     fun release(param: ExamPageReleaseParam): Boolean {
-
         // 先保存试卷本体
         val examPageRelease = ExamPageRelease(
             startTime = param.startTime,
@@ -47,8 +45,10 @@ class ExamPageReleaseService(
         )
         save(examPageRelease)
 
+        val userIds = userService.departmentService.getUserIds(param.departmentId)
+
         // 保存试卷与用户的关系
-        val relations = param.userIds.map {
+        val relations = userIds.map {
             ExamPageUserRelation(
                 pageReleaseId = examPageRelease.id!!,
                 userId = it,
@@ -63,29 +63,15 @@ class ExamPageReleaseService(
      */
     @Transactional(rollbackFor = [Exception::class])
     fun releaseUpdate(param: ExamPageReleaseParam): Boolean {
-        val origin = detail(param.id ?: throw BizException("发布id不能为空!!!"))
+        val origin = getById(param.id ?: throw BizException("发布id不能为空!!!"))
         // 先更新试卷本体
-        val examPageRelease = ExamPageRelease(
+        val examPageRelease = origin.copy(
             id = param.id,
             startTime = param.startTime,
             endTime = param.endTime,
             examPageId = param.examPageId
         )
         updateById(examPageRelease)
-
-        val oldUserIds = origin.users.map { it.id!! }
-
-        // 新增
-        val relations = (param.userIds - oldUserIds.toSet()).map {
-            ExamPageUserRelation(
-                pageReleaseId = examPageRelease.id!!,
-                userId = it,
-            )
-        }
-        // 删除
-        userRelationService.removeByRelease(param.id, oldUserIds - param.userIds.toSet())
-        // 新增
-        userRelationService.saveBatch(relations)
         return true
     }
 
@@ -195,7 +181,7 @@ class ExamPageReleaseService(
      * @param id 发布id
      */
     fun examInfo(id: Long): ExamInfoResult {
-        val userId = userService.getUserInfo()!!.id
+        val userId = userService.getUserInfo().id
         return baseMapper.examInfo(id, userId) ?: throw BizException("考试不存在!!")
     }
 
