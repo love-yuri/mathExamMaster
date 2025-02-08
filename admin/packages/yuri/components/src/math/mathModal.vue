@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { useVbenModal } from '@vben/common-ui';
 import { nextTick, ref } from 'vue';
-// import { InputText } from '#/components/';
+// import { InputText } from '@yuri/components/';
 import {
   DomEditor,
   type IDomEditor,
