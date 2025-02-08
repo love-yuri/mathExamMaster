@@ -160,5 +160,9 @@
       "name": "@yuri/types",
       "path": "packages/yuri/types",
     },
+    {
+      "name": "@yuri/components",
+      "path": "packages/yuri/components",
+    },
   ],
 }

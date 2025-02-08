@@ -1,0 +1,41 @@
+{
+  "name": "@yuri/components",
+  "version": "5.2.2",
+  "homepage": "https://github.com/love-yuri/mathExamMaster",
+  "bugs": "https://github.com/love-yuri/mathExamMaster/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/love-yuri/mathExamMaster.git",
+    "directory": "packages/yuri/components"
+  },
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.2.0",
+    "primevue": "^4.0.5",
+    "@vben/common-ui": "workspace:*",
+    "@yuri/common": "workspace:*",
+    "@yuri/types": "workspace:*",
+    "@wangeditor-next/editor": "^5.6.27",
+    "@wangeditor-next/editor-for-vue": "^5.1.14",
+    "@vben/stores": "workspace:*",
+    "snabbdom": "^3.6.2",
+    "katex": "^0.16.11",
+    "mathlive": "^0.101.1",
+    "@vben/hooks": "workspace:*"
+  },
+  "devDependencies": {
+    "primeicons": "^7.0.0"
+  }
+}
