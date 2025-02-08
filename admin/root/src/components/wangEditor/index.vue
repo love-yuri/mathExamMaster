@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2025-01-21 11:20:01
+ * @LastEditTime: 2025-02-08 15:06:00
  * @Description: 封装富文本编辑器
 -->
 <template>
@@ -33,8 +33,6 @@ import {
 } from '@wangeditor-next/editor';
 import { onBeforeUnmount, ref, shallowRef, watch } from 'vue';
 import { Editor, Toolbar } from '@wangeditor-next/editor-for-vue';
-import { systemApi } from '#/api/systemApi';
-import { systemFileApi } from '#/api/systemFileApi';
 import { invoke } from '@tauri-apps/api/core';
 import { type WangEditorProps } from './types';
 import ToolbarKeys from './toolbarKeys.json';
@@ -43,6 +41,7 @@ import { useAccessStore } from '@vben/stores';
 import { useAppConfig } from '@vben/hooks';
 
 import '#/components/wangEditor/templates';
+import { systemApi, systemFileApi } from '@yuri/common';
 
 const props = defineProps<WangEditorProps>();
 const emits = defineEmits(['change']);

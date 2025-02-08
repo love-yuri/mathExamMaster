@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 19:49:21
- * @LastEditTime: 2024-11-19 19:06:43
+ * @LastEditTime: 2025-02-08 15:03:19
  * @Description: 题库管理
 -->
 
@@ -106,21 +106,13 @@ import {
   SplitButton,
   Tag,
 } from '#/components';
-import {
-  type FullQuestionBank,
-  QuestionBank,
-  questionBankApi,
-  QuestionTypeEnum,
-  QuestionTypeMap,
-} from '#/api/questionBankApi';
-import { type PageParam } from '#/common/base/baseApi/baseApi';
 import type { PageState } from 'primevue/paginator';
 import Preview from './components/preview.vue';
 import { router } from '#/router';
 import { EllipsisText } from '@vben/common-ui';
-import type { KnowledgePoint } from '#/api/knowledgePointApi';
-import message from '#/common/utils/message';
 import { useConfirm } from 'primevue/useconfirm';
+import { questionBankApi, message } from '@yuri/common';
+import { type FullQuestionBank, type KnowledgePoint, type QuestionBank, QuestionTypeEnum, type PageParam, QuestionTypeMap } from '@yuri/types';
 
 const confirm = useConfirm();
 
@@ -189,7 +181,7 @@ function remove(id: string) {
   confirm.require({
     accept: () => {
       questionBankApi.delete(id).then(() => {
-        message.success('删除成功');
+        message.default.success('删除成功');
         loadData();
       });
     },

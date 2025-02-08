@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-22 18:41:52
- * @LastEditTime: 2025-01-09 18:43:31
+ * @LastEditTime: 2025-02-08 15:07:37
  * @Description: 修改公式
 -->
 <template>
@@ -30,7 +30,7 @@ import {
 import type { YuriMathNode } from '../wangEditor/templates/yuriMath';
 
 import { MathfieldElement } from 'mathlive';
-import { checkEmpty } from '#/common/utils/valueCheck';
+import { checkEmpty } from '@yuri/common';
 
 const isCreate = ref(false);
 const math = ref('');

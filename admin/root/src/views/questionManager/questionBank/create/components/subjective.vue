@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 21:03:18
- * @LastEditTime: 2024-10-23 21:43:22
+ * @LastEditTime: 2025-02-08 15:13:47
  * @Description: 主观题
 -->
 <template>
@@ -49,19 +49,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import {
-  QuestionBank,
-  questionBankApi,
-  QuestionTypeEnum,
-} from '#/api/questionBankApi';
-import { Button, MultiSelect, Rating, WangEditor } from '#/components';
-import { onMounted, ref } from 'vue';
-import { checkEmpty, checkSuccess } from '#/common/utils/valueCheck';
-import message from '#/common/utils/message';
-import {
-  type KnowledgePoint,
-  knowledgePointApi,
-} from '#/api/knowledgePointApi';
+import { knowledgePointApi, checkEmpty, questionBankApi, checkSuccess } from '@yuri/common';
+import { QuestionBank, QuestionTypeEnum, KnowledgePoint } from '@yuri/types';
+import { message } from '@yuri/common';
+import { ref, onMounted } from 'vue';
+
 
 const emits = defineEmits(['cancel', 'update']);
 
@@ -85,7 +77,7 @@ const loadKnowledgePoints = async () => {
 function create() {
   checkEmpty(question.value.content, '请输入题目!');
   if (question.value.content === '<p><br></p>') {
-    message.error('请输入题目!');
+    message.default.error('请输入题目!');
     return;
   }
   question.value.answer = '{}';

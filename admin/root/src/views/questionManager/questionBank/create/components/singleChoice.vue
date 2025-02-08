@@ -102,11 +102,6 @@
 <script setup lang="ts">
 import { type SingleChoiceAnswer } from '#/views/questionManager/questionBank/types';
 import {
-  QuestionBank,
-  questionBankApi,
-  QuestionTypeEnum,
-} from '#/api/questionBankApi';
-import {
   Button,
   InputText,
   MultiSelect,
@@ -115,12 +110,9 @@ import {
   WangEditor,
 } from '#/components';
 import { onMounted, ref } from 'vue';
-import { checkEmpty, checkSuccess } from '#/common/utils/valueCheck';
-import message from '#/common/utils/message';
-import {
-  type KnowledgePoint,
-  knowledgePointApi,
-} from '#/api/knowledgePointApi';
+import { knowledgePointApi, checkEmpty, checkSuccess, questionBankApi } from '@yuri/common';
+import { QuestionBank, QuestionTypeEnum, type KnowledgePoint } from '@yuri/types';
+import { message } from '@yuri/common';
 
 const emits = defineEmits(['cancel', 'update']);
 
@@ -149,11 +141,11 @@ function create() {
   checkEmpty(question.value.content, '请输入题目!');
   checkEmpty(answer.value.answer, '请选择正确答案!');
   if (question.value.content === '<p><br></p>') {
-    message.error('请输入题目!');
+    message.default.error('请输入题目!');
     return;
   }
   if (answer.value.keys.length < 2) {
-    message.error('请至少添加两个选项!');
+    message.default.error('请至少添加两个选项!');
     return;
   }
   question.value.answer = JSON.stringify(answer.value);

@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2024-12-09 19:05:55
+ * @LastEditTime: 2025-02-08 15:17:29
  * @Description: 创建试卷
 -->
 <template>
@@ -51,7 +51,7 @@
       <div class="mr-2 flex items-center">
         <span class="title"> 开始时间: </span>
         <DatePicker
-          v-model="releaseParam.startTime"
+          v-model="releaseParam.startTime as unknown as Date"
           :manual-input="false"
           :min-date="new Date()"
           :show-on-focus="false"
@@ -66,7 +66,7 @@
       <div class="mr-2 flex items-center">
         <span class="title"> 结束时间: </span>
         <DatePicker
-          v-model="releaseParam.endTime"
+          v-model="releaseParam.endTime as unknown as Date"
           :manual-input="false"
           :min-date="new Date()"
           :show-on-focus="false"
@@ -114,22 +114,12 @@ import {
   Tag,
 } from '#/components';
 import { computed, onMounted, ref } from 'vue';
-import {
-  ExamPageReleaseParam,
-  ExamPageResult,
-  type QuestionAndPoint,
-  subjectOptions,
-  typeOptions,
-} from '#/views/examPageManager/types';
 import Show from '#/views/examPageManager/components/show.vue';
+import { userApi, examPageReleaseApi, examPageApi, checkEmpty, formatPrimeVueTime } from '@yuri/common';
+import { ExamPageReleaseParam, ExamPageResult, subjectOptions, typeOptions, type QuestionAndPoint, type Student } from '@yuri/types';
+import { message } from '@yuri/common';
+import { useRoute } from 'vue-router';
 
-import { examPageApi } from '#/api/examPageApi';
-import { type Student, userApi } from '#/api/userApi';
-import { useRoute } from '#/router';
-import { checkEmpty } from '#/common/utils/valueCheck';
-import { formatPrimeVueTime } from '#/common/utils/timeUtils';
-import { examPageReleaseApi } from '#/api/examPageReleaseApi';
-import message from '#/common/utils/message';
 
 const route = useRoute();
 
@@ -191,9 +181,9 @@ function release() {
   releaseParam.value.endTime = formatPrimeVueTime(releaseParam.value.endTime);
   examPageReleaseApi.releaseUpdate(releaseParam.value).then((res) => {
     if (res) {
-      message.success('更新发布成功');
+      message.default.success('更新发布成功');
     } else {
-      message.error('更新发布失败');
+      message.default.error('更新发布失败');
     }
   });
 }

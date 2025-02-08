@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-12 17:47:35
- * @LastEditTime: 2024-12-16 18:30:43
+ * @LastEditTime: 2025-02-08 15:00:52
  * @Description: 组织管理
 -->
 
@@ -84,15 +84,6 @@
 
 <script setup lang="ts">
 import {
-  Department,
-  departmentApi,
-  type DepartmentDetail,
-  type TreeResult,
-} from '#/api/departmentApi';
-import { userDepartmentApi } from '#/api/userDepartmentApi';
-import message from '#/common/utils/message';
-import { checkEmpty, checkSuccess } from '#/common/utils/valueCheck';
-import {
   Button,
   DefaultConfirmDialog,
   InputText,
@@ -100,8 +91,12 @@ import {
   Popover,
   UserSelect,
 } from '#/components';
+import { checkEmpty, checkSuccess, userDepartmentApi } from '@yuri/common';
+import { message, departmentApi } from '@yuri/common';
 import { useConfirm } from 'primevue/useconfirm';
 import { onMounted, ref, useTemplateRef } from 'vue';
+import { type TreeResult, type DepartmentDetail, Department } from '@yuri/types';
+import type { OrganizationChartNode } from 'primevue';
 
 const confirm = useConfirm();
 
@@ -139,7 +134,7 @@ function loadNodeData(id: string) {
   });
 }
 
-function handleNodeSelect(node: TreeResult) {
+function handleNodeSelect(node: OrganizationChartNode) {
   loadNodeData(node.key);
 }
 
@@ -158,7 +153,7 @@ function addUser() {
           setTimeout(() => {
             loadNodeData(currentDep.value!!.id);
           }, 400);
-          message.success('添加成功');
+          message.default.success('添加成功');
         }
       });
   });
@@ -171,7 +166,7 @@ function removeDep() {
   confirm.require({
     accept: () => {
       departmentApi.delete(currentDep.value?.id!!).then(() => {
-        message.success('删除成功');
+        message.default.success('删除成功');
         currentDep.value = undefined;
         loadData();
       });

@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-08 15:42:02
- * @LastEditTime: 2024-09-08 23:41:59
+ * @LastEditTime: 2025-02-08 14:51:29
  * @Description:
  */
 import type {
@@ -11,9 +11,7 @@ import type {
 
 import { generateAccessible } from '@vben/access';
 import { preferences } from '@vben/preferences';
-
-import { getAllMenusApi } from '#/api';
-import message from '#/common/utils/message';
+import { message } from '@yuri/common';
 import { BasicLayout, IFrameView } from '#/layouts';
 import { $t } from '#/locales';
 
@@ -33,11 +31,12 @@ async function generateAccess(options: GenerateMenuAndRoutesOptions) {
   return await generateAccessible(preferences.app.accessMode, {
     ...options,
     fetchMenuListAsync: async () => {
-      message.success({
+      message.default.success({
         detail: `${$t('common.loadingMenu')}...`,
         life: 1500,
       });
-      return await getAllMenusApi();
+      // 此处返回menu 可在后端返回
+      return [];
     },
     // 可以指定没有权限跳转403页面
     forbiddenComponent,

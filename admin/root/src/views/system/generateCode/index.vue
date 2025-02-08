@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-29 11:34:19
- * @LastEditTime: 2024-12-03 18:34:53
+ * @LastEditTime: 2025-02-08 15:01:29
  * @Description: 
 -->
 <template>
@@ -29,9 +29,8 @@
 </template>
 
 <script setup lang="ts">
-import message from '#/common/utils/message';
-import { systemApi } from '#/api/systemApi';
 import { Button, Select, ToggleSwitch } from '#/components';
+import { systemApi, message } from '@yuri/common';
 import { onMounted, ref, watch } from 'vue';
 
 type Option = {
@@ -66,7 +65,7 @@ function handleGenerate() {
       tableName: selectedTable.value.name,
     })
     .then(() => {
-      message.success('生成成功');
+      message.default.success('生成成功');
     });
 }
 

@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-13 19:32:27
- * @LastEditTime: 2024-12-13 21:12:41
+ * @LastEditTime: 2025-02-08 15:09:27
  * @Description: 用户选择组件
 -->
 <template>
@@ -57,8 +57,9 @@ import { inject, onMounted, ref } from 'vue';
 import { Button, Card, Column, DataTable, Paginator } from '#/components';
 
 import type { PageState } from 'primevue/paginator';
-import { userApi, type UserPageParam, type UserResult } from '#/api/userApi';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import { userApi } from '@yuri/common';
+import type { UserResult, UserPageParam } from '@yuri/types';
 
 const dialogRef = inject<{ value: DynamicDialogInstance }>('dialogRef');
 const users = ref<UserResult[]>([]);

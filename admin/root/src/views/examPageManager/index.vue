@@ -109,20 +109,13 @@ import {
   SplitButton,
   Tag,
 } from '#/components';
-import {
-  ExamPageMap,
-  ExamPageResult,
-  ExamPageType,
-  SubjectType,
-  SubjectTypeMap,
-} from '#/views/examPageManager/types';
-import { examPageApi } from '#/api/examPageApi';
-import type { PageParam } from '#/common/base/baseApi/baseApi';
 import type { PageState } from 'primevue/paginator';
 import { useConfirm } from 'primevue/useconfirm';
 import { router } from '#/router';
 import { EllipsisText } from '@vben/common-ui';
-import message from '#/common/utils/message';
+import { examPageApi } from '@yuri/common';
+import { type PageParam, ExamPageResult, ExamPageType, SubjectType, ExamPageMap, SubjectTypeMap } from '@yuri/types';
+import { message } from '@yuri/common';
 
 const confirm = useConfirm();
 const pageParam = ref<PageParam>({
@@ -167,7 +160,7 @@ function remove(id: string) {
   confirm.require({
     accept: () => {
       examPageApi.delete(id).then(() => {
-        message.success('删除成功');
+        message.default.success('删除成功');
         loadData();
       });
     },

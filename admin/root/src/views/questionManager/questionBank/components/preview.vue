@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-13 15:04:45
- * @LastEditTime: 2024-10-13 16:31:03
+ * @LastEditTime: 2025-02-08 15:10:10
  * @Description: 预览题目
 -->
 <template>
@@ -63,7 +63,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { QuestionBank, QuestionTypeEnum } from '#/api/questionBankApi';
 import { useVbenModal } from '@vben/common-ui';
 import { Button, PreviewEditor } from '#/components';
 import {
@@ -73,6 +72,7 @@ import {
   type SingleChoiceAnswer,
 } from '#/views/questionManager/questionBank/types';
 import { computed, ref } from 'vue';
+import { QuestionBank, QuestionTypeEnum } from '@yuri/types';
 
 /* 处理预览弹窗 */
 const [Model, modelApi] = useVbenModal({

@@ -17,7 +17,7 @@ import { storeToRefs, useAccessStore, useUserStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
 
 import { $t } from '#/locales';
-import { useAuthStore } from '#/store';
+import { useAuthStore } from '@yuri/common';
 
 const notifications = ref<NotificationItem[]>([
   {

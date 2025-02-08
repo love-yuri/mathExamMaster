@@ -16,7 +16,7 @@ import { onMounted } from 'vue';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 
-import { initToast } from '#/common/utils/message';
+import { message } from '@yuri/common';
 
 defineOptions({ name: 'App' });
 
@@ -25,7 +25,7 @@ defineOptions({ name: 'App' });
  * 将 toast实例注册进pinia中
  */
 function init(): void {
-  initToast(useToast());
+  message.initToast(useToast());
 }
 
 onMounted(init);

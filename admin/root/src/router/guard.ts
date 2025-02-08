@@ -9,7 +9,7 @@ import { useTitle } from '@vueuse/core';
 
 import { $t } from '#/locales';
 import { coreRouteNames, dynamicRoutes } from '#/router/routes';
-import { useAuthStore } from '#/store';
+import { useAuthStore } from '@yuri/common';
 
 import { generateAccess } from './access';
 

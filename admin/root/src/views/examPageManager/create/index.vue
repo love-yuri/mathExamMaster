@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2024-12-02 18:20:54
+ * @LastEditTime: 2025-02-08 15:25:44
  * @Description: 创建试卷
 -->
 <template>
@@ -152,21 +152,10 @@
 <script setup lang="ts">
 import { Button, InputText, Knob, Rating, Select, Tag } from '#/components';
 import { computed, onMounted, ref } from 'vue';
-import {
-  ExamPageCreateVO,
-  type QuestionAndPoint,
-  subjectOptions,
-  typeOptions,
-} from '#/views/examPageManager/types';
 import Show from '#/views/examPageManager/components/show.vue';
-import {
-  checkEmpty,
-  checkEqual,
-  checkSuccess,
-} from '#/common/utils/valueCheck';
-import { examPageApi } from '#/api/examPageApi';
-import { type Student, userApi } from '#/api/userApi';
 import { useRoute } from '#/router';
+import { checkEmpty, checkEqual, userApi, examPageApi, checkSuccess } from '@yuri/common';
+import { ExamPageCreateVO, type QuestionAndPoint, type Student, typeOptions, subjectOptions } from '@yuri/types';
 
 const route = useRoute();
 
@@ -240,7 +229,7 @@ function releasePage() {
   });
 }
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .required-text {
   position: relative; /* 设定相对定位，为了让伪元素绝对定位 */
   display: inline-block;

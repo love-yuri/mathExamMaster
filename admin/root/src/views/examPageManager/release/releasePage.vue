@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2024-12-09 19:18:27
+ * @LastEditTime: 2025-02-08 15:17:52
  * @Description: 创建试卷
 -->
 <template>
@@ -51,7 +51,7 @@
       <div class="mr-2 flex items-center">
         <span class="title"> 开始时间: </span>
         <DatePicker
-          v-model="releaseParam.startTime"
+          v-model="releaseParam.startTime as unknown as Date"
           :manual-input="false"
           :min-date="new Date()"
           :show-on-focus="false"
@@ -66,7 +66,7 @@
       <div class="mr-2 flex items-center">
         <span class="title"> 结束时间: </span>
         <DatePicker
-          v-model="releaseParam.endTime"
+          v-model="releaseParam.endTime as unknown as Date"
           :manual-input="false"
           :min-date="new Date()"
           :show-on-focus="false"
@@ -81,7 +81,7 @@
     </div>
 
     <div class="my-2 flex justify-center">
-      <MultiSelect
+      <Select
         v-model="releaseParam.userIds"
         :options="users"
         class="w-full"
@@ -109,28 +109,18 @@ import {
   Card,
   DatePicker,
   InputText,
-  MultiSelect,
   Rating,
+  Select,
   Tag,
 } from '#/components';
 import { computed, onMounted, ref } from 'vue';
-import {
-  ExamPageReleaseParam,
-  ExamPageResult,
-  type QuestionAndPoint,
-  subjectOptions,
-  typeOptions,
-} from '#/views/examPageManager/types';
-import Show from '#/views/examPageManager/components/show.vue';
 
-import { examPageApi } from '#/api/examPageApi';
-import { type Student, userApi } from '#/api/userApi';
-import { router, useRoute } from '#/router';
-import { checkEmpty } from '#/common/utils/valueCheck';
-import { formatPrimeVueTime } from '#/common/utils/timeUtils';
-import { examPageReleaseApi } from '#/api/examPageReleaseApi';
-import message from '#/common/utils/message';
 import { useTabs } from '@vben/hooks';
+import { router } from '#/router';
+import { userApi, examPageApi, checkEmpty, formatPrimeVueTime, examPageReleaseApi } from '@yuri/common';
+import { ExamPageReleaseParam, ExamPageResult, type QuestionAndPoint, type Student, typeOptions, subjectOptions } from '@yuri/types';
+import { message } from '@yuri/common';
+import { useRoute } from 'vue-router';
 
 const { closeCurrentTab } = useTabs();
 const route = useRoute();
@@ -188,13 +178,13 @@ function release() {
   releaseParam.value.endTime = formatPrimeVueTime(releaseParam.value.endTime);
   examPageReleaseApi.release(releaseParam.value).then((res) => {
     if (res) {
-      message.success('试卷发布成功');
+      message.default.success('试卷发布成功');
       closeCurrentTab();
       router.push({
         name: 'examPageRelease',
       });
     } else {
-      message.error('试卷发布失败');
+      message.default.error('试卷发布失败');
     }
   });
 }

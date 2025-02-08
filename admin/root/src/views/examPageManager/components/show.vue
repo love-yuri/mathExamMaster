@@ -16,7 +16,7 @@
               <div v-if="!isReadOnly" class="flex items-center">
                 <SpeedDial
                   :model="menus"
-                  :tooltip-options="{ position: 'top' }"
+                  :tooltip-options="{ position: 'top', event: 'hover' }"
                   direction="left"
                   hide-icon="pi pi-th-large"
                   show-icon="pi pi-th-large"
@@ -164,18 +164,10 @@ import {
   SplitButton,
   Tag,
 } from '#/components';
-import {
-  QuestionBank,
-  QuestionTypeEnum,
-  QuestionTypeMap,
-} from '#/api/questionBankApi';
 import { EllipsisText } from '@vben/common-ui';
 import Preview from '#/views/questionManager/questionBank/components/preview.vue';
-import type {
-  ExamPageCreateVO,
-  QuestionAndPoint,
-} from '#/views/examPageManager/types';
 import SelectQuestion from '#/views/examPageManager/components/select.vue';
+import { type ExamPageCreateVO, QuestionTypeMap, type QuestionAndPoint, QuestionTypeEnum, type QuestionBank } from '@yuri/types';
 
 const props = defineProps<{
   createVo: ExamPageCreateVO;

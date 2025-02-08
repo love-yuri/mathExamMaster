@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 19:49:21
- * @LastEditTime: 2024-11-20 19:19:32
+ * @LastEditTime: 2025-02-08 15:20:18
  * @Description: 题库管理
 -->
 
@@ -118,17 +118,12 @@ import {
   Rating,
   Tag,
 } from '#/components';
-import {
-  questionBankApi,
-  QuestionTypeEnum,
-  QuestionTypeMap,
-} from '#/api/questionBankApi';
-import { type PageParam } from '#/common/base/baseApi/baseApi';
 import type { PageState } from 'primevue/paginator';
 import Preview from '#/views/questionManager/questionBank/components/preview.vue';
 import { router } from '#/router';
 import { EllipsisText, useVbenModal } from '@vben/common-ui';
-import type { QuestionAndPoint } from '#/views/examPageManager/types';
+import { questionBankApi } from '@yuri/common';
+import { type QuestionAndPoint, QuestionTypeEnum, type PageParam, QuestionTypeMap } from '@yuri/types';
 
 const questionBanks = ref<QuestionAndPoint[]>([]);
 const questionAndPoints = defineModel<Map<string, QuestionAndPoint>>(

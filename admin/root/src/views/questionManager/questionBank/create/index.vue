@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 19:57:12
- * @LastEditTime: 2024-10-17 19:08:06
+ * @LastEditTime: 2025-02-08 15:04:02
  * @Description: 创建题目
 -->
 <template>
@@ -19,7 +19,6 @@
 </template>
 <script setup lang="ts">
 import { SelectButton } from '#/components';
-import { QuestionTypeEnum } from '#/api/questionBankApi';
 import SingleChoise from './components/singleChoice.vue';
 import MultipleChoice from './components/multipleChoice.vue';
 import Judge from './components/judge.vue';
@@ -27,6 +26,7 @@ import GapFilling from './components/gapFilling.vue';
 import Subjective from './components/subjective.vue';
 
 import { type Component, markRaw, ref } from 'vue';
+import { QuestionTypeEnum } from '@yuri/types';
 
 type QuestionComponent = {
   component: Component;

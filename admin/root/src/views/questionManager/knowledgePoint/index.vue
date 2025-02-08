@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-03 19:00:46
- * @LastEditTime: 2024-10-23 21:01:18
+ * @LastEditTime: 2025-02-08 15:04:49
  * @Description: 知识点管理
 -->
 <template>
@@ -75,18 +75,14 @@ import {
   DefaultConfirmDialog,
   Paginator,
   SplitButton,
-} from '#/components';
-import { type PageParam } from '#/common/base/baseApi/baseApi';
+} from '#/components'
 import type { PageState } from 'primevue/paginator';
-import {
-  type KnowledgePoint,
-  knowledgePointApi,
-} from '#/api/knowledgePointApi';
 import { router } from '#/router';
 import Update from './components/update.vue';
 
 import { useConfirm } from 'primevue/useconfirm';
-import Msg from '#/common/utils/message';
+import { knowledgePointApi, message } from '@yuri/common';
+import type { KnowledgePoint, PageParam } from '@yuri/types';
 
 const confirm = useConfirm();
 
@@ -130,7 +126,7 @@ function remove(id: string) {
   confirm.require({
     accept: () => {
       knowledgePointApi.delete(id).then(() => {
-        Msg.success('删除成功');
+        message.default.success('删除成功');
         loadData();
       });
     },

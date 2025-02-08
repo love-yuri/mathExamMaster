@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-03 19:25:03
- * @LastEditTime: 2024-10-06 19:56:00
+ * @LastEditTime: 2025-02-08 15:09:49
  * @Description: 创建知识点的页面
 -->
 <template>
@@ -28,9 +28,9 @@
 </template>
 <script setup lang="ts">
 import { Button, InputText, Textarea } from '#/components';
-import { KnowledgePoint, knowledgePointApi } from '#/api/knowledgePointApi';
+import { checkEmpty, checkSuccess, knowledgePointApi } from '@yuri/common';
+import { KnowledgePoint } from '@yuri/types';
 import { ref } from 'vue';
-import { checkEmpty, checkSuccess } from '#/common/utils/valueCheck';
 
 const knowledgePoint = ref<KnowledgePoint>(new KnowledgePoint());
 

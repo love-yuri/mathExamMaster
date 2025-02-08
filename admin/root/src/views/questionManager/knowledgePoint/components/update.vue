@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-13 15:04:45
- * @LastEditTime: 2024-10-19 19:54:30
+ * @LastEditTime: 2025-02-08 15:07:05
  * @Description: 预览题目
 -->
 <template>
@@ -27,9 +27,9 @@ import { useVbenModal } from '@vben/common-ui';
 import { InputText, Textarea } from '#/components';
 
 import { ref } from 'vue';
+import { checkEmpty, checkSuccess, knowledgePointApi } from '@yuri/common';
+import { KnowledgePoint } from '@yuri/types';
 
-import { KnowledgePoint, knowledgePointApi } from '#/api/knowledgePointApi';
-import { checkEmpty, checkSuccess } from '#/common/utils/valueCheck';
 
 const emits = defineEmits(['update']);
 

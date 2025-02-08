@@ -100,15 +100,14 @@ import {
   SplitButton,
   Tag,
 } from '#/components';
-import { type ExamPageReleaseResult } from '#/views/examPageManager/types';
-import type { PageParam } from '#/common/base/baseApi/baseApi';
 import type { PageState } from 'primevue/paginator';
 import { useConfirm } from 'primevue/useconfirm';
 import { router } from '#/router';
 import { EllipsisText } from '@vben/common-ui';
-import message from '#/common/utils/message';
-import { examPageReleaseApi } from '#/api/examPageReleaseApi';
 import { useTabs } from '@vben/hooks';
+import { examPageReleaseApi } from '@yuri/common';
+import type { PageParam, ExamPageReleaseResult } from '@yuri/types';
+import { message } from '@yuri/common';
 
 const { closeTabByKey } = useTabs();
 
@@ -147,7 +146,7 @@ function remove(id: string) {
   confirm.require({
     accept: () => {
       examPageReleaseApi.delete(id).then(() => {
-        message.success('删除成功');
+        message.default.success('删除成功');
         closeTabByKey(`/exam/page/release/page/update/${id}`);
         loadData();
       });

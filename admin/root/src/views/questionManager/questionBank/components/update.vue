@@ -15,11 +15,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import {
-  QuestionBank,
-  questionBankApi,
-  QuestionTypeEnum,
-} from '#/api/questionBankApi';
 import SingleChoice from '#/views/questionManager/questionBank/create/components/singleChoice.vue';
 import MultipleChoice from '#/views/questionManager/questionBank/create/components/multipleChoice.vue';
 import Judge from '#/views/questionManager/questionBank/create/components/judge.vue';
@@ -27,9 +22,10 @@ import GapFilling from '#/views/questionManager/questionBank/create/components/g
 import Subjective from '#/views/questionManager/questionBank/create/components/subjective.vue';
 
 import { computed, markRaw, nextTick, onMounted, ref, unref } from 'vue';
-import type { KnowledgePoint } from '#/api/knowledgePointApi';
 import { router, useRoute } from '#/router';
 import { useTabs } from '@vben/hooks';
+import { questionBankApi } from '@yuri/common';
+import { QuestionTypeEnum, type QuestionBank, type KnowledgePoint } from '@yuri/types';
 
 defineEmits(['update']);
 const route = useRoute();
