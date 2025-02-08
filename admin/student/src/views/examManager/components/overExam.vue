@@ -21,11 +21,11 @@
 <style scoped>
 .exam-end-page {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: 100%;
-  background: linear-gradient(135deg, #918d99, #a5879b);
   color: #fff;
+  background: linear-gradient(135deg, #918d99, #a5879b);
   animation: fadeIn 1.5s ease-in-out;
 }
 
@@ -33,41 +33,43 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
 
 .message-box {
-  text-align: center;
-  background: rgba(255, 255, 255, 0.1);
   padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  background: rgb(255 255 255 / 10%);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 15px;
+  box-shadow: 0 4px 30px rgb(0 0 0 / 10%);
   animation: popIn 0.8s ease-in-out;
 }
 
 @keyframes popIn {
   0% {
-    transform: scale(0.8);
     opacity: 0;
+    transform: scale(0.8);
   }
+
   100% {
-    transform: scale(1);
     opacity: 1;
+    transform: scale(1);
   }
 }
 
 .title {
-  font-size: 2.5rem;
   margin-bottom: 1rem;
+  font-size: 2.5rem;
   font-weight: bold;
 }
 
 .subtitle {
-  font-size: 1.55rem;
   margin-bottom: 2rem;
+  font-size: 1.55rem;
 }
 </style>

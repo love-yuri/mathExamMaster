@@ -15,7 +15,7 @@
       <Editor
         v-model="content"
         :default-config="editorConfig"
-        style="min-height: 400px; height: 500px"
+        style=" height: 500px;min-height: 400px"
         @custom-paste="customPaste"
         @on-created="handleCreated"
       />

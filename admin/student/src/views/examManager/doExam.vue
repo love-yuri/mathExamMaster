@@ -175,20 +175,24 @@ function startExam() {
 .info {
   display: flex;
   align-items: center;
+
   .title {
-    font-weight: 500;
     --tw-text-opacity: 1;
-    color: rgb(55 65 81 / var(--tw-text-opacity));
-    font-size: 19px;
-    line-height: 29px;
+
     margin-right: 5px;
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 29px;
+    color: rgb(55 65 81 / var(--tw-text-opacity));
   }
+
   .content {
     --tw-text-opacity: 1;
-    color: rgb(17 24 39 / var(--tw-text-opacity));
-    font-weight: 700;
+
     font-size: 22px;
+    font-weight: 700;
     line-height: 30px;
+    color: rgb(17 24 39 / var(--tw-text-opacity));
   }
 }
 </style>

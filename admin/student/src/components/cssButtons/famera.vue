@@ -4,31 +4,39 @@
   </button>
 </template>
 <style lang="css" scoped>
-/* CSS */
+
+
+@media (min-width: 768px) {
+  .button-73 {
+    padding: 0.75rem 2rem;
+    font-size: 1.5rem;
+  }
+}
+
 .button-73 {
-  appearance: none;
-  background-color: #ffffff;
-  border-radius: 40em;
-  border-style: none;
-  box-shadow: #adcfff 0 -12px 6px inset;
   box-sizing: border-box;
-  color: #000000;
-  cursor: pointer;
   display: inline-block;
+  padding: 1rem 1.3rem;
+  margin: 0;
   font-family: -apple-system, sans-serif;
   font-size: 1.2rem;
   font-weight: 700;
-  letter-spacing: -0.24px;
-  margin: 0;
-  outline: none;
-  padding: 1rem 1.3rem;
-  quotes: auto;
+  color: #000;
   text-align: center;
   text-decoration: none;
-  transition: all 0.15s;
-  user-select: none;
-  -webkit-user-select: none;
+  letter-spacing: -0.24px;
+  appearance: none;
   touch-action: manipulation;
+  cursor: pointer;
+  quotes: auto;
+  user-select: none;
+  user-select: none;
+  background-color: #fff;
+  border-style: none;
+  border-radius: 40em;
+  outline: none;
+  box-shadow: #adcfff 0 -12px 6px inset;
+  transition: all 0.15s;
 }
 
 .button-73:hover {
@@ -41,10 +49,5 @@
   transform: scale(1.025);
 }
 
-@media (min-width: 768px) {
-  .button-73 {
-    font-size: 1.5rem;
-    padding: 0.75rem 2rem;
-  }
-}
+/* CSS */
 </style>

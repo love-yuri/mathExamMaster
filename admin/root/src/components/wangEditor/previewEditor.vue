@@ -9,7 +9,7 @@
     <Editor
       v-model="content"
       :default-config="editorConfig"
-      style="min-height: 300px; height: 500px"
+      style=" height: 500px;min-height: 300px"
       @on-created="handleCreated"
     />
   </div>

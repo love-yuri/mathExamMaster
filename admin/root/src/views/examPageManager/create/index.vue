@@ -233,22 +233,23 @@ function releasePage() {
 .required-text {
   position: relative; /* 设定相对定位，为了让伪元素绝对定位 */
   display: inline-block;
+
   &::before {
-    content: '*'; /* 设置伪元素内容 */
-    color: red; /* 设定星号颜色 */
     position: absolute; /* 绝对定位 */
     top: 0.1em; /* 调整到左上角 */
     left: -0.5em;
     font-size: 1em; /* 设置星号大小，可以根据需要调整 */
+    color: red; /* 设定星号颜色 */
+    content: '*'; /* 设置伪元素内容 */
   }
 }
 
 .main {
   .title {
-    font-size: 16px;
-    margin-right: 6px;
-    font-weight: 600;
     flex-shrink: 0;
+    margin-right: 6px;
+    font-size: 16px;
+    font-weight: 600;
   }
 }
 </style>

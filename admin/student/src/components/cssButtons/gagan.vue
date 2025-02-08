@@ -14,69 +14,69 @@ defineProps<{
 <style lang="scss" scoped>
 .button-86 {
   all: unset;
-  width: 100px;
-  height: 30px;
-  font-size: 16px;
-  background: transparent;
-  border: none;
   position: relative;
-  color: #f0f0f0;
-  cursor: pointer;
   z-index: 1;
-  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100px;
+  height: 30px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #f0f0f0;
   white-space: nowrap;
-  user-select: none;
-  -webkit-user-select: none;
   touch-action: manipulation;
+  cursor: pointer;
+  user-select: none;
+  user-select: none;
+  background: transparent;
+  border: none;
 
   &::before,
   &::after {
-    content: '';
     position: absolute;
-    bottom: 0;
     right: 0;
+    bottom: 0;
     z-index: -99999;
+    content: '';
     transition: all 0.4s;
   }
 
   &::before {
-    transform: translate(0%, 0%);
     width: 100%;
     height: 100%;
     background: #dcdcdc; /* 灰白色调背景 */
     border-radius: 10px;
+    transform: translate(0%, 0%);
   }
 
   &::after {
-    transform: translate(10px, 10px);
     width: 35px;
     height: 35px;
     background: #74717115;
     backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
     border-radius: 50px;
+    transform: translate(10px, 10px);
   }
 
   &-clicked::before {
-    background: #ff99cc;
+    background: #f9c;
   }
 
   &:hover::before,
   &-clicked::before {
-    transform: translate(5%, 20%);
     width: 110%;
     height: 110%;
+    transform: translate(5%, 20%);
   }
 
   &:hover::after,
   &-clicked::after {
-    border-radius: 10px;
-    transform: translate(0, 0);
     width: 100%;
     height: 100%;
+    border-radius: 10px;
+    transform: translate(0, 0);
   }
 
   &:active::after {
@@ -86,9 +86,9 @@ defineProps<{
 
   /* 如果需要在选中时有其他交互样式，可以添加更多的样式 */
   &-clicked:hover::before {
-    transform: translate(5%, 20%);
     width: 115%;
     height: 115%;
+    transform: translate(5%, 20%);
   }
 
   &-clicked:active::after {
