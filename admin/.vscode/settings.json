@@ -120,5 +120,6 @@
   "Codegeex.CommitMessageStyle": "ConventionalCommits",
   "Codegeex.SidebarUI.LanguagePreference": "中文",
   "files.eol": "\n",
-  "cSpell.words": ["Gagan", "tauri"]
+  "cSpell.words": ["Gagan", "tauri"],
+  "Codegeex.CommitMessage.LanguagePreference": "中文"
 }
