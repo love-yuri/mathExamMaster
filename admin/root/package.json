@@ -38,6 +38,7 @@
     "@vueuse/core": "^11.0.3",
     "@yuri/api": "workspace:*",
     "@yuri/types": "workspace:*",
+    "@yuri/components": "workspace:*",
     "@yuri/common": "workspace:*",
     "dayjs": "^1.11.13",
     "katex": "^0.16.11",
