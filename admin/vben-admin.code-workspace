@@ -148,5 +148,17 @@
       "name": "@vben/vsh",
       "path": "scripts/vsh",
     },
+    {
+      "name": "@yuri/api",
+      "path": "packages/yuri/api",
+    },
+    {
+      "name": "@yuri/common",
+      "path": "packages/yuri/common",
+    },
+    {
+      "name": "@yuri/types",
+      "path": "packages/yuri/types",
+    },
   ],
 }
