@@ -1,0 +1,27 @@
+{
+  "name": "@yuri/types",
+  "version": "5.2.2",
+  "homepage": "https://github.com/love-yuri/mathExamMaster",
+  "bugs": "https://github.com/love-yuri/mathExamMaster/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/love-yuri/mathExamMaster.git",
+    "directory": "packages/yuri/types"
+  },
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@vben/types": "workspace:*"
+  }
+}
