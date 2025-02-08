@@ -1,0 +1,40 @@
+{
+  "name": "@yuri/common",
+  "version": "5.2.2",
+  "homepage": "https://github.com/love-yuri/mathExamMaster",
+  "bugs": "https://github.com/love-yuri/mathExamMaster/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/love-yuri/mathExamMaster.git",
+    "directory": "packages/yuri/common"
+  },
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@vben/access": "workspace:*",
+    "@vben/common-ui": "workspace:*",
+    "@vben/constants": "workspace:*",
+    "@vben/hooks": "workspace:*",
+    "@vben/preferences": "workspace:*",
+    "@vben/stores": "workspace:*",
+    "@vben/utils": "workspace:*",
+    "@vben/types": "workspace:*",
+    "@vben/request": "workspace:*",
+    "vue-router": "^4.4.3",
+    "@yuri/api": "workspace:*",
+    "@yuri/types": "workspace:*",
+    "pinia": "2.2.2",
+    "primevue": "^4.0.5"
+  }
+}
