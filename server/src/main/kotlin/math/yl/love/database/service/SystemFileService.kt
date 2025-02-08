@@ -12,9 +12,11 @@ import org.springframework.core.io.UrlResource
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.io.IOException
 import java.io.Serializable
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.nio.file.StandardOpenOption
 import kotlin.io.path.pathString
 import kotlin.reflect.KClass
 
@@ -34,8 +36,9 @@ class SystemFileService(
 
     /**
      * 根据md5 查找数据
+     * 默认同一个文件不会重复进入数据库
      */
-    fun findByMd5(md5: String): List<SystemFile> = list(queryWrapper.eq(SystemFile::md5, md5))
+    fun findByMd5(md5: String): SystemFile? = queryWrapper.eq(SystemFile::md5, md5).selectOne()
 
     /**
      * 上传文件并返回文件数据
@@ -51,10 +54,17 @@ class SystemFileService(
 
         /**
          * 同文件只写入一次
+         * 如果存在则直接返回数据，不进行保存
          */
-        if (res.isEmpty()) {
-            Files.write(target, byteArray)
+        try {
+            // 只有当文件不存在时才会创建
+            Files.write(target, byteArray, StandardOpenOption.CREATE_NEW)
+        } catch (_: FileAlreadyExistsException) {
+            // 跳过
+        } catch (e: IOException) {
+            throw BizException("文件写入失败: ${e.message}")
         }
+        res?.let { return it }
 
         // 创建数据
         return SystemFile (
