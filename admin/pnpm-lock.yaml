@@ -962,6 +962,49 @@ importers:
         specifier: ^4.4.3
         version: 4.5.0(vue@3.5.3(typescript@5.7.3))
 
+  packages/yuri/components:
+    dependencies:
+      '@tauri-apps/api':
+        specifier: ^2.2.0
+        version: 2.2.0
+      '@vben/common-ui':
+        specifier: workspace:*
+        version: link:../../effects/common-ui
+      '@vben/hooks':
+        specifier: workspace:*
+        version: link:../../effects/hooks
+      '@vben/stores':
+        specifier: workspace:*
+        version: link:../../stores
+      '@wangeditor-next/editor':
+        specifier: ^5.6.27
+        version: 5.6.31
+      '@wangeditor-next/editor-for-vue':
+        specifier: ^5.1.14
+        version: 5.1.14(@wangeditor-next/editor@5.6.31)(vue@3.5.3(typescript@5.7.3))
+      '@yuri/common':
+        specifier: workspace:*
+        version: link:../common
+      '@yuri/types':
+        specifier: workspace:*
+        version: link:../types
+      katex:
+        specifier: ^0.16.11
+        version: 0.16.21
+      mathlive:
+        specifier: ^0.101.1
+        version: 0.101.2
+      primevue:
+        specifier: ^4.0.5
+        version: 4.2.5(vue@3.5.3(typescript@5.7.3))
+      snabbdom:
+        specifier: ^3.6.2
+        version: 3.6.2
+    devDependencies:
+      primeicons:
+        specifier: ^7.0.0
+        version: 7.0.0
+
   packages/yuri/types:
     dependencies:
       '@vben/types':
@@ -1021,12 +1064,6 @@ importers:
       '@vueuse/core':
         specifier: ^11.0.3
         version: 11.3.0(vue@3.5.3(typescript@5.7.3))
-      '@wangeditor-next/editor':
-        specifier: ^5.6.27
-        version: 5.6.31
-      '@wangeditor-next/editor-for-vue':
-        specifier: ^5.1.14
-        version: 5.1.14(@wangeditor-next/editor@5.6.31)(vue@3.5.3(typescript@5.7.3))
       '@yuri/api':
         specifier: workspace:*
         version: link:../packages/yuri/api
