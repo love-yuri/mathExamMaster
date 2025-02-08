@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-23 18:55:25
- * @LastEditTime: 2025-01-07 19:14:08
+ * @LastEditTime: 2025-02-08 16:44:15
  * @Description: 
 -->
 <template>
@@ -203,18 +203,14 @@ import {
   PreviewEditor,
   WangEditor,
 } from '@yuri/components';
-import type { ExamInfoResult } from '#/api/examPageReleaseApi';
 import { computed, nextTick, onUnmounted, ref, watchEffect } from 'vue';
-import { QuestionTypeEnum, QuestionTypeMap } from '#/api/questionBankApi';
-import {
-  examPageApi,
-  type QuestionInfo,
-  type QuestionInfoResult,
-} from '#/api/examPageApi';
-import { debounce } from '#/common/utils/commonUtils';
-import messageInfo from '#/common/utils/message';
 import { useConfirm } from 'primevue/useconfirm';
 import { router } from '#/router';
+import type { QuestionInfoResult, QuestionInfo, ExamInfoResult } from '@yuri/types';
+import { QuestionTypeMap } from '@yuri/types';
+import { debounce } from '@yuri/common';
+import { examPageApi, message } from '@yuri/common';
+import { QuestionTypeEnum } from '@yuri/types';
 
 const { examInfo } = defineProps<{
   examInfo: ExamInfoResult;
@@ -253,7 +249,7 @@ const updateAnswer = debounce(() => {
       relationId: examInfo.relationId,
     })
     .then(() => {
-      messageInfo.success('保存成功');
+      message.default.success('保存成功');
     });
 }, 5000);
 
@@ -265,7 +261,7 @@ function overExam() {
   confirm.require({
     accept: () => {
       examPageApi.overExam(examInfo.relationId).then(() => {
-        messageInfo.success('交卷成功!!');
+        message.default.success('交卷成功!!');
         router.push({
           name: 'overExam',
         });

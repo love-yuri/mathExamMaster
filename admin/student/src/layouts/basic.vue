@@ -1,3 +1,9 @@
+<!--
+ * @Author: love-yuri yuri2078170658@gmail.com
+ * @Date: 2024-12-19 08:37:51
+ * @LastEditTime: 2025-02-08 16:46:21
+ * @Description: 
+-->
 <script lang="ts" setup>
 import type { NotificationItem } from '@vben/layouts';
 
@@ -17,7 +23,7 @@ import { storeToRefs, useAccessStore, useUserStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
 
 import { $t } from '#/locales';
-import { useAuthStore } from '#/store';
+import { useAuthStore } from '@yuri/common';
 
 const notifications = ref<NotificationItem[]>([
   {

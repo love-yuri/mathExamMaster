@@ -12,7 +12,7 @@ import type {
 import { generateAccessible } from '@vben/access';
 import { preferences } from '@vben/preferences';
 
-import message from '#/common/utils/message';
+import { message } from '@yuri/common';
 import { BasicLayout, IFrameView } from '#/layouts';
 import { $t } from '#/locales';
 
@@ -32,7 +32,7 @@ async function generateAccess(options: GenerateMenuAndRoutesOptions) {
   return await generateAccessible(preferences.app.accessMode, {
     ...options,
     fetchMenuListAsync: async () => {
-      message.success({
+      message.default.success({
         detail: `${$t('common.loadingMenu')}...`,
         life: 1500,
       });

@@ -70,15 +70,15 @@ import {
   ExamPageType,
   SubjectType,
   SubjectTypeMap,
-} from '#/api/examPageApi';
+} from '@yuri/types';
 import {
   type ExamInfoResult,
-  examPageReleaseApi,
-} from '#/api/examPageReleaseApi';
+} from '@yuri/types';
 import { computed, onUnmounted, ref, watchEffect } from 'vue';
 import { Card, FameraButton, Rating } from '@yuri/components';
-import { ExamPageUserRelationStatusType } from '#/api/examPageUserRelationApi';
+import { ExamPageUserRelationStatusType } from '@yuri/types';
 import Examing from './components/examing.vue';
+import { examPageReleaseApi } from '@yuri/common';
 
 const { id } = defineProps<{
   id?: string;

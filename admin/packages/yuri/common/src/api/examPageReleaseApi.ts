@@ -1,11 +1,11 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2025-02-08 14:37:09
+ * @LastEditTime: 2025-02-08 16:42:13
  * @Description:
  */
 
-import { type BaseEntity, type ExamPageReleaseResult, RequestType, type PageParam, type PageResult, type ExamPageReleaseParam, type ExamPageCreateVO } from "@yuri/types";
+import { type BaseEntity, type ExamPageReleaseResult, RequestType, type PageParam, type PageResult, type ExamPageReleaseParam, type ExamPageCreateVO, type ExamInfoResult, type ExamListParam, type ExamListResult, type StartExamResult } from "@yuri/types";
 import { BaseApi } from "../base/baseApi/baseApi";
 
 class Api extends BaseApi<BaseEntity> {
@@ -48,6 +48,35 @@ class Api extends BaseApi<BaseEntity> {
    */
   updatePage = (param: ExamPageCreateVO) => {
     return this.add<boolean>(RequestType.POST, '/update/page', param);
+  };
+
+  /**
+  * 根据id检查是否正常
+  */
+  check = (id: string) => {
+    return this.add<boolean>(RequestType.POST, `/check`, id);
+  };
+  
+  /**
+   * 根据id获取练习信息
+   */
+  examInfo = (id: string) => {
+    return this.add<ExamInfoResult>(RequestType.POST, `/exam/info`, id);
+  };
+
+  /**
+   * 获取练习列表
+   */
+  examList = (param: ExamListParam) => {
+    return this.add<ExamListResult[]>(RequestType.POST, '/exam/list', param);
+  };
+
+  startExam = (releaseId: string) => {
+    return this.add<StartExamResult>(
+      RequestType.POST,
+      '/start/exam',
+      releaseId,
+    );
   };
 }
 

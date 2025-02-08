@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-08 15:42:02
- * @LastEditTime: 2024-09-08 23:23:33
+ * @LastEditTime: 2025-02-08 16:47:45
  * @Description: app
 -->
 
@@ -16,7 +16,7 @@ import { onMounted } from 'vue';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 
-import { initToast } from '#/common/utils/message';
+import { message } from '@yuri/common';
 
 defineOptions({ name: 'App' });
 
@@ -25,7 +25,7 @@ defineOptions({ name: 'App' });
  * 将 toast实例注册进pinia中
  */
 function init(): void {
-  initToast(useToast());
+  message.initToast(useToast());
 }
 
 onMounted(init);

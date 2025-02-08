@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 23:35:05
- * @LastEditTime: 2025-01-07 19:13:51
+ * @LastEditTime: 2025-02-08 16:49:53
  * @Description: 系统路由
  */
 import type { RouteRecordRaw } from 'vue-router';
@@ -16,7 +16,7 @@ const routes: RouteRecordRaw[] = [
       order: 2,
       title: '练习管理',
     },
-    name: 'examManager',
+    name: 'examManager-stu',
     path: '/examManager',
     children: [
       {

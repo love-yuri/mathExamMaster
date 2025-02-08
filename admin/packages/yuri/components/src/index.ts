@@ -8,6 +8,8 @@
 export { default as DefaultConfirmDialog } from './confirmDialog/default.vue';
 export { default as UserSelect } from './userSelect/index.vue';
 export { default as WangEditor } from './wangEditor/index.vue';
+export { default as FameraButton } from './cssButtons/famera.vue';
+export { default as GaganButton } from './cssButtons/gagan.vue';
 export { default as PreviewEditor } from './wangEditor/previewEditor.vue';
 export { default as Button } from 'primevue/button';
 export { default as Calendar } from 'primevue/calendar';

@@ -1,3 +1,9 @@
+<!--
+ * @Author: love-yuri yuri2078170658@gmail.com
+ * @Date: 2024-12-19 08:37:51
+ * @LastEditTime: 2025-02-08 16:43:20
+ * @Description: 
+-->
 <template>
   <div
     v-if="!currentReleaseId"
@@ -32,14 +38,11 @@
 </template>
 
 <script setup lang="ts">
-import {
-  type ExamListResult,
-  examPageReleaseApi,
-} from '#/api/examPageReleaseApi';
+import { type ExamListResult } from '@yuri/types';
 import { FameraButton, GaganButton } from '@yuri/components';
 import { ref, watch } from 'vue';
 import DoExam from './doExam.vue';
-import { useExamStore } from '#/store';
+import { examPageReleaseApi, useExamStore } from '@yuri/common';
 import { storeToRefs } from 'pinia';
 
 const examStore = useExamStore();

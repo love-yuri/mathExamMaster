@@ -1,11 +1,11 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2025-02-08 14:37:23
+ * @LastEditTime: 2025-02-08 16:36:43
  * @Description:
  */
 
-import { type BaseEntity, type ExamPageResult, RequestType, type PageParam, type PageResult, type ExamPageCreateVO } from "@yuri/types";
+import { type BaseEntity, type ExamPageResult, RequestType, type PageParam, type PageResult, type ExamPageCreateVO, type QuestionInfoResult } from "@yuri/types";
 import { BaseApi } from "../base/baseApi/baseApi";
 
 class Api extends BaseApi<BaseEntity> {
@@ -41,6 +41,31 @@ class Api extends BaseApi<BaseEntity> {
    */
   updatePage = (param: ExamPageCreateVO) => {
     return this.add<boolean>(RequestType.POST, '/update/page', param);
+  };
+
+  /**
+   * 交卷
+   */
+  overExam = (id: string) => {
+    return this.add<boolean>(RequestType.POST, '/over/exam', id);
+  };
+
+  /**
+   * 根据id获取题目信息
+   */
+  questionInfo = (param: { examPageId: string; relationId: string }) => {
+    return this.add<QuestionInfoResult[]>(
+      RequestType.POST,
+      '/question/info',
+      param,
+    );
+  };
+
+  /**
+   * 更新用户答案
+   */
+  updateUserAnswer = (param: { answer: any; relationId: string }) => {
+    return this.add<boolean>(RequestType.POST, '/update/user/answer', param);
   };
 }
 
