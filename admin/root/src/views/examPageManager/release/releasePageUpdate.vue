@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2025-02-08 15:17:29
+ * @LastEditTime: 2025-02-08 15:43:49
  * @Description: 创建试卷
 -->
 <template>
@@ -188,7 +188,7 @@ function release() {
   });
 }
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .required-text {
   position: relative; /* 设定相对定位，为了让伪元素绝对定位 */
   display: inline-block;
