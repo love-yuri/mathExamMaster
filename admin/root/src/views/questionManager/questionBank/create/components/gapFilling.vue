@@ -91,9 +91,16 @@ import {
   MultiSelect,
   Rating,
   WangEditor,
-} from '#/components';
+} from '@yuri/components';
 import { onMounted, ref } from 'vue';
-import { knowledgePointApi, checkEmpty, checkListEmpty, questionBankApi, checkSuccess, message } from '@yuri/common';
+import {
+  knowledgePointApi,
+  checkEmpty,
+  checkListEmpty,
+  questionBankApi,
+  checkSuccess,
+  message,
+} from '@yuri/common';
 import { QuestionBank, QuestionTypeEnum, KnowledgePoint } from '@yuri/types';
 
 const emits = defineEmits(['cancel', 'update']);

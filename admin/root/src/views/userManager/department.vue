@@ -90,12 +90,16 @@ import {
   OrganizationChart,
   Popover,
   UserSelect,
-} from '#/components';
+} from '@yuri/components';
 import { checkEmpty, checkSuccess, userDepartmentApi } from '@yuri/common';
 import { message, departmentApi } from '@yuri/common';
 import { useConfirm } from 'primevue/useconfirm';
 import { onMounted, ref, useTemplateRef } from 'vue';
-import { type TreeResult, type DepartmentDetail, Department } from '@yuri/types';
+import {
+  type TreeResult,
+  type DepartmentDetail,
+  Department,
+} from '@yuri/types';
 import type { OrganizationChartNode } from 'primevue';
 
 const confirm = useConfirm();

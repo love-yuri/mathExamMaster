@@ -54,7 +54,7 @@
 
 <script setup lang="ts">
 import { inject, onMounted, ref } from 'vue';
-import { Button, Card, Column, DataTable, Paginator } from '#/components';
+import { Button, Card, Column, DataTable, Paginator } from '@yuri/components';
 
 import type { PageState } from 'primevue/paginator';
 import { userApi, type UserPageParam, type UserResult } from '#/api/userApi';

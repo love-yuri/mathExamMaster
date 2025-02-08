@@ -18,7 +18,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { SelectButton } from '#/components';
+import { SelectButton } from '@yuri/components';
 import SingleChoise from './components/singleChoice.vue';
 import MultipleChoice from './components/multipleChoice.vue';
 import Judge from './components/judge.vue';

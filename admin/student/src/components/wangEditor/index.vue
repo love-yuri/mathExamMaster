@@ -15,7 +15,7 @@
       <Editor
         v-model="content"
         :default-config="editorConfig"
-        style=" height: 500px;min-height: 400px"
+        style="height: 500px; min-height: 400px"
         @custom-paste="customPaste"
         @on-created="handleCreated"
       />
@@ -39,7 +39,7 @@ import { loadHtmlImg } from '#/common/utils/rtfToJpg';
 import { type WangEditorProps } from './types';
 import ToolbarKeys from './toolbarKeys.json';
 import MathModal from '../math/mathModal.vue';
-import '#/components/wangEditor/templates';
+import '@yuri/components/wangEditor/templates';
 
 const props = defineProps<WangEditorProps>();
 const emits = defineEmits(['change']);

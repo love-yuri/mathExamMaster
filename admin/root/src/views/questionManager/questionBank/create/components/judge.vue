@@ -69,9 +69,14 @@ import {
   RadioButton,
   Rating,
   WangEditor,
-} from '#/components';
+} from '@yuri/components';
 import { onMounted, ref } from 'vue';
-import { knowledgePointApi, checkEmpty, questionBankApi, checkSuccess } from '@yuri/common';
+import {
+  knowledgePointApi,
+  checkEmpty,
+  questionBankApi,
+  checkSuccess,
+} from '@yuri/common';
 import { QuestionBank, QuestionTypeEnum, KnowledgePoint } from '@yuri/types';
 import { message } from '@yuri/common';
 

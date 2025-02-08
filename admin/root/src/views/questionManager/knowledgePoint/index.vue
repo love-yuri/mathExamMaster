@@ -75,7 +75,7 @@ import {
   DefaultConfirmDialog,
   Paginator,
   SplitButton,
-} from '#/components'
+} from '@yuri/components';
 import type { PageState } from 'primevue/paginator';
 import { router } from '#/router';
 import Update from './components/update.vue';

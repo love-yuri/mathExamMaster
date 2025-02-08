@@ -76,7 +76,7 @@ import {
   examPageReleaseApi,
 } from '#/api/examPageReleaseApi';
 import { computed, onUnmounted, ref, watchEffect } from 'vue';
-import { Card, FameraButton, Rating } from '#/components';
+import { Card, FameraButton, Rating } from '@yuri/components';
 import { ExamPageUserRelationStatusType } from '#/api/examPageUserRelationApi';
 import Examing from './components/examing.vue';
 

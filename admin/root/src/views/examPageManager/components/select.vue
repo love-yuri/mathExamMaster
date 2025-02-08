@@ -117,13 +117,18 @@ import {
   Paginator,
   Rating,
   Tag,
-} from '#/components';
+} from '@yuri/components';
 import type { PageState } from 'primevue/paginator';
 import Preview from '#/views/questionManager/questionBank/components/preview.vue';
 import { router } from '#/router';
 import { EllipsisText, useVbenModal } from '@vben/common-ui';
 import { questionBankApi } from '@yuri/common';
-import { type QuestionAndPoint, QuestionTypeEnum, type PageParam, QuestionTypeMap } from '@yuri/types';
+import {
+  type QuestionAndPoint,
+  QuestionTypeEnum,
+  type PageParam,
+  QuestionTypeMap,
+} from '@yuri/types';
 
 const questionBanks = ref<QuestionAndPoint[]>([]);
 const questionAndPoints = defineModel<Map<string, QuestionAndPoint>>(

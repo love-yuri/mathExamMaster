@@ -202,7 +202,7 @@ import {
   InputText,
   PreviewEditor,
   WangEditor,
-} from '#/components';
+} from '@yuri/components';
 import type { ExamInfoResult } from '#/api/examPageReleaseApi';
 import { computed, nextTick, onUnmounted, ref, watchEffect } from 'vue';
 import { QuestionTypeEnum, QuestionTypeMap } from '#/api/questionBankApi';

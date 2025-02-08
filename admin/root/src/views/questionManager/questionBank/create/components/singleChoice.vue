@@ -108,10 +108,19 @@ import {
   RadioButton,
   Rating,
   WangEditor,
-} from '#/components';
+} from '@yuri/components';
 import { onMounted, ref } from 'vue';
-import { knowledgePointApi, checkEmpty, checkSuccess, questionBankApi } from '@yuri/common';
-import { QuestionBank, QuestionTypeEnum, type KnowledgePoint } from '@yuri/types';
+import {
+  knowledgePointApi,
+  checkEmpty,
+  checkSuccess,
+  questionBankApi,
+} from '@yuri/common';
+import {
+  QuestionBank,
+  QuestionTypeEnum,
+  type KnowledgePoint,
+} from '@yuri/types';
 import { message } from '@yuri/common';
 
 const emits = defineEmits(['cancel', 'update']);

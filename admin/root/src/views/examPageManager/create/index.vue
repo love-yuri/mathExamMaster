@@ -150,12 +150,24 @@
   </div>
 </template>
 <script setup lang="ts">
-import { Button, InputText, Knob, Rating, Select, Tag } from '#/components';
+import { Button, InputText, Knob, Rating, Select, Tag } from '@yuri/components';
 import { computed, onMounted, ref } from 'vue';
 import Show from '#/views/examPageManager/components/show.vue';
 import { useRoute } from '#/router';
-import { checkEmpty, checkEqual, userApi, examPageApi, checkSuccess } from '@yuri/common';
-import { ExamPageCreateVO, type QuestionAndPoint, type Student, typeOptions, subjectOptions } from '@yuri/types';
+import {
+  checkEmpty,
+  checkEqual,
+  userApi,
+  examPageApi,
+  checkSuccess,
+} from '@yuri/common';
+import {
+  ExamPageCreateVO,
+  type QuestionAndPoint,
+  type Student,
+  typeOptions,
+  subjectOptions,
+} from '@yuri/types';
 
 const route = useRoute();
 

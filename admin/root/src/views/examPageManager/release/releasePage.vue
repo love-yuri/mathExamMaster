@@ -112,13 +112,26 @@ import {
   Rating,
   Select,
   Tag,
-} from '#/components';
+} from '@yuri/components';
 import { computed, onMounted, ref } from 'vue';
 
 import { useTabs } from '@vben/hooks';
 import { router } from '#/router';
-import { userApi, examPageApi, checkEmpty, formatPrimeVueTime, examPageReleaseApi } from '@yuri/common';
-import { ExamPageReleaseParam, ExamPageResult, type QuestionAndPoint, type Student, typeOptions, subjectOptions } from '@yuri/types';
+import {
+  userApi,
+  examPageApi,
+  checkEmpty,
+  formatPrimeVueTime,
+  examPageReleaseApi,
+} from '@yuri/common';
+import {
+  ExamPageReleaseParam,
+  ExamPageResult,
+  type QuestionAndPoint,
+  type Student,
+  typeOptions,
+  subjectOptions,
+} from '@yuri/types';
 import { message } from '@yuri/common';
 import { useRoute } from 'vue-router';
 

@@ -105,14 +105,21 @@ import {
   Paginator,
   SplitButton,
   Tag,
-} from '#/components';
+} from '@yuri/components';
 import type { PageState } from 'primevue/paginator';
 import Preview from './components/preview.vue';
 import { router } from '#/router';
 import { EllipsisText } from '@vben/common-ui';
 import { useConfirm } from 'primevue/useconfirm';
 import { questionBankApi, message } from '@yuri/common';
-import { type FullQuestionBank, type KnowledgePoint, type QuestionBank, QuestionTypeEnum, type PageParam, QuestionTypeMap } from '@yuri/types';
+import {
+  type FullQuestionBank,
+  type KnowledgePoint,
+  type QuestionBank,
+  QuestionTypeEnum,
+  type PageParam,
+  QuestionTypeMap,
+} from '@yuri/types';
 
 const confirm = useConfirm();
 

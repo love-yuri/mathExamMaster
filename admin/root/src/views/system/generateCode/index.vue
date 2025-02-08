@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { Button, Select, ToggleSwitch } from '#/components';
+import { Button, Select, ToggleSwitch } from '@yuri/components';
 import { systemApi, message } from '@yuri/common';
 import { onMounted, ref, watch } from 'vue';
 

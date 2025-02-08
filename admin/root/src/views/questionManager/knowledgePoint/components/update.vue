@@ -24,12 +24,11 @@
 </template>
 <script setup lang="ts">
 import { useVbenModal } from '@vben/common-ui';
-import { InputText, Textarea } from '#/components';
+import { InputText, Textarea } from '@yuri/components';
 
 import { ref } from 'vue';
 import { checkEmpty, checkSuccess, knowledgePointApi } from '@yuri/common';
 import { KnowledgePoint } from '@yuri/types';
-
 
 const emits = defineEmits(['update']);
 

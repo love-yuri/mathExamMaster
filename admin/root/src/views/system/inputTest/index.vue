@@ -2,7 +2,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 23:36:21
- * @LastEditTime: 2024-10-22 22:08:49
+ * @LastEditTime: 2025-02-08 16:20:29
  * @Description: 
 -->
 <template>
@@ -12,7 +12,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import WangEditor from '#/components/wangEditor/index.vue';
+import { WangEditor } from '@yuri/components';
 import { ref } from 'vue';
 
 // const content = ref(`<p><yuri data-w-e-type="yuri" dd="just do it">yuri is yes</yuri></p>`);

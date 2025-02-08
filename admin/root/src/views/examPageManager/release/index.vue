@@ -99,7 +99,7 @@ import {
   Paginator,
   SplitButton,
   Tag,
-} from '#/components';
+} from '@yuri/components';
 import type { PageState } from 'primevue/paginator';
 import { useConfirm } from 'primevue/useconfirm';
 import { router } from '#/router';

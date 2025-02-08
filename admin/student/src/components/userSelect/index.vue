@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { DynamicDialog } from '#/components';
+import { DynamicDialog } from '@yuri/components';
 import { defineAsyncComponent, provide, ref } from 'vue';
 import { useDialog } from 'primevue/usedialog';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';

@@ -64,7 +64,7 @@
 </template>
 <script setup lang="ts">
 import { useVbenModal } from '@vben/common-ui';
-import { Button, PreviewEditor } from '#/components';
+import { Button, PreviewEditor } from '@yuri/components';
 import {
   type GapFillingAnswer,
   type JudgeAnswer,

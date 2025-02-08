@@ -33,7 +33,7 @@
   </ConfirmDialog>
 </template>
 <script setup lang="ts">
-import { Button, ConfirmDialog } from '#/components';
+import { Button, ConfirmDialog } from '@yuri/components';
 
 defineProps<{
   cancelText?: string;

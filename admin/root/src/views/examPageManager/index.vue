@@ -108,13 +108,20 @@ import {
   Paginator,
   SplitButton,
   Tag,
-} from '#/components';
+} from '@yuri/components';
 import type { PageState } from 'primevue/paginator';
 import { useConfirm } from 'primevue/useconfirm';
 import { router } from '#/router';
 import { EllipsisText } from '@vben/common-ui';
 import { examPageApi } from '@yuri/common';
-import { type PageParam, ExamPageResult, ExamPageType, SubjectType, ExamPageMap, SubjectTypeMap } from '@yuri/types';
+import {
+  type PageParam,
+  ExamPageResult,
+  ExamPageType,
+  SubjectType,
+  ExamPageMap,
+  SubjectTypeMap,
+} from '@yuri/types';
 import { message } from '@yuri/common';
 
 const confirm = useConfirm();

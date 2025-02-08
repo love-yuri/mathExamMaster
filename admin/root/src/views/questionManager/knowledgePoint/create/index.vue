@@ -27,7 +27,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { Button, InputText, Textarea } from '#/components';
+import { Button, InputText, Textarea } from '@yuri/components';
 import { checkEmpty, checkSuccess, knowledgePointApi } from '@yuri/common';
 import { KnowledgePoint } from '@yuri/types';
 import { ref } from 'vue';

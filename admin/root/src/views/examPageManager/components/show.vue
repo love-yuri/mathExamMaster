@@ -163,11 +163,17 @@ import {
   SpeedDial,
   SplitButton,
   Tag,
-} from '#/components';
+} from '@yuri/components';
 import { EllipsisText } from '@vben/common-ui';
 import Preview from '#/views/questionManager/questionBank/components/preview.vue';
 import SelectQuestion from '#/views/examPageManager/components/select.vue';
-import { type ExamPageCreateVO, QuestionTypeMap, type QuestionAndPoint, QuestionTypeEnum, type QuestionBank } from '@yuri/types';
+import {
+  type ExamPageCreateVO,
+  QuestionTypeMap,
+  type QuestionAndPoint,
+  QuestionTypeEnum,
+  type QuestionBank,
+} from '@yuri/types';
 
 const props = defineProps<{
   createVo: ExamPageCreateVO;

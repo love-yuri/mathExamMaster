@@ -112,14 +112,26 @@ import {
   MultiSelect,
   Rating,
   Tag,
-} from '#/components';
+} from '@yuri/components';
 import { computed, onMounted, ref } from 'vue';
 import Show from '#/views/examPageManager/components/show.vue';
-import { userApi, examPageReleaseApi, examPageApi, checkEmpty, formatPrimeVueTime } from '@yuri/common';
-import { ExamPageReleaseParam, ExamPageResult, subjectOptions, typeOptions, type QuestionAndPoint, type Student } from '@yuri/types';
+import {
+  userApi,
+  examPageReleaseApi,
+  examPageApi,
+  checkEmpty,
+  formatPrimeVueTime,
+} from '@yuri/common';
+import {
+  ExamPageReleaseParam,
+  ExamPageResult,
+  subjectOptions,
+  typeOptions,
+  type QuestionAndPoint,
+  type Student,
+} from '@yuri/types';
 import { message } from '@yuri/common';
 import { useRoute } from 'vue-router';
-
 
 const route = useRoute();
 

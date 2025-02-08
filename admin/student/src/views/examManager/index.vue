@@ -36,7 +36,7 @@ import {
   type ExamListResult,
   examPageReleaseApi,
 } from '#/api/examPageReleaseApi';
-import { FameraButton, GaganButton } from '#/components';
+import { FameraButton, GaganButton } from '@yuri/components';
 import { ref, watch } from 'vue';
 import DoExam from './doExam.vue';
 import { useExamStore } from '#/store';
