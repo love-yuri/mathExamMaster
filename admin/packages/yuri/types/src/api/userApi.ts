@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 17:05:12
- * @LastEditTime: 2025-02-08 14:12:09
+ * @LastEditTime: 2025-02-12 18:45:34
  * @Description:
  */
 import { BaseEntity, type PageParam } from './base';
@@ -36,12 +36,13 @@ export interface RefreshTokenResult {
   status: number;
 }
 
-export interface Student {
-  id: string;
-  username: string;
-}
-
 export interface UserResult {
   id: string;
   username: string;
+  nickname: string;
+}
+
+export interface SetTeacherParam {
+  departmentId: string;
+  teacherId: string;
 }

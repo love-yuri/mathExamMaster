@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2025-02-08 16:40:05
+ * @LastEditTime: 2025-02-12 19:03:52
  * @Description:
  */
 import { BaseEntity} from './base';
@@ -71,10 +71,10 @@ export interface ExamInfoResult {
 
 
 export class ExamPageReleaseParam extends BaseEntity {
-  endTime!: string;
+  endTime?: string;
   examPageId!: string;
-  startTime!: string;
-  userIds!: string[];
+  startTime?: string;
+  departmentId!: string;
 
   /**
    * 手动调用reset
@@ -85,9 +85,9 @@ export class ExamPageReleaseParam extends BaseEntity {
   }
 
   override reset(): void {
-    this.startTime = '';
-    this.endTime = '';
-    this.userIds = [];
+    this.startTime = undefined;
+    this.endTime = undefined;
+    this.departmentId = '';
     this.examPageId = '';
   }
 }
