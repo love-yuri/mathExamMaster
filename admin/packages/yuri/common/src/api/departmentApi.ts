@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2025-02-08 14:37:37
+ * @LastEditTime: 2025-02-12 20:43:21
  * @Description: 题目
  */
 import { BaseApi } from '@yuri/common';
@@ -17,6 +17,10 @@ class Api extends BaseApi<Department> {
   tree = () => {
     return this.add<TreeResult>(RequestType.GET, '/tree');
   };
+
+  ownerDepartments = () => {
+    return this.add<Department[]>(RequestType.POST, '/owner/departments');
+  }
 }
 
 export const departmentApi = new Api();

@@ -5,7 +5,16 @@
  * @Description:
  */
 
-import { RequestType, type LoginParams, type LoginResult, type PageResult, type Student, type User, type UserPageParam, type UserResult } from '@yuri/types';
+import {
+  RequestType,
+  type LoginParams,
+  type LoginResult,
+  type PageResult,
+  type SetTeacherParam,
+  type User,
+  type UserPageParam,
+  type UserResult,
+} from '@yuri/types';
 import { BaseApi } from '../base/baseApi/baseApi';
 
 class Api extends BaseApi<User> {
@@ -34,11 +43,12 @@ class Api extends BaseApi<User> {
     return this.add<PageResult<UserResult>>(RequestType.POST, '/page', param);
   };
 
-  /**
-   * 登陆
-   */
-  students = async () => {
-    return this.add<Student[]>(RequestType.POST, '/students');
+  teachers = async () => {
+    return this.add<UserResult[]>(RequestType.POST, '/teachers');
+  };
+
+  setTeacher = async (param: SetTeacherParam) => {
+    return this.add<boolean>(RequestType.POST, '/set/teacher', param);
   };
 }
 
