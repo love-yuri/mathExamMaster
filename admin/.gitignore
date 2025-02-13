@@ -51,3 +51,4 @@ vite.config.ts.*
 .history
 /src-tauri/target/
 /src-tauri/gen/schemas
+/.codemap/
