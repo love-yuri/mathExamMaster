@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-13 19:30:28
- * @LastEditTime: 2025-02-12 19:23:37
+ * @LastEditTime: 2025-02-12 19:35:10
  * @Description: 
 -->
 
@@ -26,14 +26,13 @@ provide('dialogRef', dialogRef);
 
 type CallBackFunc = (result: UserResult[]) => void;
 
-const show = (currentUsers: UserResult[], onConfirm: CallBackFunc) => {
+const show = (onConfirm: CallBackFunc) => {
   dialogRef.value = dialog.open(DialogView, {
     data: {
-      currentUsers,
       onConfirm,
     },
     props: {
-      header: '选择用户',
+      header: '选择教师',
       modal: true,
       style: {
         width: '80vw'
@@ -43,7 +42,7 @@ const show = (currentUsers: UserResult[], onConfirm: CallBackFunc) => {
 };
 
 defineExpose<{
-  show: (currentUsers: UserResult[], callBack: CallBackFunc) => void;
+  show: ( callBack: CallBackFunc) => void;
 }>({
   show,
 });

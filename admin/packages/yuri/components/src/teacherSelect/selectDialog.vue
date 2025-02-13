@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-13 19:32:27
- * @LastEditTime: 2025-02-12 19:26:00
+ * @LastEditTime: 2025-02-12 19:35:29
  * @Description: 用户选择组件
 -->
 <template>
@@ -27,7 +27,7 @@
               <div class="flex items-center">
                 <Button
                   :icon="`pi pi-${selectUsers.has(slotProps.data.id!) ? 'minus' : 'plus'}`"
-                  :label="`${selectUsers.has(slotProps.data.id!) ? '删除' : '添加'}`"
+                  :label="`${selectUsers.has(slotProps.data.id!) ? '删除' : '选择'}`"
                   :severity="`${selectUsers.has(slotProps.data.id!) ? 'danger' : 'info'}`"
                   raised
                   @click="add(slotProps.data)"
@@ -81,9 +81,6 @@ function onPage(p: PageState) {
 }
 
 async function loadData() {
-  dialogRef?.value.data.currentUsers.forEach((v: UserResult) => {
-    selectUsers.value.set(v.id!, v);
-  });
   userApi.resultPage(pageParam.value).then((res) => {
     users.value = res.records;
     pageParam.value.total = res.total;
@@ -92,9 +89,8 @@ async function loadData() {
 // loadData();
 
 async function add(v: UserResult) {
-  const has = selectUsers.value.has(v.id!);
-  if (has) {
-    selectUsers.value.delete(v.id!);
+  if (selectUsers.value.size >= 1) {
+    selectUsers.value.clear();
   } else {
     selectUsers.value.set(v.id!, v);
   }
