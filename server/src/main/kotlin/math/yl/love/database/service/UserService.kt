@@ -62,6 +62,12 @@ class UserService(
      */
     fun getByUsername(username: String?): User? = getOne(queryWrapper.eq(!username.isNullOrEmpty(), User::username, username))
 
+    fun getTest() {
+        val user = queryWrapper.eq(
+            User::username, "yuri"
+        ).list()
+    }
+
     /**
      * 查找用户信息
      * 默认使用

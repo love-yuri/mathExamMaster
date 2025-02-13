@@ -1,5 +1,4 @@
 system:
   project-path: "/home/yuri/love-yuri/mathExamMaster/kotlin/src/main/kotlin"
   redis-default-timeout: 21600
-  upload-path: null
   user-info-timeout: 21600

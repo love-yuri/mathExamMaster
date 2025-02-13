@@ -38,7 +38,14 @@ class SystemFileService(
      * 根据md5 查找数据
      * 默认同一个文件不会重复进入数据库
      */
-    fun findByMd5(md5: String): SystemFile? = queryWrapper.eq(SystemFile::md5, md5).selectOne()
+    fun findByMd5(md5: String): SystemFile?{
+        val data = queryWrapper.eq(SystemFile::md5, md5).list()
+        return if (data.isNotEmpty()) {
+            data[0]
+        } else {
+            null
+        }
+    }
 
     /**
      * 上传文件并返回文件数据
@@ -52,15 +59,17 @@ class SystemFileService(
         val res = findByMd5(md5)
         val target = uploadPath.resolve(md5)
 
+
+
         /**
          * 同文件只写入一次
          * 如果存在则直接返回数据，不进行保存
          */
         try {
             // 只有当文件不存在时才会创建
-            Files.write(target, byteArray, StandardOpenOption.CREATE_NEW)
-        } catch (_: FileAlreadyExistsException) {
-            // 跳过
+            if (!Files.exists(target)) {
+                Files.write(target, byteArray, StandardOpenOption.CREATE_NEW)
+            }
         } catch (e: IOException) {
             throw BizException("文件写入失败: ${e.message}")
         }
