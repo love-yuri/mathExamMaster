@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-12 17:47:35
- * @LastEditTime: 2025-02-08 15:00:52
+ * @LastEditTime: 2025-02-13 14:08:06
  * @Description: 组织管理
 -->
 
@@ -27,6 +27,16 @@
       <div v-if="currentDep">
         <div class="my-1 flex justify-between">
           <Button icon="pi pi-plus" label="添加用户" @click="addUser" />
+          <Button icon="pi pi-plus" label="添加下级组织" @click="onSelect" />
+          <Button
+            icon="pi pi-trash"
+            label="删除组织"
+            severity="danger"
+            @click="removeDep"
+          />
+        </div>
+        <div class="my-1 flex justify-between">
+          <Button icon="pi pi-plus" label="添加老师" @click="setTeacher" />
           <Button icon="pi pi-plus" label="添加下级组织" @click="onSelect" />
           <Button
             icon="pi pi-trash"
@@ -71,6 +81,7 @@
       </div>
     </div>
     <UserSelect ref="userSelectRef" />
+    <TeacherSelect ref="teacherSelectRef" />
     <Popover ref="popoverRef">
       <div class="flex flex-col items-center">
         <span class="mb-2 text-[20px] font-semibold">创建组织</span>
@@ -89,10 +100,11 @@ import {
   InputText,
   OrganizationChart,
   Popover,
+  TeacherSelect,
   UserSelect,
 } from '@yuri/components';
 import { checkEmpty, checkSuccess, userDepartmentApi } from '@yuri/common';
-import { message, departmentApi } from '@yuri/common';
+import { message, departmentApi, userApi } from '@yuri/common';
 import { useConfirm } from 'primevue/useconfirm';
 import { onMounted, ref, useTemplateRef } from 'vue';
 import {
@@ -110,6 +122,7 @@ const selectKey = ref<TreeResult>();
 const currentDep = ref<DepartmentDetail>();
 const createParam = ref<Department>(new Department());
 const userSelectRef = useTemplateRef('userSelectRef');
+const teacherSelectRef = useTemplateRef('teacherSelectRef');
 
 function loadData() {
   departmentApi.tree().then((res) => (treeData.value = res));
@@ -142,6 +155,30 @@ function handleNodeSelect(node: OrganizationChartNode) {
   loadNodeData(node.key);
 }
 
+function setTeacher() {
+  teacherSelectRef.value?.show((res) => {
+    if (res.length === 0) {
+      return;
+    }
+    userApi
+      .setTeacher({
+        departmentId: currentDep.value?.id!!,
+        teacherId: res[0]!!.id
+      })
+      .then((v) => {
+        if (v) {
+          setTimeout(() => {
+            loadNodeData(currentDep.value!!.id);
+          }, 400);
+          message.default.success('设置老师成功!!');
+        } else {
+          message.default.error('设置老师失败!!');
+        }
+      });
+  });
+}
+
+
 function addUser() {
   userSelectRef.value?.show(currentDep.value!!.users, (res) => {
     if (res.length === 0) {
@@ -158,6 +195,8 @@ function addUser() {
             loadNodeData(currentDep.value!!.id);
           }, 400);
           message.default.success('添加成功');
+        } else {
+          message.default.error('添加失败!!');
         }
       });
   });
