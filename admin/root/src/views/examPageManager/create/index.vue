@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2025-02-08 15:25:44
+ * @LastEditTime: 2025-02-12 18:44:59
  * @Description: 创建试卷
 -->
 <template>
@@ -157,15 +157,12 @@ import { useRoute } from '#/router';
 import {
   checkEmpty,
   checkEqual,
-  userApi,
   examPageApi,
   checkSuccess,
 } from '@yuri/common';
 import {
   ExamPageCreateVO,
-  type QuestionAndPoint,
-  type Student,
-  typeOptions,
+  type QuestionAndPoint,  typeOptions,
   subjectOptions,
 } from '@yuri/types';
 
@@ -175,7 +172,6 @@ const createVo = ref<ExamPageCreateVO>(new ExamPageCreateVO());
 const questionMap = ref(new Map<string, QuestionAndPoint>());
 
 const isReadOnly = ref(false);
-const users = ref<Student[]>([]);
 
 function formatTime(seconds: number) {
   const hours = Math.floor(seconds / 3600);
@@ -201,9 +197,6 @@ function valueCheck(): boolean {
 }
 
 onMounted(() => {
-  userApi.students().then((res) => {
-    users.value = res;
-  });
   if (route.params.id) {
     isReadOnly.value = true;
     examPageApi.detail(route.params.id as string).then((res) => {

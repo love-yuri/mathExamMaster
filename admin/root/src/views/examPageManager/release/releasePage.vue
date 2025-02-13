@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2025-02-08 15:17:52
+ * @LastEditTime: 2025-02-12 19:04:50
  * @Description: 创建试卷
 -->
 <template>
@@ -82,8 +82,8 @@
 
     <div class="my-2 flex justify-center">
       <Select
-        v-model="releaseParam.userIds"
-        :options="users"
+        v-model="releaseParam.departmentId"
+        :options="departments"
         class="w-full"
         filter
         option-label="username"
@@ -117,20 +117,21 @@ import { computed, onMounted, ref } from 'vue';
 
 import { useTabs } from '@vben/hooks';
 import { router } from '#/router';
+import Show from '#/views/examPageManager/components/show.vue';
 import {
-  userApi,
   examPageApi,
   checkEmpty,
   formatPrimeVueTime,
   examPageReleaseApi,
+  departmentApi,
 } from '@yuri/common';
 import {
   ExamPageReleaseParam,
   ExamPageResult,
   type QuestionAndPoint,
-  type Student,
   typeOptions,
   subjectOptions,
+  Department,
 } from '@yuri/types';
 import { message } from '@yuri/common';
 import { useRoute } from 'vue-router';
@@ -142,7 +143,7 @@ const releaseParam = ref<ExamPageReleaseParam>(new ExamPageReleaseParam());
 const examPageResult = ref<ExamPageResult>(new ExamPageResult());
 const questionMap = ref(new Map<string, QuestionAndPoint>());
 
-const users = ref<Student[]>([]);
+const departments = ref<Department[]>([]);
 
 function formatTime(seconds: number) {
   const hours = Math.floor(seconds / 3600);
@@ -164,9 +165,10 @@ const subjectType = computed(
 );
 
 onMounted(() => {
-  userApi.students().then((res) => {
-    users.value = res;
+  departmentApi.ownerDepartments().then((res) => {
+    departments.value = res;
   });
+
   if (route.params.id) {
     releaseParam.value.examPageId = route.params.id as string;
     examPageApi.detail(route.params.id as string).then((res) => {
@@ -184,11 +186,11 @@ onMounted(() => {
 function release() {
   checkEmpty(releaseParam.value.startTime, '开始时间不能为空');
   checkEmpty(releaseParam.value.endTime, '结束时间不能为空');
-  checkEmpty(releaseParam.value.userIds, '请选择学生');
+  checkEmpty(releaseParam.value.departmentId, '请选择班级');
   releaseParam.value.startTime = formatPrimeVueTime(
-    releaseParam.value.startTime,
+    releaseParam.value.startTime!!,
   );
-  releaseParam.value.endTime = formatPrimeVueTime(releaseParam.value.endTime);
+  releaseParam.value.endTime = formatPrimeVueTime(releaseParam.value.endTime!!);
   examPageReleaseApi.release(releaseParam.value).then((res) => {
     if (res) {
       message.default.success('试卷发布成功');
