@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-12 17:47:35
- * @LastEditTime: 2025-02-13 14:08:06
+ * @LastEditTime: 2025-02-14 15:51:35
  * @Description: 组织管理
 -->
 
@@ -37,13 +37,6 @@
         </div>
         <div class="my-1 flex justify-between">
           <Button icon="pi pi-plus" label="添加老师" @click="setTeacher" />
-          <Button icon="pi pi-plus" label="添加下级组织" @click="onSelect" />
-          <Button
-            icon="pi pi-trash"
-            label="删除组织"
-            severity="danger"
-            @click="removeDep"
-          />
         </div>
         <div class="">
           <div class="ml-4 text-[15px] text-[#84888F]">组织名称</div>
@@ -156,7 +149,7 @@ function handleNodeSelect(node: OrganizationChartNode) {
 }
 
 function setTeacher() {
-  teacherSelectRef.value?.show((res) => {
+  teacherSelectRef.value?.show(currentDep.value?.teacherId ?? '', (res) => {
     if (res.length === 0) {
       return;
     }
@@ -171,6 +164,7 @@ function setTeacher() {
             loadNodeData(currentDep.value!!.id);
           }, 400);
           message.default.success('设置老师成功!!');
+          loadData();
         } else {
           message.default.error('设置老师失败!!');
         }

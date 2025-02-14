@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-13 19:32:27
- * @LastEditTime: 2025-02-12 19:35:29
+ * @LastEditTime: 2025-02-14 15:50:06
  * @Description: 用户选择组件
 -->
 <template>
@@ -40,13 +40,6 @@
           <Button label="取消" severity="secondary" @click="cancel" />
           <Button label="确认" @click="confirm" />
         </div>
-        <Paginator
-          :rows="pageParam.size"
-          :rows-per-page-options="[10, 20, 30]"
-          :total-records="pageParam.total"
-          class="mt-2"
-          @page="onPage"
-        />
       </template>
     </Card>
   </div>
@@ -54,36 +47,26 @@
 
 <script setup lang="ts">
 import { inject, onMounted, ref } from 'vue';
-import { Button, Card, Column, DataTable, Paginator } from '@yuri/components';
+import { Button, Card, Column, DataTable } from '@yuri/components';
 
-import type { PageState } from 'primevue/paginator';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { userApi } from '@yuri/common';
-import type { UserResult, UserPageParam } from '@yuri/types';
+import type { UserResult } from '@yuri/types';
 
 const dialogRef = inject<{ value: DynamicDialogInstance }>('dialogRef');
 const users = ref<UserResult[]>([]);
 const selectUsers = ref<Map<string, UserResult>>(new Map());
-const pageParam = ref<UserPageParam>({
-  current: 1,
-  size: 10,
-  total: 0,
-  studentFlag: 2,
-});
-
-/**
- * 页码改变
- */
-function onPage(p: PageState) {
-  pageParam.value.current = p.page + 1;
-  pageParam.value.size = p.rows;
-  loadData();
-}
 
 async function loadData() {
-  userApi.resultPage(pageParam.value).then((res) => {
-    users.value = res.records;
-    pageParam.value.total = res.total;
+  userApi.teachers().then((res) => {
+    users.value = res;
+    if (dialogRef?.value.data.teacherId !== '') {
+      users.value.forEach((user) => {
+        if (user.id == dialogRef?.value.data.teacherId) {
+          selectUsers.value.set(user.id!, user);
+        }
+      })
+    }
   });
 }
 // loadData();
