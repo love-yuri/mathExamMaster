@@ -41,7 +41,8 @@ class ExamPageReleaseService(
         val examPageRelease = ExamPageRelease(
             startTime = param.startTime,
             endTime = param.endTime,
-            examPageId = param.examPageId
+            examPageId = param.examPageId,
+            classId = param.departmentId
         )
         save(examPageRelease)
 
@@ -88,19 +89,10 @@ class ExamPageReleaseService(
                 examPage = examPageService.getById(it.examPageId),
                 startTime = it.startTime,
                 endTime = it.endTime,
-                users = findByReleaseId(it.id!!)
+                department = userService.departmentService.getById(it.classId)
             )
         }
         return BasePage(pages.current, pages.size, records, pages.total)
-    }
-
-    /**
-     * 根据发布id获取所有发布人员
-     * @param id 发布id
-     */
-    fun findByReleaseId(id: Long): List<User> {
-        val res = userRelationService.findByReleaseId(id)
-        return userService.findByIds(res.map { it.userId })
     }
 
     /**
@@ -115,7 +107,7 @@ class ExamPageReleaseService(
             examPage = examPageService.getById(it.examPageId),
             startTime = it.startTime,
             endTime = it.endTime,
-            users = findByReleaseId(it.id!!)
+            department = userService.departmentService.getById(it.classId)
         )
     }
 

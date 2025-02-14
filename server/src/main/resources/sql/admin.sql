@@ -142,6 +142,7 @@ CREATE TABLE `exam_page_question_relation` (
 DROP TABLE IF EXISTS `exam_page_release`;
 CREATE TABLE `exam_page_release` (
    `id` bigint NOT NULL COMMENT '主键id',
+   `class_id` bigint NOT NULL COMMENT '发布班级id',
    `exam_page_id` bigint NOT NULL COMMENT '试卷id',
    `start_time` datetime NOT NULL COMMENT '开始时间',
    `end_time` datetime NOT NULL COMMENT '结束时间',

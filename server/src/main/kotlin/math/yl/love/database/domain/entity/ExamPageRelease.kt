@@ -47,6 +47,10 @@ data class ExamPageRelease (
     @TableField(value = "exam_page_id")
     val examPageId: Long,
 
+    @Schema(description = "发布班级id")
+    @TableField(value = "class_id")
+    val classId: Long,
+
     @Contextual
     @Schema(description = "开始时间")
     @TableField(value = "start_time")

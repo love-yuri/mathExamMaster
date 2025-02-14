@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.builtins.LongAsStringSerializer
 import math.yl.love.common.constant.DataBaseConstant
+import math.yl.love.database.domain.entity.Department
 import math.yl.love.database.domain.entity.ExamPage
 import math.yl.love.database.domain.entity.User
 import java.time.LocalDateTime
@@ -32,6 +33,6 @@ data class ExamPageReleaseResult(
     @Schema(description = "结束时间")
     val endTime: LocalDateTime,
 
-    @Schema(description = "所有发布的用户")
-    val users: List<User>,
+    @Schema(description = "所有发布的班级")
+    val department: Department
 )
