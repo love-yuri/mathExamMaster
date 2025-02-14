@@ -104,6 +104,7 @@ class UserService(
      * 为指定组织设置老师
      * @param param 参数
      */
+    @Transactional(rollbackFor = [Exception::class])
     fun setTeacher(param: SetTeacherParam): Boolean {
         val department = departmentService.getById(param.departmentId) ?: throw BizException("组织不存在!!")
         val nextDepartments = departmentService.getByParent(param.departmentId)
@@ -120,7 +121,10 @@ class UserService(
      * @param flag 0:所有老师 1:有班级的老师 2:没有班级的老师
      */
     fun teachers(flag: Int): List<UserResult> {
-        val qw = queryWrapper.eq(User::role, UserRoleEnum.TEACHER)
+        val qw = queryWrapper
+            .eq(User::role, UserRoleEnum.TEACHER)
+            .or { it.eq(User::role, UserRoleEnum.ADMIN) }
+
         return when(flag) {
             0 -> qw.list()
             1 -> {
