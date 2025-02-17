@@ -5,6 +5,7 @@
  * @Description:
  */
 import { BaseEntity} from './base';
+import { Department } from './departmentApi';
 import { ExamPageResult, ExamPageType, SubjectType } from './examPageApi';
 import type { ExamPageUserRelationStatusType } from './examPageUserRelationApi';
 import { User } from './userApi';
@@ -97,7 +98,7 @@ export class ExamPageReleaseParam extends BaseEntity {
  */
 export class ExamPageReleaseResult extends ExamPageReleaseParam {
   examPage?: ExamPageResult;
-  users: User[] = [];
+  department!: Department;
 
   /**
    * 手动调用reset
@@ -109,7 +110,7 @@ export class ExamPageReleaseResult extends ExamPageReleaseParam {
 
   override reset(): void {
     super.reset();
-    this.users = [];
+    this.department = new Department();
     this.examPage = undefined;
   }
 }

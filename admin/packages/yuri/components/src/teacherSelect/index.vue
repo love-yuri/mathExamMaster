@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-13 19:30:28
- * @LastEditTime: 2025-02-12 19:35:10
+ * @LastEditTime: 2025-02-14 15:43:31
  * @Description: 
 -->
 
@@ -26,10 +26,11 @@ provide('dialogRef', dialogRef);
 
 type CallBackFunc = (result: UserResult[]) => void;
 
-const show = (onConfirm: CallBackFunc) => {
+const show = (teacherId: string, onConfirm: CallBackFunc) => {
   dialogRef.value = dialog.open(DialogView, {
     data: {
       onConfirm,
+      teacherId
     },
     props: {
       header: '选择教师',
@@ -42,7 +43,7 @@ const show = (onConfirm: CallBackFunc) => {
 };
 
 defineExpose<{
-  show: ( callBack: CallBackFunc) => void;
+  show: (teacherId: string, callBack: CallBackFunc) => void;
 }>({
   show,
 });

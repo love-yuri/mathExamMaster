@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2025-02-12 19:04:50
+ * @LastEditTime: 2025-02-14 16:10:02
  * @Description: 创建试卷
 -->
 <template>
@@ -86,9 +86,9 @@
         :options="departments"
         class="w-full"
         filter
-        option-label="username"
+        option-label="name"
         option-value="id"
-        placeholder="请选择学生"
+        placeholder="请选择班级"
       />
     </div>
     <div class="flex items-center justify-center">

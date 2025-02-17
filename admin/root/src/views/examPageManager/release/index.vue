@@ -28,13 +28,11 @@
           <Column field="createTime" header="发布时间" />
           <Column field="startTime" header="开始时间" />
           <Column field="endTime" header="结束时间" />
-          <Column header="发布学生">
+          <Column header="发布班级">
             <template #body="slotProps: { data: ExamPageReleaseResult }">
               <EllipsisText :max-width="500">
                 <Tag
-                  v-for="item in slotProps.data.users"
-                  :key="item.id"
-                  :value="item.username"
+                  :value="slotProps.data.department.name"
                   class="mx-1 my-1 flex-shrink-0"
                 />
               </EllipsisText>

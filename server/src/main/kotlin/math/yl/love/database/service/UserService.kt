@@ -51,6 +51,23 @@ class UserService(
     }
 
     /**
+     * 根据id获取个人的信息
+     */
+    fun getResultById(id: Long?): UserResult? {
+        if (id == null) {
+            return null
+        }
+        val list = queryWrapper.eq(User::id, id).list().map {
+            UserResult(it.id!!, it.username, it.nickname)
+        }
+
+        if (list.isNotEmpty()) {
+            return list.first()
+        }
+        return null
+    }
+
+    /**
      * 退出登录
      */
     fun logout() {
