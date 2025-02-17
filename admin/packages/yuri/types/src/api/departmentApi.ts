@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2025-02-08 14:23:23
+ * @LastEditTime: 2025-02-17 14:44:19
  * @Description: 题目
  */
 import { BaseEntity} from './base';
@@ -43,4 +43,5 @@ export interface DepartmentDetail {
   name: string;
   parentId: string;
   users: UserResult[];
+  teacherInfo?: UserResult;
 }

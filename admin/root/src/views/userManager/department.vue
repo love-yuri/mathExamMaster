@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-12 17:47:35
- * @LastEditTime: 2025-02-14 15:51:35
+ * @LastEditTime: 2025-02-17 14:48:56
  * @Description: 组织管理
 -->
 
@@ -59,6 +59,12 @@
           </div>
         </div>
         <div class="mt-3">
+          <div class="ml-4 text-[15px] text-[#84888F]" v-if="currentDep.teacherInfo">本班级教师</div>
+          <div class="mt-1 rounded-[4px] bg-white p-2">
+            {{ currentDep.teacherInfo?.nickname }}
+          </div>
+        </div>
+        <div class="mt-3">
           <div class="ml-4 text-[15px] text-[#84888F]">用户列表</div>
           <div
             v-for="user in currentDep.users"
@@ -99,6 +105,7 @@ import {
 import { checkEmpty, checkSuccess, userDepartmentApi } from '@yuri/common';
 import { message, departmentApi, userApi } from '@yuri/common';
 import { useConfirm } from 'primevue/useconfirm';
+import { Tag } from '@yuri/components';
 import { onMounted, ref, useTemplateRef } from 'vue';
 import {
   type TreeResult,
@@ -149,7 +156,7 @@ function handleNodeSelect(node: OrganizationChartNode) {
 }
 
 function setTeacher() {
-  teacherSelectRef.value?.show(currentDep.value?.teacherId ?? '', (res) => {
+  teacherSelectRef.value?.show(currentDep.value?.teacherInfo?.id ?? '', (res) => {
     if (res.length === 0) {
       return;
     }

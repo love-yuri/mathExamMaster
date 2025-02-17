@@ -11,6 +11,7 @@ import math.yl.love.database.mapper.DepartmentMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.io.Serializable
+import kotlin.math.PI
 import kotlin.reflect.KClass
 
 @Service
@@ -59,9 +60,9 @@ class DepartmentService(
             id = department.id!!,
             name = department.name,
             parentId = department.parentId,
-            teacherId = department.teacherId,
             users = userDepartmentService.findByDepartmentId(id),
             createTime = department.createTime!!,
+            teacherInfo = userDepartmentService.userService.getResultById(department.teacherId),
         )
     }
 

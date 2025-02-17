@@ -16,9 +16,8 @@ data class DepartmentDetail (
     @Schema(description = "组织名称")
     val name: String,
 
-    @Serializable(with = LongAsStringSerializer::class)
-    @Schema(description = "教师Id")
-    val teacherId: Long?,
+    @Schema(description = "教师信息")
+    val teacherInfo: UserResult?,
 
     @Serializable(with = LongAsStringSerializer::class)
     @Schema(description = "父级组织ID")
