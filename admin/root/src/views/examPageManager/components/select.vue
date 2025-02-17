@@ -39,6 +39,7 @@
             <Column header="题目内容" style="min-width: 300px">
               <template #body="slotProps: { data: QuestionAndPoint }">
                 <EllipsisText :max-width="300">
+                  {{  slotProps.data.questionBank.content }}
                   {{
                     extractPlainTextFromHTML(
                       slotProps.data.questionBank.content.slice(0, 30),
