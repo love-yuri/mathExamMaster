@@ -17,11 +17,6 @@ abstract class BaseController<Entity: BaseEntity, Mapper: BaseMapper<Entity>, Se
 
     protected val log: Logger = LoggerFactory.getLogger(javaClass)
 
-    open class PageParam {
-        val current: Long = 1
-        val size: Long = 10
-    }
-
     @Autowired
     @Suppress("SpringJavaInjectionPointsAutowiringInspection")
     protected lateinit var baseService: Service

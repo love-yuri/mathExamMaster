@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import math.yl.love.common.base.R
 import math.yl.love.common.mybatis.BaseController
 import math.yl.love.database.domain.entity.ExamPage
+import math.yl.love.database.domain.params.BasePageParam
 import math.yl.love.database.domain.params.examPage.ReleasePageParam
 import math.yl.love.database.domain.params.examPage.UpdateUserAnswerParam
 import math.yl.love.database.domain.params.examPageRelease.QuestionInfoParam
@@ -31,7 +32,7 @@ class ExamPageController: BaseController<ExamPage, ExamPageMapper, ExamPageServi
 
     @PostMapping("page/simple")
     @Operation(summary = "分页")
-    fun pageSimple(@RequestBody param: PageParam) = R.success(baseService.pageSimple(param.current, param.size))
+    fun pageSimple(@RequestBody param: BasePageParam) = R.success(baseService.pageSimple(param.current, param.size))
 
     @PostMapping("detail")
     @Operation(summary = "查找详细信息")

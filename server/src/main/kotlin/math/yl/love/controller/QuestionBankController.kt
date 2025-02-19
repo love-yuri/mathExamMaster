@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import math.yl.love.common.base.R
 import math.yl.love.common.mybatis.BaseController
 import math.yl.love.database.domain.entity.QuestionBank
+import math.yl.love.database.domain.params.BasePageParam
 import math.yl.love.database.domain.params.questionBank.SaveQuestionBankParam
 import math.yl.love.database.mapper.QuestionBankMapper
 import math.yl.love.database.service.QuestionBankService
@@ -29,11 +30,11 @@ class QuestionBankController: BaseController<QuestionBank, QuestionBankMapper, Q
 
     @PostMapping("page")
     @Operation(summary = "分页")
-    fun page(@RequestBody param: PageParam) = R.success(baseService.page(param.current, param.size))
+    fun page(@RequestBody param: BasePageParam) = R.success(baseService.page(param.current, param.size))
 
     @PostMapping("page/simple")
     @Operation(summary = "分页")
-    fun pageSimple(@RequestBody param: PageParam) = R.success(baseService.pageSimple(param.current, param.size))
+    fun pageSimple(@RequestBody param: BasePageParam) = R.success(baseService.pageSimple(param.current, param.size))
 
     @PostMapping("detail/{id}")
     @Operation(summary = "获取详细结果")
