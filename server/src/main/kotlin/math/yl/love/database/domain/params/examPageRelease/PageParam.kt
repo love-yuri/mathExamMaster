@@ -6,8 +6,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PageParam (
     @Schema(description = "页码")
-    val current: Int,
+    val current: Long,
 
     @Schema(description = "每页条数")
-    val size: Int,
+    val size: Long,
+
+    @Schema(description = "请求flag")
+    val flag: Int = 0,
 )

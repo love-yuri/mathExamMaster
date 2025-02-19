@@ -6,12 +6,12 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import math.yl.love.common.base.R
 import math.yl.love.common.mybatis.BaseController
 import math.yl.love.database.domain.entity.ExamPageRelease
-import math.yl.love.database.domain.params.examPage.ReleasePageParam
 import math.yl.love.database.domain.params.examPageRelease.ExamListParam
 import math.yl.love.database.domain.params.examPageRelease.ExamPageReleaseParam
 import math.yl.love.database.mapper.ExamPageReleaseMapper
 import math.yl.love.database.service.ExamPageReleaseService
 import org.springframework.web.bind.annotation.*
+import math.yl.love.database.domain.params.examPageRelease.PageParam
 
 @RestController
 @RequestMapping("/exam/page/release")

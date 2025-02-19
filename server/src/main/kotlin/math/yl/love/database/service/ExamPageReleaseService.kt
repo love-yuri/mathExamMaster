@@ -1,7 +1,6 @@
 package math.yl.love.database.service
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
-import math.yl.love.common.mybatis.BaseController.PageParam
 import math.yl.love.common.mybatis.BasePage
 import math.yl.love.common.mybatis.BaseService
 import math.yl.love.common.utils.CommonUtils
@@ -11,6 +10,7 @@ import math.yl.love.database.domain.entity.ExamPageUserRelation
 import math.yl.love.database.domain.entity.User
 import math.yl.love.database.domain.params.examPageRelease.ExamListParam
 import math.yl.love.database.domain.params.examPageRelease.ExamPageReleaseParam
+import math.yl.love.database.domain.params.examPageRelease.PageParam
 import math.yl.love.database.domain.result.examPageRelease.ExamInfoResult
 import math.yl.love.database.domain.result.examPageRelease.ExamListResult
 import math.yl.love.database.domain.result.examPageRelease.ExamPageReleaseResult
@@ -79,9 +79,18 @@ class ExamPageReleaseService(
 
     /**
      * 获取当前用户所有发布过的试卷
+     * 根据flag返回不同数据
      */
     fun pageSimple(param: PageParam): BasePage<ExamPageReleaseResult> {
-        val pages = page(Page(param.current, param.size), queryWrapper.eq(ExamPageRelease::createBy, CommonUtils.username))
+        val query = queryWrapper.eq(ExamPageRelease::createBy, CommonUtils.username)
+        val today = LocalDateTime.now().toLocalDate()
+        when(param.flag) {
+            0 -> {}
+            1 -> query.lt(ExamPageRelease::endTime, today.atStartOfDay())
+            2 -> query.ge(ExamPageRelease::endTime, today.atStartOfDay())
+        }
+        val pages = page(Page(param.current, param.size), query)
+
         val records = pages.records.map {
             ExamPageReleaseResult(
                 id = it.id!!,
