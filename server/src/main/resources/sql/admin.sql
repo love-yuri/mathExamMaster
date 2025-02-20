@@ -157,7 +157,7 @@ CREATE TABLE `exam_page_release` (
 DROP TABLE IF EXISTS `exam_page_user_relation`;
 CREATE TABLE `exam_page_user_relation` (
    `id` bigint NOT NULL COMMENT '主键id',
-   `page_release_id` bigint NOT NULL COMMENT '试卷发布',
+   `page_release_id` bigint NOT NULL COMMENT '试卷发布id',
    `user_id` bigint NOT NULL COMMENT '用户id',
    `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '当前试卷的状态，默认0: 未完成',
    `exam_start_time` datetime NULL DEFAULT NULL COMMENT '开始练习时间',
@@ -169,6 +169,20 @@ CREATE TABLE `exam_page_user_relation` (
    `update_by` varchar(16) NOT NULL comment '更新用户',
    PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='试卷-学生关联表';
-#
-# # 插入答案列
-# ALTER TABLE `exam_page_user_relation` ADD COLUMN `answer` JSON NULL DEFAULT NULL COMMENT '用户答案' AFTER `status`;
+
+
+DROP TABLE IF EXISTS `user_score`;
+CREATE TABLE `user_score` (
+   `id` bigint NOT NULL COMMENT '主键id',
+   `page_release_id` bigint NOT NULL COMMENT '试卷发布id',
+   `user_id` bigint NOT NULL COMMENT '用户id',
+   `score` int NOT NULL DEFAULT 0 COMMENT '用户得分',
+   `total_score` int NOT NULL DEFAULT 100 COMMENT '试卷总分',
+   `detail` JSON NULL DEFAULT NULL COMMENT '用户得分详情',
+   `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
+   `create_time` datetime NOT NULL COMMENT '创建时间',
+   `create_by` varchar(16) NOT NULL comment '创建用户',
+   `update_time` datetime NOT NULL COMMENT '最后修改时间',
+   `update_by` varchar(16) NOT NULL comment '更新用户',
+   PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户得分记录表';
