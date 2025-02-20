@@ -15,12 +15,13 @@ WHERE
 
 select * from question_bank;
 
-insert into user values (2, 0, 'alice', 'alice', 0, NOW(), 1, NOW(), 1);
-insert into user values (3, 0, 'bob', 'bob', 0, NOW(), 1, NOW(), 1);
-insert into user values (4, 0, 'charlie', 'charlie', 0, NOW(), 1, NOW(), 1);
-insert into user values (5, 0, 'diana', 'diana', 0, NOW(), 1, NOW(), 1);
-insert into user values (6, 0, 'eve', 'eve', 0, NOW(), 1, NOW(), 1);
-insert into user values (7, 0, 'frank', 'frank', 0, NOW(), 1, NOW(), 1);
-insert into user values (8, 0, 'grace', 'grace', 0, NOW(), 1, NOW(), 1);
-insert into user values (9, 0, 'hank', 'hank', 0, NOW(), 1, NOW(), 1);
-insert into user values (10, 0, 'iris', 'iris', 0, NOW(), 1, NOW(), 1);
+INSERT INTO user VALUE (11, 3, 'alice', 'Alice', 'pass1234', FALSE, NOW(), 'yuri', NOW(), 'yuri');
+INSERT INTO user VALUE (2, 3, 'bob', 'Bob', 'pass1234', FALSE, NOW(), 'yuri', NOW(), 'yuri');
+INSERT INTO user VALUE (3, 3, 'charlie', 'Charlie', 'pass1234', FALSE, NOW(), 'yuri', NOW(), 'yuri');
+INSERT INTO user VALUE (4, 3, 'david', 'David', 'pass1234', FALSE, NOW(), 'yuri', NOW(), 'yuri');
+INSERT INTO user VALUE (5, 3, 'emma', 'Emma', 'pass1234', FALSE, NOW(), 'yuri', NOW(), 'yuri');
+INSERT INTO user VALUE (6, 3, 'frank', 'Frank', 'pass1234', FALSE, NOW(), 'yuri', NOW(), 'yuri');
+INSERT INTO user VALUE (7, 3, 'grace', 'Grace', 'pass1234', FALSE, NOW(), 'yuri', NOW(), 'yuri');
+INSERT INTO user VALUE (8, 3, 'henry', 'Henry', 'pass1234', FALSE, NOW(), 'yuri', NOW(), 'yuri');
+INSERT INTO user VALUE (9, 3, 'ivy', 'Ivy', 'pass1234', FALSE, NOW(), 'yuri', NOW(), 'yuri');
+INSERT INTO user VALUE (10, 3, 'jack', 'Jack', 'pass1234', FALSE, NOW(), 'yuri', NOW(), 'yuri');
