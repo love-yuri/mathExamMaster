@@ -1,17 +1,20 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2025-02-12 19:03:52
+ * @LastEditTime: 2025-02-20 18:49:26
  * @Description:
  */
-import { BaseEntity} from './base';
+import { BaseEntity, type PageParam} from './base';
 import { Department } from './departmentApi';
 import { ExamPageResult, ExamPageType, SubjectType } from './examPageApi';
 import type { ExamPageUserRelationStatusType } from './examPageUserRelationApi';
-import { User } from './userApi';
 
 export interface ExamListParam {
   mode: number;
+}
+
+export interface ExamPageReleasePageParam extends PageParam {
+  flag: number;
 }
 
 export interface ExamListResult {

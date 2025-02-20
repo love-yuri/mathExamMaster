@@ -1,11 +1,11 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2025-02-08 16:42:13
+ * @LastEditTime: 2025-02-20 19:48:22
  * @Description:
  */
 
-import { type BaseEntity, type ExamPageReleaseResult, RequestType, type PageParam, type PageResult, type ExamPageReleaseParam, type ExamPageCreateVO, type ExamInfoResult, type ExamListParam, type ExamListResult, type StartExamResult } from "@yuri/types";
+import { type BaseEntity, type ExamPageReleaseResult, RequestType, type PageParam, type PageResult, type ExamPageReleaseParam, type ExamPageCreateVO, type ExamInfoResult, type ExamListParam, type ExamListResult, type StartExamResult, type ExamPageReleasePageParam, type UserResult } from "@yuri/types";
 import { BaseApi } from "../base/baseApi/baseApi";
 
 class Api extends BaseApi<BaseEntity> {
@@ -19,9 +19,16 @@ class Api extends BaseApi<BaseEntity> {
   };
 
   /**
+   * 根据id获取学生详情
+   */
+  studentDetail = (id: string) => {
+    return this.add<UserResult[]>(RequestType.POST, `/student/detail/${id}`);
+  };
+
+  /**
    * 分页获取试卷
    */
-  pageSimple = (param: PageParam) => {
+  pageSimple = (param: ExamPageReleasePageParam) => {
     return this.add<PageResult<ExamPageReleaseResult>>(
       RequestType.POST,
       '/page/simple',
