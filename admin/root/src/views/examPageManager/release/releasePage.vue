@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2025-02-14 16:10:02
+ * @LastEditTime: 2025-02-20 19:30:07
  * @Description: 创建试卷
 -->
 <template>
@@ -79,7 +79,6 @@
         />
       </div>
     </div>
-
     <div class="my-2 flex justify-center">
       <Select
         v-model="releaseParam.departmentId"

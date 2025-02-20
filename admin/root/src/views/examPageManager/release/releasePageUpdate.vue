@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2025-02-08 15:43:49
+ * @LastEditTime: 2025-02-20 19:32:35
  * @Description: 创建试卷
 -->
 <template>
@@ -81,14 +81,14 @@
     </div>
 
     <div class="my-2 flex justify-center">
-      <MultiSelect
-        v-model="releaseParam.userIds"
-        :options="users"
+      <Select
+        v-model="releaseParam.departmentId"
+        :options="departments"
         class="w-full"
         filter
-        option-label="username"
+        option-label="name"
         option-value="id"
-        placeholder="请选择学生"
+        placeholder="请选择班级"
       />
     </div>
     <div class="flex items-center justify-center">
@@ -108,27 +108,27 @@ import {
   Button,
   Card,
   DatePicker,
+  Select,
   InputText,
-  MultiSelect,
   Rating,
   Tag,
 } from '@yuri/components';
 import { computed, onMounted, ref } from 'vue';
 import Show from '#/views/examPageManager/components/show.vue';
 import {
-  userApi,
   examPageReleaseApi,
   examPageApi,
   checkEmpty,
   formatPrimeVueTime,
+  departmentApi,
 } from '@yuri/common';
 import {
+  Department,
   ExamPageReleaseParam,
   ExamPageResult,
   subjectOptions,
   typeOptions,
   type QuestionAndPoint,
-  type Student,
 } from '@yuri/types';
 import { message } from '@yuri/common';
 import { useRoute } from 'vue-router';
@@ -139,8 +139,7 @@ const releaseParam = ref<ExamPageReleaseParam>(new ExamPageReleaseParam());
 const examPageResult = ref<ExamPageResult>(new ExamPageResult());
 const questionMap = ref(new Map<string, QuestionAndPoint>());
 
-const users = ref<Student[]>([]);
-
+const departments = ref<Department[]>([]);
 function formatTime(seconds: number) {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
@@ -161,12 +160,11 @@ const subjectType = computed(
 );
 
 async function loadData() {
-  userApi.students().then((res) => {
-    users.value = res;
+  departmentApi.ownerDepartments().then((res) => {
+    departments.value = res;
   });
   const releaseId = route.params.id as string;
   examPageReleaseApi.detail(releaseId).then((res) => {
-    res.userIds = res.users.map((v) => v.id!!);
     releaseParam.value.copy(res);
     releaseParam.value.examPageId = res.examPage?.id as string;
     examPageApi.detail(releaseParam.value.examPageId).then((res) => {
@@ -186,11 +184,11 @@ onMounted(loadData);
 function release() {
   checkEmpty(releaseParam.value.startTime, '开始时间不能为空');
   checkEmpty(releaseParam.value.endTime, '结束时间不能为空');
-  checkEmpty(releaseParam.value.userIds, '请选择学生');
+  checkEmpty(releaseParam.value.departmentId, '请选择班级');
   releaseParam.value.startTime = formatPrimeVueTime(
-    releaseParam.value.startTime,
+    releaseParam.value.startTime!!,
   );
-  releaseParam.value.endTime = formatPrimeVueTime(releaseParam.value.endTime);
+  releaseParam.value.endTime = formatPrimeVueTime(releaseParam.value.endTime!!);
   examPageReleaseApi.releaseUpdate(releaseParam.value).then((res) => {
     if (res) {
       message.default.success('更新发布成功');
