@@ -6,16 +6,28 @@
           <template #header>
             <div class="flex flex-wrap items-center justify-between gap-2">
               <span class="text-xl font-bold">试卷列表</span>
-              <Button
-                icon="pi pi-plus"
-                raised
-                rounded
-                @click="
-                  router.push({
-                    name: 'examPage',
-                  })
-                "
-              />
+              <div class="flex items-center">
+                <SelectButton
+                  class="mr-2"
+                  @value-change="loadData"
+                  v-model="flag"
+                  :options="flagOptions"
+                  data-key="value"
+                  option-label="name"
+                  optionValue="value"
+                />
+                <Button
+                  icon="pi pi-plus"
+                  raised
+                  rounded
+                  @click="
+                    router.push({
+                      name: 'examPage',
+                    })
+                  "
+                />
+              </div>
+              
             </div>
           </template>
           <Column header="试卷标题" style="min-width: 110px">
@@ -43,6 +55,20 @@
               <SplitButton
                 :model="[
                   {
+                    visible: flag == 1,
+                    label: '阅卷',
+                    icon: 'pi pi-sparkles',
+                    command: () => {
+                      router.push({
+                        name: 'examPageReleaseReviewing',
+                        params: {
+                          id: slotProps.data.id,
+                        },
+                      });
+                    },
+                  },
+                  {
+                    visible: flag == 3,
                     label: '编辑',
                     icon: 'pi pi-pencil',
                     command: () => {
@@ -55,6 +81,7 @@
                     },
                   },
                   {
+                    visible: flag == 3,
                     label: '删除',
                     icon: 'pi pi-trash',
                     command: () => remove(slotProps.data.id!),
@@ -97,6 +124,7 @@ import {
   Paginator,
   SplitButton,
   Tag,
+  SelectButton
 } from '@yuri/components';
 import type { PageState } from 'primevue/paginator';
 import { useConfirm } from 'primevue/useconfirm';
@@ -104,16 +132,23 @@ import { router } from '#/router';
 import { EllipsisText } from '@vben/common-ui';
 import { useTabs } from '@vben/hooks';
 import { examPageReleaseApi } from '@yuri/common';
-import type { PageParam, ExamPageReleaseResult } from '@yuri/types';
+import type { ExamPageReleaseResult, ExamPageReleasePageParam } from '@yuri/types';
 import { message } from '@yuri/common';
 
 const { closeTabByKey } = useTabs();
 
+const flagOptions = [
+  { name: '全部', value: 0 },
+  { name: '已结束', value: 1 },
+  { name: '未结束', value: 2 },
+  { name: '未开始', value: 3 }
+];
 const confirm = useConfirm();
-const pageParam = ref<PageParam>({
+const flag = ref(0);
+const pageParam = ref<ExamPageReleasePageParam>({
   current: 1,
   size: 10,
-  total: 0,
+  flag: flag.value,
 });
 
 const pages = ref<ExamPageReleaseResult[]>([]);
@@ -128,6 +163,7 @@ function onPage(p: PageState) {
 }
 
 async function loadData() {
+  pageParam.value.flag = flag.value;
   examPageReleaseApi.pageSimple(pageParam.value).then((res) => {
     pages.value = res.records;
     pageParam.value.total = res.total;

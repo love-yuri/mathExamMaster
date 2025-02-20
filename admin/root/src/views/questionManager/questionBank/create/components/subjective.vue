@@ -52,6 +52,7 @@
 import { knowledgePointApi, checkEmpty, questionBankApi, checkSuccess } from '@yuri/common';
 import { QuestionBank, QuestionTypeEnum, KnowledgePoint } from '@yuri/types';
 import { message } from '@yuri/common';
+import { WangEditor, MultiSelect, Button, Rating } from '@yuri/components';
 import { ref, onMounted } from 'vue';
 
 
