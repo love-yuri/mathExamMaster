@@ -28,11 +28,15 @@ class ExamPageReleaseController: BaseController<ExamPageRelease, ExamPageRelease
 
     @PostMapping("page/simple")
     @Operation(summary = "获取当前用户所有发布的试卷")
-    fun pageSimple(param: PageParam) = R.success(baseService.pageSimple(param))
+    fun pageSimple(@RequestBody param: PageParam) = R.success(baseService.pageSimple(param))
 
     @PostMapping("detail/{id}")
     @Operation(summary = "根据id获取")
     fun detail(@PathVariable id: Long) = R.success(baseService.detail(id))
+
+    @PostMapping("student/detail/{id}")
+    @Operation(summary = "学生详情")
+    fun studentDetail(@PathVariable id: Long) = R.success(baseService.studentDetail(id))
 
     @PostMapping("delete/{id}")
     @Operation(summary = "根据id删除")

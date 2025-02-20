@@ -45,10 +45,16 @@ class DepartmentService(
     }
 
     /**
+     * 获取组织下所有学生id
+     * @param id 组织id
+     */
+    fun getUserIds(id: Long) = getUsers(id).map { it.userId }
+
+    /**
      * 获取组织下所有学生
      * @param id 组织id
      */
-    fun getUserIds(id: Long) = userDepartmentService.getUsersByDepartmentId(id).map { it.userId }
+    fun getUsers(id: Long) = userDepartmentService.getUsersByDepartmentId(id)
 
     /**
      * 根据id返回组织详情

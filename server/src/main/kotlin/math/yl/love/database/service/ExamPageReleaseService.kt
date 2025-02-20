@@ -15,12 +15,14 @@ import math.yl.love.database.domain.result.examPageRelease.ExamInfoResult
 import math.yl.love.database.domain.result.examPageRelease.ExamListResult
 import math.yl.love.database.domain.result.examPageRelease.ExamPageReleaseResult
 import math.yl.love.database.domain.result.examPageRelease.StartExamResult
+import math.yl.love.database.domain.result.user.UserResult
 import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
 import math.yl.love.database.mapper.ExamPageReleaseMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
 import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 import kotlin.reflect.KClass
 
 @Service
@@ -83,11 +85,12 @@ class ExamPageReleaseService(
      */
     fun pageSimple(param: PageParam): BasePage<ExamPageReleaseResult> {
         val query = queryWrapper.eq(ExamPageRelease::createBy, CommonUtils.username)
-        val today = LocalDateTime.now().toLocalDate()
+        val now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
         when(param.flag) {
             0 -> {}
-            1 -> query.lt(ExamPageRelease::endTime, today.atStartOfDay())
-            2 -> query.ge(ExamPageRelease::endTime, today.atStartOfDay())
+            1 -> query.lt(ExamPageRelease::endTime, now)
+            2 -> query.ge(ExamPageRelease::endTime, now)
+            3 -> query.gt(ExamPageRelease::startTime, now)
         }
         val pages = page(Page(param.current, param.size), query)
 
@@ -201,5 +204,16 @@ class ExamPageReleaseService(
             return true
         }
         return false
+    }
+
+    /**
+     * 根据发布id获取当前发布下的所有学生信息
+     * @param id 发布id
+     */
+    fun studentDetail(id: Long): List<UserResult> {
+        val release = getById(id) ?: throw BizException("发布不存在!!")
+        return userService.departmentService.getUserIds(release.classId).let {
+            userService.getResultByIds(it)
+        }
     }
 }
