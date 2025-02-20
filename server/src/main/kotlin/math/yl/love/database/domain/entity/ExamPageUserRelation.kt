@@ -44,7 +44,7 @@ data class ExamPageUserRelation (
     @TableField(value = DataBaseConstant.UPDATE_BY, fill = FieldFill.INSERT_UPDATE)
     override val updateBy: String? = null,
 
-    @Schema(description = "试卷发布")
+    @Schema(description = "试卷发布id")
     @TableField(value = "page_release_id")
     val pageReleaseId: Long,
 

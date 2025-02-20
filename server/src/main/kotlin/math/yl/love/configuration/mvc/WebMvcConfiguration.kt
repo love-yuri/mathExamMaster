@@ -1,6 +1,5 @@
 package math.yl.love.configuration.mvc
 
-import cn.dev33.satoken.`fun`.SaFunction
 import cn.dev33.satoken.interceptor.SaInterceptor
 import cn.dev33.satoken.router.SaHttpMethod
 import cn.dev33.satoken.router.SaRouter
@@ -15,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.*
 
 
 @Configuration
-class WebMvcConfiguration: WebMvcConfigurationSupport() {
+open class WebMvcConfiguration: WebMvcConfigurationSupport() {
 
     private val log = LoggerFactory.getLogger(WebMvcConfiguration::class.java)
 
@@ -96,7 +95,7 @@ class WebMvcConfiguration: WebMvcConfigurationSupport() {
     }
 
     @Bean
-    fun kotlinSerializationJsonHttpMessageConverter(): KotlinSerializationJsonHttpMessageConverter {
+    open fun kotlinSerializationJsonHttpMessageConverter(): KotlinSerializationJsonHttpMessageConverter {
         return KotlinSerializationJsonHttpMessageConverter(json)
     }
 }

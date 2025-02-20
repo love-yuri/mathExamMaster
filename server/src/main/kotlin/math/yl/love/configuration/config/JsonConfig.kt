@@ -9,18 +9,28 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
 import math.yl.love.common.base.Log.log
+import math.yl.love.common.utils.JsonUtils.parseJson
+import math.yl.love.common.utils.JsonUtils.toJson
+import math.yl.love.database.domain.result.userScore.UserScoreDetail
 import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
+import org.apache.ibatis.type.BaseTypeHandler
+import org.apache.ibatis.type.JdbcType
 import org.apache.ibatis.type.LocalDateTimeTypeHandler
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
+import java.sql.CallableStatement
+import java.sql.PreparedStatement
+import java.sql.ResultSet
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -28,7 +38,7 @@ import java.time.format.DateTimeFormatter
 
 @Configuration
 @Import(JacksonAutoConfiguration::class)
-class JsonConfig : ConfigurationCustomizer {
+open class JsonConfig : ConfigurationCustomizer {
 
     companion object {
         /**
@@ -49,6 +59,30 @@ class JsonConfig : ConfigurationCustomizer {
     override fun customize(configuration: MybatisConfiguration?) {
         configuration?.typeHandlerRegistry?.register(LocalDateTimeTypeHandler::class.java)
     }
+
+
+    class ListUserDetailTypeHandler : BaseTypeHandler<List<UserScoreDetail>>() {
+
+        override fun setNonNullParameter(ps: PreparedStatement, i: Int, parameter: List<UserScoreDetail>, jdbcType: JdbcType?) {
+            ps.setString(i, parameter.toJson()) // 存储时转换成 JSON 字符串
+        }
+
+        override fun getNullableResult(rs: ResultSet, columnName: String): List<UserScoreDetail>? {
+            log.info("222")
+            return rs.getString(columnName)?.parseJson()
+        }
+
+        override fun getNullableResult(rs: ResultSet, columnIndex: Int): List<UserScoreDetail>? {
+            log.info("333")
+            return rs.getString(columnIndex)?.parseJson()
+        }
+
+        override fun getNullableResult(cs: CallableStatement, columnIndex: Int): List<UserScoreDetail>? {
+            log.info("4444")
+            return cs.getString(columnIndex)?.parseJson()
+        }
+    }
+
 
 
     /**
@@ -89,7 +123,7 @@ class JsonConfig : ConfigurationCustomizer {
     }
 
     @Bean
-    fun objectMapper(): ObjectMapper {
+    open fun objectMapper(): ObjectMapper {
         val mapper = ObjectMapper()
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         return mapper
