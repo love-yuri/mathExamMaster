@@ -195,7 +195,7 @@ class ExamPageService(
                     QuestionInfoResult.QuestionInfo(
                         id = q.id,
                         content = q.content,
-                        options = questionBankService.parseOptions(q),
+                        options = listOf(),
                         index = ++index,
                         type = it.key,
                         answer = answer.ifEmpty { listOf("") },

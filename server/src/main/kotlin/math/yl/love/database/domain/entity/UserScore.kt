@@ -63,7 +63,7 @@ data class UserScore (
     val totalScore: Int = 100,
 
     @Schema(description = "用户得分详情")
-    @TableField(value = "detail", typeHandler = JsonConfig.ListUserDetailTypeHandler::class)
+    @TableField(value = "detail")
     val detail: List<UserScoreDetail>,
 
 ) : BaseEntity

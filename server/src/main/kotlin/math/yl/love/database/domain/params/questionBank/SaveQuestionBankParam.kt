@@ -7,6 +7,9 @@ import math.yl.love.database.domain.entity.QuestionBank
 
 @Serializable
 data class SaveQuestionBankParam(
-    @Schema(description = "题目") val questionBank: QuestionBank,
-    @Schema(description = "知识点") val knowledgePointIds: List<String>
+    @Schema(description = "题目")
+    val questionBank: QuestionBank,
+
+    @Schema(description = "知识点")
+    val knowledgePointIds: List<String>
 )

@@ -5,7 +5,6 @@ import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.LongAsStringSerializer
 import math.yl.love.database.domain.params.examPage.ExamPageQuestion
-import math.yl.love.database.domain.result.questionBank.FullQuestionBank
 import java.time.LocalDateTime
 
 @Serializable
