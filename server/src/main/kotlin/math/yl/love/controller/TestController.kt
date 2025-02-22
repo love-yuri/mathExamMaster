@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import math.yl.love.common.base.R
 import math.yl.love.common.utils.JsonUtils.parseJson
 import math.yl.love.database.domain.entity.KnowledgePoint
-import math.yl.love.database.domain.result.questionBank.SingleChoiceAnswer
 import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
 import math.yl.love.database.mapper.KnowledgePointMapper
 import math.yl.love.database.service.QuestionBankService
@@ -49,12 +48,5 @@ class TestController(
     @PostMapping("answer/test")
     fun answerTest() {
         val list = questionBankService.list().filter { it.type == QuestionTypeEnum.SINGLE_CHOICE }
-        list.forEach {
-            val answer = it.answer.parseJson<SingleChoiceAnswer>()
-            log.info("""
-                答案 -> ${answer.answer}
-                选项 -> ${answer.keys}
-            """.trimIndent())
-        }
     }
 }
