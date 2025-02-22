@@ -23,5 +23,13 @@ enum class QuestionTypeEnum(
     override fun getValue(): Int {
         return type
     }
+
+    companion object {
+        const val SINGLE_CHOICE_SRT = "SINGLE_CHOICE"
+        const val MULTIPLE_CHOICE_SRT = "MULTIPLE_CHOICE"
+        const val JUDGE_SRT = "JUDGE"
+        const val GAP_FILLING_SRT = "GAP_FILLING"
+        const val SUBJECTIVE_SRT = "SUBJECTIVE"
+    }
 }
 

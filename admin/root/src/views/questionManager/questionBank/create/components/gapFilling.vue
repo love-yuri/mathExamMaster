@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 21:02:28
- * @LastEditTime: 2025-02-08 15:11:05
+ * @LastEditTime: 2025-02-22 19:16:23
  * @Description: 填空题
 -->
 <template>
@@ -31,9 +31,7 @@
         label="添加答案"
         severity="info"
         @click="
-          answer.answer.push({
-            value: '',
-          })
+          question.answer.answer.push('')
         "
       />
       <Button
@@ -62,13 +60,13 @@
     <div class="flex flex-col">
       <div class="flex flex-col">
         <div
-          v-for="(item, index) in answer.answer"
+          v-for="(_, index) in question.answer.answer"
           :key="index"
           class="mb-2 flex h-12 flex-row items-center"
         >
           <div class="flex-shrink-0">第 {{ index + 1 }} 问答案:</div>
           <InputText
-            v-model="item.value"
+            v-model="question.answer.answer[index]"
             class="ml-2 w-full"
             placeholder="请输入答案..."
           />
@@ -84,7 +82,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { type GapFillingAnswer } from '#/views/questionManager/questionBank/types';
 import {
   Button,
   InputText,
@@ -101,15 +98,12 @@ import {
   checkSuccess,
   message,
 } from '@yuri/common';
-import { QuestionBank, QuestionTypeEnum, KnowledgePoint } from '@yuri/types';
+import { GapFillingAnswer, KnowledgePoint } from '@yuri/types';
 
 const emits = defineEmits(['cancel', 'update']);
 
 const isUpdate = ref(false);
-const question = ref(new QuestionBank(QuestionTypeEnum.GAP_FILLING));
-const answer = ref<GapFillingAnswer>({
-  answer: [],
-});
+const question = ref(new GapFillingAnswer());
 
 /**
  * 处理知识点选择
@@ -131,8 +125,7 @@ function create() {
     message.default.error('请输入题目!');
     return;
   }
-  checkListEmpty(answer.value.answer, '请输入正确答案!', (v) => v.value);
-  question.value.answer = JSON.stringify(answer.value);
+  checkListEmpty(question.value.answer.answer, '请输入正确答案!');
   const fun = isUpdate.value
     ? questionBankApi.updateSimple
     : questionBankApi.saveSimple;
@@ -156,7 +149,7 @@ function create() {
  * @param index 选项索引
  */
 function removeKey(index: number) {
-  answer.value.answer.splice(index, 1);
+  question.value.answer.answer.splice(index, 1);
 }
 
 /**
@@ -165,16 +158,14 @@ function removeKey(index: number) {
 function cleanQuestion() {
   question.value.reset();
   selectedKnowledgePoints.value.length = 0;
-  answer.value.answer.length = 0;
 }
 
 /**
  * 处理更新
  */
-function openAsUpdate(v: QuestionBank, k: KnowledgePoint[]) {
+function openAsUpdate(v: GapFillingAnswer, k: KnowledgePoint[]) {
   isUpdate.value = true;
   question.value.copy(v);
-  answer.value = JSON.parse(v.answer!) as GapFillingAnswer;
   selectedKnowledgePoints.value = k;
 }
 defineExpose({ openAsUpdate });

@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 21:03:18
- * @LastEditTime: 2025-02-08 15:13:47
+ * @LastEditTime: 2025-02-22 19:12:50
  * @Description: 主观题
 -->
 <template>
@@ -50,7 +50,7 @@
 </template>
 <script setup lang="ts">
 import { knowledgePointApi, checkEmpty, questionBankApi, checkSuccess } from '@yuri/common';
-import { QuestionBank, QuestionTypeEnum, KnowledgePoint } from '@yuri/types';
+import { KnowledgePoint, SubjectiveAnswer } from '@yuri/types';
 import { message } from '@yuri/common';
 import { WangEditor, MultiSelect, Button, Rating } from '@yuri/components';
 import { ref, onMounted } from 'vue';
@@ -59,7 +59,7 @@ import { ref, onMounted } from 'vue';
 const emits = defineEmits(['cancel', 'update']);
 
 const isUpdate = ref(false);
-const question = ref(new QuestionBank(QuestionTypeEnum.SUBJECTIVE));
+const question = ref(new SubjectiveAnswer());
 
 /**
  * 处理知识点选择
@@ -81,7 +81,6 @@ function create() {
     message.default.error('请输入题目!');
     return;
   }
-  question.value.answer = '{}';
   const fun = isUpdate.value
     ? questionBankApi.updateSimple
     : questionBankApi.saveSimple;
@@ -111,7 +110,7 @@ function cleanQuestion() {
 /**
  * 处理更新
  */
-function openAsUpdate(v: QuestionBank, k: KnowledgePoint[]) {
+function openAsUpdate(v: SubjectiveAnswer, k: KnowledgePoint[]) {
   isUpdate.value = true;
   question.value.copy(v);
   selectedKnowledgePoints.value = k;

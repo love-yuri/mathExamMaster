@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2025-02-08 14:11:14
+ * @LastEditTime: 2025-02-22 19:18:34
  * @Description: 题目
  */
 import { BaseEntity} from './base';
@@ -26,11 +26,11 @@ export const QuestionTypeMap = {
   [QuestionTypeEnum.SUBJECTIVE]: '主观题',
 };
 
-export class QuestionBank extends BaseEntity {
+export abstract class QuestionBank extends BaseEntity {
   /**
    * 答案
    */
-  answer!: string;
+  abstract answer: unknown;
 
   /**
    * 题目
@@ -45,23 +45,119 @@ export class QuestionBank extends BaseEntity {
   /**
    * 题目类型
    */
-  type!: QuestionTypeEnum;
+  abstract type: QuestionTypeEnum;
 
-  /**
-   * 手动调用reset
-   */
-  constructor(type?: QuestionTypeEnum) {
+  override reset(): void {
+    this.content = '';
+    this.difficulty = 5;
+  }
+}
+
+export class SingleChoiceAnswer extends QuestionBank {
+  override type = QuestionTypeEnum.SINGLE_CHOICE;
+  answer!: {
+    type: QuestionTypeEnum.SINGLE_CHOICE;
+    answer?: number;
+    options: string[];
+  }
+  
+  constructor() {
     super();
     this.reset();
-    if (type) {
-      this.type = type;
-    }
   }
 
   override reset(): void {
     this.content = '';
-    this.answer = '';
     this.difficulty = 5;
+    this.answer = {
+      type: QuestionTypeEnum.SINGLE_CHOICE,
+      answer: undefined,
+      options: [],
+    }
+  }
+}
+
+export class JudgeAnswer extends QuestionBank {
+  override type = QuestionTypeEnum.JUDGE;
+  answer!: {
+    type: QuestionTypeEnum.JUDGE;
+    answer: boolean;
+  };
+  
+  constructor() {
+    super();
+    this.reset();
+  }
+
+  override reset(): void {
+    this.content = '';
+    this.difficulty = 5;
+    this.answer = {
+      type: QuestionTypeEnum.JUDGE,
+      answer: false
+    }
+  }
+}
+
+export class SubjectiveAnswer extends QuestionBank {
+  override type = QuestionTypeEnum.SUBJECTIVE;
+  answer!: undefined;
+  
+  constructor() {
+    super();
+    this.reset();
+  }
+
+  override reset(): void {
+    this.content = '';
+    this.difficulty = 5;
+    this.answer = undefined;
+  }
+}
+
+export class GapFillingAnswer extends QuestionBank {
+  override type = QuestionTypeEnum.GAP_FILLING;
+  answer!: {
+    type: QuestionTypeEnum.GAP_FILLING;
+    answer: string[];
+  }
+  
+  constructor() {
+    super();
+    this.reset();
+  }
+
+  override reset(): void {
+    this.content = '';
+    this.difficulty = 5;
+    this.answer = {
+      type: QuestionTypeEnum.GAP_FILLING,
+      answer: [],
+    }
+  }
+}
+
+export class MultipleChoiceAnswer extends QuestionBank {
+  override type = QuestionTypeEnum.MULTIPLE_CHOICE;
+  answer!: {
+    type: QuestionTypeEnum.MULTIPLE_CHOICE;
+    answer: number[];
+    options: string[];
+  }
+  
+  constructor() {
+    super();
+    this.reset();
+  }
+
+  override reset(): void {
+    this.content = '';
+    this.difficulty = 5;
+    this.answer = {
+      type: QuestionTypeEnum.MULTIPLE_CHOICE,
+      answer: [],
+      options: [],
+    }
   }
 }
 

@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 20:59:15
- * @LastEditTime: 2025-02-08 15:11:43
+ * @LastEditTime: 2025-02-22 19:15:44
  * @Description: 单选题
 -->
 <template>
@@ -28,11 +28,11 @@
       <div class="flex items-center">
         <span class="ml-2 text-xl font-semibold">正确答案: &nbsp;&nbsp;</span>
         <div class="mx-2">
-          <RadioButton v-model="answer.answer" :value="false" />
+          <RadioButton v-model="question.answer.answer" :value="false" />
           <label class="ml-2">错误</label>
         </div>
         <div>
-          <RadioButton v-model="answer.answer" :value="true" />
+          <RadioButton v-model="question.answer.answer" :value="true" />
           <label class="ml-2">正确</label>
         </div>
       </div>
@@ -62,7 +62,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { type JudgeAnswer } from '#/views/questionManager/questionBank/types';
 import {
   Button,
   MultiSelect,
@@ -77,16 +76,13 @@ import {
   questionBankApi,
   checkSuccess,
 } from '@yuri/common';
-import { QuestionBank, QuestionTypeEnum, KnowledgePoint } from '@yuri/types';
+import { KnowledgePoint, JudgeAnswer } from '@yuri/types';
 import { message } from '@yuri/common';
 
 const emits = defineEmits(['cancel', 'update']);
 
 const isUpdate = ref(false);
-const question = ref(new QuestionBank(QuestionTypeEnum.JUDGE));
-const answer = ref<JudgeAnswer>({
-  answer: false,
-});
+const question = ref(new JudgeAnswer());
 
 /**
  * 处理知识点选择
@@ -104,12 +100,11 @@ const loadKnowledgePoints = async () => {
  */
 function create() {
   checkEmpty(question.value.content, '请输入题目!');
-  checkEmpty(answer.value.answer, '请选择正确答案!');
   if (question.value.content === '<p><br></p>') {
     message.default.error('请输入题目!');
     return;
   }
-  question.value.answer = JSON.stringify(answer.value);
+  // question.value.answer = JSON.stringify(answer.value);
   const fun = isUpdate.value
     ? questionBankApi.updateSimple
     : questionBankApi.saveSimple;
@@ -137,16 +132,14 @@ function create() {
 function cleanQuestion() {
   question.value.reset();
   selectedKnowledgePoints.value.length = 0;
-  answer.value.answer = false;
 }
 
 /**
  * 处理更新
  */
-function openAsUpdate(v: QuestionBank, k: KnowledgePoint[]) {
+function openAsUpdate(v: JudgeAnswer, k: KnowledgePoint[]) {
   isUpdate.value = true;
   question.value.copy(v);
-  answer.value = JSON.parse(v.answer!) as JudgeAnswer;
   selectedKnowledgePoints.value = k;
 }
 defineExpose({ openAsUpdate });

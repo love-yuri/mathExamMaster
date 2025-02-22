@@ -1,6 +1,7 @@
 package math.yl.love.database.domain.entity
 
 import com.baomidou.mybatisplus.annotation.*
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler
 import io.swagger.v3.oas.annotations.media.Schema
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
@@ -8,6 +9,8 @@ import kotlinx.serialization.Transient
 import math.yl.love.common.constant.DataBaseConstant
 import kotlinx.serialization.builtins.LongAsStringSerializer
 import math.yl.love.common.base.NoArg
+import math.yl.love.common.mybatis.typeHandler.QuestionAnswerTypeHandler
+import math.yl.love.database.domain.result.questionBank.QuestionAnswer
 import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
 import java.time.LocalDateTime
 
@@ -54,7 +57,7 @@ data class QuestionBank (
 
     @Schema(description = "答案")
     @TableField(value = "answer")
-    val answer: String,
+    val answer: QuestionAnswer,
 
     @Schema(description = "难度: 默认1")
     @TableField(value = "difficulty")

@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-13 15:04:45
- * @LastEditTime: 2025-02-08 15:10:10
+ * @LastEditTime: 2025-02-22 19:25:00
  * @Description: 预览题目
 -->
 <template>
@@ -11,9 +11,9 @@
       <template v-if="questionBank.type === QuestionTypeEnum.SINGLE_CHOICE">
         <div class="flex flex-col p-2">
           <Button
-            v-for="(item, index) in singleChoiceAnswer.keys"
+            v-for="(item, index) in singleChoiceAnswer.options"
             :key="index"
-            :label="`${String.fromCharCode(65 + index)}: ${item.value}`"
+            :label="`${String.fromCharCode(65 + index)}: ${item}`"
             :severity="
               index === singleChoiceAnswer.answer ? 'success' : 'secondary'
             "
@@ -26,9 +26,9 @@
       >
         <div class="flex flex-col p-2">
           <Button
-            v-for="(item, index) in multipleChoiceAnswer.keys"
+            v-for="(item, index) in multipleChoiceAnswer.options"
             :key="index"
-            :label="`${String.fromCharCode(65 + index)}: ${item.value}`"
+            :label="`${String.fromCharCode(65 + index)}: ${item}`"
             :severity="
               multipleChoiceAnswer.answer.includes(index)
                 ? 'success'
@@ -45,7 +45,7 @@
             :key="index"
             class="my-2 text-[20px]"
           >
-            第{{ index + 1 }}空: {{ item.value }}
+            第{{ index + 1 }}空: {{ item }}
           </div>
         </div>
       </template>
@@ -66,13 +66,14 @@
 import { useVbenModal } from '@vben/common-ui';
 import { Button, PreviewEditor } from '@yuri/components';
 import {
+  QuestionBank,
+  SingleChoiceAnswer,
   type GapFillingAnswer,
   type JudgeAnswer,
   type MultipleChoiceAnswer,
-  type SingleChoiceAnswer,
-} from '#/views/questionManager/questionBank/types';
+} from '@yuri/types';
 import { computed, ref } from 'vue';
-import { QuestionBank, QuestionTypeEnum } from '@yuri/types';
+import { QuestionTypeEnum } from '@yuri/types';
 
 /* 处理预览弹窗 */
 const [Model, modelApi] = useVbenModal({
@@ -82,25 +83,25 @@ const [Model, modelApi] = useVbenModal({
   title: '查看题目',
 });
 
-const questionBank = ref<QuestionBank>(new QuestionBank());
+const questionBank = ref<QuestionBank>(new SingleChoiceAnswer());
 
 /**
  * 解析答案
  */
 const singleChoiceAnswer = computed(
-  () => JSON.parse(questionBank.value.answer) as SingleChoiceAnswer,
+  () => (questionBank.value as SingleChoiceAnswer).answer,
 );
 
 const multipleChoiceAnswer = computed(
-  () => JSON.parse(questionBank.value.answer) as MultipleChoiceAnswer,
+  () => (questionBank.value as MultipleChoiceAnswer).answer,
 );
 
 const gapFillingAnswer = computed(
-  () => JSON.parse(questionBank.value.answer) as GapFillingAnswer,
+  () => (questionBank.value as GapFillingAnswer).answer,
 );
 
 const judgeAnswer = computed(
-  () => JSON.parse(questionBank.value.answer) as JudgeAnswer,
+  () => (questionBank.value as JudgeAnswer).answer,
 );
 
 /**

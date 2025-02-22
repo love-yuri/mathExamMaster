@@ -15,9 +15,14 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 import math.yl.love.common.base.Log.log
+import math.yl.love.common.mybatis.typeHandler.QuestionAnswerTypeHandler
 import math.yl.love.common.utils.JsonUtils.parseJson
 import math.yl.love.common.utils.JsonUtils.toJson
+import math.yl.love.database.domain.result.questionBank.QuestionAnswer
+import math.yl.love.database.domain.result.questionBank.SingleChoiceAnswer
 import math.yl.love.database.domain.result.userScore.UserScoreDetail
 import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
 import org.apache.ibatis.type.BaseTypeHandler
@@ -52,38 +57,18 @@ open class JsonConfig : ConfigurationCustomizer {
             ignoreUnknownKeys = true // 忽略未知字段
             serializersModule = SerializersModule {
                 contextual(LocalDateTime::class, LocalDateTimeSerializer)
+
+                polymorphic(QuestionAnswer::class) {
+                    subclass(SingleChoiceAnswer::class)
+                }
             }
         }
     }
 
     override fun customize(configuration: MybatisConfiguration?) {
         configuration?.typeHandlerRegistry?.register(LocalDateTimeTypeHandler::class.java)
+        configuration?.typeHandlerRegistry?.register(QuestionAnswerTypeHandler::class.java)
     }
-
-
-    class ListUserDetailTypeHandler : BaseTypeHandler<List<UserScoreDetail>>() {
-
-        override fun setNonNullParameter(ps: PreparedStatement, i: Int, parameter: List<UserScoreDetail>, jdbcType: JdbcType?) {
-            ps.setString(i, parameter.toJson()) // 存储时转换成 JSON 字符串
-        }
-
-        override fun getNullableResult(rs: ResultSet, columnName: String): List<UserScoreDetail>? {
-            log.info("222")
-            return rs.getString(columnName)?.parseJson()
-        }
-
-        override fun getNullableResult(rs: ResultSet, columnIndex: Int): List<UserScoreDetail>? {
-            log.info("333")
-            return rs.getString(columnIndex)?.parseJson()
-        }
-
-        override fun getNullableResult(cs: CallableStatement, columnIndex: Int): List<UserScoreDetail>? {
-            log.info("4444")
-            return cs.getString(columnIndex)?.parseJson()
-        }
-    }
-
-
 
     /**
      * java LocalDateTime 序列化器

@@ -25,9 +25,7 @@
         label="添加选项"
         severity="info"
         @click="
-          answer.keys.push({
-            value: '',
-          })
+          question.answer.options.push('');
         "
       />
       <Button
@@ -54,7 +52,7 @@
       />
     </div>
     <div
-      v-for="(item, index) in answer.keys"
+      v-for="(_, index) in question.answer.options"
       :key="index"
       class="my-2 flex items-center"
     >
@@ -62,14 +60,14 @@
         {{ String.fromCharCode(65 + index) }} &nbsp;
       </div>
       <RadioButton
-        v-model="answer.answer"
+        v-model="question.answer.answer"
         :input-id="index.toString()"
         :value="index"
         class="mr-2"
         name="dynamic"
       />
       <InputText
-        v-model="item.value"
+        v-model="question.answer.options[index]"
         class="w-full"
         placeholder="请输入选项内容，可为空..."
       />
@@ -83,7 +81,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { type SingleChoiceAnswer } from '#/views/questionManager/questionBank/types';
 import {
   Button,
   InputText,
@@ -100,8 +97,7 @@ import {
   questionBankApi,
 } from '@yuri/common';
 import {
-  QuestionBank,
-  QuestionTypeEnum,
+  SingleChoiceAnswer,
   type KnowledgePoint,
 } from '@yuri/types';
 import { message } from '@yuri/common';
@@ -109,11 +105,7 @@ import { message } from '@yuri/common';
 const emits = defineEmits(['cancel', 'update']);
 
 const isUpdate = ref(false);
-const question = ref(new QuestionBank(QuestionTypeEnum.SINGLE_CHOICE));
-const answer = ref<SingleChoiceAnswer>({
-  answer: undefined,
-  keys: [],
-});
+const question = ref(new SingleChoiceAnswer());
 
 /**
  * 处理知识点选择
@@ -131,16 +123,15 @@ const loadKnowledgePoints = async () => {
  */
 function create() {
   checkEmpty(question.value.content, '请输入题目!');
-  checkEmpty(answer.value.answer, '请选择正确答案!');
+  checkEmpty(question.value.answer.answer, '请选择正确答案!');
   if (question.value.content === '<p><br></p>') {
     message.default.error('请输入题目!');
     return;
   }
-  if (answer.value.keys.length < 2) {
+  if (question.value.answer.options.length < 2) {
     message.default.error('请至少添加两个选项!');
     return;
   }
-  question.value.answer = JSON.stringify(answer.value);
   const fun = isUpdate.value
     ? questionBankApi.updateSimple
     : questionBankApi.saveSimple;
@@ -164,15 +155,15 @@ function create() {
  * @param index 选项索引
  */
 function removeKey(index: number) {
-  answer.value.keys.splice(index, 1);
-  const answerIndex = answer.value.answer!;
+  question.value.answer.options.splice(index, 1);
+  const answerIndex = question.value.answer.answer;
   if (answerIndex === undefined) {
     return;
   }
   if (answerIndex === index) {
-    answer.value.answer = undefined;
+    question.value.answer.answer = undefined;
   } else if (answerIndex > index) {
-    answer.value.answer = answerIndex - 1;
+    question.value.answer.answer = answerIndex - 1;
   }
 }
 
@@ -182,17 +173,16 @@ function removeKey(index: number) {
 function cleanQuestion() {
   question.value.reset();
   selectedKnowledgePoints.value.length = 0;
-  answer.value.answer = undefined;
-  answer.value.keys.length = 0;
+  question.value.answer.answer = undefined;
+  question.value.answer.options.length = 0;
 }
 
 /**
  * 处理更新
  */
-function openAsUpdate(v: QuestionBank, k: KnowledgePoint[]) {
+function openAsUpdate(v: SingleChoiceAnswer, k: KnowledgePoint[]) {
   isUpdate.value = true;
   question.value.copy(v);
-  answer.value = JSON.parse(v.answer!) as SingleChoiceAnswer;
   selectedKnowledgePoints.value = k;
 }
 defineExpose({ openAsUpdate });

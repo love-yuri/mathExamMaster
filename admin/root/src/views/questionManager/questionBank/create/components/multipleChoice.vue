@@ -25,9 +25,7 @@
         label="添加选项"
         severity="info"
         @click="
-          answer.keys.push({
-            value: '',
-          })
+          question.answer.options.push('')
         "
       />
       <Button
@@ -54,7 +52,7 @@
       />
     </div>
     <div
-      v-for="(item, index) in answer.keys"
+      v-for="(_, index) in question.answer.options"
       :key="index"
       class="my-2 flex items-center"
     >
@@ -62,14 +60,14 @@
         {{ String.fromCharCode(65 + index) }} &nbsp;
       </div>
       <Checkbox
-        v-model="answer.answer"
+        v-model="question.answer.answer"
         :input-id="index.toString()"
         :value="index"
         class="mr-2"
         name="dynamic"
       />
       <InputText
-        v-model="item.value"
+        v-model="question.answer.options[index]"
         class="w-full"
         placeholder="请输入选项内容，可为空..."
       />
@@ -83,7 +81,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { type MultipleChoiceAnswer } from '#/views/questionManager/questionBank/types';
 import {
   Button,
   Checkbox,
@@ -98,18 +95,15 @@ import {
   checkEmpty,
   questionBankApi,
   checkSuccess,
+  checkListEmpty,
 } from '@yuri/common';
-import { QuestionBank, QuestionTypeEnum, KnowledgePoint } from '@yuri/types';
+import { KnowledgePoint, MultipleChoiceAnswer } from '@yuri/types';
 import { message } from '@yuri/common';
 
 const emits = defineEmits(['update', 'cancel']);
 
 const isUpdate = ref(false);
-const question = ref(new QuestionBank(QuestionTypeEnum.MULTIPLE_CHOICE));
-const answer = ref<MultipleChoiceAnswer>({
-  answer: [],
-  keys: [],
-});
+const question = ref(new MultipleChoiceAnswer());
 
 /**
  * 处理知识点选择
@@ -127,16 +121,15 @@ const loadKnowledgePoints = async () => {
  */
 function create() {
   checkEmpty(question.value.content, '请输入题目!');
-  checkEmpty(answer.value.answer, '请选择正确答案!');
+  checkListEmpty(question.value.answer.answer, '请选择正确答案!');
   if (question.value.content === '<p><br></p>') {
     message.default.error('请输入题目!');
     return;
   }
-  if (answer.value.keys.length < 2) {
+  if (question.value.answer.options.length < 2) {
     message.default.error('请至少添加两个选项!');
     return;
   }
-  question.value.answer = JSON.stringify(answer.value);
   const fun = isUpdate.value
     ? questionBankApi.updateSimple
     : questionBankApi.saveSimple;
@@ -160,15 +153,11 @@ function create() {
  * @param index 选项索引
  */
 function removeKey(index: number) {
-  answer.value.keys.splice(index, 1);
-  const an = answer.value.answer!;
-  if (an === undefined) {
-    return;
-  }
-  answer.value.answer = an.filter((item) => item !== index);
-  answer.value.answer.forEach((i, index) => {
+  question.value.answer.options.splice(index, 1);
+  question.value.answer.answer = question.value.answer.answer.filter((item) => item !== index);
+  question.value.answer.answer.forEach((i, index) => {
     if (i > index) {
-      answer.value.answer[index]!--;
+      question.value.answer.answer[index]!--;
     }
   });
 }
@@ -179,17 +168,14 @@ function removeKey(index: number) {
 function cleanQuestion() {
   question.value.reset();
   selectedKnowledgePoints.value.length = 0;
-  answer.value.answer.length = 0;
-  answer.value.keys.length = 0;
 }
 
 /**
  * 处理更新
  */
-function openAsUpdate(v: QuestionBank, k: KnowledgePoint[]) {
+function openAsUpdate(v: MultipleChoiceAnswer, k: KnowledgePoint[]) {
   isUpdate.value = true;
   question.value.copy(v);
-  answer.value = JSON.parse(v.answer!) as MultipleChoiceAnswer;
   selectedKnowledgePoints.value = k;
 }
 defineExpose({ openAsUpdate });
