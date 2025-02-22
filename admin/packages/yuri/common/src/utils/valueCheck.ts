@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-03 20:09:48
- * @LastEditTime: 2024-11-15 19:32:17
+ * @LastEditTime: 2025-02-22 17:17:13
  * @Description: 数据检查
  */
 
@@ -52,12 +52,9 @@ export function checkListEmpty<T>(
   msg: string = EmptyMsg,
   needToCheck?: (item: T) => any,
 ) {
-  if (!value) {
+  if (!value || value.length === 0) {
     message.error(msg);
     throw new Error(msg);
-  }
-
-  if (value.length === 0) {
     return;
   }
 
