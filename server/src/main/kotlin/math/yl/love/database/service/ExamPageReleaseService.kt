@@ -111,8 +111,8 @@ class ExamPageReleaseService(
      * 根据id获取详细数据
      * @param id 主键id
      */
-    fun detail(id: Long): ExamPageReleaseResult {
-        val it = getById(id)
+    fun detail(id: Long): ExamPageReleaseResult? {
+        val it = getById(id) ?: return null
         return ExamPageReleaseResult(
             id = it.id!!,
             createTime = it.createTime,
@@ -210,10 +210,5 @@ class ExamPageReleaseService(
      * 根据发布id获取当前发布下的所有学生信息
      * @param id 发布id
      */
-    fun studentDetail(id: Long): List<UserResult> {
-        val release = getById(id) ?: throw BizException("发布不存在!!")
-        return userService.departmentService.getUserIds(release.classId).let {
-            userService.getResultByIds(it)
-        }
-    }
+    fun studentDetail(id: Long) = baseMapper.studentDetail(id)
 }

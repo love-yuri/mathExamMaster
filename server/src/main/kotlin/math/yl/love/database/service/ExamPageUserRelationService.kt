@@ -2,9 +2,11 @@ package math.yl.love.database.service
 
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import math.yl.love.common.mybatis.BaseService
+import math.yl.love.common.utils.JsonUtils.toJson
 import math.yl.love.configuration.exception.BizException
 import math.yl.love.database.domain.entity.ExamPageUserRelation
 import math.yl.love.database.domain.params.examPageRelease.ExamListParam
+import math.yl.love.database.domain.result.examPageUserRelation.UserAnswer
 import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
 import math.yl.love.database.mapper.ExamPageUserRelationMapper
 import org.springframework.stereotype.Service
@@ -93,10 +95,10 @@ class ExamPageUserRelationService(
      * @param newAnswer 新答案
      * @return 是否更新成功
      */
-    fun updateAnswer(relationId: Long, newAnswer: String): Boolean {
+    fun updateAnswer(relationId: Long, newAnswer: List<UserAnswer>): Boolean {
         val updateWrapper = KtUpdateWrapper(ExamPageUserRelation::class.java)
             .eq(ExamPageUserRelation::id, relationId)
-            .set(ExamPageUserRelation::answer, newAnswer)
+            .set(ExamPageUserRelation::answer, newAnswer.toJson())
 
         return baseMapper.update(updateWrapper) > 0
     }

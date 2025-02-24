@@ -3,6 +3,7 @@ package math.yl.love.database.mapper
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import math.yl.love.database.domain.entity.ExamPageRelease
 import math.yl.love.database.domain.result.examPageRelease.ExamInfoResult
+import math.yl.love.database.domain.result.examPageRelease.StudentDetailResult
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Select
 
@@ -30,4 +31,19 @@ interface ExamPageReleaseMapper: BaseMapper<ExamPageRelease> {
         and exam_page_release.deleted = false and exam_page_user_relation.deleted = false;
     """)
     fun examInfo(id: Long, userId: Long?): ExamInfoResult?
+
+
+    @Select("""
+            select
+            user_id,
+            epur.id as relation_id,
+            nick_name,
+            user_name
+        from exam_page_release epr
+        left join exam_page_user_relation epur
+        on epr.id = epur.page_release_id
+        left join user on user.id = epur.user_id
+             where epr.id = #{id}
+    """)
+    fun studentDetail(id: Long): List<StudentDetailResult>
 }

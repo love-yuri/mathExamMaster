@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.LongAsStringSerializer
+import math.yl.love.database.domain.result.examPageUserRelation.UserAnswer
 import java.time.LocalDateTime
 
 @Serializable
@@ -12,5 +13,5 @@ data class UpdateUserAnswerParam (
     val relationId: Long,
 
     @Schema(description = "用户答案")
-    val answer: Map<Long, List<String>>
+    val userAnswers: List<UserAnswer>,
 )

@@ -9,6 +9,22 @@ import kotlin.reflect.KClass
 
 @Service
 @Transactional(readOnly = true)
-class UserScoreService: BaseService<UserScore, UserScoreMapper>() {
+class UserScoreService(
+    private val examPageUserRelationService: ExamPageUserRelationService,
+    private val questionBankService: QuestionBankService,
+    private val examPageReleaseService: ExamPageReleaseService,
+): BaseService<UserScore, UserScoreMapper>() {
     override val entityClass: KClass<UserScore> get() = UserScore::class
+
+    /**
+     * 根据relation id查询用户的答题信息
+     */
+    fun detail(id: Long) {
+        val relation = examPageUserRelationService.getById(id) ?: throw RuntimeException("用户答题为找到")
+        val examPageRelease = examPageReleaseService.detail(relation.pageReleaseId)
+        if (relation.answer == null) {
+
+        }
+        val questions = questionBankService.findByIds(relation.answer.map { it.questionId })
+    }
 }

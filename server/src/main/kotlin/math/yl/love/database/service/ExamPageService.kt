@@ -8,6 +8,7 @@ import math.yl.love.common.utils.JsonUtils.toJson
 import math.yl.love.configuration.exception.BizException
 import math.yl.love.database.domain.entity.ExamPage
 import math.yl.love.database.domain.entity.ExamPageQuestionRelation
+import math.yl.love.database.domain.entity.ExamPageUserRelation
 import math.yl.love.database.domain.entity.QuestionBank
 import math.yl.love.database.domain.params.examPage.ExamPageQuestion
 import math.yl.love.database.domain.params.examPage.ReleasePageParam
@@ -15,6 +16,8 @@ import math.yl.love.database.domain.params.examPage.UpdateUserAnswerParam
 import math.yl.love.database.domain.params.examPageRelease.QuestionInfoParam
 import math.yl.love.database.domain.result.examPage.ExamPageResult
 import math.yl.love.database.domain.result.examPage.QuestionInfoResult
+import math.yl.love.database.domain.result.examPageUserRelation.UserAnswer
+import math.yl.love.database.domain.result.questionBank.*
 import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
 import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
 import math.yl.love.database.mapper.ExamPageMapper
@@ -175,31 +178,48 @@ class ExamPageService(
     }
 
     /**
-     * 根据id获取试卷考试信息
-     * @param id 试卷id
+     * 获取用户的答案，如果不存在则赋值默认值
+     */
+    fun getUserAnswer(questions: List<QuestionBank>, relation: ExamPageUserRelation): List<UserAnswer> {
+        if (relation.answer == null || relation.answer.size != questions.size) {
+            return questions.map {
+                UserAnswer(
+                    questionId = it.id!!,
+                    hasAnswer = false,
+                    questionAnswer = when(it.answer) {
+                        is GapFillingAnswer -> it.answer.copy(
+                            answer = it.answer.answer.map { "" }
+                        )
+                        is JudgeAnswer -> it.answer.copy(answer = null)
+                        is MultipleChoiceAnswer -> it.answer.copy(answer = listOf())
+                        is SingleChoiceAnswer -> it.answer.copy(answer = null)
+                        is SubjectiveAnswer -> it.answer.copy(answer = "")
+                    }
+                )
+            }
+        }
+        return relation.answer
+    }
+
+    /**
+     * 获取问题信息
+     * @param param 题目信息参数
      */
     fun questionInfo(param: QuestionInfoParam): List<QuestionInfoResult> {
-        val questions = baseMapper.questionInfo(param.examPageId).groupBy { it.type }
+        val questions = baseMapper.questionInfo(param.examPageId)
+        val relation = examPageUserRelationService.getById(param.relationId) ?: throw BizException("详情不存在")
+        val answers = getUserAnswer(questions, relation).associateBy { it.questionId }
         var index = 0
-        val answerMap = getUserAnswer(param.relationId)
-        return questions.map {
+        return questions.groupBy { it.type }.map {
             QuestionInfoResult(
                 type = it.key,
                 infos = it.value.map { q ->
-                    val answer = answerMap[q.id]?.takeIf { k ->
-                        k.any {
-                            t -> t.isNotEmpty() && t.trim() != ""
-                        }
-                    } ?: listOf()
-
                     QuestionInfoResult.QuestionInfo(
+                        type = it.key,
                         id = q.id,
                         content = q.content,
-                        options = listOf(),
                         index = ++index,
-                        type = it.key,
-                        answer = answer.ifEmpty { listOf("") },
-                        hasAnswer = answer.isNotEmpty()
+                        userAnswer = answers[q.id]!!
                     )
                 }
             )
@@ -207,23 +227,11 @@ class ExamPageService(
     }
 
     /**
-     * 根据详情id获取答案信息
-     */
-    fun getUserAnswer(id: Long): Map<Long,List<String>> {
-        val relation = examPageUserRelationService.getById(id) ?: throw BizException("未找到考试关联!!")
-        if (relation.answer.isNullOrBlank()) {
-            return emptyMap()
-        }
-        return relation.answer.parseJson<Map<Long, List<String>>>()
-    }
-
-    /**
      * 更新用户答案
      */
     @Transactional(rollbackFor = [Exception::class])
     fun updateUserAnswer(param: UpdateUserAnswerParam): Boolean {
-        val newAnswer = param.answer.toJson()
-        return examPageUserRelationService.updateAnswer(param.relationId, newAnswer)
+        return examPageUserRelationService.updateAnswer(param.relationId, param.userAnswers)
     }
 
     /**
