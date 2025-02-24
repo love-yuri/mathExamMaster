@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-23 18:55:25
- * @LastEditTime: 2025-02-08 16:44:15
+ * @LastEditTime: 2025-02-24 11:59:30
  * @Description: 
 -->
 <template>
@@ -45,7 +45,7 @@
                     v-for="question in item.infos"
                     :key="question.id"
                     :label="`${question.index}`"
-                    :severity="`${question.id === currentQuestionInfo?.id ? 'info' : question?.hasAnswer ? 'success' : 'secondary'} `"
+                    :severity="`${question.id === currentQuestionInfo?.id ? 'info' : question?.userAnswer.hasAnswer ? 'success' : 'secondary'} `"
                     raised
                     rounded
                     @click="selectQuestion(question)"
@@ -60,111 +60,11 @@
 
     <!-- 主答题区域 -->
     <div class="h-full flex-grow p-6">
-      <div v-if="currentQuestionInfo">
-        <PreviewEditor :content="currentQuestionInfo.content" />
-        <Card class="mt-4">
-          <template #content>
-            <template
-              v-if="currentQuestionInfo.type === QuestionTypeEnum.SINGLE_CHOICE"
-            >
-              <div class="flex flex-col p-2">
-                <Button
-                  v-for="(item, index) in currentQuestionInfo.options"
-                  :key="index"
-                  :label="`${String.fromCharCode(65 + index)}: ${item}`"
-                  :severity="
-                    currentQuestionInfo.answer[0]?.includes(index.toString())
-                      ? 'success'
-                      : 'secondary'
-                  "
-                  class="my-2"
-                  @click="chooseAnswer(index)"
-                />
-              </div>
-            </template>
-            <template
-              v-else-if="
-                currentQuestionInfo.type === QuestionTypeEnum.MULTIPLE_CHOICE
-              "
-            >
-              <div class="flex flex-col p-2">
-                <Button
-                  v-for="(item, index) in currentQuestionInfo.options"
-                  :key="index"
-                  :label="`${String.fromCharCode(65 + index)}: ${item}`"
-                  :severity="
-                    currentQuestionInfo.answer.includes(index.toString())
-                      ? 'success'
-                      : 'secondary'
-                  "
-                  class="my-2"
-                  @click="chooseAnswer(index)"
-                />
-              </div>
-            </template>
-            <template
-              v-else-if="
-                currentQuestionInfo.type === QuestionTypeEnum.GAP_FILLING
-              "
-            >
-              <div class="flex flex-col p-2">
-                <div
-                  v-for="(_, index) in currentQuestionInfo.options"
-                  :key="index"
-                  class="my-2 flex text-[20px]"
-                >
-                  <span class="mr-2 flex-shrink-0">第{{ index + 1 }}空:</span>
-                  <InputText
-                    v-model="currentQuestionInfo.answer[index]"
-                    class="w-full"
-                    @change="chooseAnswer(index)"
-                  />
-                </div>
-              </div>
-            </template>
-            <template
-              v-else-if="currentQuestionInfo.type === QuestionTypeEnum.JUDGE"
-            >
-              <div class="mt-2 flex items-center">
-                <Button
-                  :severity="
-                    currentQuestionInfo.answer[0] === '0'
-                      ? 'success'
-                      : 'secondary'
-                  "
-                  icon="pi pi-check"
-                  rounded
-                  @click="chooseAnswer(0)"
-                />
-                <Button
-                  :severity="
-                    currentQuestionInfo.answer[0] === '1'
-                      ? 'success'
-                      : 'secondary'
-                  "
-                  class="ml-2"
-                  icon="pi pi-times"
-                  rounded
-                  @click="chooseAnswer(1)"
-                />
-              </div>
-            </template>
-            <template
-              v-else-if="
-                currentQuestionInfo.type === QuestionTypeEnum.SUBJECTIVE
-              "
-            >
-              <div v-if="showEditor" class="mt-2 flex items-center">
-                <WangEditor
-                  v-model:content="currentQuestionInfo.answer[0]!!"
-                  placeholder="请输入答案..."
-                  @change="editorContentChange"
-                />
-              </div>
-            </template>
-          </template>
-        </Card>
-      </div>
+      <component
+        @updateAnswer="updateAnswer"
+        :is="currentCommponent"  
+        v-model:question="currentQuestionInfo"
+      />
     </div>
     <ConfirmDialog group="overExam">
       <template #container="{ message, acceptCallback, rejectCallback }">
@@ -199,18 +99,20 @@ import {
   Button,
   Card,
   ConfirmDialog,
-  InputText,
-  PreviewEditor,
-  WangEditor,
 } from '@yuri/components';
-import { computed, nextTick, onUnmounted, ref, watchEffect } from 'vue';
+import { computed, markRaw, nextTick, onUnmounted, ref, watchEffect } from 'vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { router } from '#/router';
-import type { QuestionInfoResult, QuestionInfo, ExamInfoResult } from '@yuri/types';
+import type { QuestionInfoResult, QuestionInfo, ExamInfoResult, UserAnswer } from '@yuri/types';
 import { QuestionTypeMap } from '@yuri/types';
 import { debounce } from '@yuri/common';
 import { examPageApi, message } from '@yuri/common';
 import { QuestionTypeEnum } from '@yuri/types';
+import SingleChoice from './answerQuestion/singleChoice.vue';
+import MultipleChoice from './answerQuestion/multipleChoice.vue';
+import Judge from './answerQuestion/judge.vue';
+import GapFilling from './answerQuestion/gapFilling.vue';
+import Subjective from './answerQuestion/subjective.vue';
 
 const { examInfo } = defineProps<{
   examInfo: ExamInfoResult;
@@ -219,6 +121,21 @@ const { examInfo } = defineProps<{
 /**
  * 处理题目显示和答案
  */
+const currentCommponent = computed(() => {
+  switch (currentQuestionInfo.value?.type) {
+    case QuestionTypeEnum.SINGLE_CHOICE:
+      return markRaw(SingleChoice);
+    case QuestionTypeEnum.MULTIPLE_CHOICE:
+      return markRaw(MultipleChoice);
+    case QuestionTypeEnum.GAP_FILLING:
+      return markRaw(GapFilling);
+    case QuestionTypeEnum.JUDGE:
+      return markRaw(Judge);
+    case QuestionTypeEnum.SUBJECTIVE:
+      return markRaw(Subjective);
+  }
+});
+
 const questions = ref<QuestionInfoResult[]>([]);
 const currentQuestionInfo = ref<QuestionInfo>();
 const showEditor = ref(false);
@@ -237,15 +154,12 @@ async function selectQuestion(question: QuestionInfo) {
  * 更新用户答案
  */
 const updateAnswer = debounce(() => {
-  const param: any = {};
-  questions.value.forEach((k, _) => {
-    k.infos.forEach((q) => {
-      param[q.id!!] = Array.isArray(q.answer) ? q.answer : [];
-    });
+  const param: UserAnswer[] = questions.value.flatMap((item) => {
+    return item.infos.map((info) => info.userAnswer);
   });
   examPageApi
     .updateUserAnswer({
-      answer: param,
+      userAnswers: param,
       relationId: examInfo.relationId,
     })
     .then(() => {
@@ -272,51 +186,51 @@ function overExam() {
   });
 }
 
-function chooseAnswer(index_: number) {
-  if (!currentQuestionInfo.value) {
-    return;
-  }
-  const index = index_.toString();
-  switch (currentQuestionInfo.value?.type) {
-    // 单选
-    case QuestionTypeEnum.SINGLE_CHOICE: {
-      currentQuestionInfo.value.answer = [index];
-      break;
-    }
-    // 多选
-    case QuestionTypeEnum.MULTIPLE_CHOICE: {
-      if (currentQuestionInfo.value.answer.includes(index)) {
-        currentQuestionInfo.value.answer =
-          currentQuestionInfo.value.answer.filter((item) => item !== index);
-      } else {
-        currentQuestionInfo.value.answer.push(index);
-      }
-      break;
-    }
-    // 判断
-    case QuestionTypeEnum.JUDGE: {
-      currentQuestionInfo.value.answer = [index];
-      break;
-    }
-  }
-  currentQuestionInfo.value!!.hasAnswer =
-    currentQuestionInfo.value!!.answer.length > 0;
-  if (currentQuestionInfo.value?.type === QuestionTypeEnum.GAP_FILLING) {
-    let hasAnswer = false;
-    currentQuestionInfo.value.answer.forEach((k) => {
-      if (k !== '') {
-        hasAnswer = true;
-      }
-    });
-    currentQuestionInfo.value.hasAnswer = hasAnswer;
-  }
-  updateAnswer();
-}
+// function chooseAnswer(index_: number) {
+//   if (!currentQuestionInfo.value) {
+//     return;
+//   }
+//   const index = index_.toString();
+//   switch (currentQuestionInfo.value?.type) {
+//     // 单选
+//     case QuestionTypeEnum.SINGLE_CHOICE: {
+//       currentQuestionInfo.value.answer = [index];
+//       break;
+//     }
+//     // 多选
+//     case QuestionTypeEnum.MULTIPLE_CHOICE: {
+//       if (currentQuestionInfo.value.answer.includes(index)) {
+//         currentQuestionInfo.value.answer =
+//           currentQuestionInfo.value.answer.filter((item) => item !== index);
+//       } else {
+//         currentQuestionInfo.value.answer.push(index);
+//       }
+//       break;
+//     }
+//     // 判断
+//     case QuestionTypeEnum.JUDGE: {
+//       currentQuestionInfo.value.answer = [index];
+//       break;
+//     }
+//   }
+//   currentQuestionInfo.value!!.hasAnswer =
+//     currentQuestionInfo.value!!.answer.length > 0;
+//   if (currentQuestionInfo.value?.type === QuestionTypeEnum.GAP_FILLING) {
+//     let hasAnswer = false;
+//     currentQuestionInfo.value.answer.forEach((k) => {
+//       if (k !== '') {
+//         hasAnswer = true;
+//       }
+//     });
+//     currentQuestionInfo.value.hasAnswer = hasAnswer;
+//   }
+//   updateAnswer();
+// }
 
-const editorContentChange = debounce(() => {
-  currentQuestionInfo.value!!.hasAnswer = true;
-  updateAnswer();
-}, 4000);
+// const editorContentChange = debounce(() => {
+//   currentQuestionInfo.value!!.hasAnswer = true;
+//   updateAnswer();
+// }, 4000);
 
 /**
  * 处理倒计时
