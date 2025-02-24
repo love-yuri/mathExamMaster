@@ -102,4 +102,16 @@ class ExamPageUserRelationService(
 
         return baseMapper.update(updateWrapper) > 0
     }
+
+    @Transactional(rollbackFor = [Exception::class])
+    fun overExam(id: Long): Boolean {
+        val relation = getById(id) ?: throw BizException("未找到考试关联!!")
+        if (relation.status != ExamPageStatusEnum.DOING) {
+            throw BizException("试卷状态不正确!!!")
+        }
+        return updateWrapper
+            .eq(ExamPageUserRelation::id, relation.id!!)
+            .set(ExamPageUserRelation::status, ExamPageStatusEnum.FINISHED)
+            .update() > 0
+    }
 }

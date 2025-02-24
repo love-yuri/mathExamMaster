@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-02-23 19:12:39
- * @LastEditTime: 2025-02-24 11:33:22
+ * @LastEditTime: 2025-02-24 19:45:44
  * @Description: 
 -->
 <template>
@@ -37,6 +37,13 @@ const emit = defineEmits(['updateAnswer']);
 
 const answer = computed(() => question.value?.userAnswer.questionAnswer as GapFillingAw);
 function change() {
+  let hasAnswer = true;
+  for (const item of answer.value.answer) {
+    if (item === '') {
+      hasAnswer = false;
+    }
+  }
+  question.value!!.userAnswer.hasAnswer = hasAnswer;
   emit('updateAnswer');
 }
 

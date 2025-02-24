@@ -5,7 +5,7 @@
  * @Description:
  */
 import { BaseEntity} from './base';
-import type { FullQuestionBank, QuestionAnswer, QuestionTypeEnum } from './questionBankApi';
+import type { FullQuestionBank, QuestionTypeEnum } from './questionBankApi';
 
 export interface ExamPageQuestionRelation {
   fullQuestionBank?: FullQuestionBank;

@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2025-02-23 21:05:42
+ * @LastEditTime: 2025-02-24 19:35:45
  * @Description: 题目
  */
 import { BaseEntity } from './base';
@@ -141,7 +141,7 @@ export class GapFillingAnswer extends QuestionAnswer {
     };
   }
 }
-
+export type QuestionBank = QuestionAnswer;
 export class MultipleChoiceAnswer extends QuestionAnswer {
   override type = QuestionTypeEnum.MULTIPLE_CHOICE;
   answer!: {
@@ -168,12 +168,12 @@ export class MultipleChoiceAnswer extends QuestionAnswer {
 
 export interface SaveQuestionAnswerParam {
   knowledgePointIds: string[];
-  QuestionAnswer: QuestionAnswer;
+  questionBank: QuestionAnswer;
 }
 
 export interface FullQuestionBank {
   knowledgePoints: KnowledgePoint[];
-  QuestionAnswer: QuestionAnswer;
+  questionBank: QuestionAnswer;
 }
 
 export type SingleChoiceAw = SingleChoiceAnswer['answer'];

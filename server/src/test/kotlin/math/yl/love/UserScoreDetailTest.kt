@@ -3,10 +3,8 @@ package math.yl.love
 import math.yl.love.common.utils.JsonUtils.parseJson
 import math.yl.love.database.domain.entity.QuestionBank
 import math.yl.love.database.domain.entity.UserScore
-import math.yl.love.database.domain.result.questionBank.GapFillingAnswer
-import math.yl.love.database.domain.result.questionBank.JudgeAnswer
-import math.yl.love.database.domain.result.questionBank.MultipleChoiceAnswer
-import math.yl.love.database.domain.result.questionBank.SingleChoiceAnswer
+import math.yl.love.database.domain.result.examPageUserRelation.UserAnswer
+import math.yl.love.database.domain.result.questionBank.*
 import math.yl.love.database.domain.result.userScore.UserScoreDetail
 import math.yl.love.database.domain.typeEnum.QuestionTypeEnum.*
 import math.yl.love.database.service.QuestionBankService
@@ -34,10 +32,15 @@ class UserScoreDetailTest {
     @Test
     fun createTest() {
         val questions = questionBankService.list()
-        val details = questions.map {
+        val details: List<UserScoreDetail> = questions.map {
             UserScoreDetail(
                 questionId = it.id!!,
                 questionAnswer = it.answer,
+                userAnswer = UserAnswer(
+                    questionId = it.id!!,
+                    hasAnswer = false,
+                    questionAnswer = JudgeAnswer()
+                )
             )
         }
         userScoreService.save(UserScore(

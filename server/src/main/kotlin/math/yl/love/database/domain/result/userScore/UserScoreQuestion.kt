@@ -1,27 +1,24 @@
 package math.yl.love.database.domain.result.userScore
 
+import com.baomidou.mybatisplus.annotation.TableField
 import io.swagger.v3.oas.annotations.media.Schema
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 import math.yl.love.database.domain.entity.User
-import math.yl.love.database.domain.result.examPageUserRelation.UserAnswer
 import math.yl.love.database.domain.result.questionBank.QuestionAnswer
 
 @Serializable
-data class UserScoreDetail (
+data class UserScoreQuestion (
     @Schema(description = "题目id")
+    @TableField("question_id")
     val questionId: Long,
 
-    @Schema(description = "问题答案")
+    @Schema(description = "答案")
+    @TableField("question_answer")
     val questionAnswer: QuestionAnswer,
 
-    @Schema(description = "用户答案")
-    val userAnswer: UserAnswer,
-
-    @Schema(description = "用户得分")
-    val score: Int = 0,
-
-    @Schema(description = "该题总分")
-    val totalScore: Int = 0,
+    @Schema(description = "题目得分")
+    @TableField("question_score")
+    val questionScore: Int
 )

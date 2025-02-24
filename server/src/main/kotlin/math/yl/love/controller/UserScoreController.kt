@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "用户得分记录表")
 class UserScoreController: BaseController<UserScore, UserScoreMapper, UserScoreService>() {
 
-    @PostMapping("detail/#{relationId}")
+    @PostMapping("detail")
     @Operation(summary = "获取学生本次的答题信息")
-    fun detail(@PathVariable relationId: Long) = R.success(baseService.detail(relationId))
+    fun detail(@RequestBody relationId: Long) = R.success(baseService.detail(relationId))
 
 }

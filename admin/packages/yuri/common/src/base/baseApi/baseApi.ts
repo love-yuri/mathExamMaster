@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-08-11 16:05:57
- * @LastEditTime: 2025-02-08 14:33:34
+ * @LastEditTime: 2025-02-24 20:30:36
  * @Description: 基础api
  */
 
@@ -35,6 +35,9 @@ export abstract class BaseApi<T extends BaseEntity> {
   ): Promise<V> => {
     if (url.startsWith('/')) {
       url = url.slice(1);
+    }
+    if (url.endsWith('/')) {
+      url = url.slice(0, -1);
     }
 
     return baseApi({

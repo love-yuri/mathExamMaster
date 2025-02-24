@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-23 18:55:25
- * @LastEditTime: 2025-02-24 11:59:30
+ * @LastEditTime: 2025-02-24 19:44:26
  * @Description: 
 -->
 <template>
@@ -165,7 +165,7 @@ const updateAnswer = debounce(() => {
     .then(() => {
       message.default.success('保存成功');
     });
-}, 5000);
+}, 2000);
 
 /**
  * 交卷
@@ -185,52 +185,6 @@ function overExam() {
     message: '是否要提前交卷?',
   });
 }
-
-// function chooseAnswer(index_: number) {
-//   if (!currentQuestionInfo.value) {
-//     return;
-//   }
-//   const index = index_.toString();
-//   switch (currentQuestionInfo.value?.type) {
-//     // 单选
-//     case QuestionTypeEnum.SINGLE_CHOICE: {
-//       currentQuestionInfo.value.answer = [index];
-//       break;
-//     }
-//     // 多选
-//     case QuestionTypeEnum.MULTIPLE_CHOICE: {
-//       if (currentQuestionInfo.value.answer.includes(index)) {
-//         currentQuestionInfo.value.answer =
-//           currentQuestionInfo.value.answer.filter((item) => item !== index);
-//       } else {
-//         currentQuestionInfo.value.answer.push(index);
-//       }
-//       break;
-//     }
-//     // 判断
-//     case QuestionTypeEnum.JUDGE: {
-//       currentQuestionInfo.value.answer = [index];
-//       break;
-//     }
-//   }
-//   currentQuestionInfo.value!!.hasAnswer =
-//     currentQuestionInfo.value!!.answer.length > 0;
-//   if (currentQuestionInfo.value?.type === QuestionTypeEnum.GAP_FILLING) {
-//     let hasAnswer = false;
-//     currentQuestionInfo.value.answer.forEach((k) => {
-//       if (k !== '') {
-//         hasAnswer = true;
-//       }
-//     });
-//     currentQuestionInfo.value.hasAnswer = hasAnswer;
-//   }
-//   updateAnswer();
-// }
-
-// const editorContentChange = debounce(() => {
-//   currentQuestionInfo.value!!.hasAnswer = true;
-//   updateAnswer();
-// }, 4000);
 
 /**
  * 处理倒计时

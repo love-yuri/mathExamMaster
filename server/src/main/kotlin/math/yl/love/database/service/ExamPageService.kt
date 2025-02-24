@@ -1,15 +1,10 @@
 package math.yl.love.database.service
 
+import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import math.yl.love.common.mybatis.BasePage
 import math.yl.love.common.mybatis.BaseService
-import math.yl.love.common.utils.CommonUtils
-import math.yl.love.common.utils.JsonUtils.parseJson
-import math.yl.love.common.utils.JsonUtils.toJson
 import math.yl.love.configuration.exception.BizException
-import math.yl.love.database.domain.entity.ExamPage
-import math.yl.love.database.domain.entity.ExamPageQuestionRelation
-import math.yl.love.database.domain.entity.ExamPageUserRelation
-import math.yl.love.database.domain.entity.QuestionBank
+import math.yl.love.database.domain.entity.*
 import math.yl.love.database.domain.params.examPage.ExamPageQuestion
 import math.yl.love.database.domain.params.examPage.ReleasePageParam
 import math.yl.love.database.domain.params.examPage.UpdateUserAnswerParam
@@ -19,7 +14,6 @@ import math.yl.love.database.domain.result.examPage.QuestionInfoResult
 import math.yl.love.database.domain.result.examPageUserRelation.UserAnswer
 import math.yl.love.database.domain.result.questionBank.*
 import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
-import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
 import math.yl.love.database.mapper.ExamPageMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -239,13 +233,5 @@ class ExamPageService(
      * @param id 发布id
      */
     @Transactional(rollbackFor = [Exception::class])
-    fun overExam(id: Long): Boolean {
-        val relation = examPageUserRelationService.getById(id) ?: throw BizException("未找到考试关联!!")
-        if (relation.status != ExamPageStatusEnum.DOING) {
-            throw BizException("试卷状态不正确!!!")
-        }
-        return examPageUserRelationService.updateById(relation.copy(
-            status = ExamPageStatusEnum.FINISHED,
-        ))
-    }
+    fun overExam(id: Long) = examPageUserRelationService.overExam(id)
 }

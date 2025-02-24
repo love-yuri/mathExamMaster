@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-13 15:04:45
- * @LastEditTime: 2025-02-22 19:25:00
+ * @LastEditTime: 2025-02-24 19:36:32
  * @Description: 预览题目
 -->
 <template>
@@ -66,7 +66,7 @@
 import { useVbenModal } from '@vben/common-ui';
 import { Button, PreviewEditor } from '@yuri/components';
 import {
-  QuestionBank,
+  type QuestionBank,
   SingleChoiceAnswer,
   type GapFillingAnswer,
   type JudgeAnswer,

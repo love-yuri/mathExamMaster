@@ -33,3 +33,4 @@ export * from './api/userDepartmentApi';
 export * from './api/userApi';
 export * from './api/departmentApi';
 export * from './api/examPageUserRelationApi';
+export * from './api/userScoreApi';

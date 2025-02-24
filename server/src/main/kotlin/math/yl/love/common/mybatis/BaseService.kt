@@ -1,7 +1,9 @@
 package math.yl.love.common.mybatis
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
+import com.baomidou.mybatisplus.extension.kotlin.KtQueryChainWrapper
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
+import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.IService
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
@@ -18,6 +20,7 @@ abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>>: ISe
     protected val logger: Logger = LoggerFactory.getLogger(javaClass)
     protected abstract val entityClass: KClass<Entity>
     protected val queryWrapper get() = KtQueryWrapper(entityClass.java)
+    protected val updateWrapper get() = KtUpdateWrapper(entityClass.java)
 
     /**
      * 分页数据
@@ -53,6 +56,12 @@ abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>>: ISe
      * 直接返回list
      * @return list结果
      */
-    fun KtQueryWrapper<Entity>.selectOne(): Entity = getOne(this)
+    fun KtUpdateWrapper<Entity>.update(): Int = baseMapper.update(this)
+
+    /**
+     * 直接返回list
+     * @return list结果
+     */
+    fun KtQueryWrapper<Entity>.selectOne(): Entity? = getOne(this.last("limit 1"))
 }
 

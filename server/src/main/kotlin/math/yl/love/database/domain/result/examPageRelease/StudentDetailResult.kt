@@ -5,8 +5,10 @@ import io.swagger.v3.oas.annotations.media.Schema
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.LongAsStringSerializer
+import math.yl.love.common.base.NoArg
 import java.time.LocalDateTime
 
+@NoArg
 @Serializable
 data class StudentDetailResult (
     @Serializable(with = LongAsStringSerializer::class)

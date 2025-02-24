@@ -1,14 +1,21 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2025-02-08 14:35:46
+ * @LastEditTime: 2025-02-24 19:07:52
  * @Description: 题目
  */
 
-import { type QuestionBank, type FullQuestionBank, RequestType, type PageParam, type PageResult, type SaveQuestionBankParam } from "@yuri/types";
+import {
+  type FullQuestionBank,
+  RequestType,
+  type PageParam,
+  type PageResult,
+  type SaveQuestionAnswerParam,
+  BaseEntity
+} from "@yuri/types";
 import { BaseApi } from "../base/baseApi/baseApi";
 
-class Api extends BaseApi<QuestionBank> {
+class Api extends BaseApi<BaseEntity> {
   override baseUrl: string = '/question/bank';
 
   detail = (id: string) => {
@@ -23,11 +30,11 @@ class Api extends BaseApi<QuestionBank> {
     );
   };
 
-  saveSimple = (param: SaveQuestionBankParam) => {
+  saveSimple = (param: SaveQuestionAnswerParam) => {
     return this.add<boolean>(RequestType.POST, '/save/simple', param);
   };
 
-  updateSimple = (param: SaveQuestionBankParam) => {
+  updateSimple = (param: SaveQuestionAnswerParam) => {
     return this.add<boolean>(RequestType.POST, '/update/simple', param);
   };
 }

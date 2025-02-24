@@ -36,17 +36,18 @@ select
     left join exam_page_user_relation epur
     on epr.id = epur.page_release_id
     left join user on user.id = epur.user_id
-         where epr.id = 1893578089957728258
+         where epr.id = 1893988960974897154
 
 ;
 
 select
-        qb.id,
-        qb.answer
-        from exam_page_user_relation epur
-        left join exam_page_release epr on epr.id = epur.page_release_id
-        left join exam_page_question_relation epqr on epqr.exam_page_id = epr.exam_page_id
-        left join question_bank qb on qb.id = epqr.question_bank_id
-    where epur.id = 1893578090020642826;
+    qb.id as question_id,
+    qb.answer question_answer,
+    epqr.score as question_score
+from exam_page_user_relation epur
+         left join exam_page_release epr on epr.id = epur.page_release_id
+         left join exam_page_question_relation epqr on epqr.exam_page_id = epr.exam_page_id
+         left join question_bank qb on qb.id = epqr.question_bank_id
+where epur.id = 1;
 
 select * from exam_page_question_relation where exam_page_id = 1893578020130955265;

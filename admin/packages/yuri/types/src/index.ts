@@ -18,3 +18,4 @@ export * from './api/userDepartmentApi';
 export * from './api/examPageUserRelationApi';
 export * from './api/userApi';
 export * from './api/base';
+export * from './api/userScoreApi';
