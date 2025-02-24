@@ -10,5 +10,5 @@ import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
 @Serializable
 @SerialName(QuestionTypeEnum.JUDGE_SRT)
 data class JudgeAnswer(
-    val answer: Boolean // 正确答案，true表示正确，false表示错误
+    val answer: Boolean? = null // 正确答案，true表示正确，false表示错误
 ) : QuestionAnswer()
