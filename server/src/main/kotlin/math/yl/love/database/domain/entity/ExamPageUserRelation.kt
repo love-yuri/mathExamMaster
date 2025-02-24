@@ -8,6 +8,7 @@ import kotlinx.serialization.Transient
 import math.yl.love.common.constant.DataBaseConstant
 import math.yl.love.common.base.NoArg
 import kotlinx.serialization.builtins.LongAsStringSerializer
+import math.yl.love.database.domain.result.examPageUserRelation.UserAnswer
 import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
 import java.time.LocalDateTime
 
@@ -58,10 +59,10 @@ data class ExamPageUserRelation (
 
     @TableField(value = "answer")
     @Schema(description = "用户答案")
-    val answer: String? = null,
+    val answer: List<UserAnswer>? = null,
 
     @Contextual
     @Schema(description = "开始练习时间")
-    @TableField(value = "exam_start_time", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "exam_start_time")
     val examStartTime: LocalDateTime? = null,
 ) : BaseEntity

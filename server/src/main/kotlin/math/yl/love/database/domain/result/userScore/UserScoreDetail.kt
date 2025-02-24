@@ -5,15 +5,15 @@ import kotlinx.serialization.Contextual
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 import math.yl.love.database.domain.entity.User
+import math.yl.love.database.domain.result.questionBank.QuestionAnswer
 
 @Serializable
 data class UserScoreDetail (
     @Schema(description = "题目id")
     val questionId: Long,
 
-    @Polymorphic
     @Schema(description = "答案详情")
-    val questionAnswer: Any,
+    val questionAnswer: QuestionAnswer,
 
     @Schema(description = "用户得分")
     val score: Int = 0,

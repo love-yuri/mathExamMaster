@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor
 import math.yl.love.common.mybatis.typeHandler.QuestionAnswerTypeHandler
+import math.yl.love.common.mybatis.typeHandler.UserAnswerTypeHandler
+import math.yl.love.common.mybatis.typeHandler.UserScoreDetailTypeHandler
 import math.yl.love.common.utils.JsonUtils.parseJson
 import math.yl.love.common.utils.JsonUtils.toJson
 import math.yl.love.database.domain.result.questionBank.QuestionAnswer
@@ -37,7 +39,9 @@ class MyBatisConfig {
     fun configurationCustomizer(): ConfigurationCustomizer {
         return ConfigurationCustomizer { configuration ->
             val typeHandlerRegistry: TypeHandlerRegistry = configuration.typeHandlerRegistry
-            typeHandlerRegistry.register(QuestionAnswer::class.java, QuestionAnswerTypeHandler::class.java)
+            typeHandlerRegistry.register(QuestionAnswerTypeHandler::class.java)
+            typeHandlerRegistry.register(UserScoreDetailTypeHandler::class.java)
+            typeHandlerRegistry.register(UserAnswerTypeHandler::class.java)
         }
     }
 

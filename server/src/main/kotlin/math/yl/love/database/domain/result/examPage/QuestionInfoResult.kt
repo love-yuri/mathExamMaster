@@ -5,6 +5,8 @@ import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.LongAsStringSerializer
 import math.yl.love.common.base.NoArg
+import math.yl.love.database.domain.result.examPageUserRelation.UserAnswer
+import math.yl.love.database.domain.result.questionBank.QuestionAnswer
 import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
 
 
@@ -26,17 +28,11 @@ data class QuestionInfoResult (
         @Schema(description = "题目内容")
         val content: String,
 
-        @Schema(description = "题目选项")
-        val options: List<String>,
-
         @Schema(description = "用户答案")
-        val answer: List<String>,
+        val userAnswer: UserAnswer,
 
         @Schema(description = "题目序号")
         val index: Int,
-
-        @Schema(description = "是否已作答")
-        val hasAnswer: Boolean,
 
         @Schema(description = "题目类型")
         val type: QuestionTypeEnum,
