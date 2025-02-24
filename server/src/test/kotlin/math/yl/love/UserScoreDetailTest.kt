@@ -37,7 +37,7 @@ class UserScoreDetailTest {
         val details = questions.map {
             UserScoreDetail(
                 questionId = it.id!!,
-                questionAnswer = parseAnswer(it)
+                questionAnswer = it.answer,
             )
         }
         userScoreService.save(UserScore(
@@ -59,16 +59,10 @@ class UserScoreDetailTest {
         }
     }
 
-    /**
-     * 将答案解析回去
-     */
-    private fun parseAnswer(questionBank: QuestionBank): Any {
-        return when (questionBank.type) {
-            SINGLE_CHOICE -> questionBank.answer.parseJson<SingleChoiceAnswer>()
-            MULTIPLE_CHOICE -> questionBank.answer.parseJson<MultipleChoiceAnswer>()
-            JUDGE -> questionBank.answer.parseJson<JudgeAnswer>()
-            GAP_FILLING -> questionBank.answer.parseJson<GapFillingAnswer>()
-            SUBJECTIVE -> ""
+    @Test
+    fun showQuestionTest() {
+        questionBankService.list().forEach {
+            log.info("q -> ${it.answer}")
         }
     }
 }
