@@ -1,22 +1,20 @@
 <template>
   <div class="flex flex-row p-2">
-    <div class="flex flex-col w-[200px] p-2 border-2 rounded-sm">
+    <div class="flex w-[200px] flex-col rounded-sm border-2 p-2">
       <Button
-        @click="currentStudent = student.id"
-        :severity="currentStudent == student.id ? 'primary' : 'secondary'"
-        class="w-full mb-2"
+        @click="currentStudent = student.userId"
+        :severity="currentStudent == student.userId ? 'primary' : 'secondary'"
+        class="mb-2 w-full"
         v-for="student in students"
-        :label="student.nickname"  
-        :key="student.id" 
+        :label="student.nickname"
+        :key="student.userId"
       />
     </div>
-    <div class="flex-grow">
-
-    </div>
+    <div class="flex-grow"></div>
   </div>
 </template>
 <script setup lang="ts">
-import type { UserResult } from '@yuri/types';
+import type { StudentDetailResult } from '@yuri/types';
 import { Button } from '@yuri/components';
 import { computed, ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
@@ -25,10 +23,9 @@ import { examPageReleaseApi } from '@yuri/common';
 const route = useRoute();
 const currentStudent = ref('');
 const releaseId = computed(() => route.params.id as string);
-const students = ref<UserResult[]>([]);
+const students = ref<StudentDetailResult[]>([]);
 
 watchEffect(async () => {
   students.value = await examPageReleaseApi.studentDetail(releaseId.value);
 });
-
 </script>

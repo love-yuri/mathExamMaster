@@ -1,10 +1,10 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2025-02-22 19:18:34
+ * @LastEditTime: 2025-02-23 21:05:42
  * @Description: 题目
  */
-import { BaseEntity} from './base';
+import { BaseEntity } from './base';
 import type { KnowledgePoint } from './knowledgePointApi';
 
 export enum QuestionTypeEnum {
@@ -25,8 +25,7 @@ export const QuestionTypeMap = {
   [QuestionTypeEnum.SINGLE_CHOICE]: '单选题',
   [QuestionTypeEnum.SUBJECTIVE]: '主观题',
 };
-
-export abstract class QuestionBank extends BaseEntity {
+export abstract class QuestionAnswer extends BaseEntity {
   /**
    * 答案
    */
@@ -53,14 +52,14 @@ export abstract class QuestionBank extends BaseEntity {
   }
 }
 
-export class SingleChoiceAnswer extends QuestionBank {
+export class SingleChoiceAnswer extends QuestionAnswer {
   override type = QuestionTypeEnum.SINGLE_CHOICE;
   answer!: {
     type: QuestionTypeEnum.SINGLE_CHOICE;
     answer?: number;
     options: string[];
-  }
-  
+  };
+
   constructor() {
     super();
     this.reset();
@@ -73,17 +72,17 @@ export class SingleChoiceAnswer extends QuestionBank {
       type: QuestionTypeEnum.SINGLE_CHOICE,
       answer: undefined,
       options: [],
-    }
+    };
   }
 }
 
-export class JudgeAnswer extends QuestionBank {
+export class JudgeAnswer extends QuestionAnswer {
   override type = QuestionTypeEnum.JUDGE;
   answer!: {
     type: QuestionTypeEnum.JUDGE;
     answer: boolean;
   };
-  
+
   constructor() {
     super();
     this.reset();
@@ -94,15 +93,18 @@ export class JudgeAnswer extends QuestionBank {
     this.difficulty = 5;
     this.answer = {
       type: QuestionTypeEnum.JUDGE,
-      answer: false
-    }
+      answer: false,
+    };
   }
 }
 
-export class SubjectiveAnswer extends QuestionBank {
+export class SubjectiveAnswer extends QuestionAnswer {
   override type = QuestionTypeEnum.SUBJECTIVE;
-  answer!: undefined;
-  
+  answer!: {
+    type: QuestionTypeEnum.SUBJECTIVE;
+    answer: string;
+  };
+
   constructor() {
     super();
     this.reset();
@@ -111,17 +113,20 @@ export class SubjectiveAnswer extends QuestionBank {
   override reset(): void {
     this.content = '';
     this.difficulty = 5;
-    this.answer = undefined;
+    this.answer = {
+      type: QuestionTypeEnum.SUBJECTIVE,
+      answer: '',
+    };
   }
 }
 
-export class GapFillingAnswer extends QuestionBank {
+export class GapFillingAnswer extends QuestionAnswer {
   override type = QuestionTypeEnum.GAP_FILLING;
   answer!: {
     type: QuestionTypeEnum.GAP_FILLING;
     answer: string[];
-  }
-  
+  };
+
   constructor() {
     super();
     this.reset();
@@ -133,18 +138,18 @@ export class GapFillingAnswer extends QuestionBank {
     this.answer = {
       type: QuestionTypeEnum.GAP_FILLING,
       answer: [],
-    }
+    };
   }
 }
 
-export class MultipleChoiceAnswer extends QuestionBank {
+export class MultipleChoiceAnswer extends QuestionAnswer {
   override type = QuestionTypeEnum.MULTIPLE_CHOICE;
   answer!: {
     type: QuestionTypeEnum.MULTIPLE_CHOICE;
     answer: number[];
     options: string[];
-  }
-  
+  };
+
   constructor() {
     super();
     this.reset();
@@ -157,16 +162,22 @@ export class MultipleChoiceAnswer extends QuestionBank {
       type: QuestionTypeEnum.MULTIPLE_CHOICE,
       answer: [],
       options: [],
-    }
+    };
   }
 }
 
-export interface SaveQuestionBankParam {
+export interface SaveQuestionAnswerParam {
   knowledgePointIds: string[];
-  questionBank: QuestionBank;
+  QuestionAnswer: QuestionAnswer;
 }
 
 export interface FullQuestionBank {
   knowledgePoints: KnowledgePoint[];
-  questionBank: QuestionBank;
+  QuestionAnswer: QuestionAnswer;
 }
+
+export type SingleChoiceAw = SingleChoiceAnswer['answer'];
+export type GapFillingAw = GapFillingAnswer['answer'];
+export type MultipleChoiceAw = MultipleChoiceAnswer['answer'];
+export type JudgeAw = JudgeAnswer['answer'];
+export type SubjectiveAw = SubjectiveAnswer['answer'];

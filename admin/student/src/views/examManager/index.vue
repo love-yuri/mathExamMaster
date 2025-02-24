@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-19 08:37:51
- * @LastEditTime: 2025-02-08 16:43:20
+ * @LastEditTime: 2025-02-23 16:48:07
  * @Description: 
 -->
 <template>
@@ -56,12 +56,17 @@ watch(
   currentMode,
   async () => {
     if (releaseId?.value) {
-      const res = await examPageReleaseApi.check(releaseId.value);
-      currentReleaseId.value = res ? releaseId.value : undefined;
-      if (res) {
-        return;
+      try {
+        const res = await examPageReleaseApi.check(releaseId.value);
+        currentReleaseId.value = res ? releaseId.value : undefined;
+        if (res) {
+          return;
+        }
+        releaseId.value = undefined;
+      } catch (error) {
+        currentReleaseId.value = undefined;
       }
-      releaseId.value = undefined;
+      
     }
 
     examList.value = await examPageReleaseApi.examList({

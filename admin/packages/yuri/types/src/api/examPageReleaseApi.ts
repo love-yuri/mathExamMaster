@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2025-02-20 18:49:26
+ * @LastEditTime: 2025-02-24 15:30:52
  * @Description:
  */
 import { BaseEntity, type PageParam} from './base';
@@ -94,6 +94,14 @@ export class ExamPageReleaseParam extends BaseEntity {
     this.departmentId = '';
     this.examPageId = '';
   }
+}
+
+
+export interface StudentDetailResult {
+  userId: string;
+  username: string;
+  nickname: string;
+  relationId: string;
 }
 
 /**

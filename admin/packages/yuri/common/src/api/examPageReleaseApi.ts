@@ -1,11 +1,24 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2025-02-20 19:48:22
+ * @LastEditTime: 2025-02-24 15:31:28
  * @Description:
  */
 
-import { type BaseEntity, type ExamPageReleaseResult, RequestType, type PageParam, type PageResult, type ExamPageReleaseParam, type ExamPageCreateVO, type ExamInfoResult, type ExamListParam, type ExamListResult, type StartExamResult, type ExamPageReleasePageParam, type UserResult } from "@yuri/types";
+import {
+  type BaseEntity,
+  type ExamPageReleaseResult,
+  RequestType,
+  type PageResult,
+  type ExamPageReleaseParam,
+  type ExamPageCreateVO,
+  type ExamInfoResult,
+  type ExamListParam,
+  type ExamListResult,
+  type StartExamResult,
+  type ExamPageReleasePageParam,
+  type StudentDetailResult
+} from "@yuri/types";
 import { BaseApi } from "../base/baseApi/baseApi";
 
 class Api extends BaseApi<BaseEntity> {
@@ -22,7 +35,7 @@ class Api extends BaseApi<BaseEntity> {
    * 根据id获取学生详情
    */
   studentDetail = (id: string) => {
-    return this.add<UserResult[]>(RequestType.POST, `/student/detail/${id}`);
+    return this.add<StudentDetailResult[]>(RequestType.POST, `/student/detail/${id}`);
   };
 
   /**

@@ -1,12 +1,21 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2025-02-08 16:36:43
+ * @LastEditTime: 2025-02-23 22:45:21
  * @Description:
  */
 
-import { type BaseEntity, type ExamPageResult, RequestType, type PageParam, type PageResult, type ExamPageCreateVO, type QuestionInfoResult } from "@yuri/types";
-import { BaseApi } from "../base/baseApi/baseApi";
+import {
+  type BaseEntity,
+  type ExamPageResult,
+  RequestType,
+  type PageParam,
+  type PageResult,
+  type ExamPageCreateVO,
+  type QuestionInfoResult,
+  type UserAnswer,
+} from '@yuri/types';
+import { BaseApi } from '../base/baseApi/baseApi';
 
 class Api extends BaseApi<BaseEntity> {
   override baseUrl: string = '/exam/page';
@@ -64,7 +73,7 @@ class Api extends BaseApi<BaseEntity> {
   /**
    * 更新用户答案
    */
-  updateUserAnswer = (param: { answer: any; relationId: string }) => {
+  updateUserAnswer = (param: { userAnswers: UserAnswer[]; relationId: string }) => {
     return this.add<boolean>(RequestType.POST, '/update/user/answer', param);
   };
 }
