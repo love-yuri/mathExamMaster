@@ -11,7 +11,10 @@
       <template #content>
         <div class="mt-2 flex items-center">
           <WangEditor
-            v-model:content="(question.userAnswer.questionAnswer as SubjectiveAw).answer as string"
+            v-model:content="
+              (question.userAnswer.questionAnswer as SubjectiveAw)
+                .answer as string
+            "
             placeholder="请输入答案..."
             @change="editorContentChange"
           />
@@ -24,17 +27,12 @@
 import { debounce } from '@yuri/common';
 import { Card, PreviewEditor, WangEditor } from '@yuri/components';
 import type { QuestionInfo, SubjectiveAw } from '@yuri/types';
-import { computed } from 'vue';
 
 const question = defineModel<QuestionInfo>('question');
 const emit = defineEmits(['updateAnswer']);
 
-const answer = computed(() => question.value?.userAnswer.questionAnswer as SubjectiveAw);
-
 const editorContentChange = debounce(() => {
-  if (answer.value.answer != '' && answer.value.answer != '<p><br></p>') {
-    question.value!!.userAnswer.hasAnswer = true;
-  }
+  question.value!!.userAnswer.hasAnswer = true;
   emit('updateAnswer');
 }, 2000);
 </script>
