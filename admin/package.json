@@ -30,6 +30,7 @@
     "build:analyze": "turbo build:analyze",
     "build:docker": "./build-local-docker-image.sh",
     "build:play": "pnpm run build --filter=@vben/web-prime",
+    "build:student": "pnpm run build --filter=@vben/student",
     "changeset": "pnpm exec changeset",
     "check": "pnpm run check:circular && pnpm run check:dep && pnpm run check:type && pnpm check:cspell",
     "check:circular": "vsh check-circular",
