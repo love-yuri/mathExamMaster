@@ -4,12 +4,11 @@ import com.baomidou.mybatisplus.annotation.DbType
 import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor
-import math.yl.love.common.mybatis.typeHandler.QuestionAnswerTypeHandler
-import math.yl.love.common.mybatis.typeHandler.UserAnswerTypeHandler
-import math.yl.love.common.mybatis.typeHandler.UserScoreDetailTypeHandler
+import math.yl.love.common.mybatis.typeHandler.*
 import math.yl.love.common.utils.JsonUtils.parseJson
 import math.yl.love.common.utils.JsonUtils.toJson
 import math.yl.love.database.domain.result.questionBank.QuestionAnswer
+import math.yl.love.database.domain.result.userScore.UserScoreDetail
 import org.apache.ibatis.type.BaseTypeHandler
 import org.apache.ibatis.type.JdbcType
 import org.apache.ibatis.type.TypeHandlerRegistry
@@ -42,6 +41,9 @@ class MyBatisConfig {
             typeHandlerRegistry.register(QuestionAnswerTypeHandler::class.java)
             typeHandlerRegistry.register(UserScoreDetailTypeHandler::class.java)
             typeHandlerRegistry.register(UserAnswerTypeHandler::class.java)
+            typeHandlerRegistry.register(ListUserScoreDetailTypeHandler::class.java)
+            typeHandlerRegistry.register(ListQuestionAnswerTypeHandler::class.java)
+            typeHandlerRegistry.register(ListUserAnswerTypeHandler::class.java)
         }
     }
 

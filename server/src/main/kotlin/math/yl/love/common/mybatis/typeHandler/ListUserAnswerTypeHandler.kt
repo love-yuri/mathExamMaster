@@ -10,27 +10,27 @@ import java.sql.CallableStatement
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 
-class UserAnswerTypeHandler : BaseTypeHandler<UserAnswer>() {
+class ListUserAnswerTypeHandler : BaseTypeHandler<List<UserAnswer>>() {
     override fun setNonNullParameter(
         ps: PreparedStatement,
         i: Int,
-        parameter: UserAnswer,
+        parameter: List<UserAnswer>,
         jdbcType: JdbcType?
     ) {
         ps.setString(i, parameter.toJson())
     }
 
-    override fun getNullableResult(rs: ResultSet, columnName: String): UserAnswer? {
+    override fun getNullableResult(rs: ResultSet, columnName: String): List<UserAnswer>? {
         val json = rs.getString(columnName) ?: return null
         return json.parseJson()
     }
 
-    override fun getNullableResult(rs: ResultSet, columnIndex: Int): UserAnswer? {
+    override fun getNullableResult(rs: ResultSet, columnIndex: Int): List<UserAnswer>? {
         val json = rs.getString(columnIndex) ?: return null
         return json.parseJson()
     }
 
-    override fun getNullableResult(cs: CallableStatement, columnIndex: Int): UserAnswer? {
+    override fun getNullableResult(cs: CallableStatement, columnIndex: Int): List<UserAnswer>? {
         val json = cs.getString(columnIndex) ?: return null
         return json.parseJson()
     }
