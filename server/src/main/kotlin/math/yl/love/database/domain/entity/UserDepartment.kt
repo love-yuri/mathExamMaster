@@ -45,10 +45,12 @@ data class UserDepartment (
 
     @Schema(description = "组织id")
     @TableField(value = "department_id")
+    @Serializable(with = LongAsStringSerializer::class)
     val departmentId: Long,
 
     @Schema(description = "用户id")
     @TableField(value = "user_id")
+    @Serializable(with = LongAsStringSerializer::class)
     val userId: Long,
 
 ) : BaseEntity

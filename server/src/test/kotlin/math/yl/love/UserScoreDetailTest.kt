@@ -15,7 +15,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.Commit
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.springframework.transaction.annotation.Transactional
 import kotlin.test.Test
 
 @SpringBootTest
@@ -30,6 +32,8 @@ class UserScoreDetailTest {
     private val log = LoggerFactory.getLogger(UserScoreDetailTest::class.java)
 
     @Test
+    @Transactional(rollbackFor = [Exception::class])
+    @Commit
     fun createTest() {
         val questions = questionBankService.list()
         val details: List<UserScoreDetail> = questions.map {
@@ -43,22 +47,24 @@ class UserScoreDetailTest {
                 )
             )
         }
-        userScoreService.save(UserScore(
+        val data = UserScore(
             detail = details,
             score = 100,
             totalScore = 100,
             pageReleaseId = 1,
             userId = 1,
-        ))
+        )
+        log.info("insert ${userScoreService.save(data)}")
+//        userScoreService.updateDetail(data, details)
     }
 
     @Test
     fun showTest() {
         log.info("list -> {}", userScoreService.list())
         userScoreService.list().forEach { k ->
-            k.detail.forEach {
-                log.info("questionId: ${it.questionId}, questionAnswer: ${it.questionAnswer}")
-            }
+//            k.detail.forEach {
+//                log.info("questionId: ${it.questionId}, questionAnswer: ${it.questionAnswer}")
+//            }
         }
     }
 

@@ -45,10 +45,12 @@ data class BankAndPoint (
 
     @Schema(description = "题目id")
     @TableField(value = "question_bank_id")
+    @Serializable(with = LongAsStringSerializer::class)
     val questionBankId: Long,
 
     @Schema(description = "知识点id")
     @TableField(value = "knowledge_point_id")
+    @Serializable(with = LongAsStringSerializer::class)
     val knowledgePointId: Long,
 
 ) : BaseEntity

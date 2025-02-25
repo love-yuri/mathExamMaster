@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.LongAsStringSerializer
 import math.yl.love.database.domain.entity.User
 import math.yl.love.database.domain.result.questionBank.QuestionAnswer
 
@@ -12,6 +13,7 @@ import math.yl.love.database.domain.result.questionBank.QuestionAnswer
 data class UserScoreQuestion (
     @Schema(description = "题目id")
     @TableField("question_id")
+    @Serializable(with = LongAsStringSerializer::class)
     val questionId: Long,
 
     @Schema(description = "答案")

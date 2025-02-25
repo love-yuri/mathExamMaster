@@ -45,10 +45,12 @@ data class ExamPageRelease (
 
     @Schema(description = "试卷id")
     @TableField(value = "exam_page_id")
+    @Serializable(with = LongAsStringSerializer::class)
     val examPageId: Long,
 
     @Schema(description = "发布班级id")
     @TableField(value = "class_id")
+    @Serializable(with = LongAsStringSerializer::class)
     val classId: Long,
 
     @Contextual

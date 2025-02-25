@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.LongAsStringSerializer
 import math.yl.love.database.domain.entity.User
 import math.yl.love.database.domain.result.examPageUserRelation.UserAnswer
 import math.yl.love.database.domain.result.questionBank.QuestionAnswer
@@ -11,6 +12,7 @@ import math.yl.love.database.domain.result.questionBank.QuestionAnswer
 @Serializable
 data class UserScoreDetail (
     @Schema(description = "题目id")
+    @Serializable(with = LongAsStringSerializer::class)
     val questionId: Long,
 
     @Schema(description = "问题答案")

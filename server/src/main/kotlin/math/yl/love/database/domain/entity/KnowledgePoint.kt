@@ -53,6 +53,7 @@ data class KnowledgePoint (
 
     @Schema(description = "父级知识点: 0 代表根知识")
     @TableField(value = "parent")
+    @Serializable(with = LongAsStringSerializer::class)
     val parent: Long = 0,
 
 ) : BaseEntity

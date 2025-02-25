@@ -8,13 +8,15 @@ import kotlinx.serialization.Transient
 import math.yl.love.common.constant.DataBaseConstant
 import math.yl.love.common.base.NoArg
 import kotlinx.serialization.builtins.LongAsStringSerializer
+import math.yl.love.common.mybatis.typeHandler.ListUserAnswerTypeHandler
+import math.yl.love.common.mybatis.typeHandler.UserAnswerTypeHandler
 import math.yl.love.database.domain.result.examPageUserRelation.UserAnswer
 import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
 import java.time.LocalDateTime
 
 @NoArg
 @Serializable
-@TableName("exam_page_user_relation")
+@TableName("exam_page_user_relation", autoResultMap = true)
 data class ExamPageUserRelation (
     @TableId(type = IdType.ASSIGN_ID)
     @Schema(description = "主键id")
@@ -51,13 +53,14 @@ data class ExamPageUserRelation (
 
     @Schema(description = "用户id")
     @TableField(value = "user_id")
+    @Serializable(with = LongAsStringSerializer::class)
     val userId: Long,
 
     @Schema(description = "当前试卷的状态，默认0: 未完成")
     @TableField(value = "status")
     val status: ExamPageStatusEnum = ExamPageStatusEnum.NOT_START,
 
-    @TableField(value = "answer")
+    @TableField(value = "answer", typeHandler = ListUserAnswerTypeHandler::class)
     @Schema(description = "用户答案")
     val answer: List<UserAnswer>? = null,
 

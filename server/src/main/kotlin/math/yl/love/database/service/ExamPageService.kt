@@ -178,7 +178,6 @@ class ExamPageService(
         if (relation.answer == null || relation.answer.size != questions.size) {
             return questions.map {
                 UserAnswer(
-                    questionId = it.id!!,
                     hasAnswer = false,
                     questionAnswer = when(it.answer) {
                         is GapFillingAnswer -> it.answer.copy(
@@ -188,7 +187,8 @@ class ExamPageService(
                         is MultipleChoiceAnswer -> it.answer.copy(answer = listOf())
                         is SingleChoiceAnswer -> it.answer.copy(answer = null)
                         is SubjectiveAnswer -> it.answer.copy(answer = "")
-                    }
+                    },
+                    questionId = it.id!!,
                 )
             }
         }
@@ -233,5 +233,13 @@ class ExamPageService(
      * @param id 发布id
      */
     @Transactional(rollbackFor = [Exception::class])
-    fun overExam(id: Long) = examPageUserRelationService.overExam(id)
+    fun overExam(id: Long): Boolean {
+        val relation = examPageUserRelationService.getById(id) ?: throw BizException("未找到考试关联!!")
+        if (relation.status != ExamPageStatusEnum.DOING) {
+            throw BizException("试卷状态不正确!!!")
+        }
+        return examPageUserRelationService.updateById(
+            relation.copy(status = ExamPageStatusEnum.FINISHED)
+        )
+    }
 }

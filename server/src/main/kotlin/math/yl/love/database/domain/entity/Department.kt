@@ -49,10 +49,12 @@ data class Department (
 
     @Schema(description = "父组织id")
     @TableField(value = "parent_id")
+    @Serializable(with = LongAsStringSerializer::class)
     val parentId: Long? = null,
 
     @Schema(description = "老师id")
     @TableField(value = "teacher_id")
+    @Serializable(with = LongAsStringSerializer::class)
     val teacherId: Long? = null,
 
 ) : BaseEntity

@@ -49,6 +49,7 @@ data class ExamPageQuestionRelation (
 
     @Schema(description = "题库id")
     @TableField(value = "question_bank_id")
+    @Serializable(with = LongAsStringSerializer::class)
     val questionBankId: Long,
 
     @Schema(description = "该题得分")

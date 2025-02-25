@@ -16,7 +16,7 @@ import java.time.LocalDateTime
 
 @NoArg
 @Serializable
-@TableName("question_bank")
+@TableName("question_bank", autoResultMap = true)
 data class QuestionBank (
     @TableId(type = IdType.ASSIGN_ID)
     @Schema(description = "主键id")
@@ -56,7 +56,7 @@ data class QuestionBank (
     val content: String,
 
     @Schema(description = "答案")
-    @TableField(value = "answer")
+    @TableField(value = "answer", typeHandler = QuestionAnswerTypeHandler::class)
     val answer: QuestionAnswer,
 
     @Schema(description = "难度: 默认1")

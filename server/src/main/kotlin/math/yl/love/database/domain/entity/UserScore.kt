@@ -1,21 +1,20 @@
 package math.yl.love.database.domain.entity
 
 import com.baomidou.mybatisplus.annotation.*
-import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler
 import io.swagger.v3.oas.annotations.media.Schema
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import math.yl.love.common.constant.DataBaseConstant
-import math.yl.love.common.base.NoArg
 import kotlinx.serialization.builtins.LongAsStringSerializer
-import math.yl.love.configuration.config.JsonConfig
+import math.yl.love.common.base.NoArg
+import math.yl.love.common.constant.DataBaseConstant
+import math.yl.love.common.mybatis.typeHandler.ListUserScoreDetailTypeHandler
 import math.yl.love.database.domain.result.userScore.UserScoreDetail
 import java.time.LocalDateTime
 
 @NoArg
 @Serializable
-@TableName("user_score")
+@TableName("user_score", autoResultMap = true)
 data class UserScore (
     @TableId(type = IdType.ASSIGN_ID)
     @Schema(description = "主键id")
@@ -48,10 +47,12 @@ data class UserScore (
 
     @Schema(description = "试卷发布id")
     @TableField(value = "page_release_id")
+    @Serializable(with = LongAsStringSerializer::class)
     val pageReleaseId: Long,
 
     @Schema(description = "用户id")
     @TableField(value = "user_id")
+    @Serializable(with = LongAsStringSerializer::class)
     val userId: Long,
 
     @Schema(description = "用户得分")
@@ -63,7 +64,7 @@ data class UserScore (
     val totalScore: Int = 100,
 
     @Schema(description = "用户得分详情")
-    @TableField(value = "detail")
-    val detail: List<UserScoreDetail>,
+    @TableField(value = "detail", typeHandler = ListUserScoreDetailTypeHandler::class)
+    val detail: List<UserScoreDetail>? = null,
 
 ) : BaseEntity

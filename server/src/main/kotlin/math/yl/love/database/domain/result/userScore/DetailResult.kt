@@ -4,11 +4,13 @@ import io.swagger.v3.oas.annotations.media.Schema
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.LongAsStringSerializer
 import math.yl.love.database.domain.entity.User
 import math.yl.love.database.domain.result.questionBank.QuestionAnswer
 
 @Serializable
 data class DetailResult (
+    @Serializable(with = LongAsStringSerializer::class)
     @Schema(description = "题目id")
     val questionId: Long,
 
