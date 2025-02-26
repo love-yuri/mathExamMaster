@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-08-11 16:05:57
- * @LastEditTime: 2025-02-24 20:30:36
+ * @LastEditTime: 2025-02-26 21:09:01
  * @Description: 基础api
  */
 
@@ -93,5 +93,14 @@ export abstract class BaseApi<T extends BaseEntity> {
       params,
       url: `${this.baseUrl}/update`,
     }) as Promise<boolean>;
+  };
+
+
+  // 更新
+  get = (id: string | number): Promise<T> => {
+    return baseApi({
+      method: RequestType.POST,
+      url: `${this.baseUrl}/get/${id}`,
+    }) as Promise<T>;
   };
 }

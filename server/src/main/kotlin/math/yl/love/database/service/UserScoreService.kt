@@ -56,13 +56,20 @@ class UserScoreService(
             score = 0,
             totalScore = questions.sumOf { it.questionScore },
             detail = questions.map {
-                UserScoreDetail(
+                val detail = UserScoreDetail(
+                    score = 0,
+                    totalScore = it.questionScore,
+                    type = it.type,
                     questionId = it.questionId,
                     questionAnswer = it.questionAnswer,
                     userAnswer = userAnswers[it.questionId]!!,
                 )
+                return@map detail
             }
-        ).apply { save(this) }
+        ).apply {
+
+            save(this)
+        }
     }
 
     fun updateDetail(data: UserScore, details: List<UserScoreDetail>) {

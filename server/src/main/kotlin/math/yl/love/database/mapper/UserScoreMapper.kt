@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Select
 interface UserScoreMapper: BaseMapper<UserScore> {
     @Select("""
         select
+            qb.type as type,
             qb.id as question_id,
             qb.answer question_answer,
             epqr.score as question_score

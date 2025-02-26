@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2025-02-24 19:07:52
+ * @LastEditTime: 2025-02-26 21:12:29
  * @Description: 题目
  */
 
@@ -11,11 +11,11 @@ import {
   type PageParam,
   type PageResult,
   type SaveQuestionAnswerParam,
-  BaseEntity
+  type QuestionBank
 } from "@yuri/types";
 import { BaseApi } from "../base/baseApi/baseApi";
 
-class Api extends BaseApi<BaseEntity> {
+class Api extends BaseApi<QuestionBank> {
   override baseUrl: string = '/question/bank';
 
   detail = (id: string) => {

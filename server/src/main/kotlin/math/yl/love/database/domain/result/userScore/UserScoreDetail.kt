@@ -8,12 +8,16 @@ import kotlinx.serialization.builtins.LongAsStringSerializer
 import math.yl.love.database.domain.entity.User
 import math.yl.love.database.domain.result.examPageUserRelation.UserAnswer
 import math.yl.love.database.domain.result.questionBank.QuestionAnswer
+import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
 
 @Serializable
 data class UserScoreDetail (
     @Schema(description = "题目id")
     @Serializable(with = LongAsStringSerializer::class)
     val questionId: Long,
+
+    @Schema(description = "问题类型")
+    val type: QuestionTypeEnum,
 
     @Schema(description = "问题答案")
     val questionAnswer: QuestionAnswer,
@@ -22,7 +26,7 @@ data class UserScoreDetail (
     val userAnswer: UserAnswer,
 
     @Schema(description = "用户得分")
-    val score: Int = 0,
+    var score: Int = 0,
 
     @Schema(description = "该题总分")
     val totalScore: Int = 0,
