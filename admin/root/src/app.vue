@@ -1,10 +1,9 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-08 15:42:02
- * @LastEditTime: 2024-09-08 23:23:33
+ * @LastEditTime: 2025-02-27 14:09:17
  * @Description: app
 -->
-
 <template>
   <Toast />
   <RouterView />
@@ -13,10 +12,9 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue';
 
+import { message } from '@yuri/common';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
-
-import { message } from '@yuri/common';
 
 defineOptions({ name: 'App' });
 

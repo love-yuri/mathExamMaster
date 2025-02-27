@@ -27,14 +27,13 @@
     "@vben/constants": "workspace:*",
     "@vben/hooks": "workspace:*",
     "@vben/preferences": "workspace:*",
-    "@vben/stores": "workspace:*",
-    "@vben/utils": "workspace:*",
-    "@vben/types": "workspace:*",
     "@vben/request": "workspace:*",
-    "vue-router": "^4.4.3",
-    "@yuri/api": "workspace:*",
+    "@vben/stores": "workspace:*",
+    "@vben/types": "workspace:*",
+    "@vben/utils": "workspace:*",
     "@yuri/types": "workspace:*",
-    "pinia": "2.2.2",
-    "primevue": "^4.0.5"
+    "pinia": "catalog:",
+    "primevue": "catalog:",
+    "vue-router": "catalog:"
   }
 }

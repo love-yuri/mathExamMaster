@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2025-02-12 18:44:59
+ * @LastEditTime: 2025-02-27 14:46:01
  * @Description: 创建试卷
 -->
 <template>
@@ -150,21 +150,21 @@
   </div>
 </template>
 <script setup lang="ts">
-import { Button, InputText, Knob, Rating, Select, Tag } from '@yuri/components';
+import type { QuestionAndPoint } from '@yuri/types';
+
 import { computed, onMounted, ref } from 'vue';
-import Show from '#/views/examPageManager/components/show.vue';
-import { useRoute } from '#/router';
+import { useRoute } from 'vue-router';
+
 import {
   checkEmpty,
   checkEqual,
-  examPageApi,
   checkSuccess,
+  examPageApi,
 } from '@yuri/common';
-import {
-  ExamPageCreateVO,
-  type QuestionAndPoint,  typeOptions,
-  subjectOptions,
-} from '@yuri/types';
+import { Button, InputText, Knob, Rating, Select, Tag } from '@yuri/components';
+import { ExamPageCreateVO, subjectOptions, typeOptions } from '@yuri/types';
+
+import Show from '#/views/examPageManager/components/show.vue';
 
 const route = useRoute();
 

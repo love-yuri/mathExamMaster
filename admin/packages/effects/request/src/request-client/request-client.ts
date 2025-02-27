@@ -1,35 +1,27 @@
-import type {
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-  CreateAxiosDefaults,
-} from 'axios';
+import type { AxiosInstance, AxiosResponse } from 'axios';
 
-import { merge } from '@vben/utils';
+import type { RequestClientConfig, RequestClientOptions } from './types';
+
+import { bindMethods, merge } from '@vben/utils';
 
 import axios from 'axios';
 
 import { FileDownloader } from './modules/downloader';
 import { InterceptorManager } from './modules/interceptor';
-import { FileUploader, type UploadFileParam } from './modules/uploader';
-import { type RequestClientOptions } from './types';
+import { FileUploader } from './modules/uploader';
 
 class RequestClient {
-  private readonly instance: AxiosInstance;
-
-  /**
-   * 请求拦截器
-   * 使用[] 进行签名
-   */
   public addRequestInterceptor: InterceptorManager['addRequestInterceptor'];
-  public addResponseInterceptor: InterceptorManager['addResponseInterceptor'];
 
+  public addResponseInterceptor: InterceptorManager['addResponseInterceptor'];
   public download: FileDownloader['download'];
+
   // 是否正在刷新token
   public isRefreshing = false;
   // 刷新token队列
   public refreshTokenQueue: ((token: string) => void)[] = [];
   public upload: FileUploader['upload'];
+  private readonly instance: AxiosInstance;
 
   /**
    * 构造函数，用于创建Axios实例
@@ -37,10 +29,11 @@ class RequestClient {
    */
   constructor(options: RequestClientOptions = {}) {
     // 合并默认配置和传入的配置
-    const defaultConfig: CreateAxiosDefaults = {
+    const defaultConfig: RequestClientOptions = {
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
       },
+      responseReturn: 'raw',
       // 默认超时时间
       timeout: 10_000,
     };
@@ -48,7 +41,7 @@ class RequestClient {
     const requestConfig = merge(axiosConfig, defaultConfig);
     this.instance = axios.create(requestConfig);
 
-    this.bindMethods();
+    bindMethods(this);
 
     // 实例化拦截器管理器
     const interceptorManager = new InterceptorManager(this.instance);
@@ -66,35 +59,19 @@ class RequestClient {
   }
 
   /**
-   * 绑定实例方法
-   * 防止别的类引用类函数时丢失this
-   */
-  private bindMethods() {
-    const propertyNames = Object.getOwnPropertyNames(
-      Object.getPrototypeOf(this),
-    );
-    propertyNames.forEach((propertyName) => {
-      const propertyValue = (this as any)[propertyName];
-      if (
-        typeof propertyValue === 'function' &&
-        propertyName !== 'constructor'
-      ) {
-        (this as any)[propertyName] = propertyValue.bind(this);
-      }
-    });
-  }
-
-  /**
    * DELETE请求方法
    */
-  public delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  public delete<T = any>(
+    url: string,
+    config?: RequestClientConfig,
+  ): Promise<T> {
     return this.request<T>(url, { ...config, method: 'DELETE' });
   }
 
   /**
    * GET请求方法
    */
-  public get<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  public get<T = any>(url: string, config?: RequestClientConfig): Promise<T> {
     return this.request<T>(url, { ...config, method: 'GET' });
   }
 
@@ -104,7 +81,7 @@ class RequestClient {
   public post<T = any>(
     url: string,
     data?: any,
-    config?: AxiosRequestConfig,
+    config?: RequestClientConfig,
   ): Promise<T> {
     return this.request<T>(url, { ...config, data, method: 'POST' });
   }
@@ -115,7 +92,7 @@ class RequestClient {
   public put<T = any>(
     url: string,
     data?: any,
-    config?: AxiosRequestConfig,
+    config?: RequestClientConfig,
   ): Promise<T> {
     return this.request<T>(url, { ...config, data, method: 'PUT' });
   }
@@ -123,7 +100,10 @@ class RequestClient {
   /**
    * 通用的请求方法
    */
-  public async request<T>(url: string, config: AxiosRequestConfig): Promise<T> {
+  public async request<T>(
+    url: string,
+    config: RequestClientConfig,
+  ): Promise<T> {
     try {
       const response: AxiosResponse<T> = await this.instance({
         url,
@@ -136,4 +116,4 @@ class RequestClient {
   }
 }
 
-export { RequestClient, type UploadFileParam };
+export { RequestClient };

@@ -1,6 +1,6 @@
 import { createIconifyIcon } from '@vben-core/icons';
 
-import './load';
+import './load.js';
 
 const SvgAvatar1Icon = createIconifyIcon('svg:avatar-1');
 const SvgAvatar2Icon = createIconifyIcon('svg:avatar-2');
@@ -10,9 +10,10 @@ const SvgDownloadIcon = createIconifyIcon('svg:download');
 const SvgCardIcon = createIconifyIcon('svg:card');
 const SvgBellIcon = createIconifyIcon('svg:bell');
 const SvgCakeIcon = createIconifyIcon('svg:cake');
-const SvgRefreshIcon = createIconifyIcon('svg:refresh');
+const SvgAntdvLogoIcon = createIconifyIcon('svg:antdv-logo');
 
 export {
+  SvgAntdvLogoIcon,
   SvgAvatar1Icon,
   SvgAvatar2Icon,
   SvgAvatar3Icon,
@@ -21,5 +22,4 @@ export {
   SvgCakeIcon,
   SvgCardIcon,
   SvgDownloadIcon,
-  SvgRefreshIcon,
 };

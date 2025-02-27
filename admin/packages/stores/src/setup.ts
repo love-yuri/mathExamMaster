@@ -1,9 +1,3 @@
-/*
- * @Author: love-yuri yuri2078170658@gmail.com
- * @Date: 2024-09-07 21:03:54
- * @LastEditTime: 2024-09-09 13:19:47
- * @Description: pinia setup
- */
 import type { Pinia } from 'pinia';
 
 import type { App } from 'vue';
@@ -37,18 +31,13 @@ export async function initStores(app: App, options: InitStoreOptions) {
   return pinia;
 }
 
-/**
- * 重置所有store为初始状态
- */
 export function resetAllStores() {
   if (!pinia) {
     console.error('Pinia is not installed');
     return;
   }
   const allStores = (pinia as any)._s;
-
   for (const [_key, store] of allStores) {
-    // $reset() 是pinia提供的重置方法
     store.$reset();
   }
 }

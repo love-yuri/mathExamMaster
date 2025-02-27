@@ -4,7 +4,6 @@ import { interopDefault } from '../util';
 
 export async function vue(): Promise<Linter.Config[]> {
   const [pluginVue, parserVue, parserTs] = await Promise.all([
-    // @ts-expect-error missing types
     interopDefault(import('eslint-plugin-vue')),
     interopDefault(import('vue-eslint-parser')),
     // @ts-expect-error missing types
@@ -15,6 +14,22 @@ export async function vue(): Promise<Linter.Config[]> {
     {
       files: ['**/*.vue'],
       languageOptions: {
+        // globals: {
+        //   computed: 'readonly',
+        //   defineEmits: 'readonly',
+        //   defineExpose: 'readonly',
+        //   defineProps: 'readonly',
+        //   onMounted: 'readonly',
+        //   onUnmounted: 'readonly',
+        //   reactive: 'readonly',
+        //   ref: 'readonly',
+        //   shallowReactive: 'readonly',
+        //   shallowRef: 'readonly',
+        //   toRef: 'readonly',
+        //   toRefs: 'readonly',
+        //   watch: 'readonly',
+        //   watchEffect: 'readonly',
+        // },
         parser: parserVue,
         parserOptions: {
           ecmaFeatures: {

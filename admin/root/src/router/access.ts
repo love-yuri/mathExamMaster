@@ -1,9 +1,3 @@
-/*
- * @Author: love-yuri yuri2078170658@gmail.com
- * @Date: 2024-09-08 15:42:02
- * @LastEditTime: 2025-02-08 14:51:29
- * @Description:
- */
 import type {
   ComponentRecordType,
   GenerateMenuAndRoutesOptions,
@@ -11,15 +5,14 @@ import type {
 
 import { generateAccessible } from '@vben/access';
 import { preferences } from '@vben/preferences';
+
 import { message } from '@yuri/common';
+
 import { BasicLayout, IFrameView } from '#/layouts';
 import { $t } from '#/locales';
 
 const forbiddenComponent = () => import('#/views/_core/fallback/forbidden.vue');
 
-/**
- * 生成菜单和路由
- */
 async function generateAccess(options: GenerateMenuAndRoutesOptions) {
   const pageMap: ComponentRecordType = import.meta.glob('../views/**/*.vue');
 
@@ -31,11 +24,7 @@ async function generateAccess(options: GenerateMenuAndRoutesOptions) {
   return await generateAccessible(preferences.app.accessMode, {
     ...options,
     fetchMenuListAsync: async () => {
-      message.default.success({
-        detail: `${$t('common.loadingMenu')}...`,
-        life: 1500,
-      });
-      // 此处返回menu 可在后端返回
+      message.default.info(`${$t('common.loadingMenu')}...`);
       return [];
     },
     // 可以指定没有权限跳转403页面

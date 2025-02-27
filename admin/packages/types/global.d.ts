@@ -1,9 +1,3 @@
-/*
- * @Author: love-yuri yuri2078170658@gmail.com
- * @Date: 2024-09-10 16:04:07
- * @LastEditTime: 2024-09-20 21:46:25
- * @Description: 全局模块支持
- */
 import type { RouteMeta as IRouteMeta } from '@vben-core/typings';
 
 import 'vue-router';

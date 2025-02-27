@@ -1,41 +1,54 @@
 import type { DrawerApiOptions, DrawerState } from './drawer';
 
-import { isFunction, Store } from '@vben-core/shared';
+import { Store } from '@vben-core/shared/store';
+import { bindMethods, isFunction } from '@vben-core/shared/utils';
 
 export class DrawerApi {
-  private api: Pick<
-    DrawerApiOptions,
-    'onBeforeClose' | 'onCancel' | 'onConfirm' | 'onOpenChange'
-  >;
-  // private prevState!: DrawerState;
-  private state!: DrawerState;
-
   // 共享数据
   public sharedData: Record<'payload', any> = {
     payload: {},
   };
-
   public store: Store<DrawerState>;
+
+  private api: Pick<
+    DrawerApiOptions,
+    | 'onBeforeClose'
+    | 'onCancel'
+    | 'onClosed'
+    | 'onConfirm'
+    | 'onOpenChange'
+    | 'onOpened'
+  >;
+
+  // private prevState!: DrawerState;
+  private state!: DrawerState;
 
   constructor(options: DrawerApiOptions = {}) {
     const {
       connectedComponent: _,
       onBeforeClose,
       onCancel,
+      onClosed,
       onConfirm,
       onOpenChange,
+      onOpened,
       ...storeState
     } = options;
 
     const defaultState: DrawerState = {
+      class: '',
       closable: true,
       closeOnClickModal: true,
       closeOnPressEscape: true,
       confirmLoading: false,
+      contentClass: '',
       footer: true,
+      header: true,
       isOpen: false,
       loading: false,
       modal: true,
+      openAutoFocus: false,
+      placement: 'right',
       showCancelButton: true,
       showConfirmButton: true,
       title: '',
@@ -58,18 +71,16 @@ export class DrawerApi {
         },
       },
     );
-
+    this.state = this.store.state;
     this.api = {
       onBeforeClose,
       onCancel,
+      onClosed,
       onConfirm,
       onOpenChange,
+      onOpened,
     };
-  }
-
-  // 如果需要多次更新状态，可以使用 batch 方法
-  batchStore(cb: () => void) {
-    this.store.batch(cb);
+    bindMethods(this);
   }
 
   /**
@@ -100,10 +111,28 @@ export class DrawerApi {
   }
 
   /**
+   * 弹窗关闭动画播放完毕后的回调
+   */
+  onClosed() {
+    if (!this.state.isOpen) {
+      this.api.onClosed?.();
+    }
+  }
+
+  /**
    * 确认操作
    */
   onConfirm() {
     this.api.onConfirm?.();
+  }
+
+  /**
+   * 弹窗打开动画播放完毕后的回调
+   */
+  onOpened() {
+    if (this.state.isOpen) {
+      this.api.onOpened?.();
+    }
   }
 
   open() {
@@ -112,6 +141,7 @@ export class DrawerApi {
 
   setData<T>(payload: T) {
     this.sharedData.payload = payload;
+    return this;
   }
 
   setState(
@@ -124,5 +154,6 @@ export class DrawerApi {
     } else {
       this.store.setState((prev) => ({ ...prev, ...stateOrFn }));
     }
+    return this;
   }
 }

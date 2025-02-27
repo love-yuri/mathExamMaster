@@ -15,9 +15,6 @@ const defaultResponseInterceptorConfig: ResponseInterceptorConfig = {
   rejected: (error) => Promise.reject(error),
 };
 
-/**
- * axios 实例请求拦截器管理器
- */
 class InterceptorManager {
   private axiosInstance: AxiosInstance;
 

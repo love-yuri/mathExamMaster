@@ -98,7 +98,14 @@
   </div>
 </template>
 <script setup lang="ts">
+import type { PageParam } from '@yuri/types';
+import type { PageState } from 'primevue/paginator';
+
 import { onMounted, ref } from 'vue';
+
+import { EllipsisText } from '@vben/common-ui';
+
+import { examPageApi, message } from '@yuri/common';
 import {
   Button,
   Card,
@@ -109,20 +116,16 @@ import {
   SplitButton,
   Tag,
 } from '@yuri/components';
-import type { PageState } from 'primevue/paginator';
-import { useConfirm } from 'primevue/useconfirm';
-import { router } from '#/router';
-import { EllipsisText } from '@vben/common-ui';
-import { examPageApi } from '@yuri/common';
 import {
-  type PageParam,
+  ExamPageMap,
   ExamPageResult,
   ExamPageType,
   SubjectType,
-  ExamPageMap,
   SubjectTypeMap,
 } from '@yuri/types';
-import { message } from '@yuri/common';
+import { useConfirm } from 'primevue/useconfirm';
+
+import { router } from '#/router';
 
 const confirm = useConfirm();
 const pageParam = ref<PageParam>({

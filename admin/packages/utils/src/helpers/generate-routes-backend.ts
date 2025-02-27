@@ -1,17 +1,12 @@
-/*
- * @Author: love-yuri yuri2078170658@gmail.com
- * @Date: 2024-09-07 21:03:54
- * @LastEditTime: 2024-09-09 12:51:05
- * @Description: 后端生成路由
- */
+import type { RouteRecordRaw } from 'vue-router';
+
 import type {
   ComponentRecordType,
   GenerateMenuAndRoutesOptions,
   RouteRecordStringComponent,
 } from '@vben-core/typings';
-import type { RouteRecordRaw } from 'vue-router';
 
-import { mapTree } from '@vben-core/shared';
+import { mapTree } from '@vben-core/shared/utils';
 
 /**
  * 动态生成路由 - 后端方式
@@ -22,7 +17,6 @@ async function generateRoutesByBackend(
   const { fetchMenuListAsync, layoutMap = {}, pageMap = {} } = options;
 
   try {
-    // 从后端获取路由列表
     const menuRoutes = await fetchMenuListAsync?.();
     if (!menuRoutes) {
       return [];
@@ -62,12 +56,14 @@ function convertRoutes(
       // 页面组件转换
     } else if (component) {
       const normalizePath = normalizeViewPath(component);
-      route.component =
-        pageMap[
-          normalizePath.endsWith('.vue')
-            ? normalizePath
-            : `${normalizePath}.vue`
-        ];
+      const pageKey = normalizePath.endsWith('.vue')
+        ? normalizePath
+        : `${normalizePath}.vue`;
+      if (pageMap[pageKey]) {
+        route.component = pageMap[pageKey];
+      } else {
+        console.error(`route component is invalid: ${pageKey}`, route);
+      }
     }
 
     return route;

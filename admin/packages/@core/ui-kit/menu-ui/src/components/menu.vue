@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { UseResizeObserverReturn } from '@vueuse/core';
 
+import type { SetupContext, VNodeArrayChildren } from 'vue';
+
 import type {
   MenuItemClicked,
   MenuItemRegistered,
@@ -15,14 +17,13 @@ import {
   ref,
   toRef,
   useSlots,
-  type VNodeArrayChildren,
   watch,
   watchEffect,
 } from 'vue';
 
 import { useNamespace } from '@vben-core/composables';
 import { Ellipsis } from '@vben-core/icons';
-import { isHttpUrl } from '@vben-core/shared';
+import { isHttpUrl } from '@vben-core/shared/utils';
 
 import { useResizeObserver } from '@vueuse/core';
 
@@ -54,7 +55,7 @@ const emit = defineEmits<{
 
 const { b, is } = useNamespace('menu');
 const menuStyle = useMenuStyle();
-const slots = useSlots();
+const slots: SetupContext['slots'] = useSlots();
 const menu = ref<HTMLUListElement>();
 const sliceIndex = ref(-1);
 const openedMenus = ref<MenuProvider['openedMenus']>(
@@ -64,7 +65,6 @@ const activePath = ref<MenuProvider['activePath']>(props.defaultActive);
 const items = ref<MenuProvider['items']>({});
 const subMenus = ref<MenuProvider['subMenus']>({});
 const mouseInChild = ref(false);
-const defaultSlots: VNodeArrayChildren = slots.default?.() ?? [];
 
 const isMenuPopup = computed<MenuProvider['isMenuPopup']>(() => {
   return (
@@ -73,6 +73,9 @@ const isMenuPopup = computed<MenuProvider['isMenuPopup']>(() => {
 });
 
 const getSlot = computed(() => {
+  // 更新插槽内容
+  const defaultSlots: VNodeArrayChildren = slots.default?.() ?? [];
+
   const originalSlot = flattedChildren(defaultSlots) as VNodeArrayChildren;
   const slotDefault =
     sliceIndex.value === -1
@@ -330,6 +333,7 @@ function removeMenuItem(item: MenuItemRegistered) {
       is(theme, true),
       is('rounded', rounded),
       is('collapse', collapse),
+      is('menu-align', mode === 'horizontal'),
     ]"
     :style="menuStyle"
     role="menu"
@@ -421,6 +425,10 @@ $namespace: vben;
   opacity: 1;
 }
 
+.is-menu-align {
+  justify-content: var(--menu-align, start);
+}
+
 .#{$namespace}-menu__popup-container,
 .#{$namespace}-menu {
   --menu-title-width: 140px;
@@ -430,7 +438,7 @@ $namespace: vben;
   --menu-item-padding-x: 12px;
   --menu-item-popup-padding-y: 20px;
   --menu-item-popup-padding-x: 12px;
-  --menu-item-margin-y: 3px;
+  --menu-item-margin-y: 2px;
   --menu-item-margin-x: 0px;
   --menu-item-collapse-padding-y: 23.5px;
   --menu-item-collapse-padding-x: 0px;
@@ -475,7 +483,7 @@ $namespace: vben;
   &.is-rounded {
     --menu-item-margin-x: 8px;
     --menu-item-collapse-margin-x: 6px;
-    --menu-item-radius: 10px;
+    --menu-item-radius: 8px;
   }
 
   &.is-horizontal:not(.is-rounded) {
@@ -718,6 +726,10 @@ $namespace: vben;
     align-items: center;
     width: 100%;
     height: var(--menu-item-height);
+
+    span {
+      @include menu-title;
+    }
   }
 
   &.is-collapse-show-title {

@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 19:57:12
- * @LastEditTime: 2025-02-08 15:04:02
+ * @LastEditTime: 2025-02-27 14:44:58
  * @Description: 创建题目
 -->
 <template>
@@ -18,15 +18,18 @@
   </div>
 </template>
 <script setup lang="ts">
-import { SelectButton } from '@yuri/components';
-import SingleChoise from './components/singleChoice.vue';
-import MultipleChoice from './components/multipleChoice.vue';
-import Judge from './components/judge.vue';
-import GapFilling from './components/gapFilling.vue';
-import Subjective from './components/subjective.vue';
+import type { Component } from 'vue';
 
-import { type Component, markRaw, ref } from 'vue';
+import { markRaw, ref } from 'vue';
+
+import { SelectButton } from '@yuri/components';
 import { QuestionTypeEnum } from '@yuri/types';
+
+import GapFilling from './components/gapFilling.vue';
+import Judge from './components/judge.vue';
+import MultipleChoice from './components/multipleChoice.vue';
+import SingleChoise from './components/singleChoice.vue';
+import Subjective from './components/subjective.vue';
 
 type QuestionComponent = {
   component: Component;

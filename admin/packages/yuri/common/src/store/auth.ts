@@ -5,7 +5,6 @@
  * @Description: 认证模块
  */
 
-import type { LoginAndRegisterParams } from '@vben/common-ui';
 import type { UserInfo } from '@vben/types';
 
 import { ref } from 'vue';

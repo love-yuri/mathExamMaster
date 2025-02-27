@@ -1,8 +1,20 @@
-import type { ModalApi } from './modal-api';
-
 import type { Component, Ref } from 'vue';
 
+import type { MaybePromise } from '@vben-core/typings';
+
+import type { ModalApi } from './modal-api';
+
 export interface ModalProps {
+  /**
+   * 是否要挂载到内容区域
+   * @default false
+   */
+  appendToMain?: boolean;
+  /**
+   * 是否显示边框
+   * @default false
+   */
+  bordered?: boolean;
   /**
    * 取消按钮文字
    */
@@ -12,6 +24,9 @@ export interface ModalProps {
    * @default false
    */
   centered?: boolean;
+
+  class?: string;
+
   /**
    * 是否显示右上角的关闭按钮
    * @default true
@@ -28,6 +43,10 @@ export interface ModalProps {
    */
   closeOnPressEscape?: boolean;
   /**
+   * 禁用确认按钮
+   */
+  confirmDisabled?: boolean;
+  /**
    * 确定按钮 loading
    * @default false
    */
@@ -36,6 +55,7 @@ export interface ModalProps {
    * 确定按钮文字
    */
   confirmText?: string;
+  contentClass?: string;
   /**
    * 弹窗描述
    */
@@ -50,6 +70,7 @@ export interface ModalProps {
    * @default true
    */
   footer?: boolean;
+  footerClass?: string;
   /**
    * 是否全屏
    * @default false
@@ -65,6 +86,7 @@ export interface ModalProps {
    * @default true
    */
   header?: boolean;
+  headerClass?: string;
   /**
    * 弹窗是否显示
    * @default false
@@ -76,6 +98,14 @@ export interface ModalProps {
    */
   modal?: boolean;
   /**
+   * 是否自动聚焦
+   */
+  openAutoFocus?: boolean;
+  /**
+   * 弹窗遮罩模糊效果
+   */
+  overlayBlur?: number;
+  /**
    * 是否显示取消按钮
    * @default true
    */
@@ -86,6 +116,10 @@ export interface ModalProps {
    */
   showConfirmButton?: boolean;
   /**
+   * 提交中（锁定弹窗状态）
+   */
+  submitting?: boolean;
+  /**
    * 弹窗标题
    */
   title?: string;
@@ -93,6 +127,10 @@ export interface ModalProps {
    * 弹窗标题提示
    */
   titleTooltip?: string;
+  /**
+   * 弹窗层级
+   */
+  zIndex?: number;
 }
 
 export interface ModalState extends ModalProps {
@@ -104,11 +142,11 @@ export interface ModalState extends ModalProps {
   sharedData?: Record<string, any>;
 }
 
-export type ExtendedModalApi = {
+export type ExtendedModalApi = ModalApi & {
   useStore: <T = NoInfer<ModalState>>(
     selector?: (state: NoInfer<ModalState>) => T,
   ) => Readonly<Ref<T>>;
-} & ModalApi;
+};
 
 export interface ModalApiOptions extends ModalState {
   /**
@@ -116,14 +154,23 @@ export interface ModalApiOptions extends ModalState {
    */
   connectedComponent?: Component;
   /**
+   * 在关闭时销毁弹窗。仅在使用 connectedComponent 时有效
+   */
+  destroyOnClose?: boolean;
+  /**
    * 关闭前的回调，返回 false 可以阻止关闭
    * @returns
    */
-  onBeforeClose?: () => void;
+  onBeforeClose?: () => MaybePromise<boolean | undefined>;
   /**
    * 点击取消按钮的回调
    */
   onCancel?: () => void;
+  /**
+   * 弹窗关闭动画结束的回调
+   * @returns
+   */
+  onClosed?: () => void;
   /**
    * 点击确定按钮的回调
    */
@@ -134,4 +181,9 @@ export interface ModalApiOptions extends ModalState {
    * @returns
    */
   onOpenChange?: (isOpen: boolean) => void;
+  /**
+   * 弹窗打开动画结束的回调
+   * @returns
+   */
+  onOpened?: () => void;
 }

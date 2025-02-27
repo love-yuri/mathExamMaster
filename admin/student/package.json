@@ -19,7 +19,7 @@
     "#/*": "./src/*"
   },
   "dependencies": {
-    "@primevue/themes": "^4.0.5",
+    "@primevue/themes": "catalog:",
     "@vben/access": "workspace:*",
     "@vben/common-ui": "workspace:*",
     "@vben/constants": "workspace:*",
@@ -34,20 +34,19 @@
     "@vben/styles": "workspace:*",
     "@vben/types": "workspace:*",
     "@vben/utils": "workspace:*",
-    "@vueuse/core": "^11.0.3",
-    "@yuri/api": "workspace:*",
-    "@yuri/types": "workspace:*",
-    "@yuri/components": "workspace:*",
+    "@vueuse/core": "catalog:",
     "@yuri/common": "workspace:*",
-    "dayjs": "^1.11.13",
-    "katex": "^0.16.11",
-    "mathlive": "^0.101.1",
-    "pinia": "2.2.2",
-    "primevue": "^4.0.5",
-    "vue": "^3.5.3",
-    "vue-router": "^4.4.3"
+    "@yuri/components": "workspace:*",
+    "@yuri/types": "workspace:*",
+    "dayjs": "catalog:",
+    "katex": "catalog:",
+    "mathlive": "catalog:",
+    "pinia": "catalog:",
+    "primevue": "catalog:",
+    "vue": "catalog:",
+    "vue-router": "catalog:"
   },
   "devDependencies": {
-    "primeicons": "^7.0.0"
+    "primeicons": "catalog:"
   }
 }

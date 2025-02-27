@@ -1,17 +1,5 @@
-/*
- * @Author: love-yuri yuri2078170658@gmail.com
- * @Date: 2024-09-10 16:04:07
- * @LastEditTime: 2024-09-21 15:03:19
- * @Description: 文件上传器材
- */
-import type { AxiosRequestConfig, AxiosResponse } from 'axios';
-
 import type { RequestClient } from '../request-client';
-
-export interface UploadFileParam {
-  file: Blob | File; // 文件
-  [key: string]: any;
-}
+import type { RequestClientConfig } from '../types';
 
 class FileUploader {
   private client: RequestClient;
@@ -20,18 +8,18 @@ class FileUploader {
     this.client = client;
   }
 
-  public async upload(
+  public async upload<T = any>(
     url: string,
-    file: UploadFileParam,
-    config?: AxiosRequestConfig,
-  ): Promise<any> {
+    data: Record<string, any> & { file: Blob | File },
+    config?: RequestClientConfig,
+  ): Promise<T> {
     const formData = new FormData();
 
-    for (const key in file) {
-      formData.append(key, file[key]);
-    }
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
 
-    const finalConfig: AxiosRequestConfig = {
+    const finalConfig: RequestClientConfig = {
       ...config,
       headers: {
         'Content-Type': 'multipart/form-data',

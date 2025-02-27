@@ -1,19 +1,15 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 23:35:05
- * @LastEditTime: 2024-11-05 19:16:33
+ * @LastEditTime: 2025-02-27 14:47:06
  * @Description: 系统路由
  */
 import type { RouteRecordRaw } from 'vue-router';
 
-import { BasicLayout } from '#/layouts';
-
 const routes: RouteRecordRaw[] = [
   {
-    component: BasicLayout,
     meta: {
       icon: 'lucide:layout-dashboard',
-      menuVisibleWithForbidden: false,
       order: 2,
       title: '系统管理',
     },

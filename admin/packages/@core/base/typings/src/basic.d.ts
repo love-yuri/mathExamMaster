@@ -1,9 +1,3 @@
-/*
- * @Author: love-yuri yuri2078170658@gmail.com
- * @Date: 2024-09-07 21:03:54
- * @LastEditTime: 2024-09-09 13:25:04
- * @Description:
- */
 interface BasicOption {
   label: string;
   value: string;
@@ -15,14 +9,27 @@ type TabOption = BasicOption;
 
 interface BasicUserInfo {
   /**
+   * 头像
+   */
+  avatar: string;
+  /**
+   * 用户昵称
+   */
+  realName: string;
+  /**
    * 用户角色
    */
   roles?: string[];
-
+  /**
+   * 用户id
+   */
+  userId: string;
   /**
    * 用户名
    */
   username: string;
 }
 
-export type { BasicOption, BasicUserInfo, SelectOption, TabOption };
+type ClassType = Array<object | string> | object | string;
+
+export type { BasicOption, BasicUserInfo, ClassType, SelectOption, TabOption };

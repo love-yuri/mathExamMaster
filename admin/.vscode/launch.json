@@ -1,41 +1,42 @@
 {
-    // 使用 IntelliSense 了解相关属性。 
-    // 悬停以查看现有属性的描述。
-    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug",
-            "program": "${fileDirname}/${fileBasenameNoExtension}.out",
-            "args": [],
-            "cwd": "${fileDirname}",
-            "preLaunchTask": "cppbuild"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "client",
-            "program": "${fileDirname}/${fileBasenameNoExtension}.out",
-            "args": [
-                "127.0.0.1",
-                "2078"
-            ],
-            "cwd": "${fileDirname}",
-            "preLaunchTask": "cppbuild"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "server",
-            "program": "${fileDirname}/${fileBasenameNoExtension}.out",
-            "args": [
-                "2078"
-            ],
-            "cwd": "${fileDirname}",
-            "preLaunchTask": "cppbuild"
-        }
-    ]
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "name": "vben admin playground dev",
+      "request": "launch",
+      "url": "http://localhost:5555",
+      "env": { "NODE_ENV": "development" },
+      "sourceMaps": true,
+      "webRoot": "${workspaceFolder}/playground"
+    },
+    {
+      "type": "chrome",
+      "name": "vben admin antd dev",
+      "request": "launch",
+      "url": "http://localhost:5666",
+      "env": { "NODE_ENV": "development" },
+      "sourceMaps": true,
+      "webRoot": "${workspaceFolder}/apps/web-antd"
+    },
+    {
+      "type": "chrome",
+      "name": "vben admin ele dev",
+      "request": "launch",
+      "url": "http://localhost:5777",
+      "env": { "NODE_ENV": "development" },
+      "sourceMaps": true,
+      "webRoot": "${workspaceFolder}/apps/web-ele"
+    },
+    {
+      "type": "chrome",
+      "name": "vben admin naive dev",
+      "request": "launch",
+      "url": "http://localhost:5888",
+      "env": { "NODE_ENV": "development" },
+      "sourceMaps": true,
+      "webRoot": "${workspaceFolder}/apps/web-naive"
+    }
+  ]
 }

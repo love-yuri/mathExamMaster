@@ -1,9 +1,3 @@
-<!--
- * @Author: love-yuri yuri2078170658@gmail.com
- * @Date: 2024-09-07 21:03:54
- * @LastEditTime: 2024-09-09 13:51:11
- * @Description: 版权相关设置
--->
 <script lang="ts" setup>
 interface Props {
   companyName: string;

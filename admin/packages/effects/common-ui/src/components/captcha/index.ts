@@ -1,8 +1,6 @@
-export { default as PointSelectionCaptcha } from './point-selection-captcha.vue';
-export interface Point {
-  i: number;
-  x: number;
-  y: number;
-  t: number;
-}
-export type ClearFunction = () => void;
+export { default as PointSelectionCaptcha } from './point-selection-captcha/index.vue';
+export { default as PointSelectionCaptchaCard } from './point-selection-captcha/index.vue';
+
+export { default as SliderCaptcha } from './slider-captcha/index.vue';
+export { default as SliderRotateCaptcha } from './slider-rotate-captcha/index.vue';
+export type * from './types';

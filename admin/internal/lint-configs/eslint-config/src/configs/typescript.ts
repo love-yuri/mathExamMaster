@@ -22,7 +22,7 @@ export async function typescript(): Promise<Linter.Config[]> {
           ecmaVersion: 'latest',
           extraFileExtensions: ['.vue'],
           jsxPragma: 'React',
-          project: './tsconfig.*?.json',
+          project: './tsconfig.*.json',
           sourceType: 'module',
         },
       },
@@ -54,7 +54,7 @@ export async function typescript(): Promise<Linter.Config[]> {
         ],
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-namespace': 'off',
-        '@typescript-eslint/no-non-null-assertion': 'off',
+        '@typescript-eslint/no-non-null-assertion': 'error',
         '@typescript-eslint/no-unused-expressions': 'off',
         '@typescript-eslint/no-unused-vars': [
           'error',

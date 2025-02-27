@@ -1,9 +1,3 @@
-<!--
- * @Author: love-yuri yuri2078170658@gmail.com
- * @Date: 2024-10-25 18:27:45
- * @LastEditTime: 2024-11-05 19:24:17
- * @Description: 
--->
 <script lang="ts" setup>
 import { computed } from 'vue';
 
@@ -11,6 +5,7 @@ import { Settings } from '@vben/icons';
 import { $t, loadLocaleMessages } from '@vben/locales';
 import { preferences, updatePreferences } from '@vben/preferences';
 import { capitalizeFirstLetter } from '@vben/utils';
+
 import { useVbenDrawer } from '@vben-core/popup-ui';
 import { VbenButton } from '@vben-core/shadcn-ui';
 

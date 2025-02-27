@@ -1,6 +1,26 @@
 {
   "folders": [
     {
+      "name": "@vben/backend-mock",
+      "path": "apps/backend-mock",
+    },
+    {
+      "name": "@vben/web-antd",
+      "path": "apps/web-antd",
+    },
+    {
+      "name": "@vben/web-ele",
+      "path": "apps/web-ele",
+    },
+    {
+      "name": "@vben/web-naive",
+      "path": "apps/web-naive",
+    },
+    {
+      "name": "@vben/docs",
+      "path": "docs",
+    },
+    {
       "name": "@vben/commitlint-config",
       "path": "internal/lint-configs/commitlint-config",
     },
@@ -55,6 +75,10 @@
     {
       "name": "@vben-core/preferences",
       "path": "packages/@core/preferences",
+    },
+    {
+      "name": "@vben-core/form-ui",
+      "path": "packages/@core/ui-kit/form-ui",
     },
     {
       "name": "@vben-core/layout-ui",
@@ -133,12 +157,8 @@
       "path": "packages/utils",
     },
     {
-      "name": "@vben/web-prime",
-      "path": "root",
-    },
-    {
-      "name": "@vben/student",
-      "path": "student",
+      "name": "@vben/playground",
+      "path": "playground",
     },
     {
       "name": "@vben/turbo-run",
@@ -147,22 +167,6 @@
     {
       "name": "@vben/vsh",
       "path": "scripts/vsh",
-    },
-    {
-      "name": "@yuri/api",
-      "path": "packages/yuri/api",
-    },
-    {
-      "name": "@yuri/common",
-      "path": "packages/yuri/common",
-    },
-    {
-      "name": "@yuri/types",
-      "path": "packages/yuri/types",
-    },
-    {
-      "name": "@yuri/components",
-      "path": "packages/yuri/components",
     },
   ],
 }
