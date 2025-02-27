@@ -1,33 +1,50 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
- * @Date: 2024-09-08 15:42:02
- * @LastEditTime: 2024-12-13 19:40:10
- * @Description: 启动配置
+ * @Date: 2025-02-27 11:55:53
+ * @LastEditTime: 2025-02-27 14:36:15
+ * @Description:
  */
-import { createApp } from 'vue';
+import { createApp, watchEffect } from 'vue';
 
 import { registerAccessDirective } from '@vben/access';
+import { initTippy, registerLoadingDirective } from '@vben/common-ui';
+import { MotionPlugin } from '@vben/plugins/motion';
+import { preferences } from '@vben/preferences';
 import { initStores } from '@vben/stores';
 import '@vben/styles';
 import '@vben/styles/ele';
 
 import Aura from '@primevue/themes/aura';
+import { useTitle } from '@vueuse/core';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
 import DialogService from 'primevue/dialogservice';
 import ToastService from 'primevue/toastservice';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import Katex from 'katex';
-import 'katex/dist/katex.min.css'; // 引入 KaTeX 样式
 
-import { setupI18n } from '#/locales';
+import { $t, setupI18n } from '#/locales';
 
 import App from './app.vue';
 import { router } from './router';
 
 async function bootstrap(namespace: string) {
+  // 初始化组件适配器
+  // // 设置弹窗的默认配置
+  // setDefaultModalProps({
+  //   fullscreenButton: false,
+  // });
+  // // 设置抽屉的默认配置
+  // setDefaultDrawerProps({
+  //   zIndex: 2000,
+  // });
   const app = createApp(App);
+
+  // 注册Vben提供的v-loading和v-spinning指令
+  registerLoadingDirective(app, {
+    loading: 'loading',
+    spinning: 'spinning',
+  });
 
   // 国际化 i18n 配置
   await setupI18n(app);
@@ -38,11 +55,14 @@ async function bootstrap(namespace: string) {
   // 安装权限指令
   registerAccessDirective(app);
 
+  // 初始化 tippy
+  initTippy(app);
+
   // 配置路由及路由守卫
   app.use(router);
 
-  // 配置 katex
-  app.use(Katex);
+  // 配置Motion插件
+  app.use(MotionPlugin);
 
   // 配置primevue
   app.use(ToastService);
@@ -53,6 +73,16 @@ async function bootstrap(namespace: string) {
     theme: {
       preset: Aura,
     },
+  });
+
+  // 动态更新标题
+  watchEffect(() => {
+    if (preferences.app.dynamicTitle) {
+      const routeTitle = router.currentRoute.value.meta?.title;
+      const pageTitle =
+        (routeTitle ? `${$t(routeTitle)} - ` : '') + preferences.app.name;
+      useTitle(pageTitle);
+    }
   });
 
   app.mount('#app');
