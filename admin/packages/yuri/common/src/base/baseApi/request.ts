@@ -1,7 +1,9 @@
+import type { R } from '@yuri/types';
+
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 16:37:25
- * @LastEditTime: 2025-02-08 14:46:55
+ * @LastEditTime: 2025-02-27 16:43:22
  * @Description:
  */
 /**
@@ -13,12 +15,10 @@ import { RequestClient } from '@vben/request';
 import { useAccessStore } from '@vben/stores';
 
 import { SystemCode } from '../../constants/systemCode';
-import message from '../../utils/message';
 import { useAuthStore } from '../../store/auth';
-import type { R } from '@yuri/types';
+import message from '../../utils/message';
 
 const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
-
 
 function createRequestClient(baseURL: string) {
   const client = new RequestClient({

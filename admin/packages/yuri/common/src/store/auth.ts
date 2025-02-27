@@ -1,11 +1,9 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 16:37:25
- * @LastEditTime: 2025-02-07 16:56:47
+ * @LastEditTime: 2025-02-27 16:49:35
  * @Description: 认证模块
  */
-
-import type { UserInfo } from '@vben/types';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -13,10 +11,8 @@ import { useRouter } from 'vue-router';
 import { DEFAULT_HOME_PATH, LOGIN_PATH } from '@vben/constants';
 import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 
+import { message, StoreNames, userApi } from '@yuri/common';
 import { defineStore } from 'pinia';
-
-import { message, StoreNames } from '@yuri/common';
-import { userApi } from '@yuri/common';
 
 export const useAuthStore = defineStore(StoreNames.Auth, () => {
   const accessStore = useAccessStore();
@@ -31,7 +27,7 @@ export const useAuthStore = defineStore(StoreNames.Auth, () => {
    * @param params 登录表单数据
    */
   async function authLogin(
-    params: LoginAndRegisterParams,
+    params: any,
     onSuccess?: () => Promise<void> | void,
   ) {
     try {
@@ -86,7 +82,7 @@ export const useAuthStore = defineStore(StoreNames.Auth, () => {
    * 更新用户信息
    */
   async function fetchUserInfo() {
-    const userInfo: UserInfo = await userApi.info();
+    const userInfo = await userApi.info();
     userStore.setUserInfo(userInfo);
     return userInfo;
   }

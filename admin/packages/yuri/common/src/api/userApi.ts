@@ -1,20 +1,22 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 17:05:12
- * @LastEditTime: 2025-02-08 14:35:02
+ * @LastEditTime: 2025-02-27 16:49:13
  * @Description:
  */
 
-import {
-  RequestType,
-  type LoginParams,
-  type LoginResult,
-  type PageResult,
-  type SetTeacherParam,
-  type User,
-  type UserPageParam,
-  type UserResult,
+import type {
+  LoginParams,
+  LoginResult,
+  PageResult,
+  SetTeacherParam,
+  User,
+  UserPageParam,
+  UserResult,
 } from '@yuri/types';
+
+import { RequestType } from '@yuri/types';
+
 import { BaseApi } from '../base/baseApi/baseApi';
 
 class Api extends BaseApi<User> {
@@ -43,12 +45,12 @@ class Api extends BaseApi<User> {
     return this.add<PageResult<UserResult>>(RequestType.POST, '/page', param);
   };
 
-  teachers = async () => {
-    return this.add<UserResult[]>(RequestType.POST, '/teachers');
-  };
-
   setTeacher = async (param: SetTeacherParam) => {
     return this.add<boolean>(RequestType.POST, '/set/teacher', param);
+  };
+
+  teachers = async () => {
+    return this.add<UserResult[]>(RequestType.POST, '/teachers');
   };
 }
 

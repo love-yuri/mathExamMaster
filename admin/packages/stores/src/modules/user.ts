@@ -1,3 +1,9 @@
+/*
+ * @Author: love-yuri yuri2078170658@gmail.com
+ * @Date: 2025-02-27 11:55:53
+ * @LastEditTime: 2025-02-27 16:48:21
+ * @Description:
+ */
 import { acceptHMRUpdate, defineStore } from 'pinia';
 
 interface BasicUserInfo {
@@ -40,7 +46,7 @@ interface AccessState {
  */
 export const useUserStore = defineStore('core-user', {
   actions: {
-    setUserInfo(userInfo: BasicUserInfo | null) {
+    setUserInfo(userInfo: any) {
       // 设置用户信息
       this.userInfo = userInfo;
       // 设置角色信息

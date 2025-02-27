@@ -1,11 +1,19 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-08-11 16:05:57
- * @LastEditTime: 2025-02-26 21:09:01
+ * @LastEditTime: 2025-02-27 16:43:40
  * @Description: 基础api
  */
 
-import { type RequestConfig, RequestType, type BaseEntity, type PageParam, type PageResult } from '@yuri/types';
+import type {
+  BaseEntity,
+  PageParam,
+  PageResult,
+  RequestConfig,
+} from '@yuri/types';
+
+import { RequestType } from '@yuri/types';
+
 import { requestClient } from './request';
 
 // 定义基础API函数
@@ -27,26 +35,6 @@ async function baseApi(config: RequestConfig): Promise<unknown> {
  * @description 提供基础的API请求方法
  */
 export abstract class BaseApi<T extends BaseEntity> {
-  // 基础添加函数
-  protected add = <V>(
-    method: RequestType,
-    url: string,
-    params?: any,
-  ): Promise<V> => {
-    if (url.startsWith('/')) {
-      url = url.slice(1);
-    }
-    if (url.endsWith('/')) {
-      url = url.slice(0, -1);
-    }
-
-    return baseApi({
-      method,
-      params,
-      url: `${this.baseUrl}/${url}`,
-    }) as Promise<V>;
-  };
-
   abstract readonly baseUrl: string;
 
   // 创建
@@ -64,6 +52,14 @@ export abstract class BaseApi<T extends BaseEntity> {
       method: RequestType.POST,
       url: `${this.baseUrl}/delete/${id}`,
     }) as Promise<boolean>;
+  };
+
+  // 更新
+  get = (id: number | string): Promise<T> => {
+    return baseApi({
+      method: RequestType.POST,
+      url: `${this.baseUrl}/get/${id}`,
+    }) as Promise<T>;
   };
 
   // 列表
@@ -95,12 +91,23 @@ export abstract class BaseApi<T extends BaseEntity> {
     }) as Promise<boolean>;
   };
 
+  // 基础添加函数
+  protected add = <V>(
+    method: RequestType,
+    url: string,
+    params?: any,
+  ): Promise<V> => {
+    if (url.startsWith('/')) {
+      url = url.slice(1);
+    }
+    if (url.endsWith('/')) {
+      url = url.slice(0, -1);
+    }
 
-  // 更新
-  get = (id: string | number): Promise<T> => {
     return baseApi({
-      method: RequestType.POST,
-      url: `${this.baseUrl}/get/${id}`,
-    }) as Promise<T>;
+      method,
+      params,
+      url: `${this.baseUrl}/${url}`,
+    }) as Promise<V>;
   };
 }

@@ -34,6 +34,7 @@
     "@yuri/types": "workspace:*",
     "pinia": "catalog:",
     "primevue": "catalog:",
+    "vue": "catalog:",
     "vue-router": "catalog:"
   }
 }
