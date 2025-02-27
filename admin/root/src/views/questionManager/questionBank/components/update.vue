@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 19:57:12
- * @LastEditTime: 2024-10-19 19:40:05
+ * @LastEditTime: 2025-02-27 16:53:37
  * @Description: 创建题目
 -->
 <template>
@@ -15,20 +15,26 @@
   </div>
 </template>
 <script setup lang="ts">
-import SingleChoice from '#/views/questionManager/questionBank/create/components/singleChoice.vue';
-import MultipleChoice from '#/views/questionManager/questionBank/create/components/multipleChoice.vue';
-import Judge from '#/views/questionManager/questionBank/create/components/judge.vue';
-import GapFilling from '#/views/questionManager/questionBank/create/components/gapFilling.vue';
-import Subjective from '#/views/questionManager/questionBank/create/components/subjective.vue';
+import type { KnowledgePoint, QuestionBank } from '@yuri/types';
 
 import { computed, markRaw, nextTick, onMounted, ref, unref } from 'vue';
-import { router, useRoute } from '#/router';
+import { useRoute, useRouter } from 'vue-router';
+
 import { useTabs } from '@vben/hooks';
+
 import { questionBankApi } from '@yuri/common';
-import { QuestionTypeEnum, type QuestionBank, type KnowledgePoint } from '@yuri/types';
+import { QuestionTypeEnum } from '@yuri/types';
+
+import GapFilling from '#/views/questionManager/questionBank/create/components/gapFilling.vue';
+import Judge from '#/views/questionManager/questionBank/create/components/judge.vue';
+import MultipleChoice from '#/views/questionManager/questionBank/create/components/multipleChoice.vue';
+import SingleChoice from '#/views/questionManager/questionBank/create/components/singleChoice.vue';
+import Subjective from '#/views/questionManager/questionBank/create/components/subjective.vue';
 
 defineEmits(['update']);
+
 const route = useRoute();
+const router = useRouter();
 
 // 定义 ComponentMap，并使用 markRaw 包装组件
 const ComponentMap: Record<QuestionTypeEnum, ReturnType<typeof markRaw>> = {

@@ -6,8 +6,8 @@
   "build": {
     "frontendDist": "../admin/root/dist",
     "devUrl": "http://127.0.0.1:5778",
-    "beforeDevCommand": "pnpm dev:play",
-    "beforeBuildCommand": "pnpm build:play"
+    "beforeDevCommand": "pnpm dev:admin",
+    "beforeBuildCommand": "pnpm build:admin"
   },
   "app": {
     "windows": [
