@@ -38,6 +38,7 @@ class UserScoreDetailTest {
         val questions = questionBankService.list()
         val details: List<UserScoreDetail> = questions.map {
             UserScoreDetail(
+                type = it.type,
                 questionId = it.id!!,
                 questionAnswer = it.answer,
                 userAnswer = UserAnswer(
