@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-02-26 19:36:07
- * @LastEditTime: 2025-02-26 21:11:16
+ * @LastEditTime: 2025-02-27 18:34:00
  * @Description: 
 -->
 <template>
@@ -9,9 +9,9 @@
     <!-- <PreviewEditor :content="detail.content" /> -->
     <Card class="">
       <template #content>
-        <div class="flex flex-row justify-between items-center">
+        <div class="flex flex-row items-center justify-between">
           <div class="flex">
-            <Tag value="单向选择" />
+            <Tag value="单选" />
             <Button
               v-for="(_, index) in questionAnswer.options"
               :key="index"
@@ -22,7 +22,10 @@
           </div>
           <div class="flex items-center">
             <div class="flex items-center">
-              用户得分: <span class="font-bold ml-1 text-blue-500 text-[24px]">{{ detail.score }}</span>
+              用户得分:
+              <span class="ml-1 text-[24px] font-bold text-blue-500">{{
+                detail.score
+              }}</span>
             </div>
             <Button
               class="ml-2 flex-shrink-0"
@@ -40,10 +43,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import { questionBankApi } from '@yuri/common';
-import { Card, Button, Tag } from '@yuri/components';
 import type { SingleChoiceAw, UserScoreDetail } from '@yuri/types';
+
 import Preview from '#/views/questionManager/questionBank/components/preview.vue';
+import { questionBankApi } from '@yuri/common';
+import { Button, Card, Tag } from '@yuri/components';
 import { computed, unref, useTemplateRef } from 'vue';
 
 const props = defineProps<{
@@ -68,11 +72,13 @@ function severity(index: number) {
     return index === userAnswer.value.answer ? 'danger' : 'secondary';
   }
 }
-const userAnswer = computed(() => props.detail.userAnswer.questionAnswer as unknown as SingleChoiceAw);
+const userAnswer = computed(
+  () => props.detail.userAnswer.questionAnswer as unknown as SingleChoiceAw,
+);
 
 function show(id: string) {
   questionBankApi.get(id).then((res) => {
     unref(previewRef)?.open(res);
-  })
+  });
 }
 </script>

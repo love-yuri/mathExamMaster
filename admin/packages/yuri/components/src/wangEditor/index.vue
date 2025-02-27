@@ -1,13 +1,14 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2025-02-08 16:22:23
+ * @LastEditTime: 2025-02-27 18:54:45
  * @Description: 封装富文本编辑器
 -->
 <template>
   <div class="">
     <div class="rounded-sm bg-white p-2">
       <Toolbar
+        v-if="showToolbarConfig ?? true"
         :default-config="toolbarConfig"
         :editor="editorRef"
         style="border-bottom: 1px solid #ccc"
@@ -24,24 +25,28 @@
   </div>
 </template>
 <script setup lang="ts">
-// import Mathjax from 'mathjax';
-import '@wangeditor-next/editor/dist/css/style.css'; // 引入 css
-import {
-  type IDomEditor,
-  type IEditorConfig,
-  type IToolbarConfig,
+import type {
+  IDomEditor,
+  IEditorConfig,
+  IToolbarConfig,
 } from '@wangeditor-next/editor';
-import { onBeforeUnmount, ref, shallowRef, watch } from 'vue';
-import { Editor, Toolbar } from '@wangeditor-next/editor-for-vue';
+
+import type { WangEditorProps } from './types';
+
 import { invoke } from '@tauri-apps/api/core';
-import { type WangEditorProps } from './types';
-import ToolbarKeys from './toolbarKeys.json';
-import MathModal from '../math/mathModal.vue';
-import { useAccessStore } from '@vben/stores';
 import { useAppConfig } from '@vben/hooks';
+import { useAccessStore } from '@vben/stores';
+import { Editor, Toolbar } from '@wangeditor-next/editor-for-vue';
+import { systemApi, systemFileApi } from '@yuri/common';
+import { onBeforeUnmount, ref, shallowRef, watch } from 'vue';
+
+import MathModal from '../math/mathModal.vue';
+import ToolbarKeys from './toolbarKeys.json';
 
 import './templates';
-import { systemApi, systemFileApi } from '@yuri/common';
+
+// import Mathjax from 'mathjax';
+import '@wangeditor-next/editor/dist/css/style.css'; // 引入 css
 
 const props = defineProps<WangEditorProps>();
 const emits = defineEmits(['change']);
@@ -76,6 +81,7 @@ const editorConfig: Partial<IEditorConfig> = {
     },
   },
   placeholder: props.placeholder,
+  readOnly: props.readonly,
 };
 
 const toolbarConfig: Partial<IToolbarConfig> = {
@@ -113,9 +119,9 @@ async function customPaste(editor: IDomEditor, event: ClipboardEvent) {
     event.preventDefault();
     const accessStore = useAccessStore();
     const res = await invoke('parse_html', {
-      token: accessStore.accessToken,
-      str: html,
       baseUrl: apiURL,
+      str: html,
+      token: accessStore.accessToken,
     });
     editor.dangerouslyInsertHtml(res as string);
     return false;

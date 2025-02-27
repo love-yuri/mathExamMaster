@@ -14,7 +14,7 @@
                   :options="flagOptions"
                   data-key="value"
                   option-label="name"
-                  optionValue="value"
+                  option-value="value"
                 />
                 <Button
                   icon="pi pi-plus"
@@ -27,7 +27,6 @@
                   "
                 />
               </div>
-              
             </div>
           </template>
           <Column header="试卷标题" style="min-width: 110px">
@@ -55,7 +54,7 @@
               <SplitButton
                 :model="[
                   {
-                    visible: flag == 1,
+                    visible: flag === 1,
                     label: '阅卷',
                     icon: 'pi pi-sparkles',
                     command: () => {
@@ -68,7 +67,7 @@
                     },
                   },
                   {
-                    visible: flag == 3,
+                    visible: flag === 3,
                     label: '编辑',
                     icon: 'pi pi-pencil',
                     command: () => {
@@ -81,7 +80,7 @@
                     },
                   },
                   {
-                    visible: flag == 3,
+                    visible: flag === 3,
                     label: '删除',
                     icon: 'pi pi-trash',
                     command: () => remove(slotProps.data.id!),
@@ -114,7 +113,16 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import type {
+  ExamPageReleasePageParam,
+  ExamPageReleaseResult,
+} from '@yuri/types';
+import type { PageState } from 'primevue/paginator';
+
+import { router } from '#/router';
+import { EllipsisText } from '@vben/common-ui';
+import { useTabs } from '@vben/hooks';
+import { examPageReleaseApi, message } from '@yuri/common';
 import {
   Button,
   Card,
@@ -122,18 +130,12 @@ import {
   DataTable,
   DefaultConfirmDialog,
   Paginator,
+  SelectButton,
   SplitButton,
   Tag,
-  SelectButton
 } from '@yuri/components';
-import type { PageState } from 'primevue/paginator';
 import { useConfirm } from 'primevue/useconfirm';
-import { router } from '#/router';
-import { EllipsisText } from '@vben/common-ui';
-import { useTabs } from '@vben/hooks';
-import { examPageReleaseApi } from '@yuri/common';
-import type { ExamPageReleaseResult, ExamPageReleasePageParam } from '@yuri/types';
-import { message } from '@yuri/common';
+import { onMounted, ref } from 'vue';
 
 const { closeTabByKey } = useTabs();
 
@@ -141,14 +143,14 @@ const flagOptions = [
   { name: '全部', value: 0 },
   { name: '已结束', value: 1 },
   { name: '未结束', value: 2 },
-  { name: '未开始', value: 3 }
+  { name: '未开始', value: 3 },
 ];
 const confirm = useConfirm();
 const flag = ref(0);
 const pageParam = ref<ExamPageReleasePageParam>({
   current: 1,
-  size: 10,
   flag: flag.value,
+  size: 10,
 });
 
 const pages = ref<ExamPageReleaseResult[]>([]);

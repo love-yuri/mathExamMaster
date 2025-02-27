@@ -1,41 +1,84 @@
+<!--
+ * @Author: love-yuri yuri2078170658@gmail.com
+ * @Date: 2025-02-26 19:36:07
+ * @LastEditTime: 2025-02-27 18:33:52
+ * @Description: 
+-->
 <template>
-  <div v-if="question">
-    <PreviewEditor :content="question.content" />
-    <Card class="mt-4">
+  <div>
+    <!-- <PreviewEditor :content="detail.content" /> -->
+    <Card class="">
       <template #content>
-        <div class="flex flex-col p-2">
-          <Button
-            v-for="(item, index) in answer.options"
-            :key="index"
-            :label="`${String.fromCharCode(65 + index)}: ${item}`"
-            :severity="answer.answer.includes(index) ? 'success' : 'secondary'"
-            class="my-2"
-            @click="chooseAnswer(index)"
-          />
+        <div class="flex flex-row items-center justify-between">
+          <div class="flex">
+            <Tag value="多选" />
+            <Button
+              v-for="(_, index) in questionAnswer.options"
+              :key="index"
+              :label="`${String.fromCharCode(65 + index)}`"
+              :severity="severity(index)"
+              class="mx-1"
+            />
+          </div>
+          <div class="flex items-center">
+            <div class="flex items-center">
+              用户得分:
+              <span class="ml-1 text-[24px] font-bold text-blue-500">{{
+                detail.score
+              }}</span>
+            </div>
+            <Button
+              class="ml-2 flex-shrink-0"
+              icon="pi pi-eye"
+              label="预览题目"
+              raised
+              severity="info"
+              @click="show(detail.questionId)"
+            />
+          </div>
         </div>
       </template>
     </Card>
+    <Preview ref="previewRef" />
   </div>
 </template>
 <script setup lang="ts">
-import { Card, PreviewEditor, Button } from '@yuri/components';
-import type { MultipleChoiceAw, QuestionInfo } from '@yuri/types';
-import { computed } from 'vue';
+import type { MultipleChoiceAw, UserScoreDetail } from '@yuri/types';
 
-const question = defineModel<QuestionInfo>('question');
-const emit = defineEmits(['updateAnswer']);
+import Preview from '#/views/questionManager/questionBank/components/preview.vue';
+import { questionBankApi } from '@yuri/common';
+import { Button, Card, Tag } from '@yuri/components';
+import { computed, unref, useTemplateRef } from 'vue';
 
-const answer = computed(
-  () => question.value?.userAnswer.questionAnswer as MultipleChoiceAw,
+const props = defineProps<{
+  detail: UserScoreDetail;
+}>();
+
+const previewRef = useTemplateRef('previewRef');
+const questionAnswer = computed(
+  () => props.detail.questionAnswer as MultipleChoiceAw,
 );
-function chooseAnswer(index: number) {
-  const aw = question.value?.userAnswer.questionAnswer as MultipleChoiceAw;
-  if (aw.answer.includes(index)) {
-    aw.answer = aw.answer.filter((item) => item !== index);
+
+function severity(index: number) {
+  if (userAnswer.value.answer === questionAnswer.value.answer) {
+    if (questionAnswer.value.answer.includes(index)) {
+      return 'success';
+    }
+    return 'secondary';
   } else {
-    aw.answer.push(index);
+    if (questionAnswer.value.answer.includes(index)) {
+      return 'success';
+    }
+    return userAnswer.value.answer.includes(index) ? 'danger' : 'secondary';
   }
-  question.value!!.userAnswer.hasAnswer = aw.answer.length > 0;
-  emit('updateAnswer');
+}
+const userAnswer = computed(
+  () => props.detail.userAnswer.questionAnswer as unknown as MultipleChoiceAw,
+);
+
+function show(id: string) {
+  questionBankApi.get(id).then((res) => {
+    unref(previewRef)?.open(res);
+  });
 }
 </script>
