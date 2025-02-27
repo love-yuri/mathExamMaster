@@ -49,12 +49,16 @@
   </div>
 </template>
 <script setup lang="ts">
-import { knowledgePointApi, checkEmpty, questionBankApi, checkSuccess } from '@yuri/common';
+import {
+  checkEmpty,
+  checkSuccess,
+  knowledgePointApi,
+  message,
+  questionBankApi,
+} from '@yuri/common';
+import { Button, MultiSelect, Rating, WangEditor } from '@yuri/components';
 import { KnowledgePoint, SubjectiveAnswer } from '@yuri/types';
-import { message } from '@yuri/common';
-import { WangEditor, MultiSelect, Button, Rating } from '@yuri/components';
-import { ref, onMounted } from 'vue';
-
+import { onMounted, ref } from 'vue';
 
 const emits = defineEmits(['cancel', 'update']);
 

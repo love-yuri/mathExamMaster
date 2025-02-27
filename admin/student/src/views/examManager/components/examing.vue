@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-23 18:55:25
- * @LastEditTime: 2025-02-24 19:44:26
+ * @LastEditTime: 2025-02-27 19:18:23
  * @Description: 
 -->
 <template>
@@ -61,8 +61,8 @@
     <!-- 主答题区域 -->
     <div class="h-full flex-grow p-6">
       <component
-        @updateAnswer="updateAnswer"
-        :is="currentCommponent"  
+        @update-answer="updateAnswer"
+        :is="currentCommponent"
         v-model:question="currentQuestionInfo"
       />
     </div>
@@ -95,23 +95,31 @@
   </div>
 </template>
 <script lang="ts" setup>
-import {
-  Button,
-  Card,
-  ConfirmDialog,
-} from '@yuri/components';
-import { computed, markRaw, nextTick, onUnmounted, ref, watchEffect } from 'vue';
-import { useConfirm } from 'primevue/useconfirm';
+import type {
+  ExamInfoResult,
+  QuestionInfo,
+  QuestionInfoResult,
+  UserAnswer,
+} from '@yuri/types';
+
 import { router } from '#/router';
-import type { QuestionInfoResult, QuestionInfo, ExamInfoResult, UserAnswer } from '@yuri/types';
-import { QuestionTypeMap } from '@yuri/types';
-import { debounce } from '@yuri/common';
-import { examPageApi, message } from '@yuri/common';
-import { QuestionTypeEnum } from '@yuri/types';
-import SingleChoice from './answerQuestion/singleChoice.vue';
-import MultipleChoice from './answerQuestion/multipleChoice.vue';
-import Judge from './answerQuestion/judge.vue';
+import { debounce, examPageApi, message } from '@yuri/common';
+import { Button, Card, ConfirmDialog } from '@yuri/components';
+import { QuestionTypeEnum, QuestionTypeMap } from '@yuri/types';
+import { useConfirm } from 'primevue/useconfirm';
+import {
+  computed,
+  markRaw,
+  nextTick,
+  onUnmounted,
+  ref,
+  watchEffect,
+} from 'vue';
+
 import GapFilling from './answerQuestion/gapFilling.vue';
+import Judge from './answerQuestion/judge.vue';
+import MultipleChoice from './answerQuestion/multipleChoice.vue';
+import SingleChoice from './answerQuestion/singleChoice.vue';
 import Subjective from './answerQuestion/subjective.vue';
 
 const { examInfo } = defineProps<{
@@ -123,17 +131,23 @@ const { examInfo } = defineProps<{
  */
 const currentCommponent = computed(() => {
   switch (currentQuestionInfo.value?.type) {
-    case QuestionTypeEnum.SINGLE_CHOICE:
-      return markRaw(SingleChoice);
-    case QuestionTypeEnum.MULTIPLE_CHOICE:
-      return markRaw(MultipleChoice);
-    case QuestionTypeEnum.GAP_FILLING:
+    case QuestionTypeEnum.GAP_FILLING: {
       return markRaw(GapFilling);
-    case QuestionTypeEnum.JUDGE:
+    }
+    case QuestionTypeEnum.JUDGE: {
       return markRaw(Judge);
-    case QuestionTypeEnum.SUBJECTIVE:
+    }
+    case QuestionTypeEnum.MULTIPLE_CHOICE: {
+      return markRaw(MultipleChoice);
+    }
+    case QuestionTypeEnum.SINGLE_CHOICE: {
+      return markRaw(SingleChoice);
+    }
+    case QuestionTypeEnum.SUBJECTIVE: {
       return markRaw(Subjective);
+    }
   }
+  return markRaw(SingleChoice);
 });
 
 const questions = ref<QuestionInfoResult[]>([]);
@@ -159,8 +173,8 @@ const updateAnswer = debounce(() => {
   });
   examPageApi
     .updateUserAnswer({
-      userAnswers: param,
       relationId: examInfo.relationId,
+      userAnswers: param,
     })
     .then(() => {
       message.default.success('保存成功');

@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-20 17:17:11
- * @LastEditTime: 2024-10-23 19:31:54
+ * @LastEditTime: 2025-02-27 19:12:59
  * @Description: 
 -->
 <template>
@@ -18,8 +18,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
 import { MathfieldElement } from 'mathlive';
+import { onMounted, ref } from 'vue';
 
 const visible = ref(false);
 const mathfield = ref<HTMLDivElement>(); // 用于引用 Mathfield 的 DOM 节点

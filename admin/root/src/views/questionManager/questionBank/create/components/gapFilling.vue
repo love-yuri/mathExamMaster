@@ -30,9 +30,7 @@
         icon="pi pi-plus"
         label="添加答案"
         severity="info"
-        @click="
-          question.answer.answer.push('')
-        "
+        @click="question.answer.answer.push('')"
       />
       <Button
         :icon="`pi ${isUpdate ? 'pi-pencil' : 'pi-plus'}`"
@@ -83,22 +81,22 @@
 </template>
 <script setup lang="ts">
 import {
+  checkEmpty,
+  checkListEmpty,
+  checkSuccess,
+  knowledgePointApi,
+  message,
+  questionBankApi,
+} from '@yuri/common';
+import {
   Button,
   InputText,
   MultiSelect,
   Rating,
   WangEditor,
 } from '@yuri/components';
-import { onMounted, ref } from 'vue';
-import {
-  knowledgePointApi,
-  checkEmpty,
-  checkListEmpty,
-  questionBankApi,
-  checkSuccess,
-  message,
-} from '@yuri/common';
 import { GapFillingAnswer, KnowledgePoint } from '@yuri/types';
+import { onMounted, ref } from 'vue';
 
 const emits = defineEmits(['cancel', 'update']);
 

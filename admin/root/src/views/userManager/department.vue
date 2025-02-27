@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-12 17:47:35
- * @LastEditTime: 2025-02-27 11:59:20
+ * @LastEditTime: 2025-02-27 19:12:24
  * @Description: 组织管理
 -->
 
@@ -59,7 +59,12 @@
           </div>
         </div>
         <div class="mt-3">
-          <div class="ml-4 text-[15px] text-[#84888F]" v-if="currentDep.teacherInfo">本班级教师</div>
+          <div
+            class="ml-4 text-[15px] text-[#84888F]"
+            v-if="currentDep.teacherInfo"
+          >
+            本班级教师
+          </div>
           <div class="mt-1 rounded-[4px] bg-white p-2">
             {{ currentDep.teacherInfo?.nickname }}
           </div>
@@ -93,6 +98,17 @@
 </template>
 
 <script setup lang="ts">
+import type { DepartmentDetail, TreeResult } from '@yuri/types';
+import type { OrganizationChartNode } from 'primevue';
+
+import {
+  checkEmpty,
+  checkSuccess,
+  departmentApi,
+  message,
+  userApi,
+  userDepartmentApi,
+} from '@yuri/common';
 import {
   Button,
   DefaultConfirmDialog,
@@ -102,17 +118,9 @@ import {
   TeacherSelect,
   UserSelect,
 } from '@yuri/components';
-import { checkEmpty, checkSuccess, userDepartmentApi } from '@yuri/common';
-import { message, departmentApi, userApi } from '@yuri/common';
+import { Department } from '@yuri/types';
 import { useConfirm } from 'primevue/useconfirm';
-import { Tag } from '@yuri/components';
 import { onMounted, ref, useTemplateRef } from 'vue';
-import {
-  type TreeResult,
-  type DepartmentDetail,
-  Department,
-} from '@yuri/types';
-import type { OrganizationChartNode } from 'primevue';
 
 const confirm = useConfirm();
 
@@ -156,29 +164,31 @@ function handleNodeSelect(node: OrganizationChartNode) {
 }
 
 function setTeacher() {
-  teacherSelectRef.value?.show(currentDep.value?.teacherInfo?.id ?? '', (res) => {
-    if (res.length === 0) {
-      return;
-    }
-    userApi
-      .setTeacher({
-        departmentId: currentDep.value?.id!!,
-        teacherId: res[0]!!.id
-      })
-      .then((v) => {
-        if (v) {
-          setTimeout(() => {
-            loadNodeData(currentDep.value!!.id);
-          }, 400);
-          message.default.success('设置老师成功!!');
-          loadData();
-        } else {
-          message.default.error('设置老师失败!!');
-        }
-      });
-  });
+  teacherSelectRef.value?.show(
+    currentDep.value?.teacherInfo?.id ?? '',
+    (res) => {
+      if (res.length === 0) {
+        return;
+      }
+      userApi
+        .setTeacher({
+          departmentId: currentDep.value?.id!!,
+          teacherId: res[0]!!.id,
+        })
+        .then((v) => {
+          if (v) {
+            setTimeout(() => {
+              loadNodeData(currentDep.value!!.id);
+            }, 400);
+            message.default.success('设置老师成功!!');
+            loadData();
+          } else {
+            message.default.error('设置老师失败!!');
+          }
+        });
+    },
+  );
 }
-
 
 function addUser() {
   userSelectRef.value?.show(currentDep.value!!.users, (res) => {

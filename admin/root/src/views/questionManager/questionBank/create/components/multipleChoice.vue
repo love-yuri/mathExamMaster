@@ -24,9 +24,7 @@
         icon="pi pi-plus"
         label="添加选项"
         severity="info"
-        @click="
-          question.answer.options.push('')
-        "
+        @click="question.answer.options.push('')"
       />
       <Button
         :icon="`pi ${isUpdate ? 'pi-pencil' : 'pi-plus'}`"
@@ -82,6 +80,14 @@
 </template>
 <script setup lang="ts">
 import {
+  checkEmpty,
+  checkListEmpty,
+  checkSuccess,
+  knowledgePointApi,
+  message,
+  questionBankApi,
+} from '@yuri/common';
+import {
   Button,
   Checkbox,
   InputText,
@@ -89,16 +95,8 @@ import {
   Rating,
   WangEditor,
 } from '@yuri/components';
-import { onMounted, ref } from 'vue';
-import {
-  knowledgePointApi,
-  checkEmpty,
-  questionBankApi,
-  checkSuccess,
-  checkListEmpty,
-} from '@yuri/common';
 import { KnowledgePoint, MultipleChoiceAnswer } from '@yuri/types';
-import { message } from '@yuri/common';
+import { onMounted, ref } from 'vue';
 
 const emits = defineEmits(['update', 'cancel']);
 
@@ -154,7 +152,9 @@ function create() {
  */
 function removeKey(index: number) {
   question.value.answer.options.splice(index, 1);
-  question.value.answer.answer = question.value.answer.answer.filter((item) => item !== index);
+  question.value.answer.answer = question.value.answer.answer.filter(
+    (item) => item !== index,
+  );
   question.value.answer.answer.forEach((i, index) => {
     if (i > index) {
       question.value.answer.answer[index]!--;

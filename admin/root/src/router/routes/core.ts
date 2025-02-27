@@ -1,16 +1,15 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-02-27 11:55:53
- * @LastEditTime: 2025-02-27 14:39:23
+ * @LastEditTime: 2025-02-27 19:08:26
  * @Description:
  */
 import type { RouteRecordRaw } from 'vue-router';
 
-import { DEFAULT_HOME_PATH, LOGIN_PATH } from '@vben/constants';
-
 import { AuthPageLayout, BasicLayout } from '#/layouts';
 import { $t } from '#/locales';
 import Login from '#/views/_core/authentication/login.vue';
+import { DEFAULT_HOME_PATH, LOGIN_PATH } from '@vben/constants';
 
 /** 全局404页面 */
 const fallbackNotFoundRoute: RouteRecordRaw = {

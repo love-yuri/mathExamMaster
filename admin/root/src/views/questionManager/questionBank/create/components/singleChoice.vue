@@ -24,9 +24,7 @@
         icon="pi pi-plus"
         label="添加选项"
         severity="info"
-        @click="
-          question.answer.options.push('');
-        "
+        @click="question.answer.options.push('')"
       />
       <Button
         :icon="`pi ${isUpdate ? 'pi-pencil' : 'pi-plus'}`"
@@ -81,6 +79,15 @@
   </div>
 </template>
 <script setup lang="ts">
+import type { KnowledgePoint } from '@yuri/types';
+
+import {
+  checkEmpty,
+  checkSuccess,
+  knowledgePointApi,
+  message,
+  questionBankApi,
+} from '@yuri/common';
 import {
   Button,
   InputText,
@@ -89,18 +96,8 @@ import {
   Rating,
   WangEditor,
 } from '@yuri/components';
+import { SingleChoiceAnswer } from '@yuri/types';
 import { onMounted, ref } from 'vue';
-import {
-  knowledgePointApi,
-  checkEmpty,
-  checkSuccess,
-  questionBankApi,
-} from '@yuri/common';
-import {
-  SingleChoiceAnswer,
-  type KnowledgePoint,
-} from '@yuri/types';
-import { message } from '@yuri/common';
 
 const emits = defineEmits(['cancel', 'update']);
 

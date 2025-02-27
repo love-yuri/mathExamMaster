@@ -17,7 +17,12 @@
           >
             <span class="mr-2 flex-shrink-0">第{{ index + 1 }}空:</span>
             <InputText
-              v-model="((question.userAnswer.questionAnswer as GapFillingAw).answer as string[])[index]"
+              v-model="
+                (
+                  (question.userAnswer.questionAnswer as GapFillingAw)
+                    .answer as string[]
+                )[index]
+              "
               class="w-full"
               @change="change"
             />
@@ -28,14 +33,16 @@
   </div>
 </template>
 <script setup lang="ts">
-import { Card, PreviewEditor, InputText } from '@yuri/components';
 import type { GapFillingAw, QuestionInfo } from '@yuri/types';
+
+import { Card, InputText, PreviewEditor } from '@yuri/components';
 import { computed } from 'vue';
 
-const question = defineModel<QuestionInfo>('question');
 const emit = defineEmits(['updateAnswer']);
-
-const answer = computed(() => question.value?.userAnswer.questionAnswer as GapFillingAw);
+const question = defineModel<QuestionInfo>('question');
+const answer = computed(
+  () => question.value?.userAnswer.questionAnswer as GapFillingAw,
+);
 function change() {
   let hasAnswer = true;
   for (const item of answer.value.answer) {
@@ -46,5 +53,4 @@ function change() {
   question.value!!.userAnswer.hasAnswer = hasAnswer;
   emit('updateAnswer');
 }
-
 </script>

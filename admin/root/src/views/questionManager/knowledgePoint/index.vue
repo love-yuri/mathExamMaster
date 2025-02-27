@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-03 19:00:46
- * @LastEditTime: 2025-02-08 15:04:49
+ * @LastEditTime: 2025-02-27 19:13:31
  * @Description: 知识点管理
 -->
 <template>
@@ -66,7 +66,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, unref } from 'vue';
+import type { KnowledgePoint, PageParam } from '@yuri/types';
+import type { PageState } from 'primevue/paginator';
+
+import { router } from '#/router';
+import { knowledgePointApi, message } from '@yuri/common';
 import {
   Button,
   Card,
@@ -76,13 +80,10 @@ import {
   Paginator,
   SplitButton,
 } from '@yuri/components';
-import type { PageState } from 'primevue/paginator';
-import { router } from '#/router';
-import Update from './components/update.vue';
-
 import { useConfirm } from 'primevue/useconfirm';
-import { knowledgePointApi, message } from '@yuri/common';
-import type { KnowledgePoint, PageParam } from '@yuri/types';
+import { onMounted, ref, unref } from 'vue';
+
+import Update from './components/update.vue';
 
 const confirm = useConfirm();
 

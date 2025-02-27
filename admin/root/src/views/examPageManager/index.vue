@@ -101,10 +101,8 @@
 import type { PageParam } from '@yuri/types';
 import type { PageState } from 'primevue/paginator';
 
-import { onMounted, ref } from 'vue';
-
+import { router } from '#/router';
 import { EllipsisText } from '@vben/common-ui';
-
 import { examPageApi, message } from '@yuri/common';
 import {
   Button,
@@ -124,8 +122,7 @@ import {
   SubjectTypeMap,
 } from '@yuri/types';
 import { useConfirm } from 'primevue/useconfirm';
-
-import { router } from '#/router';
+import { onMounted, ref } from 'vue';
 
 const confirm = useConfirm();
 const pageParam = ref<PageParam>({

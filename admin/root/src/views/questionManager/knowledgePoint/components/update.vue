@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-13 15:04:45
- * @LastEditTime: 2025-02-08 15:07:05
+ * @LastEditTime: 2025-02-27 19:13:17
  * @Description: 预览题目
 -->
 <template>
@@ -24,11 +24,10 @@
 </template>
 <script setup lang="ts">
 import { useVbenModal } from '@vben/common-ui';
-import { InputText, Textarea } from '@yuri/components';
-
-import { ref } from 'vue';
 import { checkEmpty, checkSuccess, knowledgePointApi } from '@yuri/common';
+import { InputText, Textarea } from '@yuri/components';
 import { KnowledgePoint } from '@yuri/types';
+import { ref } from 'vue';
 
 const emits = defineEmits(['update']);
 

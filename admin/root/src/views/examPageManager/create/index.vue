@@ -152,9 +152,7 @@
 <script setup lang="ts">
 import type { QuestionAndPoint } from '@yuri/types';
 
-import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-
+import Show from '#/views/examPageManager/components/show.vue';
 import {
   checkEmpty,
   checkEqual,
@@ -163,8 +161,8 @@ import {
 } from '@yuri/common';
 import { Button, InputText, Knob, Rating, Select, Tag } from '@yuri/components';
 import { ExamPageCreateVO, subjectOptions, typeOptions } from '@yuri/types';
-
-import Show from '#/views/examPageManager/components/show.vue';
+import { computed, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 const route = useRoute();
 

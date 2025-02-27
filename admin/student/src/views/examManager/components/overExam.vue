@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-01-07 19:07:18
- * @LastEditTime: 2025-01-07 19:13:22
+ * @LastEditTime: 2025-02-27 19:19:14
  * @Description: 考试结束页面
 -->
 <!-- ExamEnd.vue -->
@@ -26,10 +26,10 @@
   height: 100%;
   color: #fff;
   background: linear-gradient(135deg, #918d99, #a5879b);
-  animation: fadeIn 1.5s ease-in-out;
+  animation: fade-in 1.5s ease-in-out;
 }
 
-@keyframes fadeIn {
+@keyframes fade-in {
   from {
     opacity: 0;
   }
@@ -47,10 +47,10 @@
   border: 1px solid rgb(255 255 255 / 20%);
   border-radius: 15px;
   box-shadow: 0 4px 30px rgb(0 0 0 / 10%);
-  animation: popIn 0.8s ease-in-out;
+  animation: pop-in 0.8s ease-in-out;
 }
 
-@keyframes popIn {
+@keyframes pop-in {
   0% {
     opacity: 0;
     transform: scale(0.8);

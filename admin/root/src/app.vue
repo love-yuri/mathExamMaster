@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-08 15:42:02
- * @LastEditTime: 2025-02-27 14:09:17
+ * @LastEditTime: 2025-02-27 19:12:31
  * @Description: app
 -->
 <template>
@@ -10,11 +10,10 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
-
 import { message } from '@yuri/common';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
+import { onMounted } from 'vue';
 
 defineOptions({ name: 'App' });
 

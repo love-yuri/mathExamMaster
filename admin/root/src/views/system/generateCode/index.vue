@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-29 11:34:19
- * @LastEditTime: 2025-02-08 15:01:29
+ * @LastEditTime: 2025-02-27 19:13:09
  * @Description: 
 -->
 <template>
@@ -29,8 +29,8 @@
 </template>
 
 <script setup lang="ts">
+import { message, systemApi } from '@yuri/common';
 import { Button, Select, ToggleSwitch } from '@yuri/components';
-import { systemApi, message } from '@yuri/common';
 import { onMounted, ref, watch } from 'vue';
 
 type Option = {

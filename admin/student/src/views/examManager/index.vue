@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-19 08:37:51
- * @LastEditTime: 2025-02-23 16:48:07
+ * @LastEditTime: 2025-02-27 19:20:21
  * @Description: 
 -->
 <template>
@@ -38,12 +38,14 @@
 </template>
 
 <script setup lang="ts">
-import { type ExamListResult } from '@yuri/types';
-import { FameraButton, GaganButton } from '@yuri/components';
-import { ref, watch } from 'vue';
-import DoExam from './doExam.vue';
+import type { ExamListResult } from '@yuri/types';
+
 import { examPageReleaseApi, useExamStore } from '@yuri/common';
+import { FameraButton, GaganButton } from '@yuri/components';
 import { storeToRefs } from 'pinia';
+import { ref, watch } from 'vue';
+
+import DoExam from './doExam.vue';
 
 const examStore = useExamStore();
 const { releaseId } = storeToRefs(examStore);
@@ -63,10 +65,9 @@ watch(
           return;
         }
         releaseId.value = undefined;
-      } catch (error) {
+      } catch {
         currentReleaseId.value = undefined;
       }
-      
     }
 
     examList.value = await examPageReleaseApi.examList({
@@ -81,6 +82,6 @@ function startExam(id: string) {
     return;
   }
   currentReleaseId.value = id;
-  examStore.startExam(id);
+  examPageReleaseApi.startExam(id);
 }
 </script>

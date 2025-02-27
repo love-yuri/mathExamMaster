@@ -152,7 +152,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, unref } from 'vue';
+import type {
+  ExamPageCreateVO,
+  QuestionAndPoint,
+  QuestionBank,
+} from '@yuri/types';
+
+import SelectQuestion from '#/views/examPageManager/components/select.vue';
+import Preview from '#/views/questionManager/questionBank/components/preview.vue';
+import { EllipsisText } from '@vben/common-ui';
 import {
   Button,
   Card,
@@ -164,16 +172,8 @@ import {
   SplitButton,
   Tag,
 } from '@yuri/components';
-import { EllipsisText } from '@vben/common-ui';
-import Preview from '#/views/questionManager/questionBank/components/preview.vue';
-import SelectQuestion from '#/views/examPageManager/components/select.vue';
-import {
-  type ExamPageCreateVO,
-  QuestionTypeMap,
-  type QuestionAndPoint,
-  QuestionTypeEnum,
-  type QuestionBank,
-} from '@yuri/types';
+import { QuestionTypeEnum, QuestionTypeMap } from '@yuri/types';
+import { computed, ref, unref } from 'vue';
 
 const props = defineProps<{
   createVo: ExamPageCreateVO;

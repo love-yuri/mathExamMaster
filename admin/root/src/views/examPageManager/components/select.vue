@@ -39,7 +39,7 @@
             <Column header="题目内容" style="min-width: 300px">
               <template #body="slotProps: { data: QuestionAndPoint }">
                 <EllipsisText :max-width="300">
-                  {{  slotProps.data.questionBank.content }}
+                  {{ slotProps.data.questionBank.content }}
                   {{
                     extractPlainTextFromHTML(
                       slotProps.data.questionBank.content.slice(0, 30),
@@ -109,7 +109,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, unref, useTemplateRef } from 'vue';
+import type { PageParam, QuestionAndPoint } from '@yuri/types';
+import type { PageState } from 'primevue/paginator';
+
+import { router } from '#/router';
+import Preview from '#/views/questionManager/questionBank/components/preview.vue';
+import { EllipsisText, useVbenModal } from '@vben/common-ui';
+import { questionBankApi } from '@yuri/common';
 import {
   Button,
   Card,
@@ -119,17 +125,8 @@ import {
   Rating,
   Tag,
 } from '@yuri/components';
-import type { PageState } from 'primevue/paginator';
-import Preview from '#/views/questionManager/questionBank/components/preview.vue';
-import { router } from '#/router';
-import { EllipsisText, useVbenModal } from '@vben/common-ui';
-import { questionBankApi } from '@yuri/common';
-import {
-  type QuestionAndPoint,
-  QuestionTypeEnum,
-  type PageParam,
-  QuestionTypeMap,
-} from '@yuri/types';
+import { QuestionTypeEnum, QuestionTypeMap } from '@yuri/types';
+import { ref, unref, useTemplateRef } from 'vue';
 
 const questionBanks = ref<QuestionAndPoint[]>([]);
 const questionAndPoints = defineModel<Map<string, QuestionAndPoint>>(

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { NotificationItem } from '@vben/layouts';
 
-import { computed, ref, watch } from 'vue';
-
+import { $t } from '#/locales';
+import LoginForm from '#/views/_core/authentication/login.vue';
 import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
 import { VBEN_DOC_URL, VBEN_GITHUB_URL } from '@vben/constants';
 import { useWatermark } from '@vben/hooks';
@@ -16,11 +16,8 @@ import {
 import { preferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
-
 import { useAuthStore } from '@yuri/common';
-
-import { $t } from '#/locales';
-import LoginForm from '#/views/_core/authentication/login.vue';
+import { computed, ref, watch } from 'vue';
 
 const notifications = ref<NotificationItem[]>([
   {

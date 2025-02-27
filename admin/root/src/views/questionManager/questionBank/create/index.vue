@@ -20,10 +20,9 @@
 <script setup lang="ts">
 import type { Component } from 'vue';
 
-import { markRaw, ref } from 'vue';
-
 import { SelectButton } from '@yuri/components';
 import { QuestionTypeEnum } from '@yuri/types';
+import { markRaw, ref } from 'vue';
 
 import GapFilling from './components/gapFilling.vue';
 import Judge from './components/judge.vue';

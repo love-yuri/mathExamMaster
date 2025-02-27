@@ -18,13 +18,13 @@
   </div>
 </template>
 <script setup lang="ts">
-import { Card, PreviewEditor, Button } from '@yuri/components';
 import type { MultipleChoiceAw, QuestionInfo } from '@yuri/types';
+
+import { Button, Card, PreviewEditor } from '@yuri/components';
 import { computed } from 'vue';
 
-const question = defineModel<QuestionInfo>('question');
 const emit = defineEmits(['updateAnswer']);
-
+const question = defineModel<QuestionInfo>('question');
 const answer = computed(
   () => question.value?.userAnswer.questionAnswer as MultipleChoiceAw,
 );

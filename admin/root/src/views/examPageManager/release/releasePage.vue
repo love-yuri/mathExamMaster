@@ -103,6 +103,19 @@
   </div>
 </template>
 <script setup lang="ts">
+import type { QuestionAndPoint } from '@yuri/types';
+
+import { router } from '#/router';
+import Show from '#/views/examPageManager/components/show.vue';
+import { useTabs } from '@vben/hooks';
+import {
+  checkEmpty,
+  departmentApi,
+  examPageApi,
+  examPageReleaseApi,
+  formatPrimeVueTime,
+  message,
+} from '@yuri/common';
 import {
   Button,
   Card,
@@ -112,27 +125,14 @@ import {
   Select,
   Tag,
 } from '@yuri/components';
-import { computed, onMounted, ref } from 'vue';
-
-import { useTabs } from '@vben/hooks';
-import { router } from '#/router';
-import Show from '#/views/examPageManager/components/show.vue';
 import {
-  examPageApi,
-  checkEmpty,
-  formatPrimeVueTime,
-  examPageReleaseApi,
-  departmentApi,
-} from '@yuri/common';
-import {
+  Department,
   ExamPageReleaseParam,
   ExamPageResult,
-  type QuestionAndPoint,
-  typeOptions,
   subjectOptions,
-  Department,
+  typeOptions,
 } from '@yuri/types';
-import { message } from '@yuri/common';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 const { closeCurrentTab } = useTabs();
@@ -207,22 +207,23 @@ function release() {
 .required-text {
   position: relative; /* 设定相对定位，为了让伪元素绝对定位 */
   display: inline-block;
+
   &::before {
-    content: '*'; /* 设置伪元素内容 */
-    color: red; /* 设定星号颜色 */
     position: absolute; /* 绝对定位 */
     top: 0.1em; /* 调整到左上角 */
     left: -0.5em;
     font-size: 1em; /* 设置星号大小，可以根据需要调整 */
+    color: red; /* 设定星号颜色 */
+    content: '*'; /* 设置伪元素内容 */
   }
 }
 
 .main {
   .title {
-    font-size: 16px;
-    margin-right: 6px;
-    font-weight: 600;
     flex-shrink: 0;
+    margin-right: 6px;
+    font-size: 16px;
+    font-weight: 600;
   }
 }
 </style>

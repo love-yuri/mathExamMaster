@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-13 15:04:45
- * @LastEditTime: 2025-02-24 19:36:32
+ * @LastEditTime: 2025-02-27 19:13:44
  * @Description: 预览题目
 -->
 <template>
@@ -63,17 +63,17 @@
   </div>
 </template>
 <script setup lang="ts">
+import type {
+  GapFillingAnswer,
+  JudgeAnswer,
+  MultipleChoiceAnswer,
+  QuestionBank,
+} from '@yuri/types';
+
 import { useVbenModal } from '@vben/common-ui';
 import { Button, PreviewEditor } from '@yuri/components';
-import {
-  type QuestionBank,
-  SingleChoiceAnswer,
-  type GapFillingAnswer,
-  type JudgeAnswer,
-  type MultipleChoiceAnswer,
-} from '@yuri/types';
+import { QuestionTypeEnum, SingleChoiceAnswer } from '@yuri/types';
 import { computed, ref } from 'vue';
-import { QuestionTypeEnum } from '@yuri/types';
 
 /* 处理预览弹窗 */
 const [Model, modelApi] = useVbenModal({
@@ -100,9 +100,7 @@ const gapFillingAnswer = computed(
   () => (questionBank.value as GapFillingAnswer).answer,
 );
 
-const judgeAnswer = computed(
-  () => (questionBank.value as JudgeAnswer).answer,
-);
+const judgeAnswer = computed(() => (questionBank.value as JudgeAnswer).answer);
 
 /**
  * 导出打开预览

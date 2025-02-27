@@ -63,21 +63,21 @@
 </template>
 <script setup lang="ts">
 import {
+  checkEmpty,
+  checkSuccess,
+  knowledgePointApi,
+  message,
+  questionBankApi,
+} from '@yuri/common';
+import {
   Button,
   MultiSelect,
   RadioButton,
   Rating,
   WangEditor,
 } from '@yuri/components';
+import { JudgeAnswer, KnowledgePoint } from '@yuri/types';
 import { onMounted, ref } from 'vue';
-import {
-  knowledgePointApi,
-  checkEmpty,
-  questionBankApi,
-  checkSuccess,
-} from '@yuri/common';
-import { KnowledgePoint, JudgeAnswer } from '@yuri/types';
-import { message } from '@yuri/common';
 
 const emits = defineEmits(['cancel', 'update']);
 

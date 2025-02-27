@@ -65,20 +65,20 @@
   <Examing v-else :exam-info="examInfo!!" />
 </template>
 <script setup lang="ts">
+import type { ExamInfoResult } from '@yuri/types';
+
+import { examPageReleaseApi } from '@yuri/common';
+import { Card, FameraButton, Rating } from '@yuri/components';
 import {
   ExamPageMap,
   ExamPageType,
+  ExamPageUserRelationStatusType,
   SubjectType,
   SubjectTypeMap,
 } from '@yuri/types';
-import {
-  type ExamInfoResult,
-} from '@yuri/types';
 import { computed, onUnmounted, ref, watchEffect } from 'vue';
-import { Card, FameraButton, Rating } from '@yuri/components';
-import { ExamPageUserRelationStatusType } from '@yuri/types';
+
 import Examing from './components/examing.vue';
-import { examPageReleaseApi } from '@yuri/common';
 
 const { id } = defineProps<{
   id?: string;

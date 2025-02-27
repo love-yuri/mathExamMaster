@@ -24,13 +24,13 @@
   </div>
 </template>
 <script setup lang="ts">
-import { debounce } from '@yuri/common';
-import { Card, PreviewEditor, WangEditor } from '@yuri/components';
 import type { QuestionInfo, SubjectiveAw } from '@yuri/types';
 
-const question = defineModel<QuestionInfo>('question');
-const emit = defineEmits(['updateAnswer']);
+import { debounce } from '@yuri/common';
+import { Card, PreviewEditor, WangEditor } from '@yuri/components';
 
+const emit = defineEmits(['updateAnswer']);
+const question = defineModel<QuestionInfo>('question');
 const editorContentChange = debounce(() => {
   question.value!!.userAnswer.hasAnswer = true;
   emit('updateAnswer');

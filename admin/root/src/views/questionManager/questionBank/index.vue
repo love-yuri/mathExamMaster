@@ -95,7 +95,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, unref } from 'vue';
+import type {
+  FullQuestionBank,
+  KnowledgePoint,
+  PageParam,
+  QuestionBank,
+} from '@yuri/types';
+import type { PageState } from 'primevue/paginator';
+
+import { router } from '#/router';
+import { EllipsisText } from '@vben/common-ui';
+import { message, questionBankApi } from '@yuri/common';
 import {
   Button,
   Card,
@@ -106,20 +116,11 @@ import {
   SplitButton,
   Tag,
 } from '@yuri/components';
-import type { PageState } from 'primevue/paginator';
-import Preview from './components/preview.vue';
-import { router } from '#/router';
-import { EllipsisText } from '@vben/common-ui';
+import { QuestionTypeEnum, QuestionTypeMap } from '@yuri/types';
 import { useConfirm } from 'primevue/useconfirm';
-import { questionBankApi, message } from '@yuri/common';
-import {
-  type FullQuestionBank,
-  type KnowledgePoint,
-  type QuestionBank,
-  QuestionTypeEnum,
-  type PageParam,
-  QuestionTypeMap,
-} from '@yuri/types';
+import { computed, onMounted, ref, unref } from 'vue';
+
+import Preview from './components/preview.vue';
 
 const confirm = useConfirm();
 
