@@ -240,5 +240,9 @@
     "Description": "" // 介绍文件的作用、文件的入参、出参。,
   },
   "editor.fontSize": 24, // 编辑器文字大小
-  "terminal.integrated.fontSize": 23 // 集成终端字体大小
+  "terminal.integrated.fontSize": 23, // 集成终端字体大小
+  // 快速提示
+  "editor.quickSuggestions": {
+    "strings": "on"
+  }
 }
