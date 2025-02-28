@@ -13,6 +13,7 @@ import math.yl.love.database.domain.params.user.GetStudentEnum
 import math.yl.love.database.domain.params.user.LoginQuery
 import math.yl.love.database.domain.params.user.SetTeacherParam
 import math.yl.love.database.domain.result.user.LoginResult
+import math.yl.love.database.domain.result.user.UserInfo
 import math.yl.love.database.domain.result.user.UserResult
 import math.yl.love.database.domain.typeEnum.UserRoleEnum
 import math.yl.love.database.mapper.UserMapper
@@ -35,7 +36,10 @@ class UserService(
         val user = getByUsername(loginQuery.username) ?: throw RuntimeException("用户不存在")
         check(user.password == loginQuery.password) { "密码错误" }
         StpUtil.login(user.username)
-        return LoginResult(user, StpUtil.getTokenValue())
+        return LoginResult(
+            token = StpUtil.getTokenValue(),
+            role = user.role,
+        )
     }
 
     /**
@@ -83,11 +87,17 @@ class UserService(
      * 查找用户信息
      * 默认使用
      */
-    fun getUserInfo(): User {
+    fun getUserInfo(): UserInfo {
         val username = StpUtil.getLoginId().toString()
         return redisService.getOrReSet("${RedisConstant.USER_INFO}:${username}", {
             // 理论上不可能不存在
-            getByUsername(username) ?: throw RuntimeException("用户不存在!!")
+            val user = getByUsername(username) ?: throw RuntimeException("用户不存在!!")
+            UserInfo(
+                role = user.role,
+                username = user.username,
+                nickname = user.nickname,
+                homePath = "",
+            )
         }, systemConfig.userInfoTimeout)
     }
 

@@ -30,4 +30,7 @@ data class UserScoreDetail (
 
     @Schema(description = "该题总分")
     val totalScore: Int = 0,
+
+    @Schema(description = "该题是否已经设置分数")
+    var hasSetScore: Boolean = false,
 )

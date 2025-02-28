@@ -6,6 +6,8 @@ import math.yl.love.database.domain.entity.UserScore
 import math.yl.love.database.domain.result.examPageUserRelation.UserAnswer
 import math.yl.love.database.domain.result.questionBank.*
 import math.yl.love.database.domain.result.userScore.UserScoreDetail
+import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
+import math.yl.love.database.domain.typeEnum.QuestionTypeEnum.*
 import math.yl.love.database.mapper.UserScoreMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -34,13 +36,14 @@ class UserScoreService(
         }
 
         val questions = baseMapper.questions(id)
+        val defaultMsg = ""
         val userAnswers = (relation.answer ?: questions.map {
             UserAnswer (
                 questionId = it.questionId,
                 hasAnswer = false,
                 questionAnswer = when(it.questionAnswer) {
                     is GapFillingAnswer -> it.questionAnswer.copy(
-                        answer = it.questionAnswer.answer.map { "" }
+                        answer = it.questionAnswer.answer.map { defaultMsg }
                     )
                     is JudgeAnswer -> it.questionAnswer.copy(answer = null)
                     is MultipleChoiceAnswer -> it.questionAnswer.copy(answer = listOf())
@@ -63,14 +66,66 @@ class UserScoreService(
                     questionId = it.questionId,
                     questionAnswer = it.questionAnswer,
                     userAnswer = userAnswers[it.questionId]!!,
-                )
+                    hasSetScore = false
+                ).apply { setUserScore(this) }
                 return@map detail
             }
-        ).apply {
+        ).apply { save(this) }
+    }
 
-            save(this)
+    /**
+     * 设置用户得分
+     */
+    private fun setUserScore(detail: UserScoreDetail) {
+        when(detail.type) {
+            SINGLE_CHOICE -> {
+                val q = detail.questionAnswer as SingleChoiceAnswer
+                val u = detail.userAnswer.questionAnswer as SingleChoiceAnswer
+                if (q.answer == u.answer) {
+                    detail.score = detail.totalScore
+                }
+                detail.hasSetScore = true
+            }
+            MULTIPLE_CHOICE -> {
+                val q = detail.questionAnswer as MultipleChoiceAnswer
+                val u = detail.userAnswer.questionAnswer as MultipleChoiceAnswer
+
+                if (
+                    q.answer.size == u.answer.size &&
+                    q.answer.containsAll(u.answer)
+                ) {
+                    detail.score = detail.totalScore
+                }
+                detail.hasSetScore = true
+            }
+            JUDGE -> {
+                val q = detail.questionAnswer as JudgeAnswer
+                val u = detail.userAnswer.questionAnswer as JudgeAnswer
+                if (q.answer == u.answer) {
+                    detail.score = detail.totalScore
+                }
+                detail.hasSetScore = true
+            }
+            GAP_FILLING -> {
+                val q = detail.questionAnswer as GapFillingAnswer
+                val u = detail.userAnswer.questionAnswer as GapFillingAnswer
+                var count = 0
+                q.answer.forEachIndexed { i, it ->
+                    if (it == u.answer[i]) {
+                        count++
+                    }
+                }
+
+                detail.score = (detail.totalScore * (count.toDouble() / q.answer.size)).toInt()
+                detail.hasSetScore = true
+            }
+            SUBJECTIVE -> {
+                detail.score = 0
+                detail.hasSetScore = false
+            }
         }
     }
+
 
     fun updateDetail(data: UserScore, details: List<UserScoreDetail>) {
         updateWrapper
