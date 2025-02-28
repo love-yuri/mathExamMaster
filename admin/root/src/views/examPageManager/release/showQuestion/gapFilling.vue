@@ -20,9 +20,9 @@
               >
                 <span class="mr-2 flex-shrink-0">第{{ index + 1 }}空:</span>
                 <span class="mx-2 flex-shrink-0">用户答案: </span>
-                <InputText :value="item" class="mx-2" />
+                <InputText readonly :value="item" class="mx-2" />
                 <span class="mx-2 flex-shrink-0">正确答案: </span>
-                <InputText :value="questionAnswer.answer[index]" />
+                <InputText readonly :value="questionAnswer.answer[index]" />
               </div>
             </div>
           </div>

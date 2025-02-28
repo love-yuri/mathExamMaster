@@ -6,11 +6,11 @@
  */
 
 export { default as DefaultConfirmDialog } from './confirmDialog/default.vue';
-export { default as UserSelect } from './userSelect/index.vue';
-export { default as TeacherSelect } from './teacherSelect/index.vue';
-export { default as WangEditor } from './wangEditor/index.vue';
 export { default as FameraButton } from './cssButtons/famera.vue';
 export { default as GaganButton } from './cssButtons/gagan.vue';
+export { default as TeacherSelect } from './teacherSelect/index.vue';
+export { default as UserSelect } from './userSelect/index.vue';
+export { default as WangEditor } from './wangEditor/index.vue';
 export { default as PreviewEditor } from './wangEditor/previewEditor.vue';
 export { default as Button } from 'primevue/button';
 export { default as Calendar } from 'primevue/calendar';
@@ -35,6 +35,7 @@ export { default as Menu } from 'primevue/menu';
 export { default as Message } from 'primevue/message';
 export { default as MultiSelect } from 'primevue/multiselect';
 export { default as OrganizationChart } from 'primevue/organizationchart';
+export { default as OverlayBadge } from 'primevue/overlaybadge';
 export { default as Paginator } from 'primevue/paginator';
 export { default as Popover } from 'primevue/popover';
 export { default as ProgressSpinner } from 'primevue/progressspinner';

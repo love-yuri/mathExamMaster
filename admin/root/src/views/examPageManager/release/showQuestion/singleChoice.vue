@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-02-26 19:36:07
- * @LastEditTime: 2025-02-27 18:34:00
+ * @LastEditTime: 2025-02-28 14:13:26
  * @Description: 
 -->
 <template>
@@ -27,19 +27,27 @@
                 detail.score
               }}</span>
             </div>
-            <Button
+            <SplitButton
+              :model="[
+                {
+                  label: '预览题目',
+                  icon: 'pi pi-eye',
+                  command: () => show(detail.questionId),
+                },
+              ]"
               class="ml-2 flex-shrink-0"
-              icon="pi pi-eye"
-              label="预览题目"
+              icon="pi pi-ellipsis-v"
+              label="评分"
               raised
               severity="info"
-              @click="show(detail.questionId)"
+              @click="() => quickScoreRef?.open(detail)"
             />
           </div>
         </div>
       </template>
     </Card>
     <Preview ref="previewRef" />
+    <QuickScore ref="quickScoreRef" />
   </div>
 </template>
 <script setup lang="ts">
@@ -48,14 +56,17 @@ import type { SingleChoiceAw, UserScoreDetail } from '@yuri/types';
 import { computed, unref, useTemplateRef } from 'vue';
 
 import { questionBankApi } from '@yuri/common';
-import { Button, Card, Tag } from '@yuri/components';
+import { Button, Card, SplitButton, Tag } from '@yuri/components';
 
 import Preview from '#/views/questionManager/questionBank/components/preview.vue';
+
+import QuickScore from './quickScore.vue';
 
 const props = defineProps<{
   detail: UserScoreDetail;
 }>();
 
+const quickScoreRef = useTemplateRef('quickScoreRef');
 const previewRef = useTemplateRef('previewRef');
 const questionAnswer = computed(
   () => props.detail.questionAnswer as SingleChoiceAw,

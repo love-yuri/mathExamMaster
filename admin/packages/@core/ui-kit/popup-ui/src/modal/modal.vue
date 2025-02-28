@@ -186,7 +186,7 @@ const getAppendTo = computed(() => {
       :append-to="getAppendTo"
       :class="
         cn(
-          'left-0 right-0 top-[10vh] mx-auto flex max-h-[80%] w-[520px] flex-col p-0 sm:rounded-[var(--radius)]',
+          'left-0 right-0 top-[10vh] mx-auto flex max-h-[80%] w-[820px] flex-col overflow-y-auto rounded-[var(--radius)] bg-white p-0 sm:rounded-[var(--radius)]',
           modalClass,
           {
             'border-border border': bordered,

@@ -1,14 +1,14 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2025-02-27 18:54:45
+ * @LastEditTime: 2025-02-28 15:13:33
  * @Description: 封装富文本编辑器
 -->
 <template>
   <div class="">
     <div class="rounded-sm bg-white p-2">
       <Toolbar
-        v-if="showToolbarConfig ?? true"
+        v-if="!hideToolbarConfig"
         :default-config="toolbarConfig"
         :editor="editorRef"
         style="border-bottom: 1px solid #ccc"
@@ -16,7 +16,7 @@
       <Editor
         v-model="content"
         :default-config="editorConfig"
-        style="height: 500px; min-height: 400px"
+        style="min-height: 410px"
         @custom-paste="customPaste"
         @on-created="handleCreated"
       />

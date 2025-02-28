@@ -58,7 +58,7 @@ const coreRoutes: RouteRecordRaw[] = [
         path: 'login',
         component: Login,
         meta: {
-          title: $t('page.auth.login'),
+          title: '登录',
         },
       },
       {

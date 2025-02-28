@@ -15,6 +15,8 @@ import type {
   UserResult,
 } from '@yuri/types';
 
+import type { UserInfo } from '@vben/types';
+
 import { RequestType } from '@yuri/types';
 
 import { BaseApi } from '../base/baseApi/baseApi';
@@ -22,7 +24,7 @@ import { BaseApi } from '../base/baseApi/baseApi';
 class Api extends BaseApi<User> {
   override baseUrl: string = '/user';
 
-  info = async () => this.add<User>(RequestType.POST, '/info');
+  info = async () => this.add<UserInfo>(RequestType.POST, '/info');
 
   /**
    * 登陆

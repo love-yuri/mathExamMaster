@@ -30,25 +30,22 @@ export const useAuthStore = defineStore('auth', () => {
     let userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
-      console.log('yuri: ', params);
-      const { accessToken } = await userApi.login({
-        ...params,
+      const { token } = await userApi.login({
+        password: params.password,
+        username: params.username,
       });
 
       // 如果成功获取到 accessToken
-      if (accessToken) {
-        accessStore.setAccessToken(accessToken);
-
+      if (token) {
+        accessStore.setAccessToken(token);
         // 获取用户信息并存储到 accessStore 中
-        const [fetchUserInfoResult, accessCodes] = await Promise.all([
-          fetchUserInfo(),
-          [],
-        ]);
 
-        userInfo = fetchUserInfoResult;
+        userInfo = await fetchUserInfo();
 
         userStore.setUserInfo(userInfo);
-        accessStore.setAccessCodes(accessCodes);
+
+        // 用户权限码
+        accessStore.setAccessCodes([]);
 
         if (accessStore.loginExpired) {
           accessStore.setLoginExpired(false);
@@ -58,9 +55,7 @@ export const useAuthStore = defineStore('auth', () => {
             : await router.push(userInfo?.homePath || DEFAULT_HOME_PATH);
         }
 
-        if (userInfo?.realName) {
-          message.default.info(`欢迎 :${userInfo?.realName}`);
-        }
+        message.default.info(`欢迎 :${userInfo.nickname}`);
       }
     } finally {
       loginLoading.value = false;
@@ -73,7 +68,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function logout(redirect: boolean = true) {
     try {
-      await logoutApi();
+      await userApi.logout();
     } catch {
       // 不做任何处理
     }
@@ -93,8 +88,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function fetchUserInfo() {
-    let userInfo: null | UserInfo = null;
-    userInfo = await userApi.info();
+    const userInfo = await userApi.info();
     userStore.setUserInfo(userInfo);
     return userInfo;
   }

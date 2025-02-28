@@ -9,16 +9,19 @@
     <Editor
       v-model="content"
       :default-config="editorConfig"
-      style=" height: 500px;min-height: 300px"
+      style="height: 100px; min-height: 300px"
       @on-created="handleCreated"
     />
   </div>
 </template>
 <script setup lang="ts">
-import '@wangeditor-next/editor/dist/css/style.css'; // 引入 css
-import { type IDomEditor, type IEditorConfig } from '@wangeditor-next/editor';
+import type { IDomEditor, IEditorConfig } from '@wangeditor-next/editor';
+
 import { onBeforeUnmount, shallowRef } from 'vue';
+
 import { Editor } from '@wangeditor-next/editor-for-vue';
+
+import '@wangeditor-next/editor/dist/css/style.css'; // 引入 css
 
 const content = defineModel<string>('content');
 

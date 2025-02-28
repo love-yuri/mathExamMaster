@@ -24,7 +24,6 @@ export interface ModalProps {
    * @default false
    */
   centered?: boolean;
-
   class?: string;
 
   /**
@@ -32,6 +31,7 @@ export interface ModalProps {
    * @default true
    */
   closable?: boolean;
+
   /**
    * 点击弹窗遮罩是否关闭弹窗
    * @default true

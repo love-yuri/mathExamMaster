@@ -3,7 +3,7 @@ import type { R } from '@yuri/types';
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 16:37:25
- * @LastEditTime: 2025-02-27 16:43:22
+ * @LastEditTime: 2025-02-28 10:42:13
  * @Description:
  */
 /**
@@ -14,7 +14,8 @@ import { preferences } from '@vben/preferences';
 import { RequestClient } from '@vben/request';
 import { useAccessStore } from '@vben/stores';
 
-import { SystemCode } from '../../constants/systemCode';
+import { SystemCode } from '@yuri/types';
+
 import { useAuthStore } from '../../store/auth';
 import message from '../../utils/message';
 

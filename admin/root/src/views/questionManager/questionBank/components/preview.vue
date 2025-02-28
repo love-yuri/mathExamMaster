@@ -1,12 +1,12 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-13 15:04:45
- * @LastEditTime: 2025-02-27 19:13:44
+ * @LastEditTime: 2025-02-28 14:24:56
  * @Description: 预览题目
 -->
 <template>
   <div>
-    <Model width="800">
+    <Model :overlay-blur="10">
       <PreviewEditor :content="questionBank.content" />
       <template v-if="questionBank.type === QuestionTypeEnum.SINGLE_CHOICE">
         <div class="flex flex-col p-2">
