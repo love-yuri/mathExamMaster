@@ -17,7 +17,7 @@
             @click="chooseAnswer(0)"
           />
           <Button
-            :severity="answer.answer === false ? 'success' : 'secondary'"
+            :severity="answer.answer === false ? 'ssuccess' : 'secondary'"
             class="ml-2"
             icon="pi pi-times"
             rounded
@@ -31,8 +31,9 @@
 <script setup lang="ts">
 import type { JudgeAw, QuestionInfo } from '@yuri/types';
 
-import { Button, Card, PreviewEditor } from '@yuri/components';
 import { computed } from 'vue';
+
+import { Button, Card, PreviewEditor } from '@yuri/components';
 
 const emit = defineEmits(['updateAnswer']);
 const question = defineModel<QuestionInfo>('question');

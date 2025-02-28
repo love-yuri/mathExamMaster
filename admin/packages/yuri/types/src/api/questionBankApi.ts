@@ -1,3 +1,5 @@
+import type { KnowledgePoint } from './knowledgePointApi';
+
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
@@ -5,7 +7,6 @@
  * @Description: 题目
  */
 import { BaseEntity } from './base';
-import type { KnowledgePoint } from './knowledgePointApi';
 
 export enum QuestionTypeEnum {
   GAP_FILLING = 'GAP_FILLING', // 填空题
@@ -53,12 +54,12 @@ export abstract class QuestionAnswer extends BaseEntity {
 }
 
 export class SingleChoiceAnswer extends QuestionAnswer {
-  override type = QuestionTypeEnum.SINGLE_CHOICE;
   answer!: {
-    type: QuestionTypeEnum.SINGLE_CHOICE;
     answer?: number;
     options: string[];
+    type: QuestionTypeEnum.SINGLE_CHOICE;
   };
+  override type = QuestionTypeEnum.SINGLE_CHOICE;
 
   constructor() {
     super();
@@ -69,19 +70,19 @@ export class SingleChoiceAnswer extends QuestionAnswer {
     this.content = '';
     this.difficulty = 5;
     this.answer = {
-      type: QuestionTypeEnum.SINGLE_CHOICE,
       answer: undefined,
       options: [],
+      type: QuestionTypeEnum.SINGLE_CHOICE,
     };
   }
 }
 
 export class JudgeAnswer extends QuestionAnswer {
-  override type = QuestionTypeEnum.JUDGE;
   answer!: {
-    type: QuestionTypeEnum.JUDGE;
     answer: boolean;
+    type: QuestionTypeEnum.JUDGE;
   };
+  override type = QuestionTypeEnum.JUDGE;
 
   constructor() {
     super();
@@ -92,18 +93,18 @@ export class JudgeAnswer extends QuestionAnswer {
     this.content = '';
     this.difficulty = 5;
     this.answer = {
-      type: QuestionTypeEnum.JUDGE,
       answer: false,
+      type: QuestionTypeEnum.JUDGE,
     };
   }
 }
 
 export class SubjectiveAnswer extends QuestionAnswer {
-  override type = QuestionTypeEnum.SUBJECTIVE;
   answer!: {
-    type: QuestionTypeEnum.SUBJECTIVE;
     answer: string;
+    type: QuestionTypeEnum.SUBJECTIVE;
   };
+  override type = QuestionTypeEnum.SUBJECTIVE;
 
   constructor() {
     super();
@@ -114,18 +115,18 @@ export class SubjectiveAnswer extends QuestionAnswer {
     this.content = '';
     this.difficulty = 5;
     this.answer = {
-      type: QuestionTypeEnum.SUBJECTIVE,
       answer: '',
+      type: QuestionTypeEnum.SUBJECTIVE,
     };
   }
 }
 
 export class GapFillingAnswer extends QuestionAnswer {
-  override type = QuestionTypeEnum.GAP_FILLING;
   answer!: {
-    type: QuestionTypeEnum.GAP_FILLING;
     answer: string[];
+    type: QuestionTypeEnum.GAP_FILLING;
   };
+  override type = QuestionTypeEnum.GAP_FILLING;
 
   constructor() {
     super();
@@ -136,19 +137,19 @@ export class GapFillingAnswer extends QuestionAnswer {
     this.content = '';
     this.difficulty = 5;
     this.answer = {
-      type: QuestionTypeEnum.GAP_FILLING,
       answer: [],
+      type: QuestionTypeEnum.GAP_FILLING,
     };
   }
 }
 export type QuestionBank = QuestionAnswer;
 export class MultipleChoiceAnswer extends QuestionAnswer {
-  override type = QuestionTypeEnum.MULTIPLE_CHOICE;
   answer!: {
-    type: QuestionTypeEnum.MULTIPLE_CHOICE;
     answer: number[];
     options: string[];
+    type: QuestionTypeEnum.MULTIPLE_CHOICE;
   };
+  override type = QuestionTypeEnum.MULTIPLE_CHOICE;
 
   constructor() {
     super();
@@ -159,9 +160,9 @@ export class MultipleChoiceAnswer extends QuestionAnswer {
     this.content = '';
     this.difficulty = 5;
     this.answer = {
-      type: QuestionTypeEnum.MULTIPLE_CHOICE,
       answer: [],
       options: [],
+      type: QuestionTypeEnum.MULTIPLE_CHOICE,
     };
   }
 }

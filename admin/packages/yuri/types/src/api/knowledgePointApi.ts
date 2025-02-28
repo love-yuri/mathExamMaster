@@ -4,7 +4,7 @@
  * @LastEditTime: 2025-02-08 14:11:00
  * @Description: 知识点api
  */
-import { BaseEntity} from './base';
+import { BaseEntity } from './base';
 
 export class KnowledgePoint extends BaseEntity {
   /**

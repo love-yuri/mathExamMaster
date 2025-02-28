@@ -33,12 +33,14 @@ import type {
 
 import type { WangEditorProps } from './types';
 
-import { invoke } from '@tauri-apps/api/core';
+import { onBeforeUnmount, ref, shallowRef, watch } from 'vue';
+
 import { useAppConfig } from '@vben/hooks';
 import { useAccessStore } from '@vben/stores';
+
+import { invoke } from '@tauri-apps/api/core';
 import { Editor, Toolbar } from '@wangeditor-next/editor-for-vue';
 import { systemApi, systemFileApi } from '@yuri/common';
-import { onBeforeUnmount, ref, shallowRef, watch } from 'vue';
 
 import MathModal from '../math/mathModal.vue';
 import ToolbarKeys from './toolbarKeys.json';

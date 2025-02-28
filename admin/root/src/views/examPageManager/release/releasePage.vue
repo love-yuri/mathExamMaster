@@ -105,9 +105,11 @@
 <script setup lang="ts">
 import type { QuestionAndPoint } from '@yuri/types';
 
-import { router } from '#/router';
-import Show from '#/views/examPageManager/components/show.vue';
+import { computed, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+
 import { useTabs } from '@vben/hooks';
+
 import {
   checkEmpty,
   departmentApi,
@@ -132,8 +134,9 @@ import {
   subjectOptions,
   typeOptions,
 } from '@yuri/types';
-import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+
+import { router } from '#/router';
+import Show from '#/views/examPageManager/components/show.vue';
 
 const { closeCurrentTab } = useTabs();
 const route = useRoute();

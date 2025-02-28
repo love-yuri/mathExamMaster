@@ -35,26 +35,6 @@ async function baseApi(config: RequestConfig): Promise<unknown> {
  * @description 提供基础的API请求方法
  */
 export abstract class BaseApi<T extends BaseEntity> {
-  // 基础添加函数
-  protected add = <V>(
-    method: RequestType,
-    url: string,
-    params?: any,
-  ): Promise<V> => {
-    if (url.startsWith('/')) {
-      url = url.slice(1);
-    }
-    if (url.endsWith('/')) {
-      url = url.slice(0, -1);
-    }
-
-    return baseApi({
-      method,
-      params,
-      url: `${this.baseUrl}/${url}`,
-    }) as Promise<V>;
-  };
-
   abstract readonly baseUrl: string;
 
   // 创建
@@ -109,5 +89,25 @@ export abstract class BaseApi<T extends BaseEntity> {
       params,
       url: `${this.baseUrl}/update`,
     }) as Promise<boolean>;
+  };
+
+  // 基础添加函数
+  protected add = <V>(
+    method: RequestType,
+    url: string,
+    params?: any,
+  ): Promise<V> => {
+    if (url.startsWith('/')) {
+      url = url.slice(1);
+    }
+    if (url.endsWith('/')) {
+      url = url.slice(0, -1);
+    }
+
+    return baseApi({
+      method,
+      params,
+      url: `${this.baseUrl}/${url}`,
+    }) as Promise<V>;
   };
 }

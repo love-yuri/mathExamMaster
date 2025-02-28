@@ -5,16 +5,18 @@
  * @Description:
  */
 
-import {
-  type BaseEntity,
-  type ExamPageResult,
-  RequestType,
-  type PageParam,
-  type PageResult,
-  type ExamPageCreateVO,
-  type QuestionInfoResult,
-  type UserAnswer,
+import type {
+  BaseEntity,
+  ExamPageCreateVO,
+  ExamPageResult,
+  PageParam,
+  PageResult,
+  QuestionInfoResult,
+  UserAnswer,
 } from '@yuri/types';
+
+import { RequestType } from '@yuri/types';
+
 import { BaseApi } from '../base/baseApi/baseApi';
 
 class Api extends BaseApi<BaseEntity> {
@@ -28,12 +30,30 @@ class Api extends BaseApi<BaseEntity> {
   };
 
   /**
+   * 交卷
+   */
+  overExam = (id: string) => {
+    return this.add<boolean>(RequestType.POST, '/over/exam', id);
+  };
+
+  /**
    * 分页获取试卷
    */
   pageSimple = (param: PageParam) => {
     return this.add<PageResult<ExamPageResult>>(
       RequestType.POST,
       '/page/simple',
+      param,
+    );
+  };
+
+  /**
+   * 根据id获取题目信息
+   */
+  questionInfo = (param: { examPageId: string; relationId: string }) => {
+    return this.add<QuestionInfoResult[]>(
+      RequestType.POST,
+      '/question/info',
       param,
     );
   };
@@ -53,27 +73,12 @@ class Api extends BaseApi<BaseEntity> {
   };
 
   /**
-   * 交卷
-   */
-  overExam = (id: string) => {
-    return this.add<boolean>(RequestType.POST, '/over/exam', id);
-  };
-
-  /**
-   * 根据id获取题目信息
-   */
-  questionInfo = (param: { examPageId: string; relationId: string }) => {
-    return this.add<QuestionInfoResult[]>(
-      RequestType.POST,
-      '/question/info',
-      param,
-    );
-  };
-
-  /**
    * 更新用户答案
    */
-  updateUserAnswer = (param: { userAnswers: UserAnswer[]; relationId: string }) => {
+  updateUserAnswer = (param: {
+    relationId: string;
+    userAnswers: UserAnswer[];
+  }) => {
     return this.add<boolean>(RequestType.POST, '/update/user/answer', param);
   };
 }

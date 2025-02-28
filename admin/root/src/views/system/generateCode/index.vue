@@ -29,9 +29,10 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref, watch } from 'vue';
+
 import { message, systemApi } from '@yuri/common';
 import { Button, Select, ToggleSwitch } from '@yuri/components';
-import { onMounted, ref, watch } from 'vue';
 
 type Option = {
   name: string;

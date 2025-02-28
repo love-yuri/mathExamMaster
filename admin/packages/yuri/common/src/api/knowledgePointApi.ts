@@ -5,6 +5,7 @@
  * @Description: 知识点api
  */
 import type { KnowledgePoint } from '@yuri/types';
+
 import { BaseApi } from '..';
 
 class Api extends BaseApi<KnowledgePoint> {

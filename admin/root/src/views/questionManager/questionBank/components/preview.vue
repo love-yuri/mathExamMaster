@@ -70,10 +70,12 @@ import type {
   QuestionBank,
 } from '@yuri/types';
 
+import { computed, ref } from 'vue';
+
 import { useVbenModal } from '@vben/common-ui';
+
 import { Button, PreviewEditor } from '@yuri/components';
 import { QuestionTypeEnum, SingleChoiceAnswer } from '@yuri/types';
-import { computed, ref } from 'vue';
 
 /* 处理预览弹窗 */
 const [Model, modelApi] = useVbenModal({

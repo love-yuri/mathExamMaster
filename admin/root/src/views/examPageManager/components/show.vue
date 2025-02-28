@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-11-07 18:54:50
- * @LastEditTime: 2024-12-05 19:31:35
+ * @LastEditTime: 2025-02-28 10:05:29
  * @Description: 展示选择的题目
 -->
 
@@ -158,9 +158,10 @@ import type {
   QuestionBank,
 } from '@yuri/types';
 
-import SelectQuestion from '#/views/examPageManager/components/select.vue';
-import Preview from '#/views/questionManager/questionBank/components/preview.vue';
+import { computed, ref, unref } from 'vue';
+
 import { EllipsisText } from '@vben/common-ui';
+
 import {
   Button,
   Card,
@@ -173,7 +174,9 @@ import {
   Tag,
 } from '@yuri/components';
 import { QuestionTypeEnum, QuestionTypeMap } from '@yuri/types';
-import { computed, ref, unref } from 'vue';
+
+import SelectQuestion from '#/views/examPageManager/components/select.vue';
+import Preview from '#/views/questionManager/questionBank/components/preview.vue';
 
 const props = defineProps<{
   createVo: ExamPageCreateVO;

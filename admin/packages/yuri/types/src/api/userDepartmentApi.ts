@@ -4,7 +4,7 @@
  * @LastEditTime: 2025-02-08 14:21:28
  * @Description: 题目
  */
-import { BaseEntity} from './base';
+import { BaseEntity } from './base';
 
 export interface BatchSaveParam {
   departmentId: string;

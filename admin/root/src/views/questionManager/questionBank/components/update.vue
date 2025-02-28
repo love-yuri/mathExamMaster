@@ -17,16 +17,19 @@
 <script setup lang="ts">
 import type { KnowledgePoint, QuestionBank } from '@yuri/types';
 
+import { computed, markRaw, nextTick, onMounted, ref, unref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+import { useTabs } from '@vben/hooks';
+
+import { questionBankApi } from '@yuri/common';
+import { QuestionTypeEnum } from '@yuri/types';
+
 import GapFilling from '#/views/questionManager/questionBank/create/components/gapFilling.vue';
 import Judge from '#/views/questionManager/questionBank/create/components/judge.vue';
 import MultipleChoice from '#/views/questionManager/questionBank/create/components/multipleChoice.vue';
 import SingleChoice from '#/views/questionManager/questionBank/create/components/singleChoice.vue';
 import Subjective from '#/views/questionManager/questionBank/create/components/subjective.vue';
-import { useTabs } from '@vben/hooks';
-import { questionBankApi } from '@yuri/common';
-import { QuestionTypeEnum } from '@yuri/types';
-import { computed, markRaw, nextTick, onMounted, ref, unref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 
 defineEmits(['update']);
 

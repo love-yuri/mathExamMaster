@@ -12,8 +12,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import { WangEditor } from '@yuri/components';
 import { ref } from 'vue';
+
+import { WangEditor } from '@yuri/components';
 
 // const content = ref(`<p><yuri data-w-e-type="yuri" dd="just do it">yuri is yes</yuri></p>`);
 const content = ref('');

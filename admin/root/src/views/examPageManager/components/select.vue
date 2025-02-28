@@ -112,9 +112,10 @@
 import type { PageParam, QuestionAndPoint } from '@yuri/types';
 import type { PageState } from 'primevue/paginator';
 
-import { router } from '#/router';
-import Preview from '#/views/questionManager/questionBank/components/preview.vue';
+import { ref, unref, useTemplateRef } from 'vue';
+
 import { EllipsisText, useVbenModal } from '@vben/common-ui';
+
 import { questionBankApi } from '@yuri/common';
 import {
   Button,
@@ -126,7 +127,9 @@ import {
   Tag,
 } from '@yuri/components';
 import { QuestionTypeEnum, QuestionTypeMap } from '@yuri/types';
-import { ref, unref, useTemplateRef } from 'vue';
+
+import { router } from '#/router';
+import Preview from '#/views/questionManager/questionBank/components/preview.vue';
 
 const questionBanks = ref<QuestionAndPoint[]>([]);
 const questionAndPoints = defineModel<Map<string, QuestionAndPoint>>(

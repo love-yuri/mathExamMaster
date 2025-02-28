@@ -27,10 +27,11 @@
   </div>
 </template>
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import { checkEmpty, checkSuccess, knowledgePointApi } from '@yuri/common';
 import { Button, InputText, Textarea } from '@yuri/components';
 import { KnowledgePoint } from '@yuri/types';
-import { ref } from 'vue';
 
 const knowledgePoint = ref<KnowledgePoint>(new KnowledgePoint());
 

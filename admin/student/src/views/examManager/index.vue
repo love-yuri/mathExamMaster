@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-19 08:37:51
- * @LastEditTime: 2025-02-27 19:20:21
+ * @LastEditTime: 2025-02-28 10:06:51
  * @Description: 
 -->
 <template>
@@ -40,10 +40,11 @@
 <script setup lang="ts">
 import type { ExamListResult } from '@yuri/types';
 
+import { ref, watch } from 'vue';
+
 import { examPageReleaseApi, useExamStore } from '@yuri/common';
 import { FameraButton, GaganButton } from '@yuri/components';
 import { storeToRefs } from 'pinia';
-import { ref, watch } from 'vue';
 
 import DoExam from './doExam.vue';
 

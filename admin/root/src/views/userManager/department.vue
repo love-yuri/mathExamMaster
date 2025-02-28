@@ -101,6 +101,8 @@
 import type { DepartmentDetail, TreeResult } from '@yuri/types';
 import type { OrganizationChartNode } from 'primevue';
 
+import { onMounted, ref, useTemplateRef } from 'vue';
+
 import {
   checkEmpty,
   checkSuccess,
@@ -120,7 +122,6 @@ import {
 } from '@yuri/components';
 import { Department } from '@yuri/types';
 import { useConfirm } from 'primevue/useconfirm';
-import { onMounted, ref, useTemplateRef } from 'vue';
 
 const confirm = useConfirm();
 

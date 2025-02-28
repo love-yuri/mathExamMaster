@@ -102,11 +102,6 @@ import type {
   UserAnswer,
 } from '@yuri/types';
 
-import { router } from '#/router';
-import { debounce, examPageApi, message } from '@yuri/common';
-import { Button, Card, ConfirmDialog } from '@yuri/components';
-import { QuestionTypeEnum, QuestionTypeMap } from '@yuri/types';
-import { useConfirm } from 'primevue/useconfirm';
 import {
   computed,
   markRaw,
@@ -115,6 +110,13 @@ import {
   ref,
   watchEffect,
 } from 'vue';
+
+import { debounce, examPageApi, message } from '@yuri/common';
+import { Button, Card, ConfirmDialog } from '@yuri/components';
+import { QuestionTypeEnum, QuestionTypeMap } from '@yuri/types';
+import { useConfirm } from 'primevue/useconfirm';
+
+import { router } from '#/router';
 
 import GapFilling from './answerQuestion/gapFilling.vue';
 import Judge from './answerQuestion/judge.vue';

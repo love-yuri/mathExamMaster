@@ -10,10 +10,11 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted } from 'vue';
+
 import { message } from '@yuri/common';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
-import { onMounted } from 'vue';
 
 defineOptions({ name: 'App' });
 

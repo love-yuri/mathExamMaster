@@ -23,11 +23,13 @@
   </Model>
 </template>
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import { useVbenModal } from '@vben/common-ui';
+
 import { checkEmpty, checkSuccess, knowledgePointApi } from '@yuri/common';
 import { InputText, Textarea } from '@yuri/components';
 import { KnowledgePoint } from '@yuri/types';
-import { ref } from 'vue';
 
 const emits = defineEmits(['update']);
 

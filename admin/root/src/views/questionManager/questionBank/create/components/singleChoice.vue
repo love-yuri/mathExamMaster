@@ -81,6 +81,8 @@
 <script setup lang="ts">
 import type { KnowledgePoint } from '@yuri/types';
 
+import { onMounted, ref } from 'vue';
+
 import {
   checkEmpty,
   checkSuccess,
@@ -97,7 +99,6 @@ import {
   WangEditor,
 } from '@yuri/components';
 import { SingleChoiceAnswer } from '@yuri/types';
-import { onMounted, ref } from 'vue';
 
 const emits = defineEmits(['cancel', 'update']);
 

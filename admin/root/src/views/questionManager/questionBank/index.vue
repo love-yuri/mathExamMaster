@@ -103,8 +103,10 @@ import type {
 } from '@yuri/types';
 import type { PageState } from 'primevue/paginator';
 
-import { router } from '#/router';
+import { computed, onMounted, ref, unref } from 'vue';
+
 import { EllipsisText } from '@vben/common-ui';
+
 import { message, questionBankApi } from '@yuri/common';
 import {
   Button,
@@ -118,7 +120,8 @@ import {
 } from '@yuri/components';
 import { QuestionTypeEnum, QuestionTypeMap } from '@yuri/types';
 import { useConfirm } from 'primevue/useconfirm';
-import { computed, onMounted, ref, unref } from 'vue';
+
+import { router } from '#/router';
 
 import Preview from './components/preview.vue';
 
@@ -129,9 +132,9 @@ const confirm = useConfirm();
  */
 const fullQuestionBanks = ref<FullQuestionBank[]>([]);
 
-type QuestionBankType = {
+type QuestionBankType = QuestionBank & {
   knowledgePoints: KnowledgePoint[];
-} & QuestionBank;
+};
 
 const questionBanks = computed((): QuestionBankType[] =>
   fullQuestionBanks.value.map((item) => ({

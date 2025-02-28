@@ -1,3 +1,5 @@
+import type { DepartmentDetail, TreeResult } from '@yuri/types';
+
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
@@ -5,7 +7,7 @@
  * @Description: 题目
  */
 import { BaseApi } from '@yuri/common';
-import { RequestType, type TreeResult, Department, type DepartmentDetail } from '@yuri/types';
+import { Department, RequestType } from '@yuri/types';
 
 class Api extends BaseApi<Department> {
   override baseUrl: string = '/department';
@@ -14,13 +16,13 @@ class Api extends BaseApi<Department> {
     return this.add<DepartmentDetail>(RequestType.POST, '/detail', id);
   };
 
+  ownerDepartments = () => {
+    return this.add<Department[]>(RequestType.POST, '/owner/departments');
+  };
+
   tree = () => {
     return this.add<TreeResult>(RequestType.GET, '/tree');
   };
-
-  ownerDepartments = () => {
-    return this.add<Department[]>(RequestType.POST, '/owner/departments');
-  }
 }
 
 export const departmentApi = new Api();

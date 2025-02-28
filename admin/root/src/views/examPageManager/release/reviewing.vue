@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-02-24 18:10:30
- * @LastEditTime: 2025-02-27 18:51:29
+ * @LastEditTime: 2025-02-28 10:01:25
  * @Description: 
 -->
 <template>
@@ -22,39 +22,49 @@
         v-for="detail in currentUserScore.detail"
         :key="detail.questionId"
       >
-        <template v-if="detail.type === QuestionTypeEnum.SINGLE_CHOICE">
-          <ShowSingleChoice :detail="detail" />
-        </template>
-        <template v-if="detail.type === QuestionTypeEnum.MULTIPLE_CHOICE">
-          <ShowMultipleChoicee :detail="detail" />
-        </template>
-        <template v-if="detail.type === QuestionTypeEnum.JUDGE">
-          <ShowJudgeChoose :detail="detail" />
-        </template>
-        <template v-if="detail.type === QuestionTypeEnum.GAP_FILLING">
-          <ShowGapFillingAnswer :detail="detail" />
-        </template>
-        <template v-if="detail.type === QuestionTypeEnum.SUBJECTIVE">
-          <ShowSubjectAnswer :detail="detail" />
-        </template>
+        <component :is="getComponent(detail.type)" :detail="detail" />
       </div>
     </div>
   </div>
 </template>
-<script setup lang="tsx">
+<script setup lang="ts">
 import type { StudentDetailResult } from '@yuri/types';
+
+import { computed, ref, watchEffect } from 'vue';
+import { useRoute } from 'vue-router';
 
 import { examPageReleaseApi, userScoreApi } from '@yuri/common';
 import { Button } from '@yuri/components';
 import { QuestionTypeEnum, UserScore } from '@yuri/types';
-import { computed, ref, watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
 
 import ShowGapFillingAnswer from './showQuestion/gapFilling.vue';
 import ShowJudgeChoose from './showQuestion/judge.vue';
-import ShowMultipleChoicee from './showQuestion/multipleChoice.vue';
+import ShowMultipleChoice from './showQuestion/multipleChoice.vue';
 import ShowSingleChoice from './showQuestion/singleChoice.vue';
 import ShowSubjectAnswer from './showQuestion/subjective.vue';
+
+function getComponent(type: QuestionTypeEnum) {
+  switch (type) {
+    case QuestionTypeEnum.GAP_FILLING: {
+      return ShowGapFillingAnswer;
+    }
+    case QuestionTypeEnum.JUDGE: {
+      return ShowJudgeChoose;
+    }
+    case QuestionTypeEnum.MULTIPLE_CHOICE: {
+      return ShowMultipleChoice;
+    }
+    case QuestionTypeEnum.SINGLE_CHOICE: {
+      return ShowSingleChoice;
+    }
+    case QuestionTypeEnum.SUBJECTIVE: {
+      return ShowSubjectAnswer;
+    }
+    default: {
+      return null;
+    }
+  }
+}
 
 const route = useRoute();
 const currentUserScore = ref(new UserScore());

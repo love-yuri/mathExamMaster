@@ -1,11 +1,12 @@
+import type { FullQuestionBank, QuestionTypeEnum } from './questionBankApi';
+
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
  * @LastEditTime: 2025-02-25 10:14:39
  * @Description:
  */
-import { BaseEntity} from './base';
-import type { FullQuestionBank, QuestionTypeEnum } from './questionBankApi';
+import { BaseEntity } from './base';
 
 export interface ExamPageQuestionRelation {
   fullQuestionBank?: FullQuestionBank;
@@ -14,21 +15,16 @@ export interface ExamPageQuestionRelation {
 }
 
 export interface UserAnswer {
-  questionId: string;
-  questionAnswer: unknown;
   hasAnswer: boolean;
+  questionAnswer: unknown;
+  questionId: string;
 }
 
 export interface QuestionInfo {
   /**
-   * 答案
-   */
-  userAnswer: UserAnswer;
-  /**
    * 题目内容
    */
   content: string;
-
   /**
    * 主键id
    * 类型为字符串，表示可能是长整型的序列化形式
@@ -44,6 +40,11 @@ export interface QuestionInfo {
    * 题目类型
    */
   type: QuestionTypeEnum;
+
+  /**
+   * 答案
+   */
+  userAnswer: UserAnswer;
 }
 
 /**
@@ -57,9 +58,9 @@ export interface QuestionInfoResult {
   type: QuestionTypeEnum;
 }
 
-export type QuestionAndPoint = {
+export type QuestionAndPoint = FullQuestionBank & {
   score: number;
-} & FullQuestionBank;
+};
 
 export enum ExamPageType {
   DEFULT = 0,
@@ -142,4 +143,3 @@ export const typeOptions: BaseOption[] = [
     value: ExamPageType.DEFULT,
   },
 ];
-

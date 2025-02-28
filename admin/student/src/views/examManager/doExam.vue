@@ -14,7 +14,7 @@
           <div class="grid grid-cols-2 gap-4">
             <div>
               <div class="info">
-                <span class="title">考试科目: </span>
+                <span class="title">考试科目: </span>s
                 <span class="content">{{ examPageSubject }}</span>
               </div>
               <div class="info">
@@ -67,6 +67,8 @@
 <script setup lang="ts">
 import type { ExamInfoResult } from '@yuri/types';
 
+import { computed, onUnmounted, ref, watchEffect } from 'vue';
+
 import { examPageReleaseApi } from '@yuri/common';
 import { Card, FameraButton, Rating } from '@yuri/components';
 import {
@@ -76,7 +78,6 @@ import {
   SubjectType,
   SubjectTypeMap,
 } from '@yuri/types';
-import { computed, onUnmounted, ref, watchEffect } from 'vue';
 
 import Examing from './components/examing.vue';
 

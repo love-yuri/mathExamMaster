@@ -1,11 +1,3 @@
-import { $t, setupI18n } from '#/locales';
-import Aura from '@primevue/themes/aura';
-import { registerAccessDirective } from '@vben/access';
-import { initTippy, registerLoadingDirective } from '@vben/common-ui';
-import { MotionPlugin } from '@vben/plugins/motion';
-import { preferences } from '@vben/preferences';
-import { initStores } from '@vben/stores';
-import { useTitle } from '@vueuse/core';
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-02-27 11:55:53
@@ -14,14 +6,24 @@ import { useTitle } from '@vueuse/core';
  */
 import { createApp, watchEffect } from 'vue';
 
+import { registerAccessDirective } from '@vben/access';
+import { initTippy, registerLoadingDirective } from '@vben/common-ui';
+import { MotionPlugin } from '@vben/plugins/motion';
+import { preferences } from '@vben/preferences';
+import { initStores } from '@vben/stores';
 import '@vben/styles';
 import '@vben/styles/ele';
+
+import Aura from '@primevue/themes/aura';
+import { useTitle } from '@vueuse/core';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
 import DialogService from 'primevue/dialogservice';
 import ToastService from 'primevue/toastservice';
+
+import { $t, setupI18n } from '#/locales';
 
 import App from './app.vue';
 import { router } from './router';

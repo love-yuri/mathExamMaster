@@ -1,13 +1,15 @@
+import type { PageParam } from './base';
+import type { ExamPageUserRelationStatusType } from './examPageUserRelationApi';
+
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
  * @LastEditTime: 2025-02-24 15:30:52
  * @Description:
  */
-import { BaseEntity, type PageParam} from './base';
+import { BaseEntity } from './base';
 import { Department } from './departmentApi';
 import { ExamPageResult, ExamPageType, SubjectType } from './examPageApi';
-import type { ExamPageUserRelationStatusType } from './examPageUserRelationApi';
 
 export interface ExamListParam {
   mode: number;
@@ -73,12 +75,11 @@ export interface ExamInfoResult {
   type: ExamPageType;
 }
 
-
 export class ExamPageReleaseParam extends BaseEntity {
+  departmentId!: string;
   endTime?: string;
   examPageId!: string;
   startTime?: string;
-  departmentId!: string;
 
   /**
    * 手动调用reset
@@ -96,20 +97,19 @@ export class ExamPageReleaseParam extends BaseEntity {
   }
 }
 
-
 export interface StudentDetailResult {
-  userId: string;
-  username: string;
   nickname: string;
   relationId: string;
+  userId: string;
+  username: string;
 }
 
 /**
  * 试卷发布结果
  */
 export class ExamPageReleaseResult extends ExamPageReleaseParam {
-  examPage?: ExamPageResult;
   department!: Department;
+  examPage?: ExamPageResult;
 
   /**
    * 手动调用reset

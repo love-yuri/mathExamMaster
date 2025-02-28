@@ -5,15 +5,18 @@
  * @Description:
  */
 
-import { RequestType, type UserScore } from "@yuri/types";
-import { BaseApi } from "..";
+import type { UserScore } from '@yuri/types';
+
+import { RequestType } from '@yuri/types';
+
+import { BaseApi } from '..';
 
 class Api extends BaseApi<UserScore> {
   override baseUrl: string = '/user/score';
 
   detail = (id: string) => {
     return this.add<UserScore>(RequestType.POST, `detail`, id);
-  }
+  };
 }
 
 export const userScoreApi = new Api();

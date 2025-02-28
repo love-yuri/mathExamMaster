@@ -1,9 +1,4 @@
-/*
- * @Author: love-yuri yuri2078170658@gmail.com
- * @Date: 2024-09-10 16:37:25
- * @LastEditTime: 2025-02-27 16:49:35
- * @Description: 认证模块
- */
+import type { Recordable, UserInfo } from '@vben/types';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -11,10 +6,10 @@ import { useRouter } from 'vue-router';
 import { DEFAULT_HOME_PATH, LOGIN_PATH } from '@vben/constants';
 import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 
-import { message, StoreNames, userApi } from '@yuri/common';
+import { message, userApi } from '@yuri/common';
 import { defineStore } from 'pinia';
 
-export const useAuthStore = defineStore(StoreNames.Auth, () => {
+export const useAuthStore = defineStore('auth', () => {
   const accessStore = useAccessStore();
   const userStore = useUserStore();
   const router = useRouter();
@@ -25,49 +20,68 @@ export const useAuthStore = defineStore(StoreNames.Auth, () => {
    * 异步处理登录操作
    * Asynchronously handle the login process
    * @param params 登录表单数据
+   * @param onSuccess 成功之后的回调函数
    */
   async function authLogin(
-    params: any,
+    params: Recordable<any>,
     onSuccess?: () => Promise<void> | void,
   ) {
+    // 异步处理用户登录操作并获取 accessToken
+    let userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
-      const loginResult = await userApi.login(params);
-      const { token: accessToken, user: userInfo } = loginResult;
+      console.log('yuri: ', params);
+      const { accessToken } = await userApi.login({
+        ...params,
+      });
 
       // 如果成功获取到 accessToken
-      if (userInfo) {
-        // 将 accessToken 存储到 accessStore 中
+      if (accessToken) {
         accessStore.setAccessToken(accessToken);
 
         // 获取用户信息并存储到 accessStore 中
-        userStore.setUserInfo(userInfo);
+        const [fetchUserInfoResult, accessCodes] = await Promise.all([
+          fetchUserInfo(),
+          [],
+        ]);
 
-        if (userInfo.username) {
-          message.default.info(`欢饮回来:${userInfo.username}`);
-        }
+        userInfo = fetchUserInfoResult;
+
+        userStore.setUserInfo(userInfo);
+        accessStore.setAccessCodes(accessCodes);
+
         if (accessStore.loginExpired) {
           accessStore.setLoginExpired(false);
         } else {
           onSuccess
             ? await onSuccess?.()
-            : await router.push(DEFAULT_HOME_PATH);
+            : await router.push(userInfo?.homePath || DEFAULT_HOME_PATH);
+        }
+
+        if (userInfo?.realName) {
+          message.default.info(`欢迎 :${userInfo?.realName}`);
         }
       }
     } finally {
       loginLoading.value = false;
     }
+
+    return {
+      userInfo,
+    };
   }
 
   async function logout(redirect: boolean = true) {
-    // 仅在不重定向时调用退出接口
-    if (!redirect) {
-      await userApi.logout();
+    try {
+      await logoutApi();
+    } catch {
+      // 不做任何处理
     }
+
     resetAllStores();
     accessStore.setLoginExpired(false);
 
-    // 回登陆页带上当前路由地址
+    // 回登录页带上当前路由地址
     await router.replace({
       path: LOGIN_PATH,
       query: redirect
@@ -78,11 +92,9 @@ export const useAuthStore = defineStore(StoreNames.Auth, () => {
     });
   }
 
-  /**
-   * 更新用户信息
-   */
   async function fetchUserInfo() {
-    const userInfo = await userApi.info();
+    let userInfo: null | UserInfo = null;
+    userInfo = await userApi.info();
     userStore.setUserInfo(userInfo);
     return userInfo;
   }

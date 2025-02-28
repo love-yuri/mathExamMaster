@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-02-23 19:12:39
- * @LastEditTime: 2025-02-24 19:45:44
+ * @LastEditTime: 2025-02-28 10:06:22
  * @Description: 
 -->
 <template>
@@ -35,8 +35,9 @@
 <script setup lang="ts">
 import type { GapFillingAw, QuestionInfo } from '@yuri/types';
 
-import { Card, InputText, PreviewEditor } from '@yuri/components';
 import { computed } from 'vue';
+
+import { Card, InputText, PreviewEditor } from '@yuri/components';
 
 const emit = defineEmits(['updateAnswer']);
 const question = defineModel<QuestionInfo>('question');

@@ -62,6 +62,8 @@
   </div>
 </template>
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
+
 import {
   checkEmpty,
   checkSuccess,
@@ -77,7 +79,6 @@ import {
   WangEditor,
 } from '@yuri/components';
 import { JudgeAnswer, KnowledgePoint } from '@yuri/types';
-import { onMounted, ref } from 'vue';
 
 const emits = defineEmits(['cancel', 'update']);
 

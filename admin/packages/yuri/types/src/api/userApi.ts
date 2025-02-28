@@ -1,11 +1,14 @@
+import type { UserInfo } from '@vben/types';
+
+import type { PageParam } from './base';
+
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 17:05:12
  * @LastEditTime: 2025-02-12 18:45:34
  * @Description:
  */
-import { BaseEntity, type PageParam } from './base';
-import type { UserInfo } from '@vben/types';
+import { BaseEntity } from './base';
 
 export class User extends BaseEntity {
   username!: string;
@@ -38,8 +41,8 @@ export interface RefreshTokenResult {
 
 export interface UserResult {
   id: string;
-  username: string;
   nickname: string;
+  username: string;
 }
 
 export interface SetTeacherParam {

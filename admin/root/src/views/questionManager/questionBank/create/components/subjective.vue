@@ -49,6 +49,8 @@
   </div>
 </template>
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
+
 import {
   checkEmpty,
   checkSuccess,
@@ -58,7 +60,6 @@ import {
 } from '@yuri/common';
 import { Button, MultiSelect, Rating, WangEditor } from '@yuri/components';
 import { KnowledgePoint, SubjectiveAnswer } from '@yuri/types';
-import { onMounted, ref } from 'vue';
 
 const emits = defineEmits(['cancel', 'update']);
 

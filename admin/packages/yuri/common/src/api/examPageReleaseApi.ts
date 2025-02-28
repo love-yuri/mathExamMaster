@@ -5,24 +5,33 @@
  * @Description:
  */
 
-import {
-  type BaseEntity,
-  type ExamPageReleaseResult,
-  RequestType,
-  type PageResult,
-  type ExamPageReleaseParam,
-  type ExamPageCreateVO,
-  type ExamInfoResult,
-  type ExamListParam,
-  type ExamListResult,
-  type StartExamResult,
-  type ExamPageReleasePageParam,
-  type StudentDetailResult
-} from "@yuri/types";
-import { BaseApi } from "../base/baseApi/baseApi";
+import type {
+  BaseEntity,
+  ExamInfoResult,
+  ExamListParam,
+  ExamListResult,
+  ExamPageCreateVO,
+  ExamPageReleasePageParam,
+  ExamPageReleaseParam,
+  ExamPageReleaseResult,
+  PageResult,
+  StartExamResult,
+  StudentDetailResult,
+} from '@yuri/types';
+
+import { RequestType } from '@yuri/types';
+
+import { BaseApi } from '../base/baseApi/baseApi';
 
 class Api extends BaseApi<BaseEntity> {
   override baseUrl: string = '/exam/page/release';
+
+  /**
+   * 根据id检查是否正常
+   */
+  check = (id: string) => {
+    return this.add<boolean>(RequestType.POST, `/check`, id);
+  };
 
   /**
    * 根据id获取详情
@@ -32,10 +41,17 @@ class Api extends BaseApi<BaseEntity> {
   };
 
   /**
-   * 根据id获取学生详情
+   * 根据id获取练习信息
    */
-  studentDetail = (id: string) => {
-    return this.add<StudentDetailResult[]>(RequestType.POST, `/student/detail/${id}`);
+  examInfo = (id: string) => {
+    return this.add<ExamInfoResult>(RequestType.POST, `/exam/info`, id);
+  };
+
+  /**
+   * 获取练习列表
+   */
+  examList = (param: ExamListParam) => {
+    return this.add<ExamListResult[]>(RequestType.POST, '/exam/list', param);
   };
 
   /**
@@ -63,40 +79,29 @@ class Api extends BaseApi<BaseEntity> {
     return this.add<boolean>(RequestType.POST, '/release/update', param);
   };
 
-  /**
-   * 发布试卷
-   */
-  updatePage = (param: ExamPageCreateVO) => {
-    return this.add<boolean>(RequestType.POST, '/update/page', param);
-  };
-
-  /**
-  * 根据id检查是否正常
-  */
-  check = (id: string) => {
-    return this.add<boolean>(RequestType.POST, `/check`, id);
-  };
-  
-  /**
-   * 根据id获取练习信息
-   */
-  examInfo = (id: string) => {
-    return this.add<ExamInfoResult>(RequestType.POST, `/exam/info`, id);
-  };
-
-  /**
-   * 获取练习列表
-   */
-  examList = (param: ExamListParam) => {
-    return this.add<ExamListResult[]>(RequestType.POST, '/exam/list', param);
-  };
-
   startExam = (releaseId: string) => {
     return this.add<StartExamResult>(
       RequestType.POST,
       '/start/exam',
       releaseId,
     );
+  };
+
+  /**
+   * 根据id获取学生详情
+   */
+  studentDetail = (id: string) => {
+    return this.add<StudentDetailResult[]>(
+      RequestType.POST,
+      `/student/detail/${id}`,
+    );
+  };
+
+  /**
+   * 发布试卷
+   */
+  updatePage = (param: ExamPageCreateVO) => {
+    return this.add<boolean>(RequestType.POST, '/update/page', param);
   };
 }
 

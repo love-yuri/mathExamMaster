@@ -1,6 +1,7 @@
-import { BaseEntity } from "./base";
-import type { UserAnswer } from "./examPageApi";
-import type { QuestionTypeEnum } from "./questionBankApi";
+import type { UserAnswer } from './examPageApi';
+import type { QuestionTypeEnum } from './questionBankApi';
+
+import { BaseEntity } from './base';
 
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
@@ -9,20 +10,20 @@ import type { QuestionTypeEnum } from "./questionBankApi";
  * @Description:
  */
 export interface UserScoreDetail {
-  type: QuestionTypeEnum;
-  questionId: string;
   questionAnswer: unknown;
-  userAnswer: UserAnswer;
+  questionId: string;
   score: number;
   totalScore: number;
+  type: QuestionTypeEnum;
+  userAnswer: UserAnswer;
 }
 
 export class UserScore extends BaseEntity {
+  detail!: UserScoreDetail[];
   pageReleaseId!: string;
-  userId!: string;
   score!: number;
   totalScore!: number;
-  detail!: UserScoreDetail[];
+  userId!: string;
 
   constructor() {
     super();

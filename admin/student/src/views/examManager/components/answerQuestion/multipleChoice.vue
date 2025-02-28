@@ -20,8 +20,9 @@
 <script setup lang="ts">
 import type { MultipleChoiceAw, QuestionInfo } from '@yuri/types';
 
-import { Button, Card, PreviewEditor } from '@yuri/components';
 import { computed } from 'vue';
+
+import { Button, Card, PreviewEditor } from '@yuri/components';
 
 const emit = defineEmits(['updateAnswer']);
 const question = defineModel<QuestionInfo>('question');

@@ -69,7 +69,8 @@
 import type { KnowledgePoint, PageParam } from '@yuri/types';
 import type { PageState } from 'primevue/paginator';
 
-import { router } from '#/router';
+import { onMounted, ref, unref } from 'vue';
+
 import { knowledgePointApi, message } from '@yuri/common';
 import {
   Button,
@@ -81,7 +82,8 @@ import {
   SplitButton,
 } from '@yuri/components';
 import { useConfirm } from 'primevue/useconfirm';
-import { onMounted, ref, unref } from 'vue';
+
+import { router } from '#/router';
 
 import Update from './components/update.vue';
 

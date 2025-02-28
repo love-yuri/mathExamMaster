@@ -1,5 +1,10 @@
-import { BaseEntity, ExamPageUserRelationStatusType, RequestType } from "@yuri/types";
-import { BaseApi } from "../base/baseApi/baseApi";
+import {
+  BaseEntity,
+  ExamPageUserRelationStatusType,
+  RequestType,
+} from '@yuri/types';
+
+import { BaseApi } from '../base/baseApi/baseApi';
 
 /*
  * @Author: love-yuri yuri2078170658@gmail.com

@@ -106,7 +106,9 @@
 <script setup lang="ts">
 import type { QuestionAndPoint } from '@yuri/types';
 
-import Show from '#/views/examPageManager/components/show.vue';
+import { computed, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+
 import {
   checkEmpty,
   departmentApi,
@@ -131,8 +133,8 @@ import {
   subjectOptions,
   typeOptions,
 } from '@yuri/types';
-import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+
+import Show from '#/views/examPageManager/components/show.vue';
 
 const route = useRoute();
 

@@ -5,15 +5,17 @@
  * @Description: 题目
  */
 
-import {
-  type FullQuestionBank,
-  RequestType,
-  type PageParam,
-  type PageResult,
-  type SaveQuestionAnswerParam,
-  type QuestionBank
-} from "@yuri/types";
-import { BaseApi } from "../base/baseApi/baseApi";
+import type {
+  FullQuestionBank,
+  PageParam,
+  PageResult,
+  QuestionBank,
+  SaveQuestionAnswerParam,
+} from '@yuri/types';
+
+import { RequestType } from '@yuri/types';
+
+import { BaseApi } from '../base/baseApi/baseApi';
 
 class Api extends BaseApi<QuestionBank> {
   override baseUrl: string = '/question/bank';

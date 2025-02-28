@@ -119,9 +119,11 @@ import type {
 } from '@yuri/types';
 import type { PageState } from 'primevue/paginator';
 
-import { router } from '#/router';
+import { onMounted, ref } from 'vue';
+
 import { EllipsisText } from '@vben/common-ui';
 import { useTabs } from '@vben/hooks';
+
 import { examPageReleaseApi, message } from '@yuri/common';
 import {
   Button,
@@ -135,7 +137,8 @@ import {
   Tag,
 } from '@yuri/components';
 import { useConfirm } from 'primevue/useconfirm';
-import { onMounted, ref } from 'vue';
+
+import { router } from '#/router';
 
 const { closeTabByKey } = useTabs();
 

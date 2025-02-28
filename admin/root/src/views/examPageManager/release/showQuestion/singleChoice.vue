@@ -45,10 +45,12 @@
 <script setup lang="ts">
 import type { SingleChoiceAw, UserScoreDetail } from '@yuri/types';
 
-import Preview from '#/views/questionManager/questionBank/components/preview.vue';
+import { computed, unref, useTemplateRef } from 'vue';
+
 import { questionBankApi } from '@yuri/common';
 import { Button, Card, Tag } from '@yuri/components';
-import { computed, unref, useTemplateRef } from 'vue';
+
+import Preview from '#/views/questionManager/questionBank/components/preview.vue';
 
 const props = defineProps<{
   detail: UserScoreDetail;

@@ -18,8 +18,9 @@
 </template>
 
 <script setup lang="ts">
-import { MathfieldElement } from 'mathlive';
 import { onMounted, ref } from 'vue';
+
+import { MathfieldElement } from 'mathlive';
 
 const visible = ref(false);
 const mathfield = ref<HTMLDivElement>(); // 用于引用 Mathfield 的 DOM 节点
