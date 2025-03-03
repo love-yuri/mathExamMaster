@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-02-26 19:36:07
- * @LastEditTime: 2025-02-28 14:13:26
+ * @LastEditTime: 2025-03-03 16:36:28
  * @Description: 
 -->
 <template>
@@ -47,7 +47,7 @@
       </template>
     </Card>
     <Preview ref="previewRef" />
-    <QuickScore ref="quickScoreRef" />
+    <QuickScore ref="quickScoreRef" @select="setScore" />
   </div>
 </template>
 <script setup lang="ts">
@@ -62,14 +62,14 @@ import Preview from '#/views/questionManager/questionBank/components/preview.vue
 
 import QuickScore from './quickScore.vue';
 
-const props = defineProps<{
-  detail: UserScoreDetail;
-}>();
+const emits = defineEmits(['setScore']);
+
+const detail = defineModel<UserScoreDetail>('detail', { required: true });
 
 const quickScoreRef = useTemplateRef('quickScoreRef');
 const previewRef = useTemplateRef('previewRef');
 const questionAnswer = computed(
-  () => props.detail.questionAnswer as SingleChoiceAw,
+  () => detail.value.questionAnswer as SingleChoiceAw,
 );
 
 function severity(index: number) {
@@ -80,18 +80,24 @@ function severity(index: number) {
     return 'secondary';
   } else {
     if (index === questionAnswer.value.answer) {
-      return 'success';
+      return userAnswer.value.answer ? 'success' : 'danger';
     }
     return index === userAnswer.value.answer ? 'danger' : 'secondary';
   }
 }
 const userAnswer = computed(
-  () => props.detail.userAnswer.questionAnswer as unknown as SingleChoiceAw,
+  () => detail.value.userAnswer.questionAnswer as unknown as SingleChoiceAw,
 );
 
 function show(id: string) {
   questionBankApi.get(id).then((res) => {
     unref(previewRef)?.open(res);
   });
+}
+
+function setScore(score: number) {
+  detail.value.score = score;
+  detail.value.hasSetScore = true;
+  emits('setScore', score);
 }
 </script>

@@ -1,12 +1,10 @@
 package math.yl.love.database.service
 
 import math.yl.love.common.mybatis.BaseService
-import math.yl.love.common.utils.JsonUtils.toJson
 import math.yl.love.database.domain.entity.UserScore
 import math.yl.love.database.domain.result.examPageUserRelation.UserAnswer
 import math.yl.love.database.domain.result.questionBank.*
 import math.yl.love.database.domain.result.userScore.UserScoreDetail
-import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
 import math.yl.love.database.domain.typeEnum.QuestionTypeEnum.*
 import math.yl.love.database.mapper.UserScoreMapper
 import org.springframework.stereotype.Service
@@ -124,13 +122,5 @@ class UserScoreService(
                 detail.hasSetScore = false
             }
         }
-    }
-
-
-    fun updateDetail(data: UserScore, details: List<UserScoreDetail>) {
-        updateWrapper
-            .eq(UserScore::id, data.id)
-            .set(UserScore::detail, details.toJson())
-            .update()
     }
 }

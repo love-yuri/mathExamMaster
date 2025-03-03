@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-02-26 19:36:07
- * @LastEditTime: 2025-02-27 18:38:16
+ * @LastEditTime: 2025-03-03 16:04:26
  * @Description: 
 -->
 <template>
@@ -27,19 +27,27 @@
                 detail.score
               }}</span>
             </div>
-            <Button
+            <SplitButton
+              :model="[
+                {
+                  label: '预览题目',
+                  icon: 'pi pi-eye',
+                  command: () => show(detail.questionId),
+                },
+              ]"
               class="ml-2 flex-shrink-0"
-              icon="pi pi-eye"
-              label="预览题目"
+              icon="pi pi-ellipsis-v"
+              label="评分"
               raised
               severity="info"
-              @click="show(detail.questionId)"
+              @click="() => quickScoreRef?.open(detail)"
             />
           </div>
         </div>
       </template>
     </Card>
     <Preview ref="previewRef" />
+    <QuickScore ref="quickScoreRef" @select="setScore" />
   </div>
 </template>
 <script setup lang="ts">
@@ -48,16 +56,18 @@ import type { JudgeAw, UserScoreDetail } from '@yuri/types';
 import { computed, unref, useTemplateRef } from 'vue';
 
 import { questionBankApi } from '@yuri/common';
-import { Button, Card, Tag } from '@yuri/components';
+import { Button, Card, SplitButton, Tag } from '@yuri/components';
 
 import Preview from '#/views/questionManager/questionBank/components/preview.vue';
 
-const props = defineProps<{
-  detail: UserScoreDetail;
-}>();
+import QuickScore from './quickScore.vue';
 
+const emits = defineEmits(['setScore']);
+const detail = defineModel<UserScoreDetail>('detail', { required: true });
+
+const quickScoreRef = useTemplateRef('quickScoreRef');
 const previewRef = useTemplateRef('previewRef');
-const questionAnswer = computed(() => props.detail.questionAnswer as JudgeAw);
+const questionAnswer = computed(() => detail.value.questionAnswer as JudgeAw);
 
 function severity(a: boolean) {
   if (userAnswer.value.answer === questionAnswer.value.answer) {
@@ -67,18 +77,24 @@ function severity(a: boolean) {
     return 'secondary';
   } else {
     if (a === questionAnswer.value.answer) {
-      return 'success';
+      return userAnswer.value.answer ? 'success' : 'danger';
     }
     return a === userAnswer.value.answer ? 'danger' : 'secondary';
   }
 }
 const userAnswer = computed(
-  () => props.detail.userAnswer.questionAnswer as unknown as JudgeAw,
+  () => detail.value.userAnswer.questionAnswer as unknown as JudgeAw,
 );
 
 function show(id: string) {
   questionBankApi.get(id).then((res) => {
     unref(previewRef)?.open(res);
   });
+}
+
+function setScore(score: number) {
+  detail.value.score = score;
+  detail.value.hasSetScore = true;
+  emits('setScore', score);
 }
 </script>

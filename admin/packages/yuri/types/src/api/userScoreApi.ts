@@ -6,10 +6,11 @@ import { BaseEntity } from './base';
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-02-24 19:01:29
- * @LastEditTime: 2025-02-26 19:56:31
+ * @LastEditTime: 2025-03-03 14:46:43
  * @Description:
  */
 export interface UserScoreDetail {
+  hasSetScore: boolean;
   questionAnswer: unknown;
   questionId: string;
   score: number;
