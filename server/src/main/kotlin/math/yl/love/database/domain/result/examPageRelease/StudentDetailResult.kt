@@ -28,4 +28,8 @@ data class StudentDetailResult (
     @Schema(description = "用户发布id")
     @TableField("relation_id")
     val relationId: Long,
+
+    @TableField("has_grading")
+    @Schema(description = "是否已经阅卷")
+    val hasGrading: Boolean
 )

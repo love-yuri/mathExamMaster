@@ -18,6 +18,15 @@ class UserScoreService(
 ): BaseService<UserScore, UserScoreMapper>() {
     override val entityClass: KClass<UserScore> get() = UserScore::class
 
+    @Transactional(rollbackFor = [Exception::class])
+    override fun updateById(entity: UserScore?): Boolean {
+        if (entity?.id == null) {
+            return false
+        }
+        entity.score = entity.detail?.sumOf { it.score } ?: 0
+        return super.updateById(entity)
+    }
+
     /**
      * 根据relation id查询用户的答题信息
      */
@@ -56,6 +65,7 @@ class UserScoreService(
             userId = relation.userId,
             score = 0,
             totalScore = questions.sumOf { it.questionScore },
+            hasGrading = false,
             detail = questions.map {
                 val detail = UserScoreDetail(
                     score = 0,
@@ -68,7 +78,10 @@ class UserScoreService(
                 ).apply { setUserScore(this) }
                 return@map detail
             }
-        ).apply { save(this) }
+        ).apply {
+            this.score = this.detail?.sumOf { it.score } ?: 0
+            save(this)
+        }
     }
 
     /**

@@ -34,16 +34,19 @@ interface ExamPageReleaseMapper: BaseMapper<ExamPageRelease> {
 
 
     @Select("""
-            select
-            user_id,
-            epur.id as relation_id,
+        SELECT
+            user.id AS user_id,
+            epur.id AS relation_id,
             nick_name,
-            user_name
-        from exam_page_release epr
-        left join exam_page_user_relation epur
-        on epr.id = epur.page_release_id
-        left join user on user.id = epur.user_id
-             where epr.id = #{id}
+            user_name,
+            COALESCE(user_score.has_grading, FALSE) AS has_grading
+        FROM exam_page_release epr
+                 LEFT JOIN exam_page_user_relation epur
+                           ON epr.id = epur.page_release_id
+                 LEFT JOIN user ON user.id = epur.user_id
+                 LEFT JOIN user_score ON user.id = user_score.user_id
+            AND user_score.page_release_id = #{id}
+        WHERE epr.id = #{id};
     """)
     fun studentDetail(id: Long): List<StudentDetailResult>
 }

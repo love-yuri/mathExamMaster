@@ -4,7 +4,7 @@ import type { ExamPageUserRelationStatusType } from './examPageUserRelationApi';
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2025-02-24 15:30:52
+ * @LastEditTime: 2025-03-05 14:49:56
  * @Description:
  */
 import { BaseEntity } from './base';
@@ -98,6 +98,7 @@ export class ExamPageReleaseParam extends BaseEntity {
 }
 
 export interface StudentDetailResult {
+  hasGrading: boolean;
   nickname: string;
   relationId: string;
   userId: string;

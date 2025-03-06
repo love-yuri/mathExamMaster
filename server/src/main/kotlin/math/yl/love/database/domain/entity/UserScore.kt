@@ -57,7 +57,7 @@ data class UserScore (
 
     @Schema(description = "用户得分")
     @TableField(value = "score")
-    val score: Int = 0,
+    var score: Int = 0,
 
     @Schema(description = "试卷总分")
     @TableField(value = "total_score")
@@ -66,5 +66,9 @@ data class UserScore (
     @Schema(description = "用户得分详情")
     @TableField(value = "detail", typeHandler = ListUserScoreDetailTypeHandler::class)
     val detail: List<UserScoreDetail>? = null,
+
+    @Schema(description = "是否已经阅卷完毕")
+    @TableField(value = "has_grading")
+    val hasGrading: Boolean
 
 ) : BaseEntity

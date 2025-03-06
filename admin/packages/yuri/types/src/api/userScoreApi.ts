@@ -6,7 +6,7 @@ import { BaseEntity } from './base';
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-02-24 19:01:29
- * @LastEditTime: 2025-03-03 14:46:43
+ * @LastEditTime: 2025-03-03 16:59:16
  * @Description:
  */
 export interface UserScoreDetail {
@@ -21,6 +21,7 @@ export interface UserScoreDetail {
 
 export class UserScore extends BaseEntity {
   detail!: UserScoreDetail[];
+  hasGrading!: boolean;
   pageReleaseId!: string;
   score!: number;
   totalScore!: number;
@@ -37,5 +38,6 @@ export class UserScore extends BaseEntity {
     this.score = 0;
     this.totalScore = 0;
     this.detail = [];
+    this.hasGrading = false;
   }
 }

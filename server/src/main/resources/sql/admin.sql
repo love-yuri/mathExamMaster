@@ -177,6 +177,7 @@ CREATE TABLE `user_score` (
    `page_release_id` bigint NOT NULL COMMENT '试卷发布id',
    `user_id` bigint NOT NULL COMMENT '用户id',
    `score` int NOT NULL DEFAULT 0 COMMENT '用户得分',
+   `has_grading` boolean NOT NULL DEFAULT false COMMENT '是否已经阅卷完毕',
    `total_score` int NOT NULL DEFAULT 100 COMMENT '试卷总分',
    `detail` JSON NULL DEFAULT NULL COMMENT '用户得分详情',
    `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
