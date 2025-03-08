@@ -244,5 +244,6 @@
   // 快速提示
   "editor.quickSuggestions": {
     "strings": "on"
-  }
+  },
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true
 }
