@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 23:35:05
- * @LastEditTime: 2025-02-20 19:33:38
+ * @LastEditTime: 2025-03-07 09:32:33
  * @Description: 系统路由
  */
 import type { RouteRecordRaw } from 'vue-router';
@@ -91,6 +91,18 @@ const routes: RouteRecordRaw[] = [
           hideInMenu: true,
           icon: 'lucide:copyright',
           title: '阅卷',
+        },
+      },
+      {
+        name: 'examPageReleaseScoreDetail',
+        path: String.raw`/exam/page/release/page/score/detail/:id(\d+)`,
+        component: () =>
+          import('#/views/examPageManager/release/scoreDetail.vue'),
+        meta: {
+          affixTab: false,
+          hideInMenu: true,
+          icon: 'lucide:copyright',
+          title: '成绩详情',
         },
       },
     ],

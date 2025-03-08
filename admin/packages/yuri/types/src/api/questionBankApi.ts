@@ -3,7 +3,7 @@ import type { KnowledgePoint } from './knowledgePointApi';
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2025-02-24 19:35:45
+ * @LastEditTime: 2025-03-08 23:39:57
  * @Description: 题目
  */
 import { BaseEntity } from './base';
@@ -26,6 +26,15 @@ export const QuestionTypeMap = {
   [QuestionTypeEnum.SINGLE_CHOICE]: '单选题',
   [QuestionTypeEnum.SUBJECTIVE]: '主观题',
 };
+
+export const QuestionTypeColorMap = {
+  [QuestionTypeEnum.GAP_FILLING]: 'primary',
+  [QuestionTypeEnum.JUDGE]: 'secondary',
+  [QuestionTypeEnum.MULTIPLE_CHOICE]: 'success',
+  [QuestionTypeEnum.SINGLE_CHOICE]: 'info',
+  [QuestionTypeEnum.SUBJECTIVE]: 'warn',
+};
+
 export abstract class QuestionAnswer extends BaseEntity {
   /**
    * 答案

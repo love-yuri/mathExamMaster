@@ -11,6 +11,7 @@ import math.yl.love.database.domain.result.questionBank.FullQuestionBank
 import math.yl.love.database.mapper.QuestionBankMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.io.Serializable
 import kotlin.reflect.KClass
 
 @Service
@@ -86,4 +87,12 @@ class QuestionBankService(
         return FullQuestionBank(questionBank, knowledgePointService.findByIds(knowledgePointIds))
     }
 
+    override fun getById(id: Serializable?): QuestionBank {
+
+        getById(1)
+
+        return super.getById(id)
+
+
+    }
 }

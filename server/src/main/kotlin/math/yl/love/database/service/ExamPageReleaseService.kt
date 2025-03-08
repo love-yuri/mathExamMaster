@@ -198,7 +198,7 @@ class ExamPageReleaseService(
         if (examInfo.status == ExamPageStatusEnum.DOING) {
             val diff = Duration.between(examInfo.examStartTime, LocalDateTime.now())
             if (diff.toSeconds() > examInfo.limitedTime) {
-                userRelationService.finish(examInfo.relationId)
+                userRelationService.setStatus(examInfo.relationId,  ExamPageStatusEnum.FINISHED)
                 return false
             }
             return true

@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-02-24 18:10:30
- * @LastEditTime: 2025-03-05 16:28:59
+ * @LastEditTime: 2025-03-08 20:39:13
  * @Description: 
 -->
 <template>
@@ -45,7 +45,7 @@
 
         <!-- 操作按钮 -->
         <Button
-          v-if="!currentUserScore.hasGrading"
+          v-if="!currentStudent?.hasGrading"
           label="结束阅卷"
           class="p-button-danger px-4 py-2"
           @click="finishGrading"
@@ -79,17 +79,23 @@
         </div>
       </div>
     </div>
-    <DefaultConfirmDialog group="finishGrading" />
+    <ConfirmDialog group="showScoreDetail" />
+    <DefaultConfirmDialog group="finishGrading" cancle-label="结束" />
   </div>
 </template>
 <script setup lang="ts">
 import type { StudentDetailResult } from '@yuri/types';
 
 import { computed, ref, watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import { examPageReleaseApi, message, userScoreApi } from '@yuri/common';
-import { Button, DefaultConfirmDialog, OverlayBadge } from '@yuri/components';
+import {
+  Button,
+  ConfirmDialog,
+  DefaultConfirmDialog,
+  OverlayBadge,
+} from '@yuri/components';
 import { QuestionTypeEnum, UserScore } from '@yuri/types';
 import { useConfirm } from 'primevue/useconfirm';
 
@@ -100,6 +106,7 @@ import ShowSingleChoice from './showQuestion/singleChoice.vue';
 import ShowSubjectAnswer from './showQuestion/subjective.vue';
 
 const route = useRoute();
+const router = useRouter();
 const currentUserScore = ref(new UserScore());
 const currentStudent = ref<StudentDetailResult>();
 const releaseId = computed(() => route.params.id as string);
@@ -136,7 +143,42 @@ function getComponent(type: QuestionTypeEnum) {
   }
 }
 
+/**
+ * 检查是否已经阅卷结束，
+ * 通知可以查看分数详情
+ */
+function checkShowScoreDetail() {
+  if (students.value.some((stu) => !stu.hasGrading)) {
+    return;
+  }
+  confirm.require({
+    accept: () => {
+      router.push({
+        name: 'examPageReleaseScoreDetail',
+        params: {
+          id: releaseId.value,
+        },
+      });
+    },
+    acceptProps: {
+      label: '前往',
+    },
+    group: 'showScoreDetail',
+    header: '阅卷结束',
+    message: '是否立即查看得分详情？',
+    rejectProps: {
+      label: '取消',
+      outlined: true,
+      severity: 'secondary',
+    },
+  });
+}
+
 function update() {
+  if (currentStudent.value?.hasGrading) {
+    message.default.error('阅卷已结束!!!');
+    return;
+  }
   userScoreApi.update(currentUserScore.value).then((res) => {
     if (res) {
       message.default.success('更新成功');
@@ -148,16 +190,22 @@ function update() {
  * 结束评分
  */
 const confirm = useConfirm();
+
+/**
+ * 结束阅卷
+ */
 function finishGrading() {
   confirm.require({
     accept: () => {
-      currentUserScore.value.hasGrading = true;
-      userScoreApi.update(currentUserScore.value).then((res) => {
-        if (res) {
-          message.default.success('结束阅卷成功');
-          currentStudent.value!!.hasGrading = true;
-        }
-      });
+      userScoreApi
+        .reviewingCompleted(currentStudent.value!!.relationId)
+        .then((res) => {
+          if (res) {
+            message.default.success('结束阅卷');
+            currentStudent.value!!.hasGrading = true;
+            checkShowScoreDetail();
+          }
+        });
     },
     group: 'finishGrading',
     message: '是否结束阅卷?',

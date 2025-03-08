@@ -39,7 +39,7 @@ interface ExamPageReleaseMapper: BaseMapper<ExamPageRelease> {
             epur.id AS relation_id,
             nick_name,
             user_name,
-            COALESCE(user_score.has_grading, FALSE) AS has_grading
+            COALESCE(epur.status = 4, FALSE) AS has_grading
         FROM exam_page_release epr
                  LEFT JOIN exam_page_user_relation epur
                            ON epr.id = epur.page_release_id

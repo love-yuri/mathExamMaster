@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-12-13 19:32:27
- * @LastEditTime: 2025-02-14 15:50:06
+ * @LastEditTime: 2025-03-08 23:34:33
  * @Description: 用户选择组件
 -->
 <template>
@@ -46,12 +46,13 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, ref } from 'vue';
-import { Button, Card, Column, DataTable } from '@yuri/components';
-
-import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import { userApi } from '@yuri/common';
 import type { UserResult } from '@yuri/types';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+
+import { inject, onMounted, ref } from 'vue';
+
+import { userApi } from '@yuri/common';
+import { Button, Card, Column, DataTable } from '@yuri/components';
 
 const dialogRef = inject<{ value: DynamicDialogInstance }>('dialogRef');
 const users = ref<UserResult[]>([]);
@@ -62,17 +63,17 @@ async function loadData() {
     users.value = res;
     if (dialogRef?.value.data.teacherId !== '') {
       users.value.forEach((user) => {
-        if (user.id == dialogRef?.value.data.teacherId) {
+        if (user.id === dialogRef?.value.data.teacherId) {
           selectUsers.value.set(user.id!, user);
         }
-      })
+      });
     }
   });
 }
 // loadData();
 
 async function add(v: UserResult) {
-  if (selectUsers.value.size >= 1) {
+  if (selectUsers.value.size > 0) {
     selectUsers.value.clear();
   } else {
     selectUsers.value.set(v.id!, v);

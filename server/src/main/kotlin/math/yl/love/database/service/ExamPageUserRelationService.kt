@@ -81,12 +81,12 @@ class ExamPageUserRelationService(
     }
 
     @Transactional(rollbackFor = [Exception::class])
-    fun finish(relationId: Long) {
+    fun setStatus(relationId: Long, status:  ExamPageStatusEnum): Boolean {
         val updateWrapper = KtUpdateWrapper(ExamPageUserRelation::class.java)
             .eq(ExamPageUserRelation::id, relationId)
-            .set(ExamPageUserRelation::status, ExamPageStatusEnum.FINISHED)
+            .set(ExamPageUserRelation::status, status)
 
-        baseMapper.update(updateWrapper)
+        return baseMapper.update(updateWrapper) > 0
     }
 
     /**

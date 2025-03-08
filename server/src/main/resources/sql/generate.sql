@@ -59,10 +59,14 @@ SELECT
     epur.id AS relation_id,
     nick_name,
     user_name,
-    COALESCE(user_score.has_grading, FALSE) AS has_grading
+    COALESCE(epur.status = 4, FALSE) AS has_grading
 FROM exam_page_release epr
          LEFT JOIN exam_page_user_relation epur ON epr.id = epur.page_release_id
          LEFT JOIN user ON user.id = epur.user_id
          LEFT JOIN user_score ON user.id = user_score.user_id
     AND user_score.page_release_id = 1894193406891311106
 WHERE epr.id = 1894193406891311106;
+
+select * from exam_page_user_relation
+
+         where page_release_id = 1894193406891311106;

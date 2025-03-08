@@ -23,4 +23,11 @@ class UserScoreController: BaseController<UserScore, UserScoreMapper, UserScoreS
     @Operation(summary = "获取学生本次的答题信息")
     fun detail(@RequestBody relationId: Long) = R.success(baseService.detail(relationId))
 
+    @PostMapping("reviewing/completed")
+    @Operation(summary = "阅卷结束")
+    fun studentDetail(@RequestBody id: Long) = R.success(baseService.reviewingCompleted(id))
+
+    @PostMapping("score/detail")
+    @Operation(summary = "获取该发布的得分详情")
+    fun scoreDetail(@RequestBody id: Long) = R.success(baseService.scoreDetail(id))
 }

@@ -67,6 +67,19 @@
                     },
                   },
                   {
+                    visible: flag === 1,
+                    label: '得分详情',
+                    icon: 'pi pi-chart-bar',
+                    command: () => {
+                      router.push({
+                        name: 'examPageReleaseScoreDetail',
+                        params: {
+                          id: slotProps.data.id,
+                        },
+                      });
+                    },
+                  },
+                  {
                     visible: flag === 3,
                     label: '编辑',
                     icon: 'pi pi-pencil',

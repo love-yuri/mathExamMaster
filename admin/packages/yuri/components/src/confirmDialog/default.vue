@@ -17,7 +17,7 @@
           <Button
             class="w-32"
             icon="pi pi-trash"
-            label="删除"
+            :label="cancleLabel ? cancleLabel : '删除'"
             severity="danger"
             @click="acceptCallback"
           />
@@ -30,6 +30,7 @@
 import { Button, ConfirmDialog } from '@yuri/components';
 
 defineProps<{
+  cancleLabel?: string;
   group: string;
 }>();
 </script>

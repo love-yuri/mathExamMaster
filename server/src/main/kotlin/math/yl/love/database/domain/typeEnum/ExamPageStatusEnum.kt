@@ -12,7 +12,13 @@ enum class ExamPageStatusEnum(
     DOING(1),
 
     // 已结束
-    FINISHED(2);
+    FINISHED(2),
+
+    // 正在阅卷
+    REVIEWING(3),
+
+    // 阅卷结束
+    REVIEW_COMPLETED(4);
 
     override fun getValue(): Int {
         return type

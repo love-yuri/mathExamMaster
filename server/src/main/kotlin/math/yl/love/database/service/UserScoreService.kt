@@ -1,10 +1,15 @@
 package math.yl.love.database.service
 
+import io.swagger.v3.oas.annotations.media.Schema
 import math.yl.love.common.mybatis.BaseService
+import math.yl.love.configuration.exception.BizException
 import math.yl.love.database.domain.entity.UserScore
 import math.yl.love.database.domain.result.examPageUserRelation.UserAnswer
 import math.yl.love.database.domain.result.questionBank.*
+import math.yl.love.database.domain.result.userScore.ScoreDetailResult
 import math.yl.love.database.domain.result.userScore.UserScoreDetail
+import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
+import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
 import math.yl.love.database.domain.typeEnum.QuestionTypeEnum.*
 import math.yl.love.database.mapper.UserScoreMapper
 import org.springframework.stereotype.Service
@@ -15,6 +20,7 @@ import kotlin.reflect.KClass
 @Transactional(readOnly = true)
 class UserScoreService(
     private val examPageUserRelationService: ExamPageUserRelationService,
+    private val examPageReleaseService: ExamPageReleaseService,
 ): BaseService<UserScore, UserScoreMapper>() {
     override val entityClass: KClass<UserScore> get() = UserScore::class
 
@@ -65,7 +71,6 @@ class UserScoreService(
             userId = relation.userId,
             score = 0,
             totalScore = questions.sumOf { it.questionScore },
-            hasGrading = false,
             detail = questions.map {
                 val detail = UserScoreDetail(
                     score = 0,
@@ -79,8 +84,12 @@ class UserScoreService(
                 return@map detail
             }
         ).apply {
+            // 保存记录
             this.score = this.detail?.sumOf { it.score } ?: 0
             save(this)
+
+            // 更新试卷状态
+            examPageUserRelationService.setStatus(id, ExamPageStatusEnum.REVIEWING)
         }
     }
 
@@ -136,4 +145,147 @@ class UserScoreService(
             }
         }
     }
+
+    /**
+     * 阅卷结束
+     * @param id relation id
+     */
+    @Transactional(rollbackFor = [Exception::class])
+    fun reviewingCompleted(id: Long): Boolean {
+        return examPageUserRelationService.setStatus(id, ExamPageStatusEnum.REVIEW_COMPLETED)
+    }
+
+    /**
+     * 获取结束考试后的得分详情
+     * @param id 发布id
+     */
+    fun scoreDetail(id: Long): ScoreDetailResult {
+        val studentDetails = examPageReleaseService.studentDetail(id)
+        if (studentDetails.isEmpty()) {
+            throw BizException("发布不存在")
+        }
+        studentDetails.firstOrNull { !it.hasGrading }?.let {
+            throw BizException("还有学生未阅卷")
+        }
+        val details = queryWrapper
+            .`in`(UserScore::userId, studentDetails.map { it.userId })
+            .list()
+
+        val scores = details.map { it.score }.sorted()
+
+        if (details.isEmpty()) {
+            throw BizException("学生得分详情为空!!!")
+        }
+
+        // 学生总数
+        val totalStudent = studentDetails.size
+        val totalScore = details[0].totalScore
+        var maxScore = 0
+        var minScore = totalScore
+        var averageScore = 0.0
+        val medianScore = when {
+            totalStudent == 0 -> 0.0
+            totalStudent % 2 == 1 -> scores[totalStudent / 2].toDouble()
+            else -> (scores[totalStudent / 2 - 1] + scores[totalStudent / 2]) / 2.0
+        }
+        var over90 = 0
+        var over80 = 0
+        var over70 = 0
+        var over60 = 0
+        var below60 = 0
+        details.forEach {
+            when {
+                it.score > 90 -> over90++
+                it.score > 80 -> over80++
+                it.score > 70 -> over70++
+                it.score > 60 -> over60++
+                else -> below60++
+            }
+            if (totalScore != it.totalScore) {
+                throw BizException("试卷总分不一致")
+            }
+            maxScore = maxScore.coerceAtLeast(it.score)
+            minScore = minScore.coerceAtMost(it.score)
+            averageScore += it.score.toDouble() / totalStudent
+        }
+
+        return ScoreDetailResult(
+            totalStudent = totalStudent,
+            totalScore = totalScore,
+            over60 = over60,
+            over70 = over70,
+            over80 = over80,
+            over90 = over90,
+            below60 = below60,
+            averageScore = averageScore,
+            medianScore = medianScore,
+            maxScore = maxScore,
+            minScore = minScore,
+            passRate = (over60 + over70 + over80 + over90) * 1.0 / totalStudent,
+            questionStatistics = getQuestionStatistics(details),
+        )
+    }
+
+    fun getQuestionStatistics(userScores: List<UserScore>): List<ScoreDetailResult.QuestionStatistic> {
+        data class Data(
+            var correctCount: Int,
+            var maxScore: Int,
+            var minScore: Int,
+            var score: Int,
+            var totalScore: Int,
+            val pageTotalScore: Int,
+            var type: QuestionTypeEnum
+        )
+        val questionStatsMap = mutableMapOf<Long, Data>()
+
+        // 遍历所有用户的答题详情
+        userScores.forEach { userScore ->
+            userScore.detail?.forEach { detail ->
+                val questionId = detail.questionId
+                val score = detail.score
+                val totalScore = detail.totalScore
+
+                val data = questionStatsMap.getOrPut(questionId) {
+                    Data(
+                        correctCount = 0,
+                        maxScore = Int.MIN_VALUE,
+                        minScore = Int.MAX_VALUE,
+                        totalScore = 0,
+                        score = 0,
+                        pageTotalScore = totalScore,
+                        type = detail.type
+                    )
+                }
+
+                // 计算正确人数（满分算正确）
+                if (score == totalScore) {
+                    data.correctCount += 1 // 正确人数 +1
+                }
+
+                // 更新最高分和最低分
+                data.maxScore = data.maxScore.coerceAtLeast(score) // 最高分
+                data.minScore = data.minScore.coerceAtMost(score)  // 最低分
+
+                // 计算总得分和总分
+                data.score += score      // 总得分
+                data.totalScore += totalScore // 总分
+            }
+        }
+
+        // 生成统计结果
+        var index = 0
+        return questionStatsMap.map { (questionId, data) ->
+            ScoreDetailResult.QuestionStatistic(
+                index = ++index,
+                questionId = questionId,
+                correctCount = data.correctCount,
+                maxScore = data.maxScore,
+                minScore = data.minScore,
+                type = data.type,
+                totalScore = data.pageTotalScore,
+                scoreRate = if (data.totalScore > 0) data.score.toDouble() / data.totalScore else 0.0
+            )
+        }
+    }
+
 }
