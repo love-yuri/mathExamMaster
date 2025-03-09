@@ -3,19 +3,19 @@ package math.yl.love.controller
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport
+import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import math.yl.love.common.base.R
 import math.yl.love.common.utils.JsonUtils.parseJson
 import math.yl.love.database.domain.entity.KnowledgePoint
+import math.yl.love.database.domain.params.examPageRelease.QuestionInfoParam
 import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
 import math.yl.love.database.mapper.KnowledgePointMapper
+import math.yl.love.database.service.ExamPageService
 import math.yl.love.database.service.QuestionBankService
 import math.yl.love.database.service.UserService
 import org.slf4j.LoggerFactory
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
@@ -24,7 +24,8 @@ import org.springframework.web.bind.annotation.RestController
 class TestController(
     private val userService: UserService,
     private val knowledgePointMapper: KnowledgePointMapper,
-    private val questionBankService: QuestionBankService
+    private val questionBankService: QuestionBankService,
+    private val examPageService: ExamPageService
 ) {
 
     private val log = LoggerFactory.getLogger(TestController::class.java)
@@ -49,4 +50,9 @@ class TestController(
     fun answerTest() {
         val list = questionBankService.list().filter { it.type == QuestionTypeEnum.SINGLE_CHOICE }
     }
+
+    @PostMapping("question/info")
+    @Operation(summary = "获取考试信息")
+    fun questionInfo(@RequestBody param: QuestionInfoParam) = R.success(examPageService.questionInfo(param))
+
 }
