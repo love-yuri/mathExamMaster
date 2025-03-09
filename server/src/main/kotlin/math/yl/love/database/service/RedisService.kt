@@ -1,17 +1,20 @@
 package math.yl.love.database.service
 
-import math.yl.love.common.constant.RedisConstant
-import math.yl.love.common.utils.JsonUtils.json
+import kotlinx.serialization.ExperimentalSerializationApi
 import math.yl.love.common.utils.JsonUtils.parseJson
 import math.yl.love.common.utils.JsonUtils.toJson
 import math.yl.love.configuration.config.SystemConfig
-import org.springframework.data.redis.core.StringRedisTemplate
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
+import kotlinx.serialization.protobuf.ProtoBuf
 import java.util.concurrent.TimeUnit
+import kotlinx.serialization.decodeFromByteArray
+import kotlinx.serialization.encodeToByteArray
+import math.yl.love.common.base.Log.log
 
 @Service
 class RedisService(
-    val stringRedisTemplate: StringRedisTemplate,
+    val redisTemplate: RedisTemplate<String, ByteArray>,
     val systemConfig: SystemConfig
 ) {
 
@@ -21,37 +24,48 @@ class RedisService(
      * @param value value
      * @param timeout 超时时间
      */
+    @OptIn(ExperimentalSerializationApi::class)
     final inline fun <reified T> set(
         key: String, // key
         value: T, // value
         timeout: Long? = systemConfig.redisDefaultTimeout
     ) {
+        val byteData = ProtoBuf.encodeToByteArray<T>(value)
         if (timeout == null) {
-            stringRedisTemplate.opsForValue().set(key, value.toJson())
+            redisTemplate.opsForValue().set(key, byteData)
         } else {
-            stringRedisTemplate.opsForValue().set(key, value.toJson(), timeout, TimeUnit.SECONDS)
+            redisTemplate.opsForValue().set(key, byteData, timeout, TimeUnit.SECONDS)
         }
     }
 
     /**
      * 获取缓存
      */
+    @OptIn(ExperimentalSerializationApi::class)
     final inline fun <reified T> get(key: String): T? {
-        return stringRedisTemplate.opsForValue().get(key)?.parseJson()
+        val byteData = redisTemplate.opsForValue().get(key)
+        return byteData?.let { ProtoBuf.decodeFromByteArray<T>(it) }
     }
 
     /**
-     * 获取缓存里的数据，如果不存在则调用函数重新获取
-     * @param f 获取数据的函数 返回许哟啊获取的数据
-     * @param timeout 过期时间，默认为null
+     * 获取缓存中的数据。如果数据不存在，则调用指定函数重新获取。
+     *
+     * @param key 缓存键
+     * @param fetch 数据获取的函数
+     * @param timeout 缓存过期时间，默认为 `null`
+     * @return 返回缓存数据
      */
-    final inline fun <reified T> getOrReSet(key: String, f: () -> T, timeout: Long? = systemConfig.redisDefaultTimeout): T {
-        val data = get<T>(key)
-        if (data != null) {
-            return data
+    final inline fun <reified T> getOrReSet(
+        key: String,
+        timeout: Long? = systemConfig.redisDefaultTimeout,
+        fetch: () -> T,
+    ): T {
+        // 尝试从缓存中获取数据
+        return get<T>(key) ?: run {
+            // 如果缓存中没有数据，则调用传入的获取函数并设置缓存
+            val value = fetch()
+            set(key, value, timeout)
+            value
         }
-        val value = f()
-        set(key, value, timeout)
-        return value
     }
 }
