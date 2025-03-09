@@ -137,7 +137,6 @@
             <version>1.2.23</version>
         </dependency>
 
-
         <!-- knife4j 文档 -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
@@ -158,6 +157,14 @@
             <artifactId>kotlin-test-junit5</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- protobuf 支持 -->
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-serialization-protobuf</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
