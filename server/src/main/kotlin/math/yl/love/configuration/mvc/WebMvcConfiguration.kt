@@ -38,6 +38,9 @@ open class WebMvcConfiguration: WebMvcConfigurationSupport() {
         .excludePathPatterns("/user/login")
         .excludePathPatterns("/user/logout")
 
+        // 放行所有测试接口
+        .excludePathPatterns("/test/**")
+
         // 放行Knife4j文档
         .excludePathPatterns("/doc.html")
         .excludePathPatterns("/swagger-resources/**")
