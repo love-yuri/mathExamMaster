@@ -85,9 +85,11 @@ class SystemFileService(
     }
 
     override fun getById(id: Serializable): SystemFile? {
-        return redisService.getOrReSet("${RedisConstant.SYSTEM_FILE_GET}:$id", {
+        return redisService.getOrReSet(
+            "${RedisConstant.SYSTEM_FILE_GET}:$id"
+        ) {
             super.getById(id)
-        })
+        }
     }
 
     /**

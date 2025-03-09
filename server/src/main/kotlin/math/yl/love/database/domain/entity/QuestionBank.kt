@@ -10,6 +10,7 @@ import math.yl.love.common.constant.DataBaseConstant
 import kotlinx.serialization.builtins.LongAsStringSerializer
 import math.yl.love.common.base.NoArg
 import math.yl.love.common.mybatis.typeHandler.QuestionAnswerTypeHandler
+import math.yl.love.configuration.config.JsonConfig
 import math.yl.love.database.domain.result.questionBank.QuestionAnswer
 import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
 import java.time.LocalDateTime
@@ -29,7 +30,7 @@ data class QuestionBank (
     @Schema(description = "是否被删除")
     val deleted: Boolean = false,
 
-    @Contextual
+    @Serializable(with = JsonConfig.LocalDateTimeSerializer::class)
     @Schema(description = "创建时间")
     @TableField(value = DataBaseConstant.CREATE_TIME, fill = FieldFill.INSERT)
     override val createTime: LocalDateTime? = null,
@@ -38,8 +39,8 @@ data class QuestionBank (
     @TableField(value = DataBaseConstant.CREATE_BY, fill = FieldFill.INSERT)
     override val createBy: String? = null,
 
-    @Contextual
     @Schema(description = "更新时间")
+    @Serializable(with = JsonConfig.LocalDateTimeSerializer::class)
     @TableField(value = DataBaseConstant.UPDATE_TIME, fill = FieldFill.INSERT_UPDATE)
     override val updateTime: LocalDateTime? = null,
 

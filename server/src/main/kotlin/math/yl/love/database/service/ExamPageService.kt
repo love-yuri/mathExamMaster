@@ -1,8 +1,10 @@
 package math.yl.love.database.service
 
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
+import math.yl.love.common.constant.RedisConstant
 import math.yl.love.common.mybatis.BasePage
 import math.yl.love.common.mybatis.BaseService
+import math.yl.love.configuration.config.SystemConfig
 import math.yl.love.configuration.exception.BizException
 import math.yl.love.database.domain.entity.*
 import math.yl.love.database.domain.params.examPage.ExamPageQuestion
@@ -13,6 +15,7 @@ import math.yl.love.database.domain.result.examPage.ExamPageResult
 import math.yl.love.database.domain.result.examPage.QuestionInfoResult
 import math.yl.love.database.domain.result.examPageUserRelation.UserAnswer
 import math.yl.love.database.domain.result.questionBank.*
+import math.yl.love.database.domain.result.user.UserInfo
 import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
 import math.yl.love.database.mapper.ExamPageMapper
 import org.springframework.stereotype.Service
@@ -26,7 +29,9 @@ class ExamPageService(
     private val examPageQuestionRelationService: ExamPageQuestionRelationService,
     private val examPageUserRelationService: ExamPageUserRelationService,
     private val questionBankService: QuestionBankService,
-    private val userService: UserService
+    private val userService: UserService,
+    private val redisService: RedisService,
+    private val systemConfig: SystemConfig,
 ): BaseService<ExamPage, ExamPageMapper>() {
 
     override val entityClass: KClass<ExamPage> get() = ExamPage::class
@@ -195,12 +200,21 @@ class ExamPageService(
         return relation.answer
     }
 
+    fun getAllQuestions(id: Long): List<QuestionBank> {
+        return redisService.getOrReSet(
+            "${RedisConstant.EXAM_PAGE_QUESTIONS}:${id}",
+            systemConfig.examPageQuestionsTimeout
+        ) {
+            baseMapper.questionInfo(id)
+        }
+    }
+
     /**
      * 获取问题信息
      * @param param 题目信息参数
      */
     fun questionInfo(param: QuestionInfoParam): List<QuestionInfoResult> {
-        val questions = baseMapper.questionInfo(param.examPageId)
+        val questions = getAllQuestions(param.examPageId)
         val relation = examPageUserRelationService.getById(param.relationId) ?: throw BizException("详情不存在")
         val answers = getUserAnswer(questions, relation).associateBy { it.questionId }
         var index = 0

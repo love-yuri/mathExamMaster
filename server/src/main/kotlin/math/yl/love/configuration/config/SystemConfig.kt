@@ -14,6 +14,12 @@ data class SystemConfig(
     val userInfoTimeout: Long = 60 * 60 * 6,
 
     /**
+     * 根据id获取试卷的题目内容过期时间
+     * 默认 6 小时
+     */
+    val examPageQuestionsTimeout: Long = 60 * 60 * 6,
+
+    /**
      * redis里默认信息的过期时间 单位s
      * 默认 6 小时
      */

@@ -15,6 +15,11 @@ object RedisConstant {
     const val USER_INFO = "${PREFIX}:user:info"
 
     /**
+     * 根据试卷id获取所有试卷试卷信息
+     */
+    const val EXAM_PAGE_QUESTIONS = "${PREFIX}:exam:page:questions"
+
+    /**
      * 根据id获取系统文件信息
      */
     const val SYSTEM_FILE_GET = "${PREFIX}:system:file:get"

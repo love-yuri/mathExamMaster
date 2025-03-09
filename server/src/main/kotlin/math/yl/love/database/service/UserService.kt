@@ -89,7 +89,10 @@ class UserService(
      */
     fun getUserInfo(): UserInfo {
         val username = StpUtil.getLoginId().toString()
-        return redisService.getOrReSet("${RedisConstant.USER_INFO}:${username}", {
+        return redisService.getOrReSet(
+            "${RedisConstant.USER_INFO}:${username}",
+            systemConfig.userInfoTimeout
+        ) {
             // 理论上不可能不存在
             val user = getByUsername(username) ?: throw RuntimeException("用户不存在!!")
             UserInfo(
@@ -98,7 +101,7 @@ class UserService(
                 nickname = user.nickname,
                 homePath = "",
             )
-        }, systemConfig.userInfoTimeout)
+        }
     }
 
     /**
