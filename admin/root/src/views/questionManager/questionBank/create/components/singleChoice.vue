@@ -140,9 +140,12 @@ function create() {
     }),
     !isUpdate.value,
     '题目',
-    () => {
+    (res) => {
       if (isUpdate.value) {
         emits('update');
+      }
+      if (res && !isUpdate.value) {
+        cleanQuestion();
       }
     },
   );

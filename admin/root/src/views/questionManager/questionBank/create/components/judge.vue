@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 20:59:15
- * @LastEditTime: 2025-02-22 19:15:44
+ * @LastEditTime: 2025-03-10 19:54:09
  * @Description: 单选题
 -->
 <template>
@@ -116,9 +116,12 @@ function create() {
     }),
     !isUpdate.value,
     '题目',
-    () => {
+    (res) => {
       if (isUpdate.value) {
         emits('update');
+      }
+      if (res && !isUpdate.value) {
+        cleanQuestion();
       }
     },
   );
