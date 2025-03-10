@@ -16,7 +16,7 @@
       <Editor
         v-model="content"
         :default-config="editorConfig"
-        style="min-height: 410px"
+        style="height: 410px; min-height: 410px"
         @custom-paste="customPaste"
         @on-created="handleCreated"
       />
@@ -53,12 +53,13 @@ import '@wangeditor-next/editor/dist/css/style.css'; // 引入 css
 const props = defineProps<WangEditorProps>();
 const emits = defineEmits(['change']);
 
-const content = defineModel<string>('content');
+const content = defineModel<string>('content', { required: true });
 const mathModalRef = ref();
 
 type InsertFnType = (url: string, alt: string, href: string) => void;
 const editorRef = shallowRef();
 const editorConfig: Partial<IEditorConfig> = {
+  autoFocus: true,
   hoverbarKeys: {
     'yuri-math': {
       menuKeys: ['EditMathMenu', 'RemoveMathMenu'],
