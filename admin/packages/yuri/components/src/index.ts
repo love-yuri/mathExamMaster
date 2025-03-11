@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-02 19:23:36
- * @LastEditTime: 2025-02-12 19:38:10
+ * @LastEditTime: 2025-03-11 16:25:34
  * @Description: 通用组件导出
  */
 
@@ -12,6 +12,7 @@ export { default as TeacherSelect } from './teacherSelect/index.vue';
 export { default as UserSelect } from './userSelect/index.vue';
 export { default as WangEditor } from './wangEditor/index.vue';
 export { default as PreviewEditor } from './wangEditor/previewEditor.vue';
+export * from './wangEditor/templates';
 export { default as Button } from 'primevue/button';
 export { default as Calendar } from 'primevue/calendar';
 export { default as Card } from 'primevue/card';

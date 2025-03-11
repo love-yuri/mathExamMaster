@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-02-27 11:55:53
- * @LastEditTime: 2025-02-27 14:36:15
+ * @LastEditTime: 2025-03-11 16:28:31
  * @Description:
  */
 import { createApp, watchEffect } from 'vue';
@@ -16,8 +16,7 @@ import '@vben/styles/ele';
 
 import Aura from '@primevue/themes/aura';
 import { useTitle } from '@vueuse/core';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+import { initBootModules } from '@yuri/components';
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
 import DialogService from 'primevue/dialogservice';
@@ -39,6 +38,9 @@ async function bootstrap(namespace: string) {
   //   zIndex: 2000,
   // });
   const app = createApp(App);
+
+  // 注册wangeditor组件
+  initBootModules();
 
   // 注册Vben提供的v-loading和v-spinning指令
   registerLoadingDirective(app, {

@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2025-02-28 15:13:33
+ * @LastEditTime: 2025-03-11 16:24:01
  * @Description: 封装富文本编辑器
 -->
 <template>
@@ -45,9 +45,6 @@ import { systemApi, systemFileApi } from '@yuri/common';
 import MathModal from '../math/mathModal.vue';
 import ToolbarKeys from './toolbarKeys.json';
 
-import './templates';
-
-// import Mathjax from 'mathjax';
 import '@wangeditor-next/editor/dist/css/style.css'; // 引入 css
 
 const props = defineProps<WangEditorProps>();

@@ -1,21 +1,19 @@
-import {
-  Boot,
-  DomEditor,
-  type IDomEditor,
-  type IModuleConf,
-} from '@wangeditor-next/editor';
-import { yuriMathConf } from './yuriMath';
-import { InsertMathMenuConf } from './insertMathMenu';
+import type { IDomEditor, IModuleConf } from '@wangeditor-next/editor';
+
+import { Boot, DomEditor } from '@wangeditor-next/editor';
+
 import { EditMathMenuConf } from './editMathMenu';
+import { InsertMathMenuConf } from './insertMathMenu';
 import { RemoveMathMenuConf } from './removeButton';
+import { yuriMathConf } from './yuriMath';
 
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-22 20:16:25
- * @LastEditTime: 2024-10-23 19:31:41
+ * @LastEditTime: 2025-03-11 16:29:28
  * @Description: 注册，导入，到处 yuri 组件
  */
-export function withYuri<T extends IDomEditor>(editor: T) {
+function withYuri<T extends IDomEditor>(editor: T) {
   const { isInline, isVoid } = editor;
   const newEditor = editor;
 
@@ -36,12 +34,18 @@ export function withYuri<T extends IDomEditor>(editor: T) {
   return newEditor; // 返回扩展后的编辑器
 }
 
-const BootModules: Partial<IModuleConf> = {
-  // TS 语法
-  editorPlugin: withYuri,
-  elemsToHtml: [yuriMathConf.elemToHtmlConf],
-  menus: [InsertMathMenuConf, EditMathMenuConf, RemoveMathMenuConf],
-  parseElemsHtml: [yuriMathConf.parseHtmlConf],
-  renderElems: [yuriMathConf.renderConf],
-};
-Boot.registerModule(BootModules);
+/**
+ * 注册wangeditor菜单
+ * 全局只能注册一次
+ */
+export function initBootModules() {
+  const BootModules: Partial<IModuleConf> = {
+    // TS 语法
+    editorPlugin: withYuri,
+    elemsToHtml: [yuriMathConf.elemToHtmlConf],
+    menus: [InsertMathMenuConf, EditMathMenuConf, RemoveMathMenuConf],
+    parseElemsHtml: [yuriMathConf.parseHtmlConf],
+    renderElems: [yuriMathConf.renderConf],
+  };
+  Boot.registerModule(BootModules);
+}
