@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2025-03-11 16:24:01
+ * @LastEditTime: 2025-03-11 19:11:28
  * @Description: 封装富文本编辑器
 -->
 <template>
@@ -50,7 +50,7 @@ import '@wangeditor-next/editor/dist/css/style.css'; // 引入 css
 const props = defineProps<WangEditorProps>();
 const emits = defineEmits(['change']);
 
-const content = defineModel<string>('content', { required: true });
+const content = defineModel<string | undefined>('content', { required: true });
 const mathModalRef = ref();
 
 type InsertFnType = (url: string, alt: string, href: string) => void;

@@ -41,6 +41,13 @@
         @click="cleanQuestion"
       />
       <Button
+        class="mr-2"
+        icon="pi pi-pen-to-square"
+        label="添加描述"
+        severity="success"
+        @click="showDescription = true"
+      />
+      <Button
         v-if="isUpdate"
         class="mr-2"
         icon="pi pi-spin pi-spinner"
@@ -76,6 +83,10 @@
         @click="removeKey(index)"
       />
     </div>
+    <SetDescription
+      v-model:show="showDescription"
+      v-model:content="question.description"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -99,8 +110,11 @@ import {
 } from '@yuri/components';
 import { KnowledgePoint, MultipleChoiceAnswer } from '@yuri/types';
 
+import SetDescription from './setDescription.vue';
+
 const emits = defineEmits(['update', 'cancel']);
 
+const showDescription = ref(false);
 const isUpdate = ref(false);
 const question = ref(new MultipleChoiceAnswer());
 

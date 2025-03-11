@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 20:59:15
- * @LastEditTime: 2025-03-10 19:54:09
+ * @LastEditTime: 2025-03-11 19:17:05
  * @Description: 单选题
 -->
 <template>
@@ -51,6 +51,13 @@
         @click="cleanQuestion"
       />
       <Button
+        class="mr-2"
+        icon="pi pi-pen-to-square"
+        label="添加描述"
+        severity="success"
+        @click="showDescription = true"
+      />
+      <Button
         v-if="isUpdate"
         class="mr-2"
         icon="pi pi-spin pi-spinner"
@@ -59,6 +66,10 @@
         @click="$emit('cancel')"
       />
     </div>
+    <SetDescription
+      v-model:show="showDescription"
+      v-model:content="question.description"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -80,8 +91,11 @@ import {
 } from '@yuri/components';
 import { JudgeAnswer, KnowledgePoint } from '@yuri/types';
 
+import SetDescription from './setDescription.vue';
+
 const emits = defineEmits(['cancel', 'update']);
 
+const showDescription = ref(false);
 const isUpdate = ref(false);
 const question = ref(new JudgeAnswer());
 

@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 21:02:28
- * @LastEditTime: 2025-03-10 20:05:32
+ * @LastEditTime: 2025-03-11 19:16:57
  * @Description: 填空题
 -->
 <template>
@@ -47,6 +47,13 @@
         @click="cleanQuestion"
       />
       <Button
+        class="mr-2"
+        icon="pi pi-pen-to-square"
+        label="添加描述"
+        severity="success"
+        @click="showDescription = true"
+      />
+      <Button
         v-if="isUpdate"
         class="mr-2"
         icon="pi pi-spin pi-spinner"
@@ -77,6 +84,10 @@
         </div>
       </div>
     </div>
+    <SetDescription
+      v-model:show="showDescription"
+      v-model:content="question.description"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -99,8 +110,11 @@ import {
 } from '@yuri/components';
 import { GapFillingAnswer, KnowledgePoint } from '@yuri/types';
 
+import SetDescription from './setDescription.vue';
+
 const emits = defineEmits(['cancel', 'update']);
 
+const showDescription = ref(false);
 const isUpdate = ref(false);
 const question = ref(new GapFillingAnswer());
 

@@ -42,10 +42,10 @@
       />
       <Button
         class="mr-2"
-        icon="pi pi-sync"
+        icon="pi pi-pen-to-square"
         label="添加描述"
-        severity="danger"
-        @click="addDescription"
+        severity="success"
+        @click="showDescription = true"
       />
       <Button
         v-if="isUpdate"
@@ -199,13 +199,6 @@ function openAsUpdate(v: SingleChoiceAnswer, k: KnowledgePoint[]) {
   isUpdate.value = true;
   question.value.copy(v);
   selectedKnowledgePoints.value = k;
-}
-
-/**
- * 添加描述信息
- */
-function addDescription() {
-  showDescription.value = true;
 }
 
 defineExpose({ openAsUpdate });

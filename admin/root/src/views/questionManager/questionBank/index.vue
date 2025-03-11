@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 19:49:21
- * @LastEditTime: 2025-03-11 11:28:35
+ * @LastEditTime: 2025-03-11 18:46:51
  * @Description: 题库管理
 -->
 
@@ -37,7 +37,7 @@
             <template #body="slotProps: { data: QuestionBankType }">
               <EllipsisText :max-width="300">
                 {{
-                  extractPlainTextFromHTML(slotProps.data.content.slice(0, 30))
+                  extractPlainTextFromHTML(slotProps.data.content).slice(0, 30)
                 }}
               </EllipsisText>
             </template>

@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 21:03:18
- * @LastEditTime: 2025-03-10 20:05:44
+ * @LastEditTime: 2025-03-11 19:17:36
  * @Description: 主观题
 -->
 <template>
@@ -39,12 +39,23 @@
       @click="cleanQuestion"
     />
     <Button
+      class="mr-2"
+      icon="pi pi-pen-to-square"
+      label="添加描述"
+      severity="success"
+      @click="showDescription = true"
+    />
+    <Button
       v-if="isUpdate"
       class="mr-2"
       icon="pi pi-spin pi-spinner"
       label="取消修改"
       severity="secondary"
       @click="$emit('cancel')"
+    />
+    <SetDescription
+      v-model:show="showDescription"
+      v-model:content="question.description"
     />
   </div>
 </template>
@@ -61,8 +72,11 @@ import {
 import { Button, MultiSelect, Rating, WangEditor } from '@yuri/components';
 import { KnowledgePoint, SubjectiveAnswer } from '@yuri/types';
 
+import SetDescription from './setDescription.vue';
+
 const emits = defineEmits(['cancel', 'update']);
 
+const showDescription = ref(false);
 const isUpdate = ref(false);
 const question = ref(new SubjectiveAnswer());
 
