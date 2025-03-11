@@ -41,6 +41,13 @@
         @click="cleanQuestion"
       />
       <Button
+        class="mr-2"
+        icon="pi pi-sync"
+        label="添加描述"
+        severity="danger"
+        @click="addDescription"
+      />
+      <Button
         v-if="isUpdate"
         class="mr-2"
         icon="pi pi-spin pi-spinner"
@@ -76,6 +83,10 @@
         @click="removeKey(index)"
       />
     </div>
+    <SetDescription
+      v-model:show="showDescription"
+      v-model:content="question.description"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -100,8 +111,11 @@ import {
 } from '@yuri/components';
 import { SingleChoiceAnswer } from '@yuri/types';
 
+import SetDescription from './setDescription.vue';
+
 const emits = defineEmits(['cancel', 'update']);
 
+const showDescription = ref(false);
 const isUpdate = ref(false);
 const question = ref(new SingleChoiceAnswer());
 
@@ -186,6 +200,14 @@ function openAsUpdate(v: SingleChoiceAnswer, k: KnowledgePoint[]) {
   question.value.copy(v);
   selectedKnowledgePoints.value = k;
 }
+
+/**
+ * 添加描述信息
+ */
+function addDescription() {
+  showDescription.value = true;
+}
+
 defineExpose({ openAsUpdate });
 
 /**

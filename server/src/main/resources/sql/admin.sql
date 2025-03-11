@@ -72,6 +72,7 @@ CREATE TABLE `question_bank` (
    `type` tinyint(1) NOT NULL comment '题目类型',
    `content` text NOT NULL comment '题目内容',
    `answer` json NOT NULL comment '答案',
+   `description` text NULL DEFAULT NULL comment '题目描述',
    `difficulty` tinyint(1) NOT NULL DEFAULT 5 comment '难度: 默认5,最高9',
    `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
    `create_time` datetime NOT NULL COMMENT '创建时间',

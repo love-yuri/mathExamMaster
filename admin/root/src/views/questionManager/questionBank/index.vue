@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 19:49:21
- * @LastEditTime: 2025-02-08 15:03:19
+ * @LastEditTime: 2025-03-11 11:28:35
  * @Description: 题库管理
 -->
 
@@ -160,10 +160,8 @@ const pageParam = ref<PageParam>({
  * 获取文本数据
  * @param htmlContent HTML内容
  */
-function extractPlainTextFromHTML(htmlContent: string) {
-  const tempDiv = document.createElement('div');
-  tempDiv.innerHTML = htmlContent;
-  return tempDiv.textContent || '';
+function extractPlainTextFromHTML(htmlContent: string): string {
+  return htmlContent.replaceAll('&nbsp;', ' ').replaceAll(/<[^>]+>/g, '');
 }
 
 /**

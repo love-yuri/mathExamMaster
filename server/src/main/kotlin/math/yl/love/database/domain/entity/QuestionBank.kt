@@ -60,6 +60,11 @@ data class QuestionBank (
     @TableField(value = "answer", typeHandler = QuestionAnswerTypeHandler::class)
     val answer: QuestionAnswer,
 
+
+    @Schema(description = "题目描述")
+    @TableField(value = "description")
+    val description: String? = null,
+
     @Schema(description = "难度: 默认1")
     @TableField(value = "difficulty")
     val difficulty: Int = 5,

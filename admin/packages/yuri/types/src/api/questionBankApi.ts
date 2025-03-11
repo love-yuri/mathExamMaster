@@ -3,7 +3,7 @@ import type { KnowledgePoint } from './knowledgePointApi';
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2025-03-08 23:39:57
+ * @LastEditTime: 2025-03-11 11:05:46
  * @Description: 题目
  */
 import { BaseEntity } from './base';
@@ -47,6 +47,11 @@ export abstract class QuestionAnswer extends BaseEntity {
   content!: string;
 
   /**
+   * 题目描述
+   */
+  description!: string;
+
+  /**
    * 难度
    */
   difficulty!: number;
@@ -57,6 +62,7 @@ export abstract class QuestionAnswer extends BaseEntity {
   abstract type: QuestionTypeEnum;
 
   override reset(): void {
+    this.description = '';
     this.content = '';
     this.difficulty = 5;
   }
@@ -76,8 +82,7 @@ export class SingleChoiceAnswer extends QuestionAnswer {
   }
 
   override reset(): void {
-    this.content = '';
-    this.difficulty = 5;
+    super.reset();
     this.answer = {
       answer: undefined,
       options: [],
@@ -99,8 +104,7 @@ export class JudgeAnswer extends QuestionAnswer {
   }
 
   override reset(): void {
-    this.content = '';
-    this.difficulty = 5;
+    super.reset();
     this.answer = {
       answer: false,
       type: QuestionTypeEnum.JUDGE,
@@ -121,8 +125,7 @@ export class SubjectiveAnswer extends QuestionAnswer {
   }
 
   override reset(): void {
-    this.content = '';
-    this.difficulty = 5;
+    super.reset();
     this.answer = {
       answer: '',
       type: QuestionTypeEnum.SUBJECTIVE,
@@ -143,8 +146,7 @@ export class GapFillingAnswer extends QuestionAnswer {
   }
 
   override reset(): void {
-    this.content = '';
-    this.difficulty = 5;
+    super.reset();
     this.answer = {
       answer: [],
       type: QuestionTypeEnum.GAP_FILLING,
@@ -166,8 +168,7 @@ export class MultipleChoiceAnswer extends QuestionAnswer {
   }
 
   override reset(): void {
-    this.content = '';
-    this.difficulty = 5;
+    super.reset();
     this.answer = {
       answer: [],
       options: [],
