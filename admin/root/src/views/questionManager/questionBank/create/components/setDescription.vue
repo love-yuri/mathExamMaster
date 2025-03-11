@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-03-11 10:34:46
- * @LastEditTime: 2025-03-11 16:45:26
+ * @LastEditTime: 2025-03-11 19:47:14
  * @Description: 
 -->
 
@@ -14,19 +14,16 @@
 </template>
 
 <script setup lang="ts">
-import { watchEffect } from 'vue';
+import { watch } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
 import { WangEditor } from '@yuri/components';
 
-const content = defineModel<string>('content', {
-  default: '',
-  required: true,
-});
-const show = defineModel('show', { required: true, type: Boolean });
+const content = defineModel<string | undefined>('content', { required: true });
+const show = defineModel<boolean>('show', { required: true });
 
-watchEffect(() => {
+watch(show, () => {
   if (show.value) {
     modalApi.open();
   }
@@ -35,11 +32,12 @@ watchEffect(() => {
 const [Modal, modalApi] = useVbenModal({
   fullscreen: false,
   onCancel: () => {
-    show.value = false;
     modalApi.close();
   },
-  onConfirm: () => {
+  onClosed: () => {
     show.value = false;
+  },
+  onConfirm: () => {
     modalApi.close();
   },
   title: '添加题目描述',
