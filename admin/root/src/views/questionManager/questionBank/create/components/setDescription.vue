@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-03-11 10:34:46
- * @LastEditTime: 2025-03-11 11:04:16
+ * @LastEditTime: 2025-03-11 16:45:26
  * @Description: 
 -->
 
@@ -22,7 +22,7 @@ import { WangEditor } from '@yuri/components';
 
 const content = defineModel<string>('content', {
   default: '',
-  required: false,
+  required: true,
 });
 const show = defineModel('show', { required: true, type: Boolean });
 
@@ -33,12 +33,15 @@ watchEffect(() => {
 });
 
 const [Modal, modalApi] = useVbenModal({
-  fullscreen: true,
+  fullscreen: false,
   onCancel: () => {
-    content.value = '';
+    show.value = false;
     modalApi.close();
   },
-  onConfirm: () => modalApi.close(),
-  title: '选择题目',
+  onConfirm: () => {
+    show.value = false;
+    modalApi.close();
+  },
+  title: '添加题目描述',
 });
 </script>
