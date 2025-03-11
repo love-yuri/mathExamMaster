@@ -165,6 +165,13 @@
             <version>1.8.0</version>
         </dependency>
 
+        <!-- deepseek 支持 -->
+        <dependency>
+            <groupId>io.github.pig-mesh.ai</groupId>
+            <artifactId>deepseek-spring-boot-starter</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+
     </dependencies>
 
     <build>
