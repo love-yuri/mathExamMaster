@@ -1,20 +1,13 @@
-import { type IDomEditor } from '@wangeditor-next/editor';
-import { type ComponentPublicInstance } from 'vue';
+import type { IDomEditor } from '@wangeditor-next/editor';
+
+import type { ComponentPublicInstance } from 'vue';
+
 import { BaseButtonMenu } from './baseButton';
 
 class InsertMathMenu extends BaseButtonMenu {
-  exec: (editor: IDomEditor, value: boolean | string) => void = (
-    editor: IDomEditor,
-    _value: boolean | string,
-  ) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    editor.insertYuriMath(editor);
-  };
   root!: ComponentPublicInstance;
   tag: string;
   title: string;
-
   constructor() {
     super();
     this.tag = 'button';
@@ -23,6 +16,15 @@ class InsertMathMenu extends BaseButtonMenu {
     this.title = '插入公式'; // 自定义菜单标题
     this.tag = 'button';
   }
+
+  exec: (editor: IDomEditor, value: boolean | string) => void = (
+    editor: IDomEditor,
+    _value: boolean | string,
+  ) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    editor.insertYuriMath(editor);
+  };
 }
 
 export const InsertMathMenuConf = {

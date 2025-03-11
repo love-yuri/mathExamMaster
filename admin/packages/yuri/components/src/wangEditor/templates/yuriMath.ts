@@ -1,13 +1,12 @@
-import {
-  DomEditor,
-  type IDomEditor,
-  type SlateDescendant,
-  SlateElement,
-} from '@wangeditor-next/editor';
-import { h, type VNode } from 'snabbdom';
+import type { IDomEditor, SlateDescendant } from '@wangeditor-next/editor';
+import type { VNode } from 'snabbdom';
+
+import { DomEditor, SlateElement } from '@wangeditor-next/editor';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import katex from 'katex';
+import { h } from 'snabbdom';
+
 import katexStyleContent from 'katex/dist/katex.css?raw';
 
 /**
@@ -23,6 +22,10 @@ export type YuriMathNode = {
  * 渲染数学符号
  */
 export class YuriMathElement extends HTMLElement {
+  static get observedAttributes() {
+    return ['data-math']; // 监控 'math' 属性的变化
+  }
+
   private span: HTMLElement;
 
   constructor() {
@@ -40,12 +43,6 @@ export class YuriMathElement extends HTMLElement {
     this.span = span;
   }
 
-  private render(value: string) {
-    katex.render(value, this.span, {
-      throwOnError: false,
-    });
-  }
-
   attributeChangedCallback(
     _name: string,
     oldValue: null | string,
@@ -61,8 +58,10 @@ export class YuriMathElement extends HTMLElement {
     this.render(String.raw`${this.dataset.math}`);
   }
 
-  static get observedAttributes() {
-    return ['data-math']; // 监控 'math' 属性的变化
+  private render(value: string) {
+    katex.render(value, this.span, {
+      throwOnError: false,
+    });
   }
 }
 

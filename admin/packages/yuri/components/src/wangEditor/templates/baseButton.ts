@@ -11,14 +11,14 @@ export abstract class BaseButtonMenu implements IButtonMenu {
 
   ele!: HTMLElement;
   abstract exec: (editor: IDomEditor, value: boolean | string) => void;
-  getValue: (editor: IDomEditor) => boolean | string = () => false;
   hotkey?: string | undefined;
   iconSvg?: string | undefined;
-  isActive: (editor: IDomEditor) => boolean = () => false;
-  isDisabled: (editor: IDomEditor) => boolean = () => false;
   abstract tag: string;
   abstract title: string;
   width?: number | undefined;
+  getValue: (editor: IDomEditor) => boolean | string = () => false;
+  isActive: (editor: IDomEditor) => boolean = () => false;
+  isDisabled: (editor: IDomEditor) => boolean = () => false;
 
   // constructor() {
   //   this.tag = 'button';
