@@ -19,18 +19,18 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useVbenModal } from '@vben/common-ui';
-import { nextTick, ref } from 'vue';
-// import { InputText } from '@yuri/components/';
-import {
-  DomEditor,
-  type IDomEditor,
-  SlateTransforms,
-} from '@wangeditor-next/editor';
+import type { IDomEditor } from '@wangeditor-next/editor';
+
 import type { YuriMathNode } from '../wangEditor/templates/yuriMath';
 
-import { MathfieldElement } from 'mathlive';
+import { nextTick, ref } from 'vue';
+
+import { useVbenModal } from '@vben/common-ui';
+
+// import { InputText } from '@yuri/components/';
+import { DomEditor, SlateTransforms } from '@wangeditor-next/editor';
 import { checkEmpty } from '@yuri/common';
+import { MathfieldElement } from 'mathlive';
 
 const isCreate = ref(false);
 const math = ref('');
