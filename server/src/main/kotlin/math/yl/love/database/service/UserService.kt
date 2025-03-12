@@ -30,8 +30,6 @@ class UserService(
     @Lazy val departmentService: DepartmentService
 ): BaseService<User, UserMapper>() {
 
-    override val entityClass: KClass<User> get() = User::class
-
     fun login(loginQuery: LoginQuery): LoginResult {
         val user = getByUsername(loginQuery.username) ?: throw RuntimeException("用户不存在")
         check(user.password == loginQuery.password) { "密码错误" }

@@ -19,7 +19,6 @@ import kotlin.reflect.KClass
 class DepartmentService(
     private val userDepartmentService: UserDepartmentService
 ): BaseService<Department, DepartmentMapper>() {
-    override val entityClass: KClass<Department> get() = Department::class
 
     /**
      * 返回部门树结果

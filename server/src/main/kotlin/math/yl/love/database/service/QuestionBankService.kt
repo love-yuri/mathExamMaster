@@ -24,7 +24,6 @@ class QuestionBankService(
     private val redisService: RedisService,
     private val systemConfig: SystemConfig
 ): BaseService<QuestionBank, QuestionBankMapper>() {
-    override val entityClass: KClass<QuestionBank> get() = QuestionBank::class
 
     /**
      * 创建题目并关联知识点

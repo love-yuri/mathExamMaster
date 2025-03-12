@@ -18,9 +18,8 @@ import kotlin.reflect.KClass
 @Transactional(readOnly = true)
 abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>>: IService<Entity>, ServiceImpl<Mapper, Entity>() {
     protected val logger: Logger = LoggerFactory.getLogger(javaClass)
-    protected abstract val entityClass: KClass<Entity>
-    protected val queryWrapper get() = KtQueryWrapper(entityClass.java)
-    protected val updateWrapper get() = KtUpdateWrapper(entityClass.java)
+    protected val queryWrapper get() = KtQueryWrapper(getEntityClass())
+    protected val updateWrapper get() = KtUpdateWrapper(getEntityClass())
 
     /**
      * 分页数据

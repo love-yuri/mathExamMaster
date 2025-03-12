@@ -22,5 +22,4 @@ class ExamPageQuestionRelationService: BaseService<ExamPageQuestionRelation, Exa
      */
     fun deleteByPageId(id: Long) = remove(queryWrapper.eq(ExamPageQuestionRelation::examPageId, id))
 
-    override val entityClass: KClass<ExamPageQuestionRelation> get() = ExamPageQuestionRelation::class
 }

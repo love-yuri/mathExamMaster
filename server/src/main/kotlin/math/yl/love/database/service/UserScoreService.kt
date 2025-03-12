@@ -22,7 +22,6 @@ class UserScoreService(
     private val examPageUserRelationService: ExamPageUserRelationService,
     private val examPageReleaseService: ExamPageReleaseService,
 ): BaseService<UserScore, UserScoreMapper>() {
-    override val entityClass: KClass<UserScore> get() = UserScore::class
 
     @Transactional(rollbackFor = [Exception::class])
     override fun updateById(entity: UserScore?): Boolean {

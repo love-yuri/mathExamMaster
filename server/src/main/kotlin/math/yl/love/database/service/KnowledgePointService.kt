@@ -13,6 +13,5 @@ import kotlin.reflect.KClass
 @Service
 @Transactional(readOnly = true)
 class KnowledgePointService: BaseService<KnowledgePoint, KnowledgePointMapper>() {
-    override val entityClass: KClass<KnowledgePoint> get() = KnowledgePoint::class
 
 }

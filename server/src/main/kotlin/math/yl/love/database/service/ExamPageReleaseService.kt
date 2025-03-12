@@ -32,7 +32,6 @@ class ExamPageReleaseService(
     val examPageService: ExamPageService,
     val userRelationService: ExamPageUserRelationService
 ): BaseService<ExamPageRelease, ExamPageReleaseMapper>() {
-    override val entityClass: KClass<ExamPageRelease> get() = ExamPageRelease::class
 
     /**
      * 发布试卷

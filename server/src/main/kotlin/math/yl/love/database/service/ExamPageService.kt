@@ -34,8 +34,6 @@ class ExamPageService(
     private val systemConfig: SystemConfig,
 ): BaseService<ExamPage, ExamPageMapper>() {
 
-    override val entityClass: KClass<ExamPage> get() = ExamPage::class
-
     /**
      * 发布试卷
      * @param param 试卷参数

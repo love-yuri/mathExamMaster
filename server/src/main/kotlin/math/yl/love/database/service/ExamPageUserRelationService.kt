@@ -18,7 +18,6 @@ import kotlin.reflect.KClass
 class ExamPageUserRelationService(
     val userService: UserService
 ): BaseService<ExamPageUserRelation, ExamPageUserRelationMapper>() {
-    override val entityClass: KClass<ExamPageUserRelation> get() = ExamPageUserRelation::class
 
     fun findByReleaseId(id: Long): List<ExamPageUserRelation> = list(queryWrapper.eq(ExamPageUserRelation::pageReleaseId, id))
 

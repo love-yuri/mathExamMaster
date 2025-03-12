@@ -26,7 +26,6 @@ class SystemFileService(
     systemConfig: SystemConfig,
     val redisService: RedisService
 ): BaseService<SystemFile, SystemFileMapper>() {
-    override val entityClass: KClass<SystemFile> get() = SystemFile::class
     private val uploadPath = Paths.get(systemConfig.uploadPath ?: "files/upload").apply {
         if (!Files.exists(this)) {
             Files.createDirectories(this)

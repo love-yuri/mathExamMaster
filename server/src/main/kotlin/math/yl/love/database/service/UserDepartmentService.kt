@@ -16,8 +16,6 @@ import kotlin.reflect.KClass
 class UserDepartmentService(
     val userService: UserService
 ): BaseService<UserDepartment, UserDepartmentMapper>() {
-    override val entityClass: KClass<UserDepartment> get() = UserDepartment::class
-
 
     /**
      * 根据组织id获取所有用户

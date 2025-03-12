@@ -245,9 +245,7 @@ class AutoMysqlService(
             
             @Service
             @Transactional(readOnly = true)
-            class ${baseName}: BaseService<${entityName}, ${entityName}Mapper>() {
-                override val entityClass: KClass<${entityName}> get() = ${entityName}::class
-            }
+            class ${baseName}: BaseService<${entityName}, ${entityName}Mapper>() 
         """.trimIndent()
 
         file.writeText(content)
