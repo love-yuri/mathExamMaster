@@ -48,6 +48,13 @@
         @click="showDescription = true"
       />
       <Button
+        class="mr-2"
+        icon="pi pi-pen-to-square"
+        label="ai自动生成题目"
+        severity="success"
+        @click="aiCreateQuestion"
+      />
+      <Button
         v-if="isUpdate"
         class="mr-2"
         icon="pi pi-spin pi-spinner"
@@ -87,12 +94,13 @@
       v-model:show="showDescription"
       v-model:content="question.description"
     />
+    <AiCreate ref="aiCreateRef" />
   </div>
 </template>
 <script setup lang="ts">
-import type { KnowledgePoint } from '@yuri/types';
+import type { KnowledgePoint, QuestionAnswer } from '@yuri/types';
 
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 
 import {
   checkEmpty,
@@ -111,6 +119,7 @@ import {
 } from '@yuri/components';
 import { SingleChoiceAnswer } from '@yuri/types';
 
+import AiCreate from './aiCreate.vue';
 import SetDescription from './setDescription.vue';
 
 const emits = defineEmits(['cancel', 'update']);
@@ -118,6 +127,7 @@ const emits = defineEmits(['cancel', 'update']);
 const showDescription = ref(false);
 const isUpdate = ref(false);
 const question = ref(new SingleChoiceAnswer());
+const aiCreateRef = useTemplateRef('aiCreateRef');
 
 /**
  * 处理知识点选择
@@ -199,6 +209,15 @@ function openAsUpdate(v: SingleChoiceAnswer, k: KnowledgePoint[]) {
   isUpdate.value = true;
   question.value.copy(v);
   selectedKnowledgePoints.value = k;
+}
+
+/**
+ * ai生成题目
+ */
+function aiCreateQuestion() {
+  aiCreateRef.value?.open((q: QuestionAnswer) => {
+    question.value.copy(q);
+  });
 }
 
 defineExpose({ openAsUpdate });
