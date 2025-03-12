@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:11:39
- * @LastEditTime: 2025-03-11 19:11:28
+ * @LastEditTime: 2025-03-12 16:05:10
  * @Description: 封装富文本编辑器
 -->
 <template>
@@ -112,10 +112,20 @@ const handleCreated = (editor: IDomEditor) => {
   };
 };
 
+/**
+ * 检查是否包含图片
+ * @param html html内容
+ */
+function containsImage(html: string): boolean {
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = html;
+  return tempDiv.querySelector('img') !== null;
+}
+
 const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
 async function customPaste(editor: IDomEditor, event: ClipboardEvent) {
   const html: string | undefined = event.clipboardData?.getData('text/html');
-  if (html) {
+  if (html && containsImage(html)) {
     event.preventDefault();
     const accessStore = useAccessStore();
     const res = await invoke('parse_html', {
