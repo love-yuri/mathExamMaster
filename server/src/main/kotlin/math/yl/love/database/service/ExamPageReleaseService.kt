@@ -84,7 +84,7 @@ class ExamPageReleaseService(
      */
     fun pageSimple(param: PageParam): BasePage<ExamPageReleaseResult> {
         val query = queryWrapper.eq(ExamPageRelease::createBy, CommonUtils.username)
-        val now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
+        val now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
         when(param.flag) {
             0 -> {}
             1 -> query.lt(ExamPageRelease::endTime, now)
@@ -210,4 +210,21 @@ class ExamPageReleaseService(
      * @param id 发布id
      */
     fun studentDetail(id: Long) = baseMapper.studentDetail(id)
+
+    /**
+     * 检查是否可以更新考试页面
+     * @param id 试卷id
+     */
+    fun checkCanPageUpdate(id: Long) {
+        val now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
+        queryWrapper
+            .eq(ExamPageRelease::examPageId, id)
+            .lt(ExamPageRelease::startTime, now)
+            .list().let {
+                logger.info("$it")
+                if (it.isNotEmpty()) {
+                    throw BizException("已开始或已结束的考试禁止修改!!!")
+                }
+            }
+    }
 }

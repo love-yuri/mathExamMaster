@@ -1,6 +1,5 @@
 package math.yl.love.database.service
 
-import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import math.yl.love.common.constant.RedisConstant
 import math.yl.love.common.mybatis.BasePage
 import math.yl.love.common.mybatis.BaseService
@@ -15,13 +14,12 @@ import math.yl.love.database.domain.result.examPage.ExamPageResult
 import math.yl.love.database.domain.result.examPage.QuestionInfoResult
 import math.yl.love.database.domain.result.examPageUserRelation.UserAnswer
 import math.yl.love.database.domain.result.questionBank.*
-import math.yl.love.database.domain.result.user.UserInfo
 import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
 import math.yl.love.database.mapper.ExamPageMapper
+import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.io.Serializable
-import kotlin.reflect.KClass
 
 @Service
 @Transactional(readOnly = true)
@@ -32,6 +30,7 @@ class ExamPageService(
     private val userService: UserService,
     private val redisService: RedisService,
     private val systemConfig: SystemConfig,
+    @Lazy private val examPageReleaseService: ExamPageReleaseService,
 ): BaseService<ExamPage, ExamPageMapper>() {
 
     /**
@@ -71,6 +70,8 @@ class ExamPageService(
     @Transactional(rollbackFor = [Exception::class])
     fun updatePage(param: ReleasePageParam): Boolean {
         param.id ?: throw RuntimeException("id不能为空!!")
+        examPageReleaseService.checkCanPageUpdate(param.id)
+
         // 更新试卷
         val page = ExamPage (
             id = param.id,
