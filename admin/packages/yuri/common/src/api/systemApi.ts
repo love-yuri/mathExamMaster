@@ -1,9 +1,14 @@
-import type { BaseEntity, GenerateParams } from '@yuri/types';
+import type {
+  AiCreateQuestionParam,
+  BaseEntity,
+  GenerateParams,
+  QuestionBank,
+} from '@yuri/types';
 
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2025-02-28 10:09:46
+ * @LastEditTime: 2025-03-12 20:57:07
  * @Description:
  */
 import { RequestType } from '@yuri/types';
@@ -13,6 +18,15 @@ import { requestClient } from '../base/baseApi/request';
 
 class Api extends BaseApi<BaseEntity> {
   override baseUrl: string = '/system';
+
+  aiCreateQuestion = (param: AiCreateQuestionParam) => {
+    return this.add<QuestionBank | undefined>(
+      RequestType.POST,
+      '/ai/create/question',
+      param,
+      60_000,
+    );
+  };
 
   /**
    * 数据库列表

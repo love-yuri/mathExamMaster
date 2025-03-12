@@ -2,8 +2,8 @@ package math.yl.love.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import math.yl.love.common.base.Log.log
 import math.yl.love.common.base.R
+import math.yl.love.database.domain.params.system.AiCreateQuestionParam
 import math.yl.love.database.domain.params.system.GenerateParam
 import math.yl.love.database.service.SystemService
 import org.springframework.web.bind.annotation.*
@@ -29,5 +29,9 @@ class SystemController(
 
     @GetMapping("/tables")
     @Operation(summary = "获取数据库下所有表")
-    fun tables(name: String) = R.success(systemService.getTables(name))
+    fun tables(@RequestBody name: String) = R.success(systemService.getTables(name))
+
+    @PostMapping("/ai/create/question")
+    @Operation(summary = "ai生成题目")
+    fun aiCreateQuestion(@RequestBody param: AiCreateQuestionParam) = R.success(systemService.aiCreateQuestion(param))
 }

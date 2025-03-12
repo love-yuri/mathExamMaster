@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 21:02:28
- * @LastEditTime: 2025-03-11 19:16:57
+ * @LastEditTime: 2025-03-12 21:02:28
  * @Description: 填空题
 -->
 <template>
@@ -54,6 +54,12 @@
         @click="showDescription = true"
       />
       <Button
+        class="mr-2"
+        icon="pi pi-slack"
+        label="ai自动生成题目"
+        @click="aiCreateQuestion"
+      />
+      <Button
         v-if="isUpdate"
         class="mr-2"
         icon="pi pi-spin pi-spinner"
@@ -88,10 +94,11 @@
       v-model:show="showDescription"
       v-model:content="question.description"
     />
+    <AiCreate ref="aiCreateRef" :type="question.type" />
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 
 import {
   checkEmpty,
@@ -108,14 +115,16 @@ import {
   Rating,
   WangEditor,
 } from '@yuri/components';
-import { GapFillingAnswer, KnowledgePoint } from '@yuri/types';
+import { GapFillingAnswer, KnowledgePoint, QuestionAnswer } from '@yuri/types';
 
+import AiCreate from './aiCreate.vue';
 import SetDescription from './setDescription.vue';
 
 const emits = defineEmits(['cancel', 'update']);
 
 const showDescription = ref(false);
 const isUpdate = ref(false);
+const aiCreateRef = useTemplateRef('aiCreateRef');
 const question = ref(new GapFillingAnswer());
 
 /**
@@ -184,6 +193,17 @@ function openAsUpdate(v: GapFillingAnswer, k: KnowledgePoint[]) {
   question.value.copy(v);
   selectedKnowledgePoints.value = k;
 }
+
+/**
+ * ai生成题目
+ */
+function aiCreateQuestion() {
+  aiCreateRef.value?.open((param: QuestionAnswer) => {
+    const q = param as GapFillingAnswer;
+    question.value.copy(q);
+  });
+}
+
 defineExpose({ openAsUpdate });
 
 /**

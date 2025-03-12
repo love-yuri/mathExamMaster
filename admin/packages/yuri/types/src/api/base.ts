@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-09 14:18:19
- * @LastEditTime: 2025-02-08 14:24:39
+ * @LastEditTime: 2025-03-12 18:57:05
  * @Description: baseApi types
  */
 
@@ -20,6 +20,7 @@ export enum RequestType {
 export type RequestConfig = {
   method: RequestType;
   params?: any;
+  timeout?: number; // 请求超时时间
   url: string;
 };
 

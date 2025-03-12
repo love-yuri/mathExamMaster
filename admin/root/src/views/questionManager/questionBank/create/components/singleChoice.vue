@@ -49,9 +49,8 @@
       />
       <Button
         class="mr-2"
-        icon="pi pi-pen-to-square"
+        icon="pi pi-slack"
         label="ai自动生成题目"
-        severity="success"
         @click="aiCreateQuestion"
       />
       <Button
@@ -94,7 +93,7 @@
       v-model:show="showDescription"
       v-model:content="question.description"
     />
-    <AiCreate ref="aiCreateRef" />
+    <AiCreate ref="aiCreateRef" :type="question.type" />
   </div>
 </template>
 <script setup lang="ts">
@@ -215,7 +214,8 @@ function openAsUpdate(v: SingleChoiceAnswer, k: KnowledgePoint[]) {
  * ai生成题目
  */
 function aiCreateQuestion() {
-  aiCreateRef.value?.open((q: QuestionAnswer) => {
+  aiCreateRef.value?.open((param: QuestionAnswer) => {
+    const q = param as SingleChoiceAnswer;
     question.value.copy(q);
   });
 }

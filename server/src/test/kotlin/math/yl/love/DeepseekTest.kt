@@ -14,11 +14,9 @@ class DeepseekTest {
     @Autowired
     private val deepSeekClient: DeepSeekClient? = null
 
-
-
     @Test
     fun chatTest() {
-        val request: ChatCompletionRequest = ChatCompletionRequest.builder() // 根据渠道模型名称动态修改这个参数
+        val request: ChatCompletionRequest = ChatCompletionRequest.builder()
             .model("deepseek-chat")
             .addUserMessage("你好").build()
 

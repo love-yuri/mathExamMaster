@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-08-11 16:05:57
- * @LastEditTime: 2025-02-27 18:03:29
+ * @LastEditTime: 2025-03-12 18:56:57
  * @Description: 基础api
  */
 
@@ -22,10 +22,13 @@ async function baseApi(config: RequestConfig): Promise<unknown> {
     case RequestType.GET: {
       return await requestClient.get(config.url, {
         params: config.params,
+        timeout: config.timeout,
       });
     }
     case RequestType.POST: {
-      return requestClient.post(config.url, config.params);
+      return requestClient.post(config.url, config.params, {
+        timeout: config.timeout,
+      });
     }
   }
 }
@@ -96,6 +99,7 @@ export abstract class BaseApi<T extends BaseEntity> {
     method: RequestType,
     url: string,
     params?: any,
+    timeout?: number,
   ): Promise<V> => {
     if (url.startsWith('/')) {
       url = url.slice(1);
@@ -107,6 +111,7 @@ export abstract class BaseApi<T extends BaseEntity> {
     return baseApi({
       method,
       params,
+      timeout,
       url: `${this.baseUrl}/${url}`,
     }) as Promise<V>;
   };
