@@ -77,7 +77,7 @@
                 severity="info"
                 @click="
                   router.push({
-                    name: 'examPageUpdate',
+                    name: 'examPagePreview',
                     params: { id: slotProps.data.id },
                   })
                 "

@@ -1,7 +1,7 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-10 23:35:05
- * @LastEditTime: 2025-03-07 09:32:33
+ * @LastEditTime: 2025-03-12 15:29:30
  * @Description: 系统路由
  */
 import type { RouteRecordRaw } from 'vue-router';
@@ -45,6 +45,17 @@ const routes: RouteRecordRaw[] = [
           hideInMenu: true,
           icon: 'lucide:copyright',
           title: '更新试卷',
+        },
+      },
+      {
+        name: 'examPagePreview',
+        path: String.raw`/exam/page/preview/:id(\d+)`,
+        component: () => import('#/views/examPageManager/create/index.vue'),
+        meta: {
+          affixTab: false,
+          hideInMenu: true,
+          icon: 'lucide:copyright',
+          title: '预览试卷',
         },
       },
       {

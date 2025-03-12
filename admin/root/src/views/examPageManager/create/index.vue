@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2025-02-27 14:46:01
+ * @LastEditTime: 2025-03-12 15:35:33
  * @Description: 创建试卷
 -->
 <template>
@@ -44,21 +44,6 @@
       <span class="title required-text"> 试卷难度: </span>
       <Rating v-model="createVo.difficulty" :readonly="isReadOnly" :stars="9" />
     </div>
-    <!-- <div class="mt-2 flex items-center">
-      <span class="title"> 截止时间: </span>
-      <DatePicker
-        v-model="createVo.deadline"
-        :min-date="new Date()"
-        :readonly="isReadOnly"
-        :show-on-focus="false"
-        date-format="yy-mm-dd"
-        fluid
-        hour-format="24"
-        placeholder="请选择截止时间"
-        show-icon
-        show-time
-      />
-    </div> -->
     <div class="mt-2 flex items-center">
       <div class="flex flex-col items-center justify-center">
         <Knob
@@ -121,18 +106,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="flex justify-center p-2">
-      <MultiSelect
-        v-model="createVo.users"
-        :disabled="isReadOnly"
-        :options="users"
-        class="w-full"
-        filter
-        option-label="username"
-        option-value="id"
-        placeholder="请选择学生"
-      />
-    </div> -->
     <div class="flex items-center justify-center p-2">
       <Button
         v-if="!isReadOnly"
@@ -141,12 +114,7 @@
         @click="releasePage"
       />
     </div>
-    <Show
-      v-model:questions="questionMap"
-      :create-vo="createVo"
-      :is-read-only
-      @edit="isReadOnly = false"
-    />
+    <Show v-model:questions="questionMap" :create-vo="createVo" :is-read-only />
   </div>
 </template>
 <script setup lang="ts">
@@ -154,6 +122,8 @@ import type { QuestionAndPoint } from '@yuri/types';
 
 import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+
+import { useTabs } from '@vben/hooks';
 
 import {
   checkEmpty,
@@ -167,9 +137,11 @@ import { ExamPageCreateVO, subjectOptions, typeOptions } from '@yuri/types';
 import Show from '#/views/examPageManager/components/show.vue';
 
 const route = useRoute();
+const { setTabTitle } = useTabs();
 
 const createVo = ref<ExamPageCreateVO>(new ExamPageCreateVO());
 const questionMap = ref(new Map<string, QuestionAndPoint>());
+const isPreview = computed(() => route.name === 'examPagePreview');
 
 const isReadOnly = ref(false);
 
@@ -198,7 +170,7 @@ function valueCheck(): boolean {
 
 onMounted(() => {
   if (route.params.id) {
-    isReadOnly.value = true;
+    isReadOnly.value = isPreview.value;
     examPageApi.detail(route.params.id as string).then((res) => {
       createVo.value.copy(res);
       res.questions.forEach((item) =>
@@ -206,6 +178,11 @@ onMounted(() => {
           ...item.fullQuestionBank!,
           score: item.score,
         }),
+      );
+      setTabTitle(
+        isPreview.value
+          ? `预览: ${createVo.value.title}`
+          : `编辑: ${createVo.value.title}`,
       );
     });
   }

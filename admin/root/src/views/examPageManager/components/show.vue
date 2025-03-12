@@ -29,16 +29,6 @@
                   @click="selectQuestionRef.open()"
                 />
               </div>
-              <div v-else>
-                <Button
-                  class="ml-2"
-                  icon="pi pi-pen-to-square"
-                  label="编辑"
-                  rounded
-                  severity="success"
-                  @click="$emit('edit')"
-                />
-              </div>
             </div>
           </template>
           <Column header="题目类型" style="min-width: 110px">
@@ -183,7 +173,7 @@ const props = defineProps<{
   isReadOnly: boolean;
 }>();
 
-defineEmits(['remove', 'edit']);
+defineEmits(['remove']);
 
 const selectQuestionRef = ref();
 
