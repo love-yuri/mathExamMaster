@@ -1,11 +1,11 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-02-26 19:36:07
- * @LastEditTime: 2025-03-03 16:02:48
+ * @LastEditTime: 2025-03-13 19:41:43
  * @Description: 
 -->
 <template>
-  <div>
+  <div v-loading="loading">
     <!-- <PreviewEditor :content="detail.content" /> -->
     <Card class="">
       <template #content>
@@ -36,6 +36,11 @@
             <SplitButton
               :model="[
                 {
+                  command: () => aiCreateScore(),
+                  icon: 'pi pi-slack',
+                  label: 'AI评分',
+                },
+                {
                   label: '预览题目',
                   icon: 'pi pi-eye',
                   command: () => show(detail.questionId),
@@ -54,23 +59,27 @@
     </Card>
     <Preview ref="previewRef" />
     <QuickScore ref="quickScoreRef" @select="setScore" />
+    <ShowAiScore ref="showAiScoreRef" />
   </div>
 </template>
 <script setup lang="ts">
 import type { GapFillingAw, UserScoreDetail } from '@yuri/types';
 
-import { computed, unref, useTemplateRef } from 'vue';
+import { computed, ref, unref, useTemplateRef } from 'vue';
 
-import { questionBankApi } from '@yuri/common';
+import { message, questionBankApi, systemApi } from '@yuri/common';
 import { Card, InputText, SplitButton, Tag } from '@yuri/components';
 
 import Preview from '#/views/questionManager/questionBank/components/preview.vue';
 
 import QuickScore from './quickScore.vue';
+import ShowAiScore from './showAiScore.vue';
 
 const emits = defineEmits(['setScore']);
 const detail = defineModel<UserScoreDetail>('detail', { required: true });
 
+const loading = ref(false);
+const showAiScoreRef = useTemplateRef('showAiScoreRef');
 const quickScoreRef = useTemplateRef('quickScoreRef');
 const previewRef = useTemplateRef('previewRef');
 const questionAnswer = computed(
@@ -91,5 +100,22 @@ function setScore(score: number) {
   detail.value.score = score;
   detail.value.hasSetScore = true;
   emits('setScore', score);
+}
+
+/**
+ * AI评分
+ */
+function aiCreateScore() {
+  message.default.success('AI评分中...');
+  loading.value = true;
+  systemApi.aiCreateScore(detail.value).then((res) => {
+    loading.value = false;
+    if (!res) {
+      message.default.error('AI评分失败!');
+      return;
+    }
+    showAiScoreRef.value?.open(res);
+    setScore(res.score);
+  });
 }
 </script>

@@ -1,14 +1,16 @@
 import type {
   AiCreateQuestionParam,
+  AiCreateScoreResult,
   BaseEntity,
   GenerateParams,
   QuestionBank,
+  UserScoreDetail,
 } from '@yuri/types';
 
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2025-03-12 20:57:07
+ * @LastEditTime: 2025-03-13 19:17:05
  * @Description:
  */
 import { RequestType } from '@yuri/types';
@@ -23,6 +25,15 @@ class Api extends BaseApi<BaseEntity> {
     return this.add<QuestionBank | undefined>(
       RequestType.POST,
       '/ai/create/question',
+      param,
+      60_000,
+    );
+  };
+
+  aiCreateScore = (param: UserScoreDetail) => {
+    return this.add<AiCreateScoreResult | undefined>(
+      RequestType.POST,
+      '/ai/create/score',
       param,
       60_000,
     );

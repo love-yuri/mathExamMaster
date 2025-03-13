@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2025-03-11 10:34:46
- * @LastEditTime: 2025-03-12 21:01:03
+ * @LastEditTime: 2025-03-13 18:36:04
  * @Description: 
 -->
 
@@ -12,7 +12,7 @@
         v-model="text"
         class="w-full"
         :rows="10"
-        placeholder="请输入问题描述..."
+        placeholder="请简单描述要求，可为空..."
       />
       <div class="mt-3 flex items-center justify-center">
         <Button
@@ -66,7 +66,7 @@ function open(func: FuncType) {
 
 async function generate() {
   if (!text.value) {
-    message.default.error('请输入问题描述!!');
+    text.value = '请生成一道难度适中的题目';
   }
   loading.value = true;
   const res = await systemApi.aiCreateQuestion({

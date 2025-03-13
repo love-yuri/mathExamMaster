@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import math.yl.love.common.base.R
 import math.yl.love.database.domain.params.system.AiCreateQuestionParam
 import math.yl.love.database.domain.params.system.GenerateParam
+import math.yl.love.database.domain.result.userScore.UserScoreDetail
 import math.yl.love.database.service.SystemService
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -34,4 +35,8 @@ class SystemController(
     @PostMapping("/ai/create/question")
     @Operation(summary = "ai生成题目")
     fun aiCreateQuestion(@RequestBody param: AiCreateQuestionParam) = R.success(systemService.aiCreateQuestion(param))
+
+    @PostMapping("/ai/create/score")
+    @Operation(summary = "ai评分")
+    fun aiCreateScore(@RequestBody param: UserScoreDetail) = R.success(systemService.aiCreateScore(param))
 }

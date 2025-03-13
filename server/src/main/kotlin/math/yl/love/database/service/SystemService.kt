@@ -11,17 +11,19 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import math.yl.love.database.domain.params.system.AiCreateQuestionParam
 import math.yl.love.database.domain.result.questionBank.*
-import math.yl.love.database.domain.typeEnum.QuestionTypeEnum
+import math.yl.love.database.domain.result.system.AiCreateScoreResult
+import math.yl.love.database.domain.result.userScore.UserScoreDetail
 import math.yl.love.database.domain.typeEnum.QuestionTypeEnum.*
 import java.io.BufferedInputStream
 
 @Service
 @Transactional(readOnly = true)
-class SystemService (
+class SystemService(
     private val autoMysqlService: AutoMysqlService,
     private val systemFileService: SystemFileService,
     private val systemMapper: SystemMapper,
-    private val deepseekService: DeepseekService
+    private val deepseekService: DeepseekService,
+    private val questionBankService: QuestionBankService
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -60,8 +62,7 @@ class SystemService (
     /**
      * 获取指定数据库下表格
      */
-    fun getTables(dbName: String): Any {
-        log.info("获取数据库 $dbName 表格")
+    fun getTables(dbName: String): List<String> {
         return systemMapper.getTables(dbName)
     }
 
@@ -155,5 +156,67 @@ class SystemService (
             log.error("生成答案异常: ${e.message}")
             return null
         }
+    }
+
+    /**
+     * Ai评分
+     */
+    fun aiCreateScore(param: UserScoreDetail): AiCreateScoreResult? {
+        val question = questionBankService.getById(param.questionId) ?: throw BizException("题目不存在!!!")
+        val type = when(param.type) {
+            SINGLE_CHOICE -> "单选题"
+            MULTIPLE_CHOICE -> "多选题"
+            JUDGE -> "判断题"
+            GAP_FILLING -> "填空题"
+            SUBJECTIVE -> "主观题"
+        }
+
+        val questionPrompt = """
+            所有题目都是wangeditor内容，<yuri-math math="\int_0^{\infty}\!55\,\mathrm{d}x"></yuri-math>这种数学公式
+            请根据题目内容题目类型帮我分析用户能够拿到多少分。题目类型: $type 题目满分: ${param.totalScore} 
+            题目: ${question.content}
+            题目描述: ${question.description}
+        """.trimIndent()
+
+        val answerPrompt = when(question.answer) {
+            is GapFillingAnswer -> {
+                val q = param.userAnswer.questionAnswer as GapFillingAnswer
+                """
+                    用户答案: ${q.answer}
+                    正确答案: ${question.answer.answer}
+                """.trimIndent()
+            }
+            is JudgeAnswer -> return null
+            is MultipleChoiceAnswer -> return null
+            is SingleChoiceAnswer -> return null
+            is SubjectiveAnswer -> {
+                val q = param.userAnswer.questionAnswer as SubjectiveAnswer
+                "用户答案: ${q.answer},"
+            }
+        }
+
+        val prompt = """
+            $questionPrompt
+            $answerPrompt
+            请严格遵守回复规则，按照以下格式回复： 
+            分析为什么得xx分。输出内容请按照wangeditor的格式，所有换行请用<br>标签,
+            公式请用。<yuri-math math="\int_0^{\infty}\!55\,\mathrm{d}x"></yuri-math> 
+            回复内容不要输出多余解释，按照要求即可: 
+            得分: {得分-数字}
+            分析: <p>{分析内容}</p>
+        """.trimIndent()
+        val res = deepseekService.chat(prompt)
+
+        val regex = "\\s*得分:\\s*(\\d+).*分析:\\s*(<p>.*?</p>)".toRegex(RegexOption.DOT_MATCHES_ALL)
+        log.info(prompt)
+        log.info(res)
+        val matchResult = regex.find(res) ?: return null
+
+        val (score, desc) = matchResult.destructured
+
+        return AiCreateScoreResult(
+            score = score.toInt(),
+            detail = desc
+        )
     }
 }
