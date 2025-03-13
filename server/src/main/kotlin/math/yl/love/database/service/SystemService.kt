@@ -69,74 +69,91 @@ class SystemService (
      * ai生成题目
      */
     fun aiCreateQuestion(param: AiCreateQuestionParam): QuestionBank? {
+        val type = when(param.type) {
+            SINGLE_CHOICE -> "单选题"
+            MULTIPLE_CHOICE -> "多选题"
+            JUDGE -> "判断题"
+            GAP_FILLING -> "填空题"
+            SUBJECTIVE -> "主观题"
+        }
+
         val prompt = """
-            请帮我生成一道高数题目，题目类型: ${param.type}, 用户描述: ${param.description}
+            请帮我生成一道高数题目，题目类型: ${type}, 用户描述: ${param.description}
             所有生成的题目里的公式请按照 <yuri-math math="\int_0^{\infty}\!55\,\mathrm{d}x"></yuri-math> 这种格式来
             输出内容请按照wangeditor的格式，所有换行请用<br>标签,回复内容不要输出多余解释，按照以下格式来。如果是如果是单选多选
-            请在题目内容里添加选项，没特殊要求生成4个即可。如果是多选或者填空，答案请用空格隔开
+            请在题目内容里添加选项，没特殊要求生成4个即可。如果是多选多个答案请用空格隔开。多选题的答案需要随机生成2-n个.生成的答案请严格按照要求来!
             题目: <p>{题目内容} {如果是单选多选: <br> A. 选项1<br> B. 选项2..}</p>
             难度: {题目难度： 数字1-9}
-            答案: {答案内容: 答案对应序号: 0 1 2 ...}
+            答案: {单选: 0.. 多选: 0 2 3.. 填空: 答案1 答案2.. 判断: 0 主观题:  }
             解析: <p>{题目解析内容}</p>
         """.trimIndent()
         val res = deepseekService.chat(prompt)
+
         val regex = """
-            题目:\s*<p>(.*?)</p>
+            题目:\s*(<p>.*?</p>)
             \s*难度:\s*(\d+)
             \s*答案:\s*(.*?)
-            \s*解析:\s*<p>(.*?)</p>
+            \s*解析:\s*(<p>.*?</p>)
         """.trimIndent().toRegex(RegexOption.DOT_MATCHES_ALL)
 
         val matchResult = regex.find(res) ?: return null
-
         val (question, difficulty, answer, description) = matchResult.destructured
 
-        return when(param.type) {
-            SINGLE_CHOICE -> QuestionBank(
-                content = question,
-                description = description,
-                difficulty = difficulty.toInt(),
-                answer = SingleChoiceAnswer(
-                    options = listOf("", "", "", ""),
-                    answer = answer.toInt()
-                ),
-                type = SINGLE_CHOICE,
-            )
-            MULTIPLE_CHOICE -> QuestionBank(
-                content = question,
-                description = description,
-                difficulty = difficulty.toInt(),
-                answer = MultipleChoiceAnswer(
-                    options = listOf("", "", "", ""),
-                    answer = answer.split(" *".toRegex()).map { it.toInt() }
-                ),
-                type = MULTIPLE_CHOICE,
-            )
-            JUDGE -> QuestionBank(
-                content = question,
-                description = description,
-                difficulty = difficulty.toInt(),
-                answer = JudgeAnswer(
-                    answer = answer.toInt() == 0
-                ),
-                type = JUDGE,
-            )
-            GAP_FILLING -> QuestionBank(
-                content = question,
-                description = description,
-                difficulty = difficulty.toInt(),
-                answer = GapFillingAnswer(
-                    answer = answer.split(" *".toRegex())
-                ),
-                type = GAP_FILLING,
-            )
-            SUBJECTIVE -> QuestionBank(
-                content = question,
-                description = description,
-                difficulty = difficulty.toInt(),
-                answer = SubjectiveAnswer(),
-                type = SUBJECTIVE,
-            )
+        try {
+            return when (param.type) {
+                SINGLE_CHOICE -> QuestionBank(
+                    content = question,
+                    description = description,
+                    difficulty = difficulty.toInt(),
+                    answer = SingleChoiceAnswer(
+                        options = listOf("", "", "", ""),
+                        answer = answer.toInt()
+                    ),
+                    type = SINGLE_CHOICE,
+                )
+
+                MULTIPLE_CHOICE -> QuestionBank(
+                    content = question,
+                    description = description,
+                    difficulty = difficulty.toInt(),
+                    answer = MultipleChoiceAnswer(
+                        options = listOf("", "", "", ""),
+                        answer = answer.split(" *".toRegex()).filter { it.isNotEmpty() }.map { it.toInt() }
+                    ),
+                    type = MULTIPLE_CHOICE,
+                )
+
+                JUDGE -> QuestionBank(
+                    content = question,
+                    description = description,
+                    difficulty = difficulty.toInt(),
+                    answer = JudgeAnswer(
+                        answer = answer.toInt() == 1
+                    ),
+                    type = JUDGE,
+                )
+
+                GAP_FILLING -> QuestionBank(
+                    content = question,
+                    description = description,
+                    difficulty = difficulty.toInt(),
+                    answer = GapFillingAnswer(
+                        answer = listOf(answer)
+                    ),
+                    type = GAP_FILLING,
+                )
+
+                SUBJECTIVE -> QuestionBank(
+                    content = question,
+                    description = description,
+                    difficulty = difficulty.toInt(),
+                    answer = SubjectiveAnswer(),
+                    type = SUBJECTIVE,
+                )
+            }
+        } catch (e: Exception) {
+            log.error("生成答案异常: ${e.message}")
+            return null
         }
     }
 }
