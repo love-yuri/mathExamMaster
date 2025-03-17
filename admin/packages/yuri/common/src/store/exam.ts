@@ -21,10 +21,7 @@ export const useExamStore = defineStore('exam-info', {
       this.releaseId = releaseId;
     },
   },
-  persist: {
-    // 持久化
-    paths: ['releaseId', 'status'],
-  },
+  persist: true,
   state: (): {
     releaseId?: string;
     status: ExamStatus;

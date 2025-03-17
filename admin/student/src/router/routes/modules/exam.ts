@@ -41,6 +41,19 @@ const routes: RouteRecordRaw[] = [
           title: '考试结束',
         },
       },
+      {
+        name: 'viewResult',
+        path: '/view/result',
+        component: () =>
+          import('#/views/examManager/components/viewResult.vue'),
+        meta: {
+          affixTab: false,
+          hideInMenu: true,
+          hideInTab: true,
+          icon: 'lucide:copyright',
+          title: '查案考试详情',
+        },
+      },
     ],
   },
 ];

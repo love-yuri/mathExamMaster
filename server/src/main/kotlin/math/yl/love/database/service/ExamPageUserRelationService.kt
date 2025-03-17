@@ -47,6 +47,7 @@ class ExamPageUserRelationService(
 
             // 已经完成的试卷
             1 -> pages.eq(ExamPageUserRelation::status, ExamPageStatusEnum.FINISHED)
+            2 -> pages.eq(ExamPageUserRelation::status, ExamPageStatusEnum.REVIEW_COMPLETED)
         }
 
         return pages.list()

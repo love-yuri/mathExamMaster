@@ -183,9 +183,9 @@ class ExamPageReleaseService(
      * 获取当前用户考试信息
      * @param id 发布id
      */
-    fun examInfo(id: Long): ExamInfoResult {
+    fun examInfo(id: Long): ExamInfoResult? {
         val userId = userService.getUserInfo().id
-        return baseMapper.examInfo(id, userId) ?: throw BizException("考试不存在!!")
+        return baseMapper.examInfo(id, userId)
     }
 
     /**
@@ -193,7 +193,7 @@ class ExamPageReleaseService(
      */
     @Transactional(rollbackFor = [Exception::class])
     fun check(id: Long): Boolean {
-        val examInfo = examInfo(id)
+        val examInfo = examInfo(id) ?: return false
         if (examInfo.status == ExamPageStatusEnum.DOING) {
             val diff = Duration.between(examInfo.examStartTime, LocalDateTime.now())
             if (diff.toSeconds() > examInfo.limitedTime) {

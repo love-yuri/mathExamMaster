@@ -51,6 +51,7 @@ export { default as Tab } from 'primevue/tab';
 export { default as TabList } from 'primevue/tablist';
 export { default as TabPanel } from 'primevue/tabpanel';
 export { default as Tabs } from 'primevue/tabs';
+export { default as TabView } from 'primevue/tabview';
 export { default as Tag } from 'primevue/tag';
 export { default as Textarea } from 'primevue/textarea';
 export { default as Toast } from 'primevue/toast';

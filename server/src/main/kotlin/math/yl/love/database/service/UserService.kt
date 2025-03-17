@@ -94,6 +94,7 @@ class UserService(
             // 理论上不可能不存在
             val user = getByUsername(username) ?: throw RuntimeException("用户不存在!!")
             UserInfo(
+                id = user.id,
                 role = user.role,
                 username = user.username,
                 nickname = user.nickname,
