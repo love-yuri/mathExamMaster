@@ -12,6 +12,10 @@ data class ExamListResult (
     @Serializable(with = LongAsStringSerializer::class)
     val id: Long,
 
+    @Schema(description = "relationId")
+    @Serializable(with = LongAsStringSerializer::class)
+    val relationId: Long,
+
     @Schema(description = "试卷名称")
     val name: String,
 

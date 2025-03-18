@@ -23,6 +23,7 @@ export interface ExamListResult {
   createTime: string;
   id: string;
   name: string;
+  relationId: string;
 }
 /**
  * 试卷发布结果

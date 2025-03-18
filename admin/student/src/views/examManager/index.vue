@@ -7,11 +7,7 @@
 <template>
   <div class="exam-manager-container">
     <div v-if="!currentReleaseId" class="card">
-      <TabView
-        v-model:active-index="currentMode"
-        class="mb-4"
-        @tab-change="handleTabChange"
-      >
+      <TabView v-model:active-index="currentMode" class="mb-4">
         <TabPanel header="进行中" :value="0">
           <div class="exam-list-container">
             <div v-if="loading" class="empty-state">
@@ -95,7 +91,7 @@
                       <Button
                         label="查看成绩"
                         icon="pi pi-chart-bar"
-                        @click="viewResult(exam.id)"
+                        @click="viewResult(exam.relationId)"
                         severity="primary"
                       />
                     </div>
@@ -177,11 +173,6 @@ async function loadExamList() {
   } finally {
     loading.value = false;
   }
-}
-
-// 切换标签页时的处理
-function handleTabChange() {
-  loadExamList();
 }
 
 // 开始考试

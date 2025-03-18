@@ -43,7 +43,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'viewResult',
-        path: '/view/result',
+        path: String.raw`/view/result:id(\d+)`,
         component: () =>
           import('#/views/examManager/components/viewResult.vue'),
         meta: {

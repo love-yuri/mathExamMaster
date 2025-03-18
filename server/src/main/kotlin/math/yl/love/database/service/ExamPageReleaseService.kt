@@ -142,7 +142,8 @@ class ExamPageReleaseService(
             result.add(ExamListResult(
                 id = release.id!!,
                 createTime = release.createTime,
-                name = examPage.title
+                name = examPage.title,
+                relationId = it.id!!
             ))
         }
         return result
