@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 20:59:15
- * @LastEditTime: 2025-03-24 19:48:32
+ * @LastEditTime: 2025-03-24 19:56:31
  * @Description: 单选题
 -->
 <template>
@@ -12,19 +12,24 @@
         placeholder="请输入题目..."
       />
     </div>
-    <Select
-      v-model="question.difficulty"
-      :options="[
-        { label: '易', value: 2 },
-        { label: '中', value: 4 },
-        { label: '难', value: 6 },
-        { label: '极难', value: 8 },
-      ]"
-      option-label="label"
-      option-value="value"
-      placeholder="请选择难度"
-      class="mt-2 w-full"
-    />
+    <div class="mt-2 flex items-center">
+      <span class="mr-2 flex-shrink-0 text-[20px] font-medium">
+        题目难度:
+      </span>
+      <Select
+        v-model="question.difficulty"
+        :options="[
+          { label: '易', value: 2 },
+          { label: '中', value: 4 },
+          { label: '难', value: 6 },
+          { label: '极难', value: 8 },
+        ]"
+        option-label="label"
+        option-value="value"
+        placeholder="请选择难度"
+        class="w-full"
+      />
+    </div>
     <MultiSelect
       v-model="selectedKnowledgePoints"
       :options="knowledgePoints"
@@ -40,7 +45,7 @@
       option-value="id"
       filter
       option-label="name"
-      placeholder="请选择试卷分类..."
+      placeholder="请选择题目分类..."
     />
     <div class="my-3 flex">
       <div class="flex items-center">
