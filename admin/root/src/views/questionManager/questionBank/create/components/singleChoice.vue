@@ -18,6 +18,7 @@
       option-label="name"
       placeholder="请选择关联知识点..."
     />
+    <div class="h-8" @click="selectPaperCategory">选择试卷分类</div>
     <div class="my-3 flex">
       <Button
         class=""
@@ -93,13 +94,14 @@
       v-model:show="showDescription"
       v-model:content="question.description"
     />
+    <QuestionCategorySelect ref="categorySelectRef" />
     <AiCreate ref="aiCreateRef" :type="question.type" />
   </div>
 </template>
 <script setup lang="ts">
 import type { KnowledgePoint, QuestionAnswer } from '@yuri/types';
 
-import { onMounted, ref, useTemplateRef } from 'vue';
+import { onMounted, ref, unref, useTemplateRef } from 'vue';
 
 import {
   checkEmpty,
@@ -112,6 +114,7 @@ import {
   Button,
   InputText,
   MultiSelect,
+  QuestionCategorySelect,
   RadioButton,
   Rating,
   WangEditor,
@@ -127,6 +130,7 @@ const showDescription = ref(false);
 const isUpdate = ref(false);
 const question = ref(new SingleChoiceAnswer());
 const aiCreateRef = useTemplateRef('aiCreateRef');
+const categorySelectRef = useTemplateRef('categorySelectRef');
 
 /**
  * 处理知识点选择
@@ -218,6 +222,10 @@ function aiCreateQuestion() {
     const q = param as SingleChoiceAnswer;
     question.value.copy(q);
   });
+}
+
+function selectPaperCategory() {
+  unref(categorySelectRef)?.open([], (ids: any[]) => {});
 }
 
 defineExpose({ openAsUpdate });

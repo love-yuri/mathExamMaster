@@ -4,6 +4,8 @@ export * from './api/examPageReleaseApi';
 export * from './api/examPageUserRelationApi';
 export * from './api/knowledgePointApi';
 export * from './api/questionBankApi';
+export * from './api/questionCategoryApi';
+export * from './api/questionCategoryRelationApi';
 export * from './api/systemApi';
 export * from './api/systemFileApi';
 export * from './api/userApi';

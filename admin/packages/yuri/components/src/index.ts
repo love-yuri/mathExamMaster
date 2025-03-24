@@ -1,10 +1,10 @@
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-02 19:23:36
- * @LastEditTime: 2025-03-11 16:25:34
+ * @LastEditTime: 2025-03-24 16:25:14
  * @Description: 通用组件导出
  */
-
+export { default as QuestionCategorySelect } from './categorySelect/categorySelect.vue';
 export { default as DefaultConfirmDialog } from './confirmDialog/default.vue';
 export { default as FameraButton } from './cssButtons/famera.vue';
 export { default as GaganButton } from './cssButtons/gagan.vue';
@@ -13,6 +13,8 @@ export { default as UserSelect } from './userSelect/index.vue';
 export { default as WangEditor } from './wangEditor/index.vue';
 export { default as PreviewEditor } from './wangEditor/previewEditor.vue';
 export * from './wangEditor/templates';
+export { EllipsisText } from '@vben/common-ui';
+export { default as Badge } from 'primevue/badge';
 export { default as Button } from 'primevue/button';
 export { default as Calendar } from 'primevue/calendar';
 export { default as Card } from 'primevue/card';
@@ -57,4 +59,5 @@ export { default as Textarea } from 'primevue/textarea';
 export { default as Toast } from 'primevue/toast';
 export { default as ToggleSwitch } from 'primevue/toggleswitch';
 export { default as Toolbar } from 'primevue/toolbar';
+
 export { default as Tooltip } from 'primevue/tooltip';
