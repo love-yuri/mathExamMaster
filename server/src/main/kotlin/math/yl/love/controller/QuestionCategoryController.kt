@@ -1,0 +1,14 @@
+package math.yl.love.controller
+
+import io.swagger.v3.oas.annotations.tags.Tag
+import math.yl.love.common.mybatis.BaseController
+import math.yl.love.database.domain.entity.QuestionCategory
+import math.yl.love.database.mapper.QuestionCategoryMapper
+import math.yl.love.database.service.QuestionCategoryService
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+
+@RestController
+@RequestMapping("/question/category")
+@Tag(name = "题目分类表")
+class QuestionCategoryController: BaseController<QuestionCategory, QuestionCategoryMapper, QuestionCategoryService>()

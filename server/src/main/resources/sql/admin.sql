@@ -188,3 +188,30 @@ CREATE TABLE `user_score` (
    `update_by` varchar(16) NOT NULL comment '更新用户',
    PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户得分记录表';
+
+DROP TABLE IF EXISTS `question_category`;
+CREATE TABLE `question_category` (
+   `id` bigint NOT NULL COMMENT '分类id',
+   `name` varchar(64) NOT NULL comment '分类名称',
+   `description` varchar(255) NULL DEFAULT NULL comment '分类描述',
+   `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
+   `create_time` datetime NOT NULL COMMENT '创建时间',
+   `create_by` varchar(16) NOT NULL comment '创建用户',
+   `update_time` datetime NOT NULL COMMENT '最后修改时间',
+   `update_by` varchar(16) NOT NULL comment '更新用户',
+   PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='题目分类表';
+
+DROP TABLE IF EXISTS `question_category_relation`;
+CREATE TABLE `question_category_relation` (
+   `id` bigint NOT NULL COMMENT '主键id',
+   `question_bank_id` bigint NOT NULL COMMENT '题目id',
+   `category_id` bigint NOT NULL COMMENT '分类id',
+   `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
+   `create_time` datetime NOT NULL COMMENT '创建时间',
+   `create_by` varchar(16) NOT NULL comment '创建用户',
+   `update_time` datetime NOT NULL COMMENT '最后修改时间',
+   `update_by` varchar(16) NOT NULL comment '更新用户',
+   PRIMARY KEY (`id`) USING BTREE,
+   INDEX `idx_question_category` (`question_bank_id`, `category_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='题目-分类关联表';
