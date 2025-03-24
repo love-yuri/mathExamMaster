@@ -1,9 +1,10 @@
 import type { KnowledgePoint } from './knowledgePointApi';
+import type { QuestionCategory } from './questionCategoryApi';
 
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-06 22:37:57
- * @LastEditTime: 2025-03-11 11:05:46
+ * @LastEditTime: 2025-03-24 19:47:41
  * @Description: 题目
  */
 import { BaseEntity } from './base';
@@ -64,7 +65,7 @@ export abstract class QuestionAnswer extends BaseEntity {
   override reset(): void {
     this.description = '';
     this.content = '';
-    this.difficulty = 5;
+    this.difficulty = 6;
   }
 }
 
@@ -180,9 +181,11 @@ export class MultipleChoiceAnswer extends QuestionAnswer {
 export interface SaveQuestionAnswerParam {
   knowledgePointIds: string[];
   questionBank: QuestionAnswer;
+  questionCategoryIds: string[];
 }
 
 export interface FullQuestionBank {
+  categories: QuestionCategory[];
   knowledgePoints: KnowledgePoint[];
   questionBank: QuestionAnswer;
 }

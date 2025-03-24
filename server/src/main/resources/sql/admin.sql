@@ -115,7 +115,7 @@ CREATE TABLE `exam_page` (
  `title` varchar(255) NOT NULL COMMENT '试卷的标题',
  `subject` tinyint(1) NOT NULL DEFAULT 0 COMMENT '试卷科目，默认0: 高等数学',
  `type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '试卷的类型，默认0: 普通试卷',
- `difficulty` tinyint(1) NOT NULL DEFAULT 5 COMMENT '试卷的难度，默认5，最高9',
+ `difficulty` tinyint(1) NOT NULL DEFAULT 6 COMMENT '试卷的难度，默认6，最高9, 难',
  `limited_time` int NOT NULL DEFAULT 7200 COMMENT '试卷限时（秒），默认7200秒（2小时）',
  `total_score` int NOT NULL DEFAULT 100 COMMENT '试卷总分，默认100',
  `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',

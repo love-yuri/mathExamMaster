@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 20:59:15
- * @LastEditTime: 2025-03-12 20:58:34
+ * @LastEditTime: 2025-03-24 19:48:32
  * @Description: 单选题
 -->
 <template>
@@ -12,10 +12,19 @@
         placeholder="请输入题目..."
       />
     </div>
-    <div class="my-2 flex items-center">
-      <div class="mr-4 text-[20px]">难度:</div>
-      <Rating v-model="question.difficulty" :stars="9" />
-    </div>
+    <Select
+      v-model="question.difficulty"
+      :options="[
+        { label: '易', value: 2 },
+        { label: '中', value: 4 },
+        { label: '难', value: 6 },
+        { label: '极难', value: 8 },
+      ]"
+      option-label="label"
+      option-value="value"
+      placeholder="请选择难度"
+      class="mt-2 w-full"
+    />
     <MultiSelect
       v-model="selectedKnowledgePoints"
       :options="knowledgePoints"
@@ -23,6 +32,15 @@
       filter
       option-label="name"
       placeholder="请选择关联知识点..."
+    />
+    <MultiSelect
+      v-model="questionCategoryIds"
+      :options="categories"
+      class="my-2 w-full"
+      option-value="id"
+      filter
+      option-label="name"
+      placeholder="请选择试卷分类..."
     />
     <div class="my-3 flex">
       <div class="flex items-center">
@@ -88,15 +106,21 @@ import {
   knowledgePointApi,
   message,
   questionBankApi,
+  questionCategoryApi,
 } from '@yuri/common';
 import {
   Button,
   MultiSelect,
   RadioButton,
-  Rating,
+  Select,
   WangEditor,
 } from '@yuri/components';
-import { JudgeAnswer, KnowledgePoint, QuestionAnswer } from '@yuri/types';
+import {
+  JudgeAnswer,
+  KnowledgePoint,
+  QuestionAnswer,
+  QuestionCategory,
+} from '@yuri/types';
 
 import AiCreate from './aiCreate.vue';
 import SetDescription from './setDescription.vue';
@@ -118,6 +142,14 @@ const loadKnowledgePoints = async () => {
   knowledgePoints.value = res;
 };
 
+const categories = ref<QuestionCategory[]>([]);
+const questionCategoryIds = ref<string[]>([]);
+
+const loadCategories = async () => {
+  const res = await questionCategoryApi.list();
+  categories.value = res;
+};
+
 /**
  * 创建题目
  * 需要检查题目内容和选项内容
@@ -136,6 +168,7 @@ function create() {
     fun({
       knowledgePointIds: selectedKnowledgePoints.value.map((it) => it.id!),
       questionBank: question.value,
+      questionCategoryIds: questionCategoryIds.value,
     }),
     !isUpdate.value,
     '题目',
@@ -186,5 +219,6 @@ defineExpose({ openAsUpdate });
  */
 onMounted(() => {
   loadKnowledgePoints();
+  loadCategories();
 });
 </script>

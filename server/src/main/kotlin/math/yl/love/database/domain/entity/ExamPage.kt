@@ -43,9 +43,9 @@ data class ExamPage (
     @TableField(value = DataBaseConstant.UPDATE_BY, fill = FieldFill.INSERT_UPDATE)
     override val updateBy: String? = null,
 
-    @Schema(description = "试卷的难度，默认5，最高9")
+    @Schema(description = "试卷的难度，默认6，最高9, 难")
     @TableField(value = "difficulty")
-    val difficulty: Int = 5,
+    val difficulty: Int = 6,
 
     @Schema(description = "试卷限时（秒），默认7200秒（2小时）")
     @TableField(value = "limited_time")

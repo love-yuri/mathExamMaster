@@ -6,10 +6,19 @@
         placeholder="请输入题目..."
       />
     </div>
-    <div class="my-2 flex items-center">
-      <div class="mr-4 text-[20px]">难度:</div>
-      <Rating v-model="question.difficulty" :stars="9" />
-    </div>
+    <Select
+      v-model="question.difficulty"
+      :options="[
+        { label: '易', value: 2 },
+        { label: '中', value: 4 },
+        { label: '难', value: 6 },
+        { label: '极难', value: 8 },
+      ]"
+      option-label="label"
+      option-value="value"
+      placeholder="请选择难度"
+      class="mt-2 w-full"
+    />
     <MultiSelect
       v-model="selectedKnowledgePoints"
       :options="knowledgePoints"
@@ -18,7 +27,15 @@
       option-label="name"
       placeholder="请选择关联知识点..."
     />
-    <div class="h-8" @click="selectPaperCategory">选择试卷分类</div>
+    <MultiSelect
+      v-model="questionCategoryIds"
+      :options="categories"
+      class="my-2 w-full"
+      option-value="id"
+      filter
+      option-label="name"
+      placeholder="请选择试卷分类..."
+    />
     <div class="my-3 flex">
       <Button
         class=""
@@ -94,14 +111,17 @@
       v-model:show="showDescription"
       v-model:content="question.description"
     />
-    <QuestionCategorySelect ref="categorySelectRef" />
     <AiCreate ref="aiCreateRef" :type="question.type" />
   </div>
 </template>
 <script setup lang="ts">
-import type { KnowledgePoint, QuestionAnswer } from '@yuri/types';
+import type {
+  KnowledgePoint,
+  QuestionAnswer,
+  QuestionCategory,
+} from '@yuri/types';
 
-import { onMounted, ref, unref, useTemplateRef } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 
 import {
   checkEmpty,
@@ -109,14 +129,14 @@ import {
   knowledgePointApi,
   message,
   questionBankApi,
+  questionCategoryApi,
 } from '@yuri/common';
 import {
   Button,
   InputText,
   MultiSelect,
-  QuestionCategorySelect,
   RadioButton,
-  Rating,
+  Select,
   WangEditor,
 } from '@yuri/components';
 import { SingleChoiceAnswer } from '@yuri/types';
@@ -130,11 +150,15 @@ const showDescription = ref(false);
 const isUpdate = ref(false);
 const question = ref(new SingleChoiceAnswer());
 const aiCreateRef = useTemplateRef('aiCreateRef');
-const categorySelectRef = useTemplateRef('categorySelectRef');
 
-/**
- * 处理知识点选择
- */
+const categories = ref<QuestionCategory[]>([]);
+const questionCategoryIds = ref<string[]>([]);
+
+const loadCategories = async () => {
+  const res = await questionCategoryApi.list();
+  categories.value = res;
+};
+
 const knowledgePoints = ref<KnowledgePoint[]>([]);
 const selectedKnowledgePoints = ref<KnowledgePoint[]>([]);
 const loadKnowledgePoints = async () => {
@@ -164,6 +188,7 @@ function create() {
     fun({
       knowledgePointIds: selectedKnowledgePoints.value.map((it) => it.id!),
       questionBank: question.value,
+      questionCategoryIds: questionCategoryIds.value,
     }),
     !isUpdate.value,
     '题目',
@@ -224,10 +249,6 @@ function aiCreateQuestion() {
   });
 }
 
-function selectPaperCategory() {
-  unref(categorySelectRef)?.open([], (ids: any[]) => {});
-}
-
 defineExpose({ openAsUpdate });
 
 /**
@@ -235,5 +256,6 @@ defineExpose({ openAsUpdate });
  */
 onMounted(() => {
   loadKnowledgePoints();
+  loadCategories();
 });
 </script>

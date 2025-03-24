@@ -3,7 +3,7 @@ import type { FullQuestionBank, QuestionTypeEnum } from './questionBankApi';
 /*
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-09-11 23:39:11
- * @LastEditTime: 2025-02-25 10:14:39
+ * @LastEditTime: 2025-03-24 19:47:54
  * @Description:
  */
 import { BaseEntity } from './base';
@@ -95,7 +95,7 @@ export class ExamPageCreateVO extends BaseEntity {
   }
 
   override reset(): void {
-    this.difficulty = 5;
+    this.difficulty = 6;
     this.limitedTime = 7200;
     this.totalScore = 100;
     this.title = '';

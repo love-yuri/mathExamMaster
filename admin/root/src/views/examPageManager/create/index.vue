@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2025-03-12 15:35:33
+ * @LastEditTime: 2025-03-24 19:51:18
  * @Description: 创建试卷
 -->
 <template>
@@ -42,7 +42,20 @@
     </div>
     <div class="mt-2 flex items-center">
       <span class="title required-text"> 试卷难度: </span>
-      <Rating v-model="createVo.difficulty" :readonly="isReadOnly" :stars="9" />
+      <Select
+        v-model="createVo.difficulty"
+        :options="[
+          { label: '易', value: 2 },
+          { label: '中', value: 4 },
+          { label: '难', value: 6 },
+          { label: '极难', value: 8 },
+        ]"
+        :disabled="isReadOnly"
+        option-label="label"
+        option-value="value"
+        placeholder="请选择难度"
+        class="w-full"
+      />
     </div>
     <div class="mt-2 flex items-center">
       <div class="flex flex-col items-center justify-center">
@@ -131,7 +144,7 @@ import {
   checkSuccess,
   examPageApi,
 } from '@yuri/common';
-import { Button, InputText, Knob, Rating, Select, Tag } from '@yuri/components';
+import { Button, InputText, Knob, Select, Tag } from '@yuri/components';
 import { ExamPageCreateVO, subjectOptions, typeOptions } from '@yuri/types';
 
 import Show from '#/views/examPageManager/components/show.vue';
