@@ -11,6 +11,7 @@
       :options="databases"
       class="w-full md:w-56"
       option-label="name"
+      option-value="name"
       placeholder="请选择一个数据库"
     />
     <Select
@@ -51,8 +52,8 @@ const loadDatabases = async () => {
   }));
 };
 
-const loadTables = async (database: string) => {
-  const res = await systemApi.tables(database);
+const loadTables = async () => {
+  const res = await systemApi.tables(selectedDb.value);
   tables.value = res.map((name) => ({
     name,
   }));

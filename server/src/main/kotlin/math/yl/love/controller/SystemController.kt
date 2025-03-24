@@ -28,9 +28,9 @@ class SystemController(
     @Operation(summary = "获取所有数据库")
     fun databases() = R.success(systemService.getDataBaseList())
 
-    @GetMapping("/tables")
+    @GetMapping("/tables/{name}")
     @Operation(summary = "获取数据库下所有表")
-    fun tables(@RequestBody name: String) = R.success(systemService.getTables(name))
+    fun tables(@PathVariable name: String) = R.success(systemService.getTables(name))
 
     @PostMapping("/ai/create/question")
     @Operation(summary = "ai生成题目")

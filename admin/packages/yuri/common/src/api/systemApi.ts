@@ -56,7 +56,7 @@ class Api extends BaseApi<BaseEntity> {
    * @param dbName 数据库名
    */
   tables = (dbName: string) => {
-    return this.add<string[]>(RequestType.GET, '/tables', dbName);
+    return this.add<string[]>(RequestType.GET, `/tables/${dbName}`);
   };
 
   /**
