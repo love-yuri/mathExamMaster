@@ -7,6 +7,7 @@ on:
 
     paths:
       - 'src-tauri/tauri.conf.json'
+      - '.github/workflows/work.yml'
 
 jobs:
   publish-tauri:
@@ -94,15 +95,6 @@ jobs:
           echo "最近 15 条提交信息："
           echo "${{ env.COMMITS }}"
       
-      # 上传JAR文件作为构建产物（仅Ubuntu）
-      - name: 上传JAR文件
-        if: matrix.platform == 'ubuntu-22.04'
-        uses: actions/upload-artifact@v3
-        with:
-          name: backend-jar
-          path: release/*.jar
-          retention-days: 5
-          
       # 添加学生端打包步骤（仅Ubuntu）
       - name: 打包学生端应用
         if: matrix.platform == 'ubuntu-22.04'
@@ -111,13 +103,14 @@ jobs:
           pnpm dev:student
           cp student/dist.zip ../release/student-dist.zip
           
-      # 上传学生端应用作为构建产物（仅Ubuntu）
-      - name: 上传学生端应用
+      - name: 上传后端和学生端构建物
         if: matrix.platform == 'ubuntu-22.04'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: student-app
-          path: release/student-dist.zip
+          name: upload-artifact
+          path: |
+            release/*.jar
+            release/student-dist.zip
           retention-days: 5
 
       - name: 开始打包应用
