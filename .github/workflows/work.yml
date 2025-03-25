@@ -132,7 +132,7 @@ jobs:
       # 添加上传JAR和dist.zip到Release的步骤
       - name: 上传JAR和学生端到Release
         if: matrix.platform == 'ubuntu-22.04' && steps.tauri.outputs.releaseId
-        uses: actions/github-script@v7
+        uses: actions/github-script@v7.0.1
         env:
           RELEASE_ID: ${{ steps.tauri.outputs.releaseId }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -147,7 +147,7 @@ jobs:
             
             // 上传每个文件到Release
             for (const file of files) {
-              if (file.endsWith('.jar') || file === 'student-dist.zip') {
+              if (file.endsWith('.jar') || file.endsWith('dist.zip')) {
                 const filePath = path.join(releaseDir, file);
                 const fileContent = fs.readFileSync(filePath);
                 

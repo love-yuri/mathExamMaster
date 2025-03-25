@@ -10,7 +10,7 @@
     </parent>
     <groupId>yl.love</groupId>
     <artifactId>math</artifactId>
-    <version>1.1.0-kotlin-server</version>
+    <version>1.1.1-kotlin-server</version>
     <name>kotlin</name>
     <description>kotlin</description>
     <url/>
