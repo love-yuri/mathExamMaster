@@ -49,6 +49,24 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
         # webkitgtk 4.0 适用于 Tauri v1 - webkitgtk 4.1 适用于 Tauri v2.
+      
+      # 添加Java环境设置（仅Ubuntu）
+      - name: 设置Java环境
+        if: matrix.platform == 'ubuntu-22.04'
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '22'
+          cache: 'maven'
+      
+      # 添加Maven打包步骤（仅Ubuntu）
+      - name: 打包后端Jar
+        if: matrix.platform == 'ubuntu-22.04'
+        working-directory: server/
+        run: |
+          mvn clean package -DskipTests
+          mkdir -p ../release
+          cp target/*.jar ../release/
 
       - name: 安装pnpm
         run: npm install -g pnpm
@@ -75,6 +93,32 @@ jobs:
         run: |
           echo "最近 15 条提交信息："
           echo "${{ env.COMMITS }}"
+      
+      # 上传JAR文件作为构建产物（仅Ubuntu）
+      - name: 上传JAR文件
+        if: matrix.platform == 'ubuntu-22.04'
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend-jar
+          path: release/*.jar
+          retention-days: 5
+          
+      # 添加学生端打包步骤（仅Ubuntu）
+      - name: 打包学生端应用
+        if: matrix.platform == 'ubuntu-22.04'
+        working-directory: admin/
+        run: |
+          pnpm dev:student
+          cp student/dist.zip ../release/student-dist.zip
+          
+      # 上传学生端应用作为构建产物（仅Ubuntu）
+      - name: 上传学生端应用
+        if: matrix.platform == 'ubuntu-22.04'
+        uses: actions/upload-artifact@v3
+        with:
+          name: student-app
+          path: release/student-dist.zip
+          retention-days: 5
 
       - name: 开始打包应用
         uses: tauri-apps/tauri-action@v0
