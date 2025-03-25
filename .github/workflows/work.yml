@@ -67,7 +67,7 @@ jobs:
         run: |
           mvn clean package -DskipTests
           mkdir -p ../release
-          cp target/*.jar ../src-tauri/target/release/
+          cp target/*.jar ../release/
 
       - name: 安装pnpm
         run: npm install -g pnpm
@@ -101,8 +101,18 @@ jobs:
         working-directory: admin/
         run: |
           pnpm build:student
-          cp student/dist.zip ../src-tauri/target/release/student-dist.zip
+          cp student/dist.zip ../release/student-dist.zip
           
+      - name: 上传后端和学生端构建物
+        if: matrix.platform == 'ubuntu-22.04'
+        uses: actions/upload-artifact@v4
+        with:
+          name: upload-artifact
+          path: |
+            release/*.jar
+            release/student-dist.zip
+          retention-days: 5
+
       - name: 开始打包应用
         uses: tauri-apps/tauri-action@v0
         env:
@@ -116,3 +126,34 @@ jobs:
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
+
+      - name: 获取最新 Release
+        if: matrix.platform == 'ubuntu-22.04'
+        id: get_release
+        uses: bruceadams/get-release@v1.3.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+      # 上传学生端应用
+      - name: 上传学生端应用
+        uses: actions/upload-release-asset@v1
+        if: matrix.platform == 'ubuntu-22.04'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: release/student-dist.zip
+          asset_name: student-dist.zip
+          asset_content_type: application/zip
+          
+      # 上传后端JAR文件
+      - name: 上传后端JAR文件
+        uses: actions/upload-release-asset@v1
+        if: matrix.platform == 'ubuntu-22.04'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: release/*.jar
+          asset_name: backend.jar
+          asset_content_type: application/java-archive
