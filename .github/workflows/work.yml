@@ -100,7 +100,7 @@ jobs:
         if: matrix.platform == 'ubuntu-22.04'
         working-directory: admin/
         run: |
-          pnpm dev:student
+          pnpm build:student
           cp student/dist.zip ../release/student-dist.zip
           
       - name: 上传后端和学生端构建物
