@@ -67,7 +67,7 @@ jobs:
         run: |
           mvn clean package -DskipTests
           mkdir -p ../release
-          cp target/*.jar ../src-tauri/target/release/*.jar
+          cp target/*.jar ../src-tauri/target/release/
 
       - name: 安装pnpm
         run: npm install -g pnpm
