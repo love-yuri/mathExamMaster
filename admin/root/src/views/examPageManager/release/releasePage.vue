@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-28 17:47:25
- * @LastEditTime: 2025-02-20 19:30:07
+ * @LastEditTime: 2025-03-24 19:53:19
  * @Description: 创建试卷
 -->
 <template>
@@ -30,11 +30,20 @@
           />
         </div>
         <div class="mt-2 flex items-center">
-          <span class="title"> 试卷难度: </span>
-          <Rating
+          <span class="title required-text"> 试卷难度: </span>
+          <Select
             v-model="examPageResult.difficulty"
-            :readonly="true"
-            :stars="9"
+            :options="[
+              { label: '易', value: 2 },
+              { label: '中', value: 4 },
+              { label: '难', value: 6 },
+              { label: '极难', value: 8 },
+            ]"
+            :disabled="true"
+            option-label="label"
+            option-value="value"
+            placeholder="请选择难度"
+            class="w-full"
           />
         </div>
         <div class="mt-2 flex items-center">
@@ -123,7 +132,6 @@ import {
   Card,
   DatePicker,
   InputText,
-  Rating,
   Select,
   Tag,
 } from '@yuri/components';

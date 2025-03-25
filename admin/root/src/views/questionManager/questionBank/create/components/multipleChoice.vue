@@ -6,9 +6,23 @@
         placeholder="请输入题目..."
       />
     </div>
-    <div class="my-2 flex items-center">
-      <div class="mr-4 text-[20px]">难度:</div>
-      <Rating v-model="question.difficulty" :stars="9" />
+    <div class="mt-2 flex items-center">
+      <span class="mr-2 flex-shrink-0 text-[20px] font-medium">
+        题目难度:
+      </span>
+      <Select
+        v-model="question.difficulty"
+        :options="[
+          { label: '易', value: 2 },
+          { label: '中', value: 4 },
+          { label: '难', value: 6 },
+          { label: '极难', value: 8 },
+        ]"
+        option-label="label"
+        option-value="value"
+        placeholder="请选择难度"
+        class="w-full"
+      />
     </div>
     <MultiSelect
       v-model="selectedKnowledgePoints"
@@ -17,6 +31,15 @@
       filter
       option-label="name"
       placeholder="请选择关联知识点..."
+    />
+    <MultiSelect
+      v-model="questionCategoryIds"
+      :options="categories"
+      class="my-2 w-full"
+      option-value="id"
+      filter
+      option-label="name"
+      placeholder="请选择题目分类..."
     />
     <div class="my-3 flex">
       <Button
@@ -106,19 +129,21 @@ import {
   knowledgePointApi,
   message,
   questionBankApi,
+  questionCategoryApi,
 } from '@yuri/common';
 import {
   Button,
   Checkbox,
   InputText,
   MultiSelect,
-  Rating,
+  Select,
   WangEditor,
 } from '@yuri/components';
 import {
   KnowledgePoint,
   MultipleChoiceAnswer,
   QuestionAnswer,
+  QuestionCategory,
 } from '@yuri/types';
 
 import AiCreate from './aiCreate.vue';
@@ -139,6 +164,14 @@ const selectedKnowledgePoints = ref<KnowledgePoint[]>([]);
 const loadKnowledgePoints = async () => {
   const res = await knowledgePointApi.list();
   knowledgePoints.value = res;
+};
+
+const categories = ref<QuestionCategory[]>([]);
+const questionCategoryIds = ref<string[]>([]);
+
+const loadCategories = async () => {
+  const res = await questionCategoryApi.list();
+  categories.value = res;
 };
 
 /**
@@ -163,6 +196,7 @@ function create() {
     fun({
       knowledgePointIds: selectedKnowledgePoints.value.map((it) => it.id!),
       questionBank: question.value,
+      questionCategoryIds: questionCategoryIds.value,
     }),
     !isUpdate.value,
     '题目',
@@ -227,5 +261,6 @@ defineExpose({ openAsUpdate });
  */
 onMounted(() => {
   loadKnowledgePoints();
+  loadCategories();
 });
 </script>

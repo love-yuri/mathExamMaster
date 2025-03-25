@@ -11,5 +11,8 @@ data class SaveQuestionBankParam(
     val questionBank: QuestionBank,
 
     @Schema(description = "知识点")
-    val knowledgePointIds: List<String>
+    val knowledgePointIds: List<String>,
+
+    @Schema(description = "题目分类")
+    val questionCategoryIds: List<Long>
 )

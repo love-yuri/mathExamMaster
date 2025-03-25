@@ -22,4 +22,7 @@ class QuestionCategoryController: BaseController<QuestionCategory, QuestionCateg
     @Operation(summary = "分页")
     fun page(@RequestBody param: BasePageParam) = R.success(baseService.page(param.current, param.size))
 
+    @PostMapping("list")
+    @Operation(summary = "获取所有分类")
+    fun list() =  R.success(baseService.list())
 }

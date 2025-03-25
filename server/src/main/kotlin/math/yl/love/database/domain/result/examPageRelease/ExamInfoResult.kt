@@ -41,7 +41,7 @@ data class ExamInfoResult (
     @Schema(description = "开始考试时间")
     val examStartTime: LocalDateTime? = null,
 
-    @Schema(description = "试卷的难度，默认5，最高9")
+    @Schema(description = "试卷的难度，默认6，最高9, 难")
     @TableField(value = "difficulty")
     val difficulty: Int,
 

@@ -1,24 +1,13 @@
 <template>
   <Modal>
     <div class="min-h-[500px] p-3">
-      <div class="mb-3 flex items-center justify-between">
-        <div>
-          <Button
-            class="mr-2"
-            icon="pi pi-check"
-            label="确认选择"
-            severity="success"
-            @click="confirm"
-          />
-        </div>
-      </div>
-
+      {{ selectedCategoryIds }}
       <DataTable
         v-model:selection="selectedCategories"
         :loading="loading"
         :value="categories"
         class="mb-3"
-        data-key="id"
+        data-key="description"
         scrollable
         selection-mode="multiple"
         show-gridlines
@@ -71,17 +60,17 @@
 import type { PageParam, QuestionCategory } from '@yuri/types';
 import type { PageState } from 'primevue/paginator';
 
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
 import { message, questionCategoryApi } from '@yuri/common';
 import {
   Badge,
-  Button,
   Column,
   DataTable,
   EllipsisText,
+  Paginator,
 } from '@yuri/components';
 
 // 数据加载状态
@@ -92,8 +81,17 @@ const searchText = ref('');
 const categories = ref<QuestionCategory[]>([]);
 const selectedCategories = ref<QuestionCategory[]>([]);
 
+const selectedCategoryIds = computed({
+  get: () => selectedCategories.value.map((item) => item.id!!),
+  set: (ids) => {
+    selectedCategories.value = categories.value.filter((item) =>
+      ids.includes(item.id!!),
+    );
+  },
+});
+
 // 回调函数
-let callbackFn: ((result: QuestionCategory[]) => void) | null = null;
+let callbackFn: ((result: string[]) => void) | null = null;
 
 // 分页参数
 const pageParam = ref<PageParam>({
@@ -104,9 +102,7 @@ const pageParam = ref<PageParam>({
 
 const [Modal, modalApi] = useVbenModal({
   fullscreen: false,
-  onConfirm: () => {
-    modalApi.close();
-  },
+  onConfirm: confirm,
   title: '选择题目分类',
 });
 
@@ -144,21 +140,21 @@ async function loadData() {
  */
 function confirm() {
   if (callbackFn) {
-    callbackFn(selectedCategories.value);
+    callbackFn(selectedCategoryIds.value);
   }
   modalApi.close();
 }
 
 /**
  * 打开分类选择对话框
- * @param currentCategories 当前已选分类
+ * @param currentCategoryIds 当前已选分类ID数组
  * @param callback 选择完成后的回调函数
  */
 function open(
-  currentCategories: QuestionCategory[],
-  callback: (result: QuestionCategory[]) => void,
+  currentCategoryIds: string[],
+  callback: (result: string[]) => void,
 ) {
-  selectedCategories.value = [...currentCategories];
+  selectedCategoryIds.value = [...currentCategoryIds];
   callbackFn = callback;
   modalApi.open();
   loadData();

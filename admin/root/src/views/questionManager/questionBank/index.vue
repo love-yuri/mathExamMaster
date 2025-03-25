@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-08 19:49:21
- * @LastEditTime: 2025-03-12 18:23:39
+ * @LastEditTime: 2025-03-24 19:36:26
  * @Description: 题库管理
 -->
 
@@ -54,6 +54,19 @@
               </EllipsisText>
             </template>
           </Column>
+          <Column field="knowledgePoint" header="知识点">
+            <template #body="slotProps: { data: QuestionBankType }">
+              <EllipsisText :max-width="500">
+                <Tag
+                  v-for="item in slotProps.data.categories"
+                  :key="item.id"
+                  :severity="QuestionTypeColorMap[slotProps.data.type]"
+                  :value="item.name"
+                  class="mx-1 my-1 flex-shrink-0"
+                />
+              </EllipsisText>
+            </template>
+          </Column>
           <Column field="action" header="" style="min-width: 110px">
             <template #body="slotProps: { data: QuestionBankType }">
               <SplitButton
@@ -98,6 +111,7 @@ import type {
   KnowledgePoint,
   PageParam,
   QuestionBank,
+  QuestionCategory,
 } from '@yuri/types';
 import type { PageState } from 'primevue/paginator';
 
@@ -131,12 +145,14 @@ const confirm = useConfirm();
 const fullQuestionBanks = ref<FullQuestionBank[]>([]);
 
 type QuestionBankType = QuestionBank & {
+  categories: QuestionCategory[];
   knowledgePoints: KnowledgePoint[];
 };
 
 const questionBanks = computed((): QuestionBankType[] =>
   fullQuestionBanks.value.map((item) => ({
     ...item.questionBank,
+    categories: item.categories,
     knowledgePoints: item.knowledgePoints,
   })),
 );
