@@ -114,6 +114,7 @@ jobs:
           retention-days: 5
 
       - name: 开始打包应用
+        id: tauri
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -126,13 +127,6 @@ jobs:
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
-
-      - name: 获取最新 Release
-        if: matrix.platform == 'ubuntu-22.04'
-        id: get_release
-        uses: bruceadams/get-release@v1.3.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
       # 上传学生端应用
       - name: 上传学生端应用
@@ -141,7 +135,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          upload_url: ${{ steps.tauri.outputs.releaseUploadUrl }}
           asset_path: release/student-dist.zip
           asset_name: student-dist.zip
           asset_content_type: application/zip
@@ -153,7 +147,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          upload_url: ${{ steps.tauri.outputs.releaseUploadUrl }}
           asset_path: release/*.jar
           asset_name: backend.jar
           asset_content_type: application/java-archive
