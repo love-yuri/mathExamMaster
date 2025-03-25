@@ -130,7 +130,7 @@ jobs:
       - name: 获取最新 Release
         if: matrix.platform == 'ubuntu-22.04'
         id: get_release
-        uses: bruceadams/get-release@v1.3.3
+        uses: bruceadams/get-release@v1.3.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
