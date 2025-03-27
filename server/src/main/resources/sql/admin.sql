@@ -215,3 +215,19 @@ CREATE TABLE `question_category_relation` (
    PRIMARY KEY (`id`) USING BTREE,
    INDEX `idx_question_category` (`question_bank_id`, `category_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='题目-分类关联表';
+
+DROP TABLE IF EXISTS `ai_chat_record`;
+CREATE TABLE `ai_chat_record` (
+   `id` bigint NOT NULL COMMENT '记录id',
+   `user_id` bigint NOT NULL COMMENT '用户id',
+   `question` text NOT NULL COMMENT '用户提问内容',
+   `answer` text NOT NULL COMMENT 'AI回复内容',
+   `deleted` boolean NOT NULL DEFAULT FALSE COMMENT '是否删除',
+   `create_time` datetime NOT NULL COMMENT '创建时间',
+   `create_by` varchar(16) NOT NULL COMMENT '创建用户',
+   `update_time` datetime NOT NULL COMMENT '最后修改时间',
+   `update_by` varchar(16) NOT NULL COMMENT '更新用户',
+   PRIMARY KEY (`id`) USING BTREE,
+   INDEX `idx_user_id` (`user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='AI对话记录表';
+
