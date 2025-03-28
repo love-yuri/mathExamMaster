@@ -3,11 +3,14 @@ package math.yl.love.database.service
 import io.github.pigmesh.ai.deepseek.core.DeepSeekClient
 import io.github.pigmesh.ai.deepseek.core.chat.ChatCompletionRequest
 import math.yl.love.common.utils.JsonUtils.parseJson
+import math.yl.love.database.domain.entity.AiChatRecord
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
-final class DeepseekService(
-    private val deepSeekClient: DeepSeekClient
+class DeepseekService(
+    private val deepSeekClient: DeepSeekClient,
+    private val aiChatRecordService: AiChatRecordService
 ) {
 
     /**
@@ -19,6 +22,15 @@ final class DeepseekService(
             .model("deepseek-chat")
             .addUserMessage(msg).build()
 
-        return deepSeekClient.chatCompletion(request).execute().content()
+        val res = deepSeekClient.chatCompletion(request).execute().content()
+
+        aiChatRecordService.save(
+            AiChatRecord(
+                question = msg,
+                answer = res
+            )
+        )
+
+        return res
     }
 }
