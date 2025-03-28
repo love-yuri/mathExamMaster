@@ -91,7 +91,7 @@ class SystemService(
         """.trimIndent()
         val res = deepseekService.chat(prompt)
 
-        val regex = "题目:\\s*(.*)\\s*难度:\\s*(\\d+)\\s*答案:\\s*(.*?)\\s*解析:\\s*(.*)".trimIndent().toRegex(RegexOption.DOT_MATCHES_ALL)
+        val regex = "题目:\\s*(.*)\\s*难度:\\s*(\\d+)\\s*答案:\\s*(\\S*)\\s*解析:\\s*(.*)".trimIndent().toRegex(RegexOption.DOT_MATCHES_ALL)
 
         val matchResult = regex.find(res) ?: run {
             log.error("生成题目失败: $res")
