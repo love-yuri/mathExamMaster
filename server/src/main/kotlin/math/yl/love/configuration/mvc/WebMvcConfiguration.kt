@@ -86,6 +86,7 @@ open class WebMvcConfiguration: WebMvcConfigurationSupport() {
             .allowedHeaders("*")
         super.addCorsMappings(registry)
     }
+
     override fun extendMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
         /**
          * 替换原来的配置，添加自定义配置
@@ -98,7 +99,7 @@ open class WebMvcConfiguration: WebMvcConfigurationSupport() {
     }
 
     @Bean
-    open fun kotlinSerializationJsonHttpMessageConverter(): KotlinSerializationJsonHttpMessageConverter {
+    fun kotlinSerializationJsonHttpMessageConverter(): KotlinSerializationJsonHttpMessageConverter {
         return KotlinSerializationJsonHttpMessageConverter(json)
     }
 }

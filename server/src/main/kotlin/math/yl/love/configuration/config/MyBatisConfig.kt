@@ -72,5 +72,4 @@ class MyBatisConfig {
             return json.parseJson()
         }
     }
-
 }

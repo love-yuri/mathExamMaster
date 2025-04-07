@@ -1,7 +1,7 @@
 <!--
  * @Author: love-yuri yuri2078170658@gmail.com
  * @Date: 2024-10-22 18:41:52
- * @LastEditTime: 2025-02-08 15:07:37
+ * @LastEditTime: 2025-04-07 16:10:59
  * @Description: 修改公式
 -->
 <template>
@@ -37,35 +37,6 @@ const math = ref('');
 const node = ref<YuriMathNode>();
 const dom = ref<IDomEditor>();
 const mathfield = ref<HTMLDivElement>(); // 用于引用 Mathfield 的 DOM 节点
-
-// function getCursorPath(editorElem) {
-//   const selection = DomEditor.getWindow(editorElem).getSelection();
-
-//   if (!selection.rangeCount) return null;
-
-//   // 获取当前 range 对象
-//   const range = selection.getRangeAt(0);
-//   const { commonAncestorContainer } = range;
-//   SlateTransforms.insertNodes(this.editor, node, { at: [1] })
-
-//   // 初始化 path 数组，从光标位置向上遍历 DOM
-//   let node = commonAncestorContainer;
-//   const path = [];
-
-//   while (node && node !== editorElem) {
-//     const parent = node.parentNode;
-
-//     if (parent) {
-//       // 获取 node 在父节点中的索引
-//       const index = Array.prototype.indexOf.call(parent.childNodes, node);
-//       path.push(index);
-//     }
-
-//     node = parent;
-//   }
-
-//   return path.reverse(); // 从根节点到光标节点的顺序
-// }
 
 /* 处理预览弹窗 */
 const [Model, modalApi] = useVbenModal({
@@ -117,6 +88,7 @@ function init() {
 
     // 将 Mathfield 添加到 DOM 中
     mathfield.value!.append(mf);
+    // 设置键盘容器
     window.mathVirtualKeyboard.container = document.querySelector('#Keyboard');
   });
 }

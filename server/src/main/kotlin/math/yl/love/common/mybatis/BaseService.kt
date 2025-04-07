@@ -16,7 +16,7 @@ import kotlin.reflect.KClass
 
 @Component
 @Transactional(readOnly = true)
-abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>>: IService<Entity>, ServiceImpl<Mapper, Entity>() {
+abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>>: ServiceImpl<Mapper, Entity>() {
     protected val logger: Logger = LoggerFactory.getLogger(javaClass)
     protected val queryWrapper get() = KtQueryWrapper(getEntityClass())
     protected val updateWrapper get() = KtUpdateWrapper(getEntityClass())

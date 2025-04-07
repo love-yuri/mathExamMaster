@@ -9,41 +9,27 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.contextual
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
-import math.yl.love.common.base.Log.log
 import math.yl.love.common.mybatis.typeHandler.QuestionAnswerTypeHandler
-import math.yl.love.common.utils.JsonUtils.parseJson
-import math.yl.love.common.utils.JsonUtils.toJson
 import math.yl.love.database.domain.result.questionBank.QuestionAnswer
 import math.yl.love.database.domain.result.questionBank.SingleChoiceAnswer
-import math.yl.love.database.domain.result.userScore.UserScoreDetail
 import math.yl.love.database.domain.typeEnum.ExamPageStatusEnum
-import org.apache.ibatis.type.BaseTypeHandler
-import org.apache.ibatis.type.JdbcType
 import org.apache.ibatis.type.LocalDateTimeTypeHandler
-import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
-import java.sql.CallableStatement
-import java.sql.PreparedStatement
-import java.sql.ResultSet
 import java.time.LocalDateTime
-import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-
 
 @Configuration
 @Import(JacksonAutoConfiguration::class)
-open class JsonConfig : ConfigurationCustomizer {
+class JsonConfig : ConfigurationCustomizer {
 
     companion object {
         /**
