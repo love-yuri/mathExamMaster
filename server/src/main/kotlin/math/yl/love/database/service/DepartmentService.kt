@@ -77,6 +77,8 @@ class DepartmentService(
     @Transactional(rollbackFor = [Exception::class])
     override fun save(entity: Department): Boolean {
         if (entity.parentId != null) {
+            // 有子部门的组织不允许有老师
+            updateWrapper.eq(Department::id, entity.parentId).set(Department::teacherId, null).update()
             val departments = userDepartmentService.findByDepartmentId(entity.parentId)
             if (departments.isNotEmpty()) {
                 throw BizException("不允许有学生的组织添加子部门")

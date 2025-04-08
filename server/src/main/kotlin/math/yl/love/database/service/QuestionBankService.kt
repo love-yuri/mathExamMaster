@@ -13,6 +13,7 @@ import math.yl.love.database.domain.result.questionBank.FullQuestionBank
 import math.yl.love.database.mapper.QuestionBankMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.io.Serializable
 
 @Service
 @Transactional(readOnly = true)
@@ -22,7 +23,8 @@ class QuestionBankService(
     private val redisService: RedisService,
     private val systemConfig: SystemConfig,
     private val questionCategoryRelationService: QuestionCategoryRelationService,
-    private val questionCategoryService: QuestionCategoryService
+    private val questionCategoryService: QuestionCategoryService,
+    private val examPageQuestionRelationService: ExamPageQuestionRelationService
 ): BaseService<QuestionBank, QuestionBankMapper>() {
 
     /**
@@ -96,6 +98,13 @@ class QuestionBankService(
         return true
     }
 
+    @Transactional(rollbackFor = [Exception::class])
+    override fun removeById(id: Serializable?): Boolean {
+        super.removeById(id)
+        examPageQuestionRelationService.deleteByQuestionId(id.toString().toLong())
+        return true
+    }
+
     fun pageSimple(current: Long, size: Long): BasePage<FullQuestionBank> {
         val value = page(Page(current, size))
         val result = Page<FullQuestionBank>(current, size)
@@ -121,7 +130,7 @@ class QuestionBankService(
     }
 
     fun detail(id: Long): FullQuestionBank {
-        val questionBank = getById(id) ?: throw BizException("题目不存在!!!")
+        val questionBank = getById(id) ?: throw BizException("题目${id}不存在!!!")
         val knowledgePointIds = bankAndPointService.findByQuestionBankId(questionBank.id!!).map {
             it.knowledgePointId
         }

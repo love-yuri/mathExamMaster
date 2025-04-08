@@ -49,6 +49,10 @@ class ExamPageReleaseService(
 
         val userIds = userService.departmentService.getUserIds(param.departmentId)
 
+        if (userIds.isEmpty()) {
+            throw BizException("没有发布给任何人!!!")
+        }
+
         // 保存试卷与用户的关系
         val relations = userIds.map {
             ExamPageUserRelation(
@@ -74,9 +78,27 @@ class ExamPageReleaseService(
             examPageId = param.examPageId
         )
         updateById(examPageRelease)
+
+        // 更新发布班级
+        val userIds = userService.departmentService.getUserIds(param.departmentId)
+
+        if (userIds.isEmpty()) {
+            throw BizException("没有发布给任何人!!!")
+        }
+
+        // 先删除原来的数据库
+        userRelationService.removeByRelease(param.id)
+
+        // 保存试卷与用户的关系
+        val relations = userIds.map {
+            ExamPageUserRelation(
+                pageReleaseId = param.id,
+                userId = it,
+            )
+        }
+        userRelationService.saveBatch(relations)
         return true
     }
-
 
     /**
      * 获取当前用户所有发布过的试卷
