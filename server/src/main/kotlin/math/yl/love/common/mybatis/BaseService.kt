@@ -18,8 +18,8 @@ import kotlin.reflect.KClass
 @Transactional(readOnly = true)
 abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>>: ServiceImpl<Mapper, Entity>() {
     protected val logger: Logger = LoggerFactory.getLogger(javaClass)
-    protected val queryWrapper get() = KtQueryWrapper(getEntityClass())
-    protected val updateWrapper get() = KtUpdateWrapper(getEntityClass())
+    val queryWrapper get() = KtQueryWrapper(entityClass)
+    val updateWrapper get() = KtUpdateWrapper(entityClass)
 
     /**
      * 分页数据
@@ -56,6 +56,13 @@ abstract class BaseService <Entity: BaseEntity, Mapper: BaseMapper<Entity>>: Ser
      * @return list结果
      */
     fun KtUpdateWrapper<Entity>.update(): Int = baseMapper.update(this)
+
+    /**
+     * 直接返回list
+     * @return list结果
+     */
+    fun KtQueryWrapper<Entity>.remove2(): Int = baseMapper.delete(this)
+
 
     /**
      * 直接返回list

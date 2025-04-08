@@ -22,4 +22,5 @@ class ExamPageQuestionRelationService: BaseService<ExamPageQuestionRelation, Exa
      */
     fun deleteByPageId(id: Long) = remove(queryWrapper.eq(ExamPageQuestionRelation::examPageId, id))
 
+    fun deleteByQuestionId(id: Long) = remove(queryWrapper.eq(ExamPageQuestionRelation::questionBankId, id))
 }

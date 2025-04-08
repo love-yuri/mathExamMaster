@@ -167,7 +167,7 @@ class ExamPageService(
      * @param id 试卷id
      */
     fun detail(id: Long): ExamPageResult {
-        val page = getById(id) ?: throw BizException("试卷不存在!!")
+        val page = getById(id) ?: throw BizException("试卷${id}不存在!!")
         val result = setByExamPage(page)
         result.questions.forEach {
             it.fullQuestionBank = questionBankService.detail(it.questionBankId)
