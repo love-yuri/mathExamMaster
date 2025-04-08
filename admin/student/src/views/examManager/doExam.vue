@@ -14,7 +14,7 @@
           <div class="grid grid-cols-2 gap-4">
             <div>
               <div class="info">
-                <span class="title">考试科目: </span>s
+                <span class="title">考试科目: </span>
                 <span class="content">{{ examPageSubject }}</span>
               </div>
               <div class="info">

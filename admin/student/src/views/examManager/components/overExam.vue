@@ -9,22 +9,28 @@
   <div class="exam-end-page">
     <div class="message-box">
       <h1 class="title">考试结束</h1>
-      <p class="subtitle">感谢您的参与，请有序离开考场，10s后自动退出登录</p>
+      <p class="subtitle">感谢您的参与，请有序离开考场，{{ leftTime }}s后自动退出登录</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import { useAuthStore } from '@yuri/common';
 
+const leftTime = ref(10);
+
 onMounted(() => {
   // 在考试结束页面停留10秒后自动退出登录
-  setTimeout(() => {
-    const authStore = useAuthStore();
-    authStore.logout(false);
-  }, 10_000);
+  const interval = setInterval(() => {
+    leftTime.value--;
+    if (leftTime.value <= 0) {
+      clearInterval(interval);
+      const authStore = useAuthStore();
+      authStore.logout(false);
+    }
+  }, 1000);
 });
 </script>
 
