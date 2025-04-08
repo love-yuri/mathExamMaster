@@ -127,6 +127,7 @@ class AutoMysqlService(
             import kotlinx.serialization.Contextual
             import kotlinx.serialization.Serializable
             import kotlinx.serialization.Transient
+            import math.yl.love.configuration.config.JsonConfig
             import math.yl.love.common.constant.DataBaseConstant
             import math.yl.love.common.base.NoArg
             import kotlinx.serialization.builtins.LongAsStringSerializer
@@ -147,8 +148,8 @@ class AutoMysqlService(
                 @Schema(description = "是否被删除")
                 val deleted: Boolean = false,
 
-                @Contextual
                 @Schema(description = "创建时间")
+                @Serializable(with = JsonConfig.LocalDateTimeSerializer::class)
                 @TableField(value = DataBaseConstant.CREATE_TIME, fill = FieldFill.INSERT)
                 override val createTime: LocalDateTime? = null,
 
@@ -156,8 +157,8 @@ class AutoMysqlService(
                 @TableField(value = DataBaseConstant.CREATE_BY, fill = FieldFill.INSERT)
                 override val createBy: String? = null,
 
-                @Contextual
                 @Schema(description = "更新时间")
+                @Serializable(with = JsonConfig.LocalDateTimeSerializer::class)
                 @TableField(value = DataBaseConstant.UPDATE_TIME, fill = FieldFill.INSERT_UPDATE)
                 override val updateTime: LocalDateTime? = null,
 

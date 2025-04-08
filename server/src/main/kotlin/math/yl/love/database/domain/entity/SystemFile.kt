@@ -8,6 +8,7 @@ import kotlinx.serialization.Transient
 import kotlinx.serialization.builtins.LongAsStringSerializer
 import math.yl.love.common.base.NoArg
 import math.yl.love.common.constant.DataBaseConstant
+import math.yl.love.configuration.config.JsonConfig
 import math.yl.love.database.domain.typeEnum.FileTypeEnum
 import java.time.LocalDateTime
 

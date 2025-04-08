@@ -9,6 +9,7 @@ import kotlinx.serialization.builtins.LongAsStringSerializer
 import math.yl.love.common.base.NoArg
 import math.yl.love.common.constant.DataBaseConstant
 import math.yl.love.common.mybatis.typeHandler.ListUserScoreDetailTypeHandler
+import math.yl.love.configuration.config.JsonConfig
 import math.yl.love.database.domain.result.userScore.UserScoreDetail
 import java.time.LocalDateTime
 
@@ -27,7 +28,7 @@ data class UserScore (
     @Schema(description = "是否被删除")
     val deleted: Boolean = false,
 
-    @Contextual
+    @Serializable(with = JsonConfig.LocalDateTimeSerializer::class)
     @Schema(description = "创建时间")
     @TableField(value = DataBaseConstant.CREATE_TIME, fill = FieldFill.INSERT)
     override val createTime: LocalDateTime? = null,
@@ -36,7 +37,7 @@ data class UserScore (
     @TableField(value = DataBaseConstant.CREATE_BY, fill = FieldFill.INSERT)
     override val createBy: String? = null,
 
-    @Contextual
+    @Serializable(with = JsonConfig.LocalDateTimeSerializer::class)
     @Schema(description = "更新时间")
     @TableField(value = DataBaseConstant.UPDATE_TIME, fill = FieldFill.INSERT_UPDATE)
     override val updateTime: LocalDateTime? = null,

@@ -43,7 +43,6 @@ class JsonConfig : ConfigurationCustomizer {
             ignoreUnknownKeys = true // 忽略未知字段
             serializersModule = SerializersModule {
                 contextual(LocalDateTime::class, LocalDateTimeSerializer)
-
                 polymorphic(QuestionAnswer::class) {
                     subclass(SingleChoiceAnswer::class)
                 }
