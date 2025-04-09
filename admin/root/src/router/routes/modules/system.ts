@@ -11,7 +11,9 @@ const routes: RouteRecordRaw[] = [
     meta: {
       icon: 'lucide:layout-dashboard',
       order: 2,
+      menuVisibleWithForbidden: false,
       title: '系统管理',
+      authority: ['ADMIN'],
     },
     name: 'system',
     path: '/system',
@@ -23,7 +25,6 @@ const routes: RouteRecordRaw[] = [
         meta: {
           affixTab: false,
           icon: 'lucide:area-chart',
-          menuVisibleWithForbidden: false,
           title: '代码生成',
         },
       },

@@ -11,6 +11,8 @@ const routes: RouteRecordRaw[] = [
     meta: {
       icon: 'lucide:layout-dashboard',
       order: 2,
+      menuVisibleWithForbidden: false,
+      authority: ['ADMIN', 'TEACHER'],
       title: '试卷管理',
     },
     name: 'examPageManager',

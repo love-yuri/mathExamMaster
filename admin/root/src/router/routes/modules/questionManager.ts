@@ -23,6 +23,8 @@ const routes: RouteRecordRaw[] = [
           import('#/views/questionManager/knowledgePoint/index.vue'),
         meta: {
           affixTab: false,
+          authority: ['ADMIN', 'TEACHER'],
+          menuVisibleWithForbidden: false,
           icon: 'lucide:copyright',
           title: '知识点管理',
         },
@@ -34,6 +36,7 @@ const routes: RouteRecordRaw[] = [
           import('#/views/questionManager/knowledgePoint/create/index.vue'),
         meta: {
           affixTab: false,
+          authority: ['ADMIN', 'TEACHER'],
           icon: 'lucide:baggage-claim',
           title: '创建知识点',
         },
@@ -45,6 +48,8 @@ const routes: RouteRecordRaw[] = [
           import('#/views/questionManager/questionBank/index.vue'),
         meta: {
           affixTab: false,
+          menuVisibleWithForbidden: true,
+          authority: ['ADMIN', 'TEACHER'],
           icon: 'lucide:cannabis',
           title: '题库管理',
         },
@@ -56,6 +61,8 @@ const routes: RouteRecordRaw[] = [
           import('#/views/questionManager/questionBank/create/index.vue'),
         meta: {
           affixTab: false,
+          menuVisibleWithForbidden: false,
+          authority: ['ADMIN', 'TEACHER'],
           icon: 'lucide:fish',
           title: '创建题目',
         },
@@ -68,6 +75,8 @@ const routes: RouteRecordRaw[] = [
         meta: {
           affixTab: false,
           hideInMenu: true,
+          authority: ['ADMIN', 'TEACHER'],
+          menuVisibleWithForbidden: false,
           icon: 'lucide:vegan',
           title: '修改题目',
         },

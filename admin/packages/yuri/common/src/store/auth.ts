@@ -42,8 +42,6 @@ export const useAuthStore = defineStore('auth', () => {
 
         userInfo = await fetchUserInfo();
 
-        userStore.setUserInfo(userInfo);
-
         // 用户权限码
         accessStore.setAccessCodes([]);
 

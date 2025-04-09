@@ -22,7 +22,12 @@ async function generateRoutesByFrontend(
   // 如果有禁止访问的页面，将禁止访问的页面替换为403页面
   return mapTree(finalRoutes, (route) => {
     if (menuHasVisibleWithForbidden(route)) {
-      route.component = forbiddenComponent;
+      if (!roles.some((value) => route.meta?.authority?.includes(value))) {
+        route.component = forbiddenComponent;
+        if(route.children && route.children.length != 0) {
+          route.children.forEach((c) => c.component = forbiddenComponent);
+        }
+      }
     }
     return route;
   });
@@ -39,7 +44,6 @@ function hasAuthority(route: RouteRecordRaw, access: string[]) {
     return true;
   }
   const canAccess = access.some((value) => authority.includes(value));
-
   return canAccess || (!canAccess && menuHasVisibleWithForbidden(route));
 }
 

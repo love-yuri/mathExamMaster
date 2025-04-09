@@ -5,6 +5,8 @@ const routes: RouteRecordRaw[] = [
     meta: {
       icon: 'lucide:folder-tree',
       order: 3,
+      menuVisibleWithForbidden: false,
+      authority: ['ADMIN', 'TEACHER'],
       title: '题目分类管理',
     },
     name: 'questionCategoryManager',
