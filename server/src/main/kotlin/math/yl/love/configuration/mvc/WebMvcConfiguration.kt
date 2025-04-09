@@ -1,10 +1,12 @@
 package math.yl.love.configuration.mvc
 
+import cn.dev33.satoken.`fun`.SaFunction
 import cn.dev33.satoken.interceptor.SaInterceptor
 import cn.dev33.satoken.router.SaHttpMethod
 import cn.dev33.satoken.router.SaRouter
 import cn.dev33.satoken.stp.StpUtil
 import math.yl.love.configuration.config.JsonConfig.Companion.json
+import math.yl.love.database.domain.typeEnum.UserRoleEnum
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -27,6 +29,41 @@ open class WebMvcConfiguration: WebMvcConfigurationSupport() {
 
             // 所有接口进行登录校验
             StpUtil.checkLogin()
+
+            // 只有教师和管理员可以访问这里
+            SaRouter
+                .match("/department/owner/departments")
+                .check(SaFunction { StpUtil.checkRoleOr(UserRoleEnum.ADMIN.name, UserRoleEnum.TEACHER.name) })
+                .stop()
+
+            // 管理员权限
+            SaRouter.match(
+                "/user/set/teacher", // 设置老师
+                "/department/**", // 部门操作
+                "/user/department/**" // 部门人员操作
+            ).check { _ ->
+                StpUtil.checkRole(UserRoleEnum.ADMIN.name)
+            }.stop()
+
+            // 否则剩余api只能老师和管理员访问
+            SaRouter.match("/**")
+                .notMatch("/user/info") // 用户信息
+
+                // 学生需要的api也不需要鉴权
+                .notMatch("/exam/page/release/exam/list")
+                .notMatch("/exam/page/release/start/exam")
+                .notMatch("/exam/page/release/exam/info")
+                .notMatch("/exam/page/release/check")
+                .notMatch("/exam/page/question/info")
+                .notMatch("/exam/page/update/user/answer")
+                .notMatch("/exam/page/over/exam")
+
+                .check { _ ->
+                StpUtil.checkRoleOr(
+                    UserRoleEnum.ADMIN.name,
+                    UserRoleEnum.TEACHER.name
+                )
+            }
         })
         // 对所有接口进行校验
         .addPathPatterns("/**")
