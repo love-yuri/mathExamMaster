@@ -167,6 +167,7 @@ class UserScoreService(
             throw BizException("还有学生未阅卷")
         }
         val details = queryWrapper
+            .eq(UserScore::pageReleaseId, id)
             .`in`(UserScore::userId, studentDetails.map { it.userId })
             .list()
 
