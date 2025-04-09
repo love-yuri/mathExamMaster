@@ -1,6 +1,7 @@
 package math.yl.love.configuration.exception
 
 import cn.dev33.satoken.exception.NotLoginException
+import cn.dev33.satoken.exception.NotRoleException
 import math.yl.love.common.base.R
 import math.yl.love.common.base.SystemCode
 import org.slf4j.LoggerFactory
@@ -102,6 +103,16 @@ class ExceptionHandle {
     fun handler(e: HttpMessageNotReadableException): R<*> {
         log.error("yuri: 缺少必要参数!!! ${e.message}", e)
         return R.fail(SystemCode.MissQuery)
+    }
+
+    /**
+     * 缺少必要参数错误
+     */
+    @ExceptionHandler(NotRoleException::class)
+    @ResponseBody
+    fun handler(e: NotRoleException): R<*> {
+        log.error("yuri: 没有该角色 ${e.message}", e)
+        return R.fail(SystemCode.AccessDenied)
     }
 
     /**
