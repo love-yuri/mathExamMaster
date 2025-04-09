@@ -168,6 +168,7 @@ class SystemService(
     /**
      * Ai评分
      */
+    @Transactional(rollbackFor = [Exception::class])
     fun aiCreateScore(param: UserScoreDetail): AiCreateScoreResult? {
         val question = questionBankService.getById(param.questionId) ?: throw BizException("题目不存在!!!")
         val type = when(param.type) {
