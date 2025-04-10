@@ -17,6 +17,11 @@ class RedisService(
     val redisTemplate: RedisTemplate<String, ByteArray>,
     val systemConfig: SystemConfig
 ) {
+    
+    // 删除缓存
+    fun del(key: String) {
+        redisTemplate.delete(key)
+    }
 
     /**
      * 设置缓存

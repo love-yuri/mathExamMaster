@@ -35,7 +35,6 @@ class UserService(
         check(user.password == loginQuery.password) { "密码错误" }
         StpUtil.login(user.username)
         return LoginResult(
-
             token = StpUtil.getTokenValue(),
             role = user.role,
         )
@@ -74,6 +73,8 @@ class UserService(
      * 退出登录
      */
     fun logout() {
+        val username = StpUtil.getLoginId().toString()
+        redisService.del("${RedisConstant.USER_INFO}:${username}")
         StpUtil.logout()
     }
 

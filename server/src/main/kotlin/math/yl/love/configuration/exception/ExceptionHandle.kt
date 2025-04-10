@@ -58,6 +58,7 @@ class ExceptionHandle {
     @ExceptionHandler(NotLoginException::class)
     @ResponseBody
     fun handler(e: NotLoginException): R<*> {
+        log.error("未登录: {}", e.message, e)
         return R.fail(SystemCode.AccessTokenError.code,  e.message ?: SystemCode.AccessTokenError.message)
     }
 
