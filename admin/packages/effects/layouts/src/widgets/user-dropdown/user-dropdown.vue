@@ -9,7 +9,7 @@ import { useHoverToggle } from '@vben/hooks';
 import { LockKeyhole, LogOut } from '@vben/icons';
 import { $t } from '@vben/locales';
 import { preferences, usePreferences } from '@vben/preferences';
-import { useLockStore } from '@vben/stores';
+import { useLockStore, useUserStore } from '@vben/stores';
 import { isWindowsOs } from '@vben/utils';
 
 import { useVbenModal } from '@vben-core/popup-ui';
@@ -161,11 +161,13 @@ if (enableShortcutKey.value) {
     }
   });
 }
+
+const userStore = useUserStore();
 </script>
 
 <template>
   <LockModal
-    v-if="preferences.widget.lockScreen"
+    v-if="false"
     :avatar="avatar"
     :text="text"
     @submit="handleSubmitLock"
@@ -186,9 +188,30 @@ if (enableShortcutKey.value) {
 
   <DropdownMenu v-model:open="openPopover">
     <DropdownMenuTrigger ref="refTrigger" :disabled="props.trigger === 'hover'">
-      <div class="hover:bg-accent ml-1 mr-2 cursor-pointer rounded-full p-1.5">
-        <div class="hover:text-accent-foreground flex-center">
-          <VbenAvatar :alt="text" :src="avatar" class="size-8" dot />
+      <div
+        class="hover:bg-accent group relative ml-1 mr-2 cursor-pointer rounded-full border border-gray-500 p-1.5 transition-all duration-300 hover:shadow-md"
+      >
+        <div
+          class="group-hover:text-accent-foreground flex items-center justify-center px-3 py-1 text-sm font-medium text-gray-700 transition-colors duration-300"
+        >
+          <span class="flex max-w-[120px] items-center truncate">
+            当前用户: {{ userStore.userInfo?.nickname }}
+          </span>
+          <!-- 可选：添加用户图标 -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="ml-1 h-4 w-4 opacity-80"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            />
+          </svg>
         </div>
       </div>
     </DropdownMenuTrigger>
@@ -220,18 +243,20 @@ if (enableShortcutKey.value) {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator v-if="menus?.length" />
-        <DropdownMenuItem
-          v-for="menu in menus"
-          :key="menu.text"
-          class="mx-1 flex cursor-pointer items-center rounded-sm py-1 leading-8"
-          @click="menu.handler"
-        >
-          <VbenIcon :icon="menu.icon" class="mr-2 size-4" />
-          {{ menu.text }}
-        </DropdownMenuItem>
+        <template v-if="false">
+          <DropdownMenuItem
+            v-for="menu in menus"
+            :key="menu.text"
+            class="mx-1 flex cursor-pointer items-center rounded-sm py-1 leading-8"
+            @click="menu.handler"
+          >
+            <VbenIcon :icon="menu.icon" class="mr-2 size-4" />
+            {{ menu.text }}
+          </DropdownMenuItem>
+        </template>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          v-if="preferences.widget.lockScreen"
+          v-if="false"
           class="mx-1 flex cursor-pointer items-center rounded-sm py-1 leading-8"
           @click="handleOpenLock"
         >

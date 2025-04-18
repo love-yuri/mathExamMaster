@@ -82,6 +82,7 @@ function toggleTheme(event: MouseEvent) {
 
 <template>
   <VbenButton
+    v-if="false"
     :aria-label="theme"
     :class="[`is-${theme}`]"
     aria-live="polite"

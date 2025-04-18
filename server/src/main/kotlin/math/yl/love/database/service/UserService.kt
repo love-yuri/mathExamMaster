@@ -73,8 +73,14 @@ class UserService(
      * 退出登录
      */
     fun logout() {
-        val username = StpUtil.getLoginId().toString()
-        redisService.del("${RedisConstant.USER_INFO}:${username}")
+
+        try {
+            val username = StpUtil.getLoginId().toString()
+            redisService.del("${RedisConstant.USER_INFO}:${username}")
+        } catch (e: Exception) {
+            log.error("yuri: 退出登录失败", e)
+        }
+
         StpUtil.logout()
     }
 

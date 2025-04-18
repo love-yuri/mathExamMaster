@@ -15,9 +15,23 @@ export const overridesPreferences = defineOverridesPreferences({
   app: {
     // 指定路由方式为前端路由
     accessMode: 'frontend',
+    enablePreferences: false,
     name: import.meta.env.VITE_APP_TITLE,
   },
   copyright: {
     enable: false,
+  },
+  shortcutKeys: {
+    enable: false,
+  },
+  theme: {
+    mode: 'dark',
+    semiDarkHeader: false,
+    semiDarkSidebar: false,
+  },
+  widget: {
+    fullscreen: false,
+    lockScreen: false,
+    notification: false,
   },
 });

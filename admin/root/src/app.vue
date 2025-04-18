@@ -18,7 +18,6 @@ import { useToast } from 'primevue/usetoast';
 
 defineOptions({ name: 'App' });
 
-
 /**
  * 初始化Toast
  * 将 toast实例注册进pinia中

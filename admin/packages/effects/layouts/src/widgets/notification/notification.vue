@@ -63,6 +63,7 @@ function handleClick(item: NotificationItem) {
 </script>
 <template>
   <VbenPopover
+    v-if="false"
     v-model:open="open"
     content-class="relative right-2 w-[360px] p-0"
   >
