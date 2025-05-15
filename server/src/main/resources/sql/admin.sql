@@ -23,19 +23,6 @@ CREATE TABLE user (
 # 默认管理
 insert into user value (1, 1, 'yuri', 'yuri', 'yuri', 0, NOW(), 'yuri', NOW(), 'yuri');
 
-DROP TABLE IF EXISTS `user_department`;
-CREATE TABLE user_department (
-  `id` bigint NOT NULL COMMENT 'id',
-  `user_id` bigint NOT NULL comment '用户id',
-  `department_id` bigint NOT NULL comment '组织id',
-  `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `create_by` varchar(16) NOT NULL comment '创建用户',
-  `update_time` datetime NOT NULL COMMENT '最后修改时间',
-  `update_by` varchar(16) NOT NULL  comment '更新用户',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户-组织关联表';
-
 DROP TABLE IF EXISTS `department`;
 CREATE TABLE department (
   `id` bigint NOT NULL COMMENT 'id',
@@ -47,9 +34,26 @@ CREATE TABLE department (
   `create_by` varchar(16) NOT NULL comment '创建用户',
   `update_time` datetime NOT NULL COMMENT '最后修改时间',
   `update_by` varchar(16) NOT NULL  comment '更新用户',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  CONSTRAINT `fk_department_teacher` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_department_parent` FOREIGN KEY (`parent_id`) REFERENCES `department` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='组织-部门表';
 insert into department value (1, '常熟理工学院', NULL, null,0, NOW(), 'yuri', NOW(), 'yuri');
+
+DROP TABLE IF EXISTS `user_department`;
+CREATE TABLE user_department (
+  `id` bigint NOT NULL COMMENT 'id',
+  `user_id` bigint NOT NULL comment '用户id',
+  `department_id` bigint NOT NULL comment '组织id',
+  `deleted` boolean NOT NULL DEFAULT FALSE comment '是否删除',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `create_by` varchar(16) NOT NULL comment '创建用户',
+  `update_time` datetime NOT NULL COMMENT '最后修改时间',
+  `update_by` varchar(16) NOT NULL  comment '更新用户',
+  PRIMARY KEY (`id`) USING BTREE,
+  CONSTRAINT `fk_user_department_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_user_department_department` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户-组织关联表';
 
 DROP TABLE IF EXISTS `system_file`;
 CREATE TABLE `system_file` (
@@ -93,7 +97,8 @@ CREATE TABLE `knowledge_point` (
  `create_by` varchar(16) NOT NULL comment '创建用户',
  `update_time` datetime NOT NULL COMMENT '最后修改时间',
  `update_by` varchar(16) NOT NULL comment '更新用户',
- PRIMARY KEY (`id`) USING BTREE
+ PRIMARY KEY (`id`) USING BTREE,
+ CONSTRAINT `fk_knowledge_parent` FOREIGN KEY (`parent`) REFERENCES `knowledge_point` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='知识点';
 
 DROP TABLE IF EXISTS `bank_and_point`;
@@ -106,7 +111,9 @@ CREATE TABLE `bank_and_point` (
    `create_by` varchar(16) NOT NULL comment '创建用户',
    `update_time` datetime NOT NULL COMMENT '最后修改时间',
    `update_by` varchar(16) NOT NULL comment '更新用户',
-   PRIMARY KEY (`id`) USING BTREE
+   PRIMARY KEY (`id`) USING BTREE,
+   CONSTRAINT `fk_bank_point_question` FOREIGN KEY (`question_bank_id`) REFERENCES `question_bank` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+   CONSTRAINT `fk_bank_point_knowledge` FOREIGN KEY (`knowledge_point_id`) REFERENCES `knowledge_point` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='知识点-题目关联表';
 
 DROP TABLE IF EXISTS `exam_page`;
@@ -213,7 +220,9 @@ CREATE TABLE `question_category_relation` (
    `update_time` datetime NOT NULL COMMENT '最后修改时间',
    `update_by` varchar(16) NOT NULL comment '更新用户',
    PRIMARY KEY (`id`) USING BTREE,
-   INDEX `idx_question_category` (`question_bank_id`, `category_id`) USING BTREE
+   INDEX `idx_question_category` (`question_bank_id`, `category_id`) USING BTREE,
+   CONSTRAINT `fk_question_category_question` FOREIGN KEY (`question_bank_id`) REFERENCES `question_bank` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+   CONSTRAINT `fk_question_category_category` FOREIGN KEY (`category_id`) REFERENCES `question_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='题目-分类关联表';
 
 DROP TABLE IF EXISTS `ai_chat_record`;
@@ -225,6 +234,8 @@ CREATE TABLE `ai_chat_record` (
    `create_time` datetime NOT NULL COMMENT '创建时间',
    `create_by` varchar(16) NOT NULL COMMENT '创建用户',
    `update_time` datetime NOT NULL COMMENT '最后修改时间',
-   `update_by` varchar(16) NOT NULL COMMENT '更新用户'
+   `update_by` varchar(16) NOT NULL COMMENT '更新用户',
+   PRIMARY KEY (`id`) USING BTREE,
+   CONSTRAINT `fk_ai_chat_user` FOREIGN KEY (`create_by`) REFERENCES `user` (`user_name`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='AI对话记录表';
 
