@@ -25,7 +25,7 @@ export const overridesPreferences = defineOverridesPreferences({
     enable: false,
   },
   theme: {
-    mode: 'dark',
+    mode: 'light',
     semiDarkHeader: false,
     semiDarkSidebar: false,
   },
