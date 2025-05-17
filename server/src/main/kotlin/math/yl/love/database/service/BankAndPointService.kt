@@ -25,7 +25,7 @@ class BankAndPointService: BaseService<BankAndPoint, BankAndPointMapper>() {
     @Transactional(rollbackFor = [Exception::class])
     fun deleteByIds(questionBankId: Long, ids: Collection<String>): Boolean {
         if (ids.isEmpty()) return true
-        val wrapper = LambdaQueryWrapper<BankAndPoint>()
+        val wrapper = queryWrapper
             .eq(BankAndPoint::questionBankId, questionBankId)
             .`in`(BankAndPoint::knowledgePointId, ids.map { it.toLong() })
         return remove(wrapper)
