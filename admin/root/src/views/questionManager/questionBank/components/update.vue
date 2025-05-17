@@ -47,31 +47,22 @@ const ComponentMap: Record<QuestionTypeEnum, ReturnType<typeof markRaw>> = {
 
 const { closeCurrentTab } = useTabs();
 const componetRef = ref<{
-  openAsUpdate: (v: QuestionBank, k: KnowledgePoint[]) => void;
+  openAsUpdate: (v: QuestionBank, k: KnowledgePoint[], c: string[]) => void;
 }>();
 const type = ref<QuestionTypeEnum>();
 const Component = computed(() => ComponentMap[type.value!]);
-
-interface OpenProps {
-  data?: any;
-  knowledgePoints: KnowledgePoint[];
-  type: QuestionTypeEnum;
-}
-
-async function open(value: OpenProps) {
-  type.value = value.type;
-  await nextTick();
-  unref(componetRef)?.openAsUpdate(value.data, value.knowledgePoints);
-}
-
-defineExpose({ open });
 
 onMounted(async () => {
   const id = route.params.id as string;
   const value = await questionBankApi.detail(id);
   type.value = value.questionBank.type;
+  const categories = value.categories.map((v) => v.id!!);
   await nextTick();
-  unref(componetRef)?.openAsUpdate(value.questionBank, value.knowledgePoints);
+  unref(componetRef)?.openAsUpdate(
+    value.questionBank,
+    value.knowledgePoints,
+    categories,
+  );
 });
 
 function cancel() {

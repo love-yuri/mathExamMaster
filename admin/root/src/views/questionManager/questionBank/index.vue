@@ -54,7 +54,7 @@
               </EllipsisText>
             </template>
           </Column>
-          <Column field="knowledgePoint" header="知识点">
+          <Column field="cargories" header="分类">
             <template #body="slotProps: { data: QuestionBankType }">
               <EllipsisText :max-width="500">
                 <Tag

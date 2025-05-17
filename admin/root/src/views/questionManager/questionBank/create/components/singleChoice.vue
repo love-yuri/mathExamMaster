@@ -233,15 +233,17 @@ function cleanQuestion() {
   selectedKnowledgePoints.value.length = 0;
   question.value.answer.answer = undefined;
   question.value.answer.options.length = 0;
+  questionCategoryIds.value.length = 0;
 }
 
 /**
  * 处理更新
  */
-function openAsUpdate(v: SingleChoiceAnswer, k: KnowledgePoint[]) {
+function openAsUpdate(v: SingleChoiceAnswer, k: KnowledgePoint[], c: string[]) {
   isUpdate.value = true;
   question.value.copy(v);
   selectedKnowledgePoints.value = k;
+  questionCategoryIds.value = c;
 }
 
 /**

@@ -221,15 +221,17 @@ function removeKey(index: number) {
 function cleanQuestion() {
   question.value.reset();
   selectedKnowledgePoints.value.length = 0;
+  questionCategoryIds.value.length = 0;
 }
 
 /**
  * 处理更新
  */
-function openAsUpdate(v: GapFillingAnswer, k: KnowledgePoint[]) {
+function openAsUpdate(v: GapFillingAnswer, k: KnowledgePoint[], c: string[]) {
   isUpdate.value = true;
   question.value.copy(v);
   selectedKnowledgePoints.value = k;
+  questionCategoryIds.value = c;
 }
 
 /**
